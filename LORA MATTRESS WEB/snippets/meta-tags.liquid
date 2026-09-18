@@ -1,0 +1,30 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="{{ settings.color_ivory | default: '#F5F2EB' }}">
+<link rel="canonical" href="{{ canonical_url }}">
+
+<title>
+  {{ page_title }}
+  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+  {%- unless page_title contains shop.name %} &ndash; {{ shop.name | default: 'LORA Mattress' }}{% endunless -%}
+</title>
+
+{% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+{% else %}
+  <meta name="description" content="LORA Mattress — Restful, refined luxury hybrid and natural latex mattresses. Better nights. Better mornings. Up to 15 years warranty with free white-glove setup across India.">
+{% endif %}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:site_name" content="{{ shop.name | default: 'LORA Mattress' }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ page_title | default: 'LORA Mattress — Better nights. Better mornings.' }}">
+<meta property="og:type" content="website">
+<meta property="og:description" content="{{ page_description | default: 'Restful, refined luxury sleep products handcrafted for restorative rest.' }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title | default: 'LORA Mattress' }}">
+<meta name="twitter:description" content="{{ page_description | default: 'Restful, refined luxury sleep products handcrafted for restorative rest.' }}">

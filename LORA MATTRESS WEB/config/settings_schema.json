@@ -1,0 +1,184 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "LORA Mattress Luxury Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "LORA Design Studio",
+    "theme_documentation_url": "https://loramattress.com/docs",
+    "theme_support_url": "https://loramattress.com/support"
+  },
+  {
+    "name": "Brand & Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_ivory",
+        "label": "Warm Ivory (Primary Surface)",
+        "default": "#F5F2EB"
+      },
+      {
+        "type": "color",
+        "id": "color_sand",
+        "label": "Soft Sand (Secondary Surface)",
+        "default": "#DED5C7"
+      },
+      {
+        "type": "color",
+        "id": "color_espresso",
+        "label": "Deep Espresso (Primary Text & CTAs)",
+        "default": "#302A25"
+      },
+      {
+        "type": "color",
+        "id": "color_olive",
+        "label": "Muted Olive (Comfort Accent)",
+        "default": "#626A56"
+      },
+      {
+        "type": "color",
+        "id": "color_brass",
+        "label": "Restrained Brass (Accent & Stars)",
+        "default": "#A58B65"
+      },
+      {
+        "type": "color",
+        "id": "color_charcoal",
+        "label": "Warm Charcoal (Footer & Deep Surfaces)",
+        "default": "#252724"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Heading Font",
+        "default": "cormorant_garamond_n5"
+      },
+      {
+        "type": "font_picker",
+        "id": "body_font",
+        "label": "Body Font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "base_font_size",
+        "min": 14,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "label": "Base Body Size",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Layout & Styling",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_max_width",
+        "min": 1200,
+        "max": 1600,
+        "step": 40,
+        "unit": "px",
+        "label": "Maximum Content Width",
+        "default": 1440
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_smooth_scroll",
+        "label": "Enable Smooth Scroll Experience",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Enable Motion Transitions",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cart & Delivery Tiers",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart Experience",
+        "options": [
+          { "value": "drawer", "label": "Slide-out Drawer" },
+          { "value": "page", "label": "Dedicated Cart Page" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "number",
+        "id": "free_white_glove_threshold",
+        "label": "Free White-Glove In-Home Delivery Threshold (INR)",
+        "default": 35000
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_notes",
+        "label": "Enable Order Notes (Floor / Lift instructions)",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Customer Care & WhatsApp",
+    "settings": [
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp Concierge Number (with country code)",
+        "default": "+919876543210"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_default_message",
+        "label": "Default WhatsApp Inquiry Message",
+        "default": "Hello LORA Sleep Concierge, I'd like guidance selecting the right mattress for my home."
+      },
+      {
+        "type": "text",
+        "id": "support_email",
+        "label": "Customer Support Email",
+        "default": "concierge@loramattress.com"
+      },
+      {
+        "type": "text",
+        "id": "support_phone",
+        "label": "Customer Support Phone",
+        "default": "1800-200-5672 (Mon-Sat, 9am - 8pm IST)"
+      }
+    ]
+  },
+  {
+    "name": "Social Media Links",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL",
+        "default": "https://instagram.com/loramattress"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest URL",
+        "default": "https://pinterest.com/loramattress"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL",
+        "default": "https://youtube.com/@loramattress"
+      }
+    ]
+  }
+]

@@ -1,0 +1,85 @@
+<section class="reviews-section" id="customer-reviews" style="padding: 7rem 0; background: var(--bg-surface); border-top: 1px solid var(--border-light);">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow" style="color: var(--color-olive);">Restful Stories</span>
+      <h2 class="font-serif">{{ section.settings.title | default: 'Customer Experiences' }}</h2>
+      <p>{{ section.settings.subtitle | default: 'Verified feedback from homeowners across India sleeping better every single night.' }}</p>
+    </div>
+
+    <!-- App Blocks Integration (Judge.me, Yotpo, Okendo, native reviews) -->
+    <div class="reviews-app-container">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when '@app' %}
+            {% render block %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <!-- Editorial Trust Row -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3.5rem;">
+      <div style="background: var(--bg-primary); padding: 2.5rem 2rem; border-radius: 4px; border: 1px solid var(--border-light);">
+        <div style="display: flex; gap: 0.2rem; margin-bottom: 1rem;">
+          {% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}
+        </div>
+        <p style="font-style: italic; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-primary);">
+          “The Organic Balance Hybrid has transformed my chronic morning stiffness. In Mumbai's humidity, the natural latex stays noticeably cool all night long.”
+        </p>
+        <span style="font-weight: 600; font-size: 0.85rem; color: var(--color-espresso); display: block;">Aditya M. • Mumbai</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Verified Buyer • Queen 10"</span>
+      </div>
+
+      <div style="background: var(--bg-primary); padding: 2.5rem 2rem; border-radius: 4px; border: 1px solid var(--border-light);">
+        <div style="display: flex; gap: 0.2rem; margin-bottom: 1rem;">
+          {% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}
+        </div>
+        <p style="font-style: italic; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-primary);">
+          “The zero motion transfer is completely genuine. My husband wakes up at 5:30 AM for runs, and I haven't been disturbed once in 3 months.”
+        </p>
+        <span style="font-weight: 600; font-size: 0.85rem; color: var(--color-espresso); display: block;">Ananya K. • Bengaluru</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Verified Buyer • King 12"</span>
+      </div>
+
+      <div style="background: var(--bg-primary); padding: 2.5rem 2rem; border-radius: 4px; border: 1px solid var(--border-light);">
+        <div style="display: flex; gap: 0.2rem; margin-bottom: 1rem;">
+          {% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}
+        </div>
+        <p style="font-style: italic; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-primary);">
+          “White-glove delivery in Delhi was impeccable. The specialists placed it precisely onto our platform bed and took away all boxes quietly.”
+        </p>
+        <span style="font-weight: 600; font-size: 0.85rem; color: var(--color-espresso); display: block;">Rohan S. • New Delhi</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Verified Buyer • King 10"</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Customer Experiences"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Verified feedback from homeowners across India sleeping better every single night."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews"
+    }
+  ]
+}
+{% endschema %}

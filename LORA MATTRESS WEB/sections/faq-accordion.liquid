@@ -1,0 +1,92 @@
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow">{{ section.settings.eyebrow | default: 'Clarity & Confidence' }}</span>
+      <h2 class="font-serif">{{ section.settings.title | default: 'Frequently Asked Questions' }}</h2>
+      <p>{{ section.settings.subtitle | default: 'Everything you need to know about our materials, warranty, and white-glove setup.' }}</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item active">
+        <button type="button" class="faq-trigger" aria-expanded="true">
+          <span>How does LORA's Direct-from-Factory Model benefit me?</span>
+          <span class="faq-icon">↓</span>
+        </button>
+        <div class="faq-content">
+          By eliminating retail middleman distributors and third-party showroom markups, you receive an authentic luxury mattress handcrafted with premium botanical latex, carbon titanium pocket coils, and high-density orthopedic support at 40% less than traditional retail pricing, backed by up to 15 years warranty.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>What does Free White-Glove Setup include across India?</span>
+          <span class="faq-icon">↓</span>
+        </button>
+        <div class="faq-content">
+          Our logistics team handles everything from transport to installation. Two delivery professionals will carry the mattress up to your room of choice (regardless of floor number or elevator availability), unpack it, set it up onto your bed frame, and remove all protective wrapping materials.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>How do LORA mattresses perform in warm and humid Indian climates?</span>
+          <span class="faq-icon">↓</span>
+        </button>
+        <div class="faq-content">
+          Traditional synthetic memory foam traps body heat. LORA mattresses use open-cell botanical Dunlop latex with pin-core ventilation channels paired with natural Belgian flax linen and moisture-wicking cashmere, allowing active continuous air circulation and preventing sleep overheating.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>Can I order custom dimensions for an antique or bespoke bed frame?</span>
+          <span class="faq-icon">↓</span>
+        </button>
+        <div class="faq-content">
+          Yes. Many homes across India have heirloom teak or custom carpenter-built cots. We handcraft bespoke dimensions to your exact centimeter or inch specifications at our workshop. Contact our WhatsApp concierge for a custom measurement order.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>What is covered under the 10-Year Warranty?</span>
+          <span class="faq-icon">↓</span>
+        </button>
+        <div class="faq-content">
+          Our 10-year non-prorated warranty covers any visible indentation or sag greater than 1 inch that is not associated with improper foundation support, as well as physical flaws in the spring coils or latex cores that cause the material to split or crack under normal household use.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Clarity & Confidence"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Everything you need to know about our materials, warranty, and white-glove setup."
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion"
+    }
+  ]
+}
+{% endschema %}

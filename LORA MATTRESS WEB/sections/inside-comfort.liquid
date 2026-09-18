@@ -1,0 +1,97 @@
+<section class="inside-comfort-section" id="inside-comfort">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow" style="color: var(--color-brass);">Craftsmanship & Architecture</span>
+      <h2 class="font-serif">{{ section.settings.title | default: 'Inside the Comfort' }}</h2>
+      <p>{{ section.settings.subtitle | default: 'Every millimeter is intentional. We select pure, certified materials that breathe naturally in Indian climates and provide enduring spinal alignment.' }}</p>
+    </div>
+
+    <div class="materials-layout">
+      <!-- Media Preview Stage -->
+      <div class="material-preview-media">
+        <img src="{{ 'material-cashmere-linen.jpg' | asset_url }}" 
+             alt="Organic Belgian linen quilted quilt" 
+             class="material-layer-img" 
+             loading="lazy" 
+             width="800" 
+             height="600">
+      </div>
+
+      <!-- Layer Breakdown List -->
+      <div class="materials-layers-list">
+        <!-- Layer 1 -->
+        <div class="layer-item active" data-img="{{ 'material-cashmere-linen.jpg' | asset_url }}">
+          <div class="layer-header">
+            <span class="layer-index">LAYER 01</span>
+            <span style="font-size: 0.75rem; color: var(--color-brass);">Surface Comfort</span>
+          </div>
+          <h4 class="layer-name">Organic Belgian Linen & Cashmere Quilt</h4>
+          <p class="layer-desc">
+            Handcrafted with organic Belgian flax and pure breathable cashmere. Natural moisture-wicking properties keep the sleep surface cool, crisp, and tactilely sumptuous.
+          </p>
+        </div>
+
+        <!-- Layer 2 -->
+        <div class="layer-item" data-img="{{ 'material-natural-latex.jpg' | asset_url }}">
+          <div class="layer-header">
+            <span class="layer-index">LAYER 02</span>
+            <span style="font-size: 0.75rem; color: var(--color-brass);">Pressure Relief</span>
+          </div>
+          <h4 class="layer-name">100% Pure Pin-Core Natural Dunlop Latex</h4>
+          <p class="layer-desc">
+            Sustainably harvested botanical latex with open-cell pin-core channels. Provides dynamic buoyancy without feeling trapped, reacting instantly to every sleep transition.
+          </p>
+        </div>
+
+        <!-- Layer 3 -->
+        <div class="layer-item" data-img="{{ 'material-pocket-springs.jpg' | asset_url }}">
+          <div class="layer-header">
+            <span class="layer-index">LAYER 03</span>
+            <span style="font-size: 0.75rem; color: var(--color-brass);">Ergonomic Support</span>
+          </div>
+          <h4 class="layer-name">Zoned Titanium Encased Pocket Springs</h4>
+          <p class="layer-desc">
+            Individually encased pocket coils calibrated into 5 ergonomic comfort zones. Delivers targeted lumbar support, softer shoulder relief, and zero partner motion transfer.
+          </p>
+        </div>
+
+        <!-- Layer 4 -->
+        <div class="layer-item" data-img="{{ 'material-natural-latex.jpg' | asset_url }}">
+          <div class="layer-header">
+            <span class="layer-index">LAYER 04</span>
+            <span style="font-size: 0.75rem; color: var(--color-brass);">Base Foundation</span>
+          </div>
+          <h4 class="layer-name">High-Density Acoustic Eco-Base</h4>
+          <p class="layer-desc">
+            High-resilience plant-based acoustic base layer that stabilizes spring movement and extends mattress longevity to over a decade of restorative nights.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Inside the Comfort",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Inside the Comfort"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Every millimeter is intentional. We select pure, certified materials that breathe naturally in Indian climates and provide enduring spinal alignment."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inside the Comfort"
+    }
+  ]
+}
+{% endschema %}

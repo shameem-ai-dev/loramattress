@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "shop-by-comfort",
+      "settings": {
+        "title": "All Sleep Collections",
+        "subtitle": "Explore our curated comfort lines handcrafted for Indian homes."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "current": {
+    "color_ivory": "#F5F2EB",
+    "color_sand": "#DED5C7",
+    "color_espresso": "#302A25",
+    "color_olive": "#626A56",
+    "color_brass": "#A58B65",
+    "color_charcoal": "#252724",
+    "base_font_size": 16,
+    "page_max_width": 1440,
+    "enable_smooth_scroll": true,
+    "enable_animations": true,
+    "cart_type": "drawer",
+    "free_white_glove_threshold": 35000,
+    "show_cart_notes": true,
+    "whatsapp_number": "+919876543210",
+    "whatsapp_default_message": "Hello LORA Sleep Concierge, I'd like guidance selecting the right mattress for my home.",
+    "support_email": "concierge@loramattress.com",
+    "support_phone": "1800-200-5672 (Mon-Sat, 9am - 8pm IST)",
+    "social_instagram": "https://instagram.com/loramattress",
+    "social_pinterest": "https://pinterest.com/loramattress",
+    "social_youtube": "https://youtube.com/@loramattress",
+    "sections": {}
+  },
+  "presets": {
+    "Default": {
+      "color_ivory": "#F5F2EB",
+      "color_sand": "#DED5C7",
+      "color_espresso": "#302A25",
+      "color_olive": "#626A56",
+      "color_brass": "#A58B65",
+      "color_charcoal": "#252724",
+      "cart_type": "drawer",
+      "free_white_glove_threshold": 35000
+    }
+  }
+}

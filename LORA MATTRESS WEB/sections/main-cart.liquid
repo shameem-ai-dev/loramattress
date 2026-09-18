@@ -1,0 +1,56 @@
+<section class="cart-template" style="padding: 5rem 0 7rem;">
+  <div class="container container-narrow">
+    <div class="section-header text-center">
+      <span class="eyebrow">Your Sanctuary Order</span>
+      <h1 class="font-serif" style="font-size: 2.75rem;">Review Your Cart</h1>
+    </div>
+
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: 4px; padding: 2.5rem; box-shadow: var(--shadow-subtle);">
+      <!-- Cart Progress -->
+      <div class="cart-free-tier" style="margin-bottom: 2rem; border-radius: 4px;">
+        <div class="free-tier-text">✨ <strong>You've Qualified for Free White-Glove In-Home Setup Across India!</strong></div>
+        <div class="free-tier-bar">
+          <div class="free-tier-fill" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Item Row -->
+      <div class="cart-item" style="padding-bottom: 2rem; border-bottom: 1px solid var(--border-light);">
+        <img src="{{ 'comfort-balanced.jpg' | asset_url }}" alt="The LORA Organic Balance Hybrid" class="cart-item-img" style="width: 100px; height: 100px;">
+        <div class="cart-item-info">
+          <div class="cart-item-title" style="font-size: 1.15rem;">The LORA Organic Balance Hybrid</div>
+          <div class="cart-item-variant">King (78" × 72") • 10" Height • 15-Year Warranty</div>
+          
+          <div class="cart-item-bottom" style="margin-top: 1rem;">
+            <div class="qty-stepper">
+              <button type="button" class="qty-btn">−</button>
+              <span class="qty-val">1</span>
+              <button type="button" class="qty-btn">+</button>
+            </div>
+            <strong style="font-size: 1.25rem; color: var(--color-espresso);">₹38,999</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtotal & Checkout -->
+      <div style="margin-top: 2.5rem; display: flex; flex-direction: column; align-items: flex-end;">
+        <div style="display: flex; gap: 2rem; align-items: baseline; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.1rem;">Subtotal</span>
+          <strong style="font-size: 1.75rem; color: var(--color-espresso);">₹38,999</strong>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Taxes and customs included. White-glove in-room delivery scheduled after order confirmation.</p>
+
+        <a href="/checkout" class="btn btn-primary" style="padding: 1.15rem 3rem; font-size: 0.95rem;">
+          Proceed to Secure Checkout →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "settings": []
+}
+{% endschema %}

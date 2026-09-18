@@ -1,0 +1,200 @@
+<section class="product-template" id="product-overview">
+  <div class="container">
+    <div class="product-layout-grid">
+      <!-- Media Gallery Column -->
+      <div class="product-gallery-sticky">
+        <div class="gallery-main-view">
+          <img src="{{ product.featured_image | image_url: width: 1200 | default: 'comfort-balanced.jpg' | asset_url }}" 
+               alt="{{ product.title | default: 'LORA HYBRID FUSION™' }}" 
+               class="gallery-main-img" 
+               loading="eager"
+               width="1200" 
+               height="900">
+        </div>
+
+        <div class="gallery-thumbnails-rail">
+          <button type="button" class="gallery-thumb-btn active" data-full-src="{{ 'comfort-balanced.jpg' | asset_url }}">
+            <img src="{{ 'comfort-balanced.jpg' | asset_url }}" alt="Full mattress perspective">
+          </button>
+          <button type="button" class="gallery-thumb-btn" data-full-src="{{ 'material-natural-latex.jpg' | asset_url }}">
+            <img src="{{ 'material-natural-latex.jpg' | asset_url }}" alt="Natural latex core">
+          </button>
+          <button type="button" class="gallery-thumb-btn" data-full-src="{{ 'material-cashmere-linen.jpg' | asset_url }}">
+            <img src="{{ 'material-cashmere-linen.jpg' | asset_url }}" alt="Quilt tufting detail">
+          </button>
+          <button type="button" class="gallery-thumb-btn" data-full-src="{{ 'material-pocket-springs.jpg' | asset_url }}">
+            <img src="{{ 'material-pocket-springs.jpg' | asset_url }}" alt="Zoned coils detail">
+          </button>
+        </div>
+
+        <!-- Trust Badges Under Gallery -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; padding: 1.5rem; background: var(--bg-primary); border-radius: 4px; border: 1px solid var(--border-light); text-align: center;">
+          <div>
+            <strong style="display: block; font-size: 0.85rem; color: var(--color-espresso);">Zero Motion</strong>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Partner Isolation</span>
+          </div>
+          <div>
+            <strong style="display: block; font-size: 0.85rem; color: var(--color-espresso);">Direct Factory</strong>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Free White-Glove Setup</span>
+          </div>
+          <div>
+            <strong style="display: block; font-size: 0.85rem; color: var(--color-espresso);">15 Years</strong>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Flagship Warranty</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Purchasing & Details Column -->
+      <div class="product-details-panel">
+        <span class="eyebrow" style="color: var(--color-olive);">
+          {{ product.metafields.custom.comfort_level | default: 'HYBRID | PREMIUM SUPPORT • MEDIUM-FIRM (●●●■■)' }}
+        </span>
+
+        <h1 class="font-serif" style="font-size: clamp(2.2rem, 3.8vw, 3rem); margin-bottom: 0.35rem;">
+          {{ product.title | default: 'LORA HYBRID FUSION™' }}
+        </h1>
+
+        <p style="font-size: 1.05rem; color: var(--color-olive); font-weight: 600; margin-bottom: 0.75rem;">
+          Advanced comfort. Complete support.
+        </p>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; gap: 0.15rem;">
+            {% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-espresso);">4.94</span>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">(Google Rated • Verified Homeowners)</span>
+        </div>
+
+        <div class="product-price-row" style="margin-bottom: 1rem; border: none; padding: 0;">
+          <span class="price-current" style="font-size: 2rem;" id="live-product-price">₹46,999</span>
+          <span class="price-compare" style="font-size: 1.3rem;">₹54,999</span>
+          <span class="price-savings">Save ₹8,000 (15% Off)</span>
+        </div>
+
+        <!-- Bajaj Finserv EMI Banner -->
+        <div style="background: rgba(165, 139, 101, 0.1); border: 1px solid var(--border-brass); border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem;">
+          <span>⚡ <strong>Bajaj Finserv No-Cost EMI:</strong> Pay just ₹3,916/mo for 12 months</span>
+          <span style="color: var(--color-brass); font-weight: 600;">Instant Approval</span>
+        </div>
+
+        <p style="font-size: 0.95rem; line-height: 1.65; color: var(--text-secondary); margin-bottom: 2rem;">
+          Our premier multi-layer comfort system unites Natural Latex Foam, pressure-relieving Memory Foam, and high-density Orthopedic Foam with a dedicated 15-year warranty. Engineered for sleepers wanting advanced multi-layer comfort and stronger spinal support.
+        </p>
+
+        <!-- Variant Selector: Standard Indian Size -->
+        <div class="variant-selector-group">
+          <div class="variant-label-row">
+            <span>Select Cot Size</span>
+            <button type="button" data-action="open-size-guide" style="color: var(--color-brass); text-decoration: underline; font-size: 0.8rem; font-weight: 500;">
+              Indian Cot Size Guide
+            </button>
+          </div>
+          <div class="swatches-grid">
+            <button type="button" class="swatch-pill selected" data-size="King">
+              King (78" × 72")
+            </button>
+            <button type="button" class="swatch-pill" data-size="Queen">
+              Queen (78" × 60")
+            </button>
+            <button type="button" class="swatch-pill" data-size="Double">
+              Double (72" × 48")
+            </button>
+            <button type="button" class="swatch-pill" data-size="Single">
+              Single (72" × 36")
+            </button>
+          </div>
+        </div>
+
+        <!-- Add to Cart Form -->
+        <div style="display: flex; gap: 1rem; margin-top: 1rem; margin-bottom: 2.5rem;">
+          <button type="button" 
+                  class="btn btn-primary" 
+                  style="flex: 1; padding: 1.15rem 2rem; font-size: 0.95rem;" 
+                  data-action="add-to-cart" 
+                  data-title="{{ product.title | default: 'LORA HYBRID FUSION™' }}" 
+                  data-price="46999" 
+                  data-variant="King (78\" × 72\") • Multi-Layer Hybrid" 
+                  data-img="{{ 'comfort-balanced.jpg' | asset_url }}">
+            Add to Order • ₹46,999
+          </button>
+
+          <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}?text=Hello,%20I'm%20inquiring%20about%20the%20LORA%20HYBRID%20FUSION%20Mattress." 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="btn btn-secondary" 
+             title="Inquire on WhatsApp">
+            WhatsApp
+          </a>
+        </div>
+
+        <!-- Accordions: Specifications, Materials, Delivery -->
+        <div class="faq-list" style="margin-top: 0; max-width: 100%;">
+          <div class="faq-item active">
+            <button type="button" class="faq-trigger">
+              <span>What's Inside? (Multi-Layer Architecture)</span>
+              <span class="faq-icon">↓</span>
+            </button>
+            <div class="faq-content">
+              • <strong>Layer 1:</strong> Natural Latex Foam breathable top layer for responsive cushioning.<br>
+              • <strong>Layer 2:</strong> Contouring Memory Foam for deep pressure relief along lumbar and hips.<br>
+              • <strong>Layer 3:</strong> Orthopedic Foam targeted transition core for neutral spinal alignment.<br>
+              • <strong>Layer 4:</strong> High-resilience acoustic base foundation built to last over 15 years.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-trigger">
+              <span>Comfort Profile & Warranty (15 Years)</span>
+              <span class="faq-icon">↓</span>
+            </button>
+            <div class="faq-content">
+              • <strong>Comfort Level:</strong> Medium-Firm (SOFT ●●●■■ FIRM)<br>
+              • <strong>Feel:</strong> Balanced support with gentle contouring memory cushion.<br>
+              • <strong>Warranty:</strong> 15-Year Comprehensive Flagship Replacement Warranty.<br>
+              • <strong>Craft:</strong> Factory direct precision robotics manufacturing.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-trigger">
+              <span>Length × Width × Height Measuring Guide</span>
+              <span class="faq-icon">↓</span>
+            </button>
+            <div class="faq-content">
+              1. Measure the inside length of your bed frame in inches.<br>
+              2. Measure the inside width.<br>
+              3. Check the required mattress height.<br>
+              4. Choose the matching LORA size (Single, Double, Queen, or King).<br>
+              <em>Measure right. Sleep right.</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Sticky Purchase Bar -->
+  <div class="mobile-sticky-buybar">
+    <div>
+      <span style="font-weight: 600; font-size: 0.9rem; display: block;">LORA HYBRID FUSION™</span>
+      <span style="font-weight: 700; color: var(--color-espresso); font-size: 1.1rem;">₹46,999</span>
+    </div>
+    <button type="button" 
+            class="btn btn-primary btn-sm" 
+            data-action="add-to-cart" 
+            data-title="LORA HYBRID FUSION™" 
+            data-price="46999" 
+            data-variant="King (78\" × 72\")" 
+            data-img="{{ 'comfort-balanced.jpg' | asset_url }}">
+      Add to Order
+    </button>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Product Template",
+  "settings": []
+}
+{% endschema %}

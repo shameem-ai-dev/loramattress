@@ -1,0 +1,53 @@
+<section class="search-template" style="padding: 5rem 0 7rem;">
+  <div class="container">
+    <div class="section-header text-center" style="max-width: 640px; margin: 0 auto 3rem;">
+      <span class="eyebrow">Search Catalog</span>
+      <h1 class="font-serif" style="font-size: 2.75rem; margin-bottom: 1.5rem;">Explore LORA</h1>
+
+      <form action="/search" method="get" role="search" style="display: flex; gap: 0.5rem;">
+        <input type="search" 
+               name="q" 
+               value="{{ search.terms | escape }}" 
+               placeholder="Search mattresses, latex, comfort levels, sizes..." 
+               class="footer-input" 
+               style="background: #fff; color: var(--color-espresso); border: 1px solid var(--border-medium); padding: 1rem 1.25rem; font-size: 1rem;"
+               aria-label="Search">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+    </div>
+
+    {% if search.performed %}
+      <div style="margin-bottom: 2rem;">
+        <p style="font-size: 1rem; color: var(--text-muted);">
+          Showing results for "<strong>{{ search.terms }}</strong>":
+        </p>
+      </div>
+
+      <div class="products-grid">
+        {% for item in search.results %}
+          {% if item.object_type == 'product' %}
+            {% render 'product-card', product: item %}
+          {% endif %}
+        {% else %}
+          <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">
+            <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+              No exact matches found for "{{ search.terms }}".
+            </p>
+            <a href="#featured-mattresses" class="btn btn-secondary">Browse All Mattresses</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="products-grid">
+        {% render 'product-card' %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Search",
+  "settings": []
+}
+{% endschema %}

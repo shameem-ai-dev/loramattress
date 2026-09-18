@@ -1,0 +1,188 @@
+<section class="hero-scroll-wrapper" id="signature-hero" aria-label="LORA Deconstructed Sleep Science">
+  <div class="hero-sticky-container">
+    <!-- Visual Stage with 3D Zero-Gravity Deconstructed Anatomy -->
+    <div class="hero-visual-stage">
+      <img src="{{ section.settings.image_assembled | default: 'hero-stage-1-assembled.jpg' | asset_url }}" 
+           alt="LORA Assembled Zero-G Mattress" 
+           class="hero-stage-layer stage-layer-assembled" 
+           fetchpriority="high"
+           width="1920" 
+           height="1080">
+
+      <img src="{{ section.settings.image_exploded | default: 'hero-stage-2-exploded.jpg' | asset_url }}" 
+           alt="LORA 4-Tier Deconstructed Architectural Layers" 
+           class="hero-stage-layer stage-layer-exploded" 
+           loading="eager"
+           width="1920" 
+           height="1080">
+
+      <img src="{{ section.settings.image_spine | default: 'hero-stage-3-spine.jpg' | asset_url }}" 
+           alt="LORA SpineAlign 7-Zone Biometric Contour" 
+           class="hero-stage-layer stage-layer-spine" 
+           loading="eager"
+           width="1920" 
+           height="1080">
+
+      <div class="hero-vignette-overlay"></div>
+      <div class="hero-callout-overlay"></div>
+    </div>
+
+    <!-- Hero Content Overlay -->
+    <div class="container hero-content-overlay">
+      <div class="hero-header-block">
+        <div class="hero-status-pill">
+          <span class="pulse-node"></span>
+          <span class="scrub-status-label">01 / ASSEMBLED CORE • ZERO-G SUSPENSION</span>
+        </div>
+
+        <h1 class="hero-title hero-title-dynamic">
+          Better nights.<br>
+          <span class="gradient-text">Better mornings.</span>
+        </h1>
+
+        <p class="hero-supporting-copy hero-copy-dynamic">
+          {{ section.settings.supporting_copy | default: 'Leave the day behind. The unified LORA core floats in zero-gravity suspension. Molecular comfort foam meets zoned titanium coils—scroll to deconstruct the architecture.' }}
+        </p>
+
+        <div class="hero-ctas">
+          <a href="{{ section.settings.primary_cta_link | default: '#the-collection' }}" class="btn btn-primary" style="padding: 1.05rem 2.25rem; font-size: 1rem;">
+            {{ section.settings.primary_cta_label | default: 'Explore The 8 Models' }} ↓
+          </a>
+          <a href="{{ section.settings.secondary_cta_link | default: '#sleep-quiz' }}" class="btn btn-outline-white" style="padding: 1.05rem 2.25rem; font-size: 1rem;">
+            {{ section.settings.secondary_cta_label | default: 'Find Your Sleep Match ✨' }}
+          </a>
+        </div>
+
+        <!-- Financing & Trust Highlights -->
+        <div style="display: flex; gap: 1.75rem; margin-top: 1.75rem; font-size: 0.84rem; color: #E2E8F0; align-items: center; flex-wrap: wrap;">
+          <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
+            <strong style="color: #38BDF8;">★ 4.9/5</strong> Google Rated (5,00,000+ Sleepers)
+          </span>
+          <span>•</span>
+          <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
+            <strong style="color: #38BDF8;">🛡️ Up to 15 Years</strong> Factory Warranty
+          </span>
+          <span>•</span>
+          <span style="background: rgba(0, 180, 216, 0.15); border: 1px solid rgba(0, 180, 216, 0.4); padding: 0.25rem 0.65rem; border-radius: var(--radius-sm); font-weight: 700; color: #E0F2FE;">
+            Bajaj Finserv 0% No-Cost EMI
+          </span>
+        </div>
+      </div>
+
+      <!-- Floating Biometric HUD Overlay -->
+      <div class="hero-floating-hud">
+        <div class="hud-header">
+          <span class="hud-title">SpineAlign™ Architecture Telemetry</span>
+          <span class="badge-verified" id="hud-status-tag">ZERO-G SUSPENSION</span>
+        </div>
+
+        <svg class="spine-contour-svg" viewBox="0 0 320 60">
+          <defs>
+            <linearGradient id="spine-cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#00B4D8" />
+              <stop offset="50%" stop-color="#48CAE4" />
+              <stop offset="100%" stop-color="#0077B6" />
+            </linearGradient>
+          </defs>
+          <path id="hero-spine-path" class="spine-svg-line" d="M 10 32 Q 45 20, 90 28 T 160 34 T 240 26 T 310 32" />
+          <circle class="spine-node-dot" cx="45" cy="24" r="3.5" />
+          <circle class="spine-node-dot" cx="90" cy="28" r="3.5" />
+          <circle class="spine-node-dot" cx="160" cy="34" r="3.5" />
+          <circle class="spine-node-dot" cx="240" cy="26" r="3.5" />
+        </svg>
+
+        <div class="hud-metrics-row">
+          <div class="hud-metric-box">
+            <span class="hud-metric-label" id="hud-m1-label">Core Architecture</span>
+            <span class="hud-metric-val" id="hud-m1-val">Multi-Tier Unified</span>
+          </div>
+          <div class="hud-metric-box">
+            <span class="hud-metric-label" id="hud-m2-label">Surface Cooling</span>
+            <span class="hud-metric-val" id="hud-m2-val">Active Micro-Knit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive 3D Stage Controller Bar -->
+      <div class="hero-footer-bar">
+        <div class="circadian-controller">
+          <div class="phase-buttons">
+            <button type="button" class="phase-btn active" data-phase="0.12">01. Assembled Core</button>
+            <button type="button" class="phase-btn" data-phase="0.48">02. Deconstructed Layers</button>
+            <button type="button" class="phase-btn" data-phase="0.84">03. SpineAlign™ Science</button>
+          </div>
+
+          <div class="timeline-track-wrapper" title="Drag or click to scrub 3D deconstruction">
+            <div class="timeline-track">
+              <div class="timeline-thumb"></div>
+            </div>
+          </div>
+
+          <button type="button" class="hero-loop-toggle">
+            <span>⏸ Pause Ambient Float</span>
+          </button>
+        </div>
+
+        <a href="#the-collection" style="color: #94A3B8; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+          <span>Scroll to Explore 8 Models</span> ↓
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Deconstructed 3D Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_assembled",
+      "label": "Assembled Core Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_exploded",
+      "label": "Exploded Layers Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_spine",
+      "label": "SpineAlign Mapping Image"
+    },
+    {
+      "type": "textarea",
+      "id": "supporting_copy",
+      "label": "Supporting Copy",
+      "default": "Leave the day behind. The unified LORA core floats in zero-gravity suspension. Molecular comfort foam meets zoned titanium coils—scroll to deconstruct the architecture."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_label",
+      "label": "Primary Button Label",
+      "default": "Explore The 8 Models"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_label",
+      "label": "Secondary Button Label",
+      "default": "Find Your Sleep Match"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Deconstructed 3D Hero"
+    }
+  ]
+}
+{% endschema %}

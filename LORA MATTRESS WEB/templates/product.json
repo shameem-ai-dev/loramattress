@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "inside_comfort": {
+      "type": "inside-comfort",
+      "settings": {}
+    },
+    "reasons_to_choose": {
+      "type": "reasons-to-choose",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "inside_comfort",
+    "reasons_to_choose",
+    "faq"
+  ]
+}

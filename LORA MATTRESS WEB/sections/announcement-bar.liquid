@@ -1,0 +1,61 @@
+{% if section.settings.show_announcement %}
+  <aside class="announcement-bar" role="region" aria-label="Announcement">
+    <div class="announcement-bar-content">
+      <span class="announcement-tag">🌿 {{ section.settings.text_highlight | default: 'Factory Direct Luxury • Up to 15 Years Warranty' }}</span>
+      <span style="opacity: 0.4;">|</span>
+      <span class="announcement-tag">✨ {{ section.settings.text_shipping | default: 'Free White-Glove In-Home Setup Across India' }}</span>
+      {% if section.settings.link != blank %}
+        <a href="{{ section.settings.link }}" style="text-decoration: underline; margin-left: 0.5rem;">{{ section.settings.link_text | default: 'Learn More' }}</a>
+      {% endif %}
+    </div>
+
+    {% if section.settings.allow_dismiss %}
+      <button type="button" class="announcement-dismiss" aria-label="Dismiss announcement">
+        {% render 'icon-close' %}
+      </button>
+    {% endif %}
+  </aside>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text_highlight",
+      "label": "Quality Highlight Text",
+      "default": "Factory Direct Luxury • Up to 15 Years Warranty"
+    },
+    {
+      "type": "text",
+      "id": "text_shipping",
+      "label": "Delivery Highlight Text",
+      "default": "Free White-Glove In-Home Setup Across India"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Announcement Link"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "Explore"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_dismiss",
+      "label": "Allow visitors to dismiss",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code | default: 'en' }}">
+  <head>
+    {% render 'meta-tags' %}
+
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Theme Base Stylesheet -->
+    <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+
+    <style>
+      :root {
+        --color-ivory: {{ settings.color_ivory | default: '#F5F2EB' }};
+        --color-sand: {{ settings.color_sand | default: '#DED5C7' }};
+        --color-espresso: {{ settings.color_espresso | default: '#302A25' }};
+        --color-olive: {{ settings.color_olive | default: '#626A56' }};
+        --color-brass: {{ settings.color_brass | default: '#A58B65' }};
+        --color-charcoal: {{ settings.color_charcoal | default: '#252724' }};
+      }
+    </style>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name | handle }}">
+    <a class="skip-to-content-link" href="#MainContent" style="position: absolute; top: -100px; left: 1rem; z-index: 999; background: #fff; padding: 0.5rem 1rem;">
+      Skip to content
+    </a>
+
+    {% section 'header' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    <!-- Global Cart Drawer & Modals -->
+    {% render 'cart-drawer' %}
+    {% render 'comparison-drawer' %}
+    {% render 'quick-view-modal' %}
+    {% render 'size-guide-modal' %}
+
+    <!-- Theme Scripts -->
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'hero-scrub.js' | asset_url }}" defer></script>
+    <script src="{{ 'mattress-finder.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-gallery.js' | asset_url }}" defer></script>
+  </body>
+</html>

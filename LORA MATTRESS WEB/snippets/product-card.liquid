@@ -1,0 +1,105 @@
+{% comment %}
+  Renders a luxury product card with badges, quick view, and comparison triggers.
+  Accepts:
+  - product: {Object} Shopify Product Object (or mock object)
+{% endcomment %}
+
+<div class="product-card" data-product-id="{{ product.id }}">
+  <div class="product-media-wrapper">
+    <div class="product-badges">
+      {% if product.metafields.custom.comfort_level != blank %}
+        <span class="badge-tag badge-olive">{{ product.metafields.custom.comfort_level }}</span>
+      {% elsif product.tags contains 'Plush' %}
+        <span class="badge-tag badge-olive">Plush (4/10)</span>
+      {% elsif product.tags contains 'Balanced' %}
+        <span class="badge-tag badge-olive">Balanced (6.5/10)</span>
+      {% elsif product.tags contains 'Firm' %}
+        <span class="badge-tag badge-olive">Firm (8.5/10)</span>
+      {% else %}
+        <span class="badge-tag badge-olive">Hybrid Comfort</span>
+      {% endif %}
+      
+      <span class="badge-tag badge-sand">Factory Direct</span>
+    </div>
+
+    <a href="{{ product.url | default: 'product.html' }}" target="_blank" rel="noopener noreferrer" class="product-media-link" aria-label="{{ product.title }}">
+      {% if product.featured_image %}
+        <img src="{{ product.featured_image | image_url: width: 800 }}" 
+             alt="{{ product.title | escape }}" 
+             class="product-img" 
+             loading="lazy" 
+             width="800" 
+             height="600">
+      {% else %}
+        <img src="{{ 'comfort-balanced.jpg' | asset_url }}" 
+             alt="{{ product.title | escape }}" 
+             class="product-img" 
+             loading="lazy" 
+             width="800" 
+             height="600">
+      {% endif %}
+    </a>
+
+    <div class="product-quick-actions">
+      <button type="button" 
+              class="btn btn-primary btn-sm" 
+              style="flex: 1;"
+              data-action="quick-view" 
+              data-id="{{ product.id }}" 
+              data-title="{{ product.title | escape }}" 
+              data-comfort="{{ product.metafields.custom.comfort_level | default: 'Balanced Hybrid (6.5 / 10)' }}" 
+              data-price="{{ product.price | money_without_trailing_zeros | default: '₹38,999' }}" 
+              data-desc="{{ product.description | strip_html | truncate: 150 | default: 'Handcrafted luxury hybrid with breathable organic latex, European tufting, and zoned pocket springs for restorative spinal alignment.' }}" 
+              data-img="{{ product.featured_image | image_url: width: 800 | default: 'comfort-balanced.jpg' }}">
+        Quick View
+      </button>
+
+      <button type="button" 
+              class="btn btn-secondary btn-sm" 
+              data-action="add-compare" 
+              data-id="{{ product.id | default: 'lora-card' }}" 
+              data-title="{{ product.title | default: 'The LORA Hybrid' }}" 
+              data-comfort="{{ product.metafields.custom.comfort_level | default: 'Balanced 6.5/10' }}" 
+              data-price="{{ product.price | money_without_trailing_zeros | default: '₹38,999' }}" 
+              data-origin="Factory Direct" 
+              data-warranty="10 Years" 
+              data-layers="Organic Latex + Zoned Coils" 
+              data-img="{{ product.featured_image | image_url: width: 400 | default: 'comfort-balanced.jpg' }}">
+        + Compare
+      </button>
+    </div>
+  </div>
+
+  <div class="product-card-body">
+    <div style="display: flex; align-items: center; gap: 0.25rem; margin-bottom: 0.5rem;">
+      {% render 'icon-star' %}
+      {% render 'icon-star' %}
+      {% render 'icon-star' %}
+      {% render 'icon-star' %}
+      {% render 'icon-star' %}
+      <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.35rem;">4.9 (180+ verified reviews)</span>
+    </div>
+
+    <h3 class="product-title">
+      <a href="{{ product.url | default: 'product.html' }}" target="_blank" rel="noopener noreferrer">{{ product.title | default: 'The LORA Hybrid Mattress' }} ↗</a>
+    </h3>
+    <p class="product-subtitle">{{ product.metafields.custom.tagline | default: 'Natural Dunlop Latex & Zoned Titanium Pocket Springs' }}</p>
+
+    <div class="product-price-row">
+      <span class="price-current">{{ product.price | money_without_trailing_zeros | default: '₹38,999' }}</span>
+      {% if product.compare_at_price > product.price %}
+        <span class="price-compare">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+        <span class="price-savings">Save {{ product.compare_at_price | minus: product.price | money_without_trailing_zeros }}</span>
+      {% else %}
+        <span class="price-compare">₹44,999</span>
+        <span class="price-savings">Save ₹6,000</span>
+      {% endif %}
+    </div>
+
+    <div style="margin-top: 1rem;">
+      <a href="{{ product.url | default: 'product.html' }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">
+        View Detailed Specifications ↗
+      </a>
+    </div>
+  </div>
+</div>
