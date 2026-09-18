@@ -3322,10 +3322,12 @@ button, input, select {
 /* ==========================================================================
    LORA MOBILE-FIRST ECOMMERCE ENGINE (<768px & <480px)
    ========================================================================== */
-html, body {
-  overflow-x: clip;
-  max-width: 100%;
+html {
   -webkit-text-size-adjust: 100%;
+}
+body {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -3670,7 +3672,8 @@ html, body {
   }
 
   /* Floating WhatsApp coordinate with Sticky Bar */
-  .whatsapp-float, a[href*="wa.me"], .floating-whatsapp-badge {
+  .whatsapp-float, .floating-whatsapp-badge {
+    position: fixed !important;
     bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
     right: 14px !important;
     width: 48px !important;
@@ -3685,11 +3688,11 @@ html, body {
     z-index: 9997 !important;
   }
   .floating-whatsapp-badge span,
-  a[href*="wa.me"] span {
+  .whatsapp-float span {
     display: none !important;
   }
   .floating-whatsapp-badge svg,
-  a[href*="wa.me"] svg {
+  .whatsapp-float svg {
     width: 24px !important;
     height: 24px !important;
     margin: 0 !important;
@@ -3727,6 +3730,9 @@ html, body {
     display: flex !important;
     align-items: center !important;
     gap: 0.45rem !important;
+  }
+  #top-nav-whatsapp, #pdp-top-whatsapp, .pdp-header-nav .btn-whatsapp {
+    display: none !important;
   }
   .header-auth-btn {
     height: 34px !important;

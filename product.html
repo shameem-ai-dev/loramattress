@@ -51,6 +51,14 @@
     .pdp-back-link:hover {
       color: #38BDF8;
     }
+    .pdp-back-text-mobile {
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .pdp-back-text-full { display: none !important; }
+      .pdp-back-text-mobile { display: inline !important; }
+      .brand-logo-img { height: 28px !important; }
+    }
 
     /* Model Quick-Switch Bar */
     .model-switcher-strip {
@@ -456,10 +464,71 @@
 
     @media (max-width: 1024px) {
       .pdp-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+      }
+      .pdp-gallery-sticky {
+        position: relative !important;
+        top: 0 !important;
+      }
+      .pdp-main-section {
+        padding: 1.25rem 0 5rem !important;
       }
       .deep-dive-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pdp-header-nav {
+        padding: 0.5rem 0 !important;
+        background: rgba(6, 9, 19, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+      }
+      .pdp-nav-container {
+        padding: 0 0.85rem !important;
+        gap: 0.5rem !important;
+      }
+      .pdp-back-link {
+        font-size: 0.76rem !important;
+        white-space: nowrap !important;
+      }
+      .pdp-title {
+        font-size: 1.65rem !important;
+        line-height: 1.18 !important;
+        margin-bottom: 0.4rem !important;
+      }
+      .pdp-price-val {
+        font-size: 1.65rem !important;
+      }
+      .pdp-opt-pills {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.45rem !important;
+      }
+      .pdp-pill-choice {
+        padding: 0.6rem 0.65rem !important;
+      }
+      .pdp-pill-title {
+        font-size: 0.78rem !important;
+      }
+      .pdp-pill-sub {
+        font-size: 0.68rem !important;
+      }
+      .pdp-thickness-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.45rem !important;
+      }
+      .pdp-thickness-row .size-pill-btn {
+        padding: 0.6rem 0.25rem !important;
+        font-size: 0.72rem !important;
+        text-align: center !important;
+      }
+      .header-auth-btn {
+        height: 34px !important;
+        padding: 0 0.65rem !important;
+        font-size: 0.74rem !important;
       }
     }
 
@@ -582,7 +651,8 @@
     <div class="container pdp-nav-container">
       <div style="display: flex; align-items: center; gap: 2rem;">
         <a href="index.html" class="pdp-back-link">
-          ← Back to All Mattresses
+          <span class="pdp-back-text-full">← Back to All Mattresses</span>
+          <span class="pdp-back-text-mobile">← Mattresses</span>
         </a>
         <a href="index.html" class="brand-logo-link">
           <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="brand-logo-img" style="height: 38px;">
@@ -600,8 +670,8 @@
           </svg>
           <span>WhatsApp</span>
         </a>
-        <button type="button" class="header-action-btn" id="pdp-btn-header-auth" onclick="window.location.href='index.html?login=1'" aria-label="Customer Account">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" class="header-auth-btn" id="pdp-btn-header-auth" onclick="window.location.href='index.html?login=1'" aria-label="Customer Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
@@ -757,7 +827,7 @@
               <span>2. Select Mattress Thickness</span>
               <span style="color: var(--brand-royal); font-weight: 600;" id="pdp-selected-thick-label">8-Inch (20 cm)</span>
             </label>
-            <div style="display: flex; gap: 0.6rem;">
+            <div class="pdp-thickness-row" style="display: flex; gap: 0.6rem;">
               <button type="button" class="size-pill-btn" data-thick="6" data-thick-add="-2000" style="flex: 1; padding: 0.75rem;">6-Inch (15 cm)</button>
               <button type="button" class="size-pill-btn active" data-thick="8" data-thick-add="0" style="flex: 1; padding: 0.75rem;">8-Inch (20 cm) [Standard]</button>
               <button type="button" class="size-pill-btn" data-thick="10" data-thick-add="3500" style="flex: 1; padding: 0.75rem;">10-Inch (25 cm) [Eurotop]</button>
@@ -2072,23 +2142,23 @@
       if (taglineEl) taglineEl.textContent = data.tagline;
 
       const warrBadge = document.querySelector('#pdp-warranty-badge');
-      if (warrBadge) warrBadge.textContent = data.warranty.toUpperCase();
+      if (warrBadge && data.warranty) warrBadge.textContent = data.warranty.toUpperCase();
       const guarWarr = document.querySelector('#pdp-guarantee-warr');
-      if (guarWarr) guarWarr.textContent = data.warranty;
+      if (guarWarr && data.warranty) guarWarr.textContent = data.warranty;
 
       // Update Firmness
       const firmnessVal = document.querySelector('#pdp-firmness-val');
-      if (firmnessVal) firmnessVal.textContent = data.firmnessVal;
+      if (firmnessVal && data.firmnessVal) firmnessVal.textContent = data.firmnessVal;
       const feelLabel = document.querySelector('#pdp-feel-label');
-      if (feelLabel) feelLabel.textContent = data.feelLabel;
+      if (feelLabel && data.feelLabel) feelLabel.textContent = data.feelLabel;
       const meterFill = document.querySelector('#pdp-meter-fill');
-      if (meterFill) meterFill.style.width = data.meterPercent;
+      if (meterFill && data.meterPercent) meterFill.style.width = data.meterPercent;
       const postureRec = document.querySelector('#pdp-posture-rec');
-      if (postureRec) postureRec.innerHTML = `<strong>Recommended for:</strong> ${data.postureRec}`;
+      if (postureRec && data.postureRec) postureRec.innerHTML = `<strong>Recommended for:</strong> ${data.postureRec}`;
 
       // Update Layers List
       const layersContainer = document.querySelector('#pdp-layers-container');
-      if (layersContainer) {
+      if (layersContainer && Array.isArray(data.layers)) {
         layersContainer.innerHTML = data.layers.map(l => `
           <div class="anatomy-layer-card">
             <div class="layer-card-top">
@@ -2450,9 +2520,9 @@
         const stickyBar = document.querySelector('#mobile-sticky-bar');
         if (!stickyBar) return;
         const isMobile = window.innerWidth <= 768;
-        const scrolled = window.scrollY > 300;
-        const titleEl = document.querySelector('#pdp-product-name');
-        const priceEl = document.querySelector('#pdp-product-price');
+        const scrolled = window.scrollY > 220;
+        const titleEl = document.querySelector('#pdp-title');
+        const priceEl = document.querySelector('#pdp-price');
         const stickyTitle = document.querySelector('#mobile-sticky-title');
         const stickyPrice = document.querySelector('#mobile-sticky-price');
         if (titleEl && stickyTitle) stickyTitle.textContent = titleEl.textContent;
@@ -2466,7 +2536,7 @@
       }
       window.addEventListener('scroll', updatePdpStickyBar, { passive: true });
       window.addEventListener('resize', updatePdpStickyBar, { passive: true });
-      setTimeout(updatePdpStickyBar, 400);
+      setTimeout(updatePdpStickyBar, 200);
     });
   </script>
 
@@ -2507,8 +2577,11 @@
       <span class="mobile-sticky-price" id="mobile-sticky-price">₹21,999</span>
     </div>
     <div class="mobile-sticky-actions">
-      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#btn-pdp-add-cart')?.click()">
-        🛍️ Add to Bag
+      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-cart" id="mobile-sticky-btn-cart" onclick="document.querySelector('#pdp-add-bag-btn')?.click()">
+        🛍️ Add
+      </button>
+      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#pdp-add-bag-btn')?.click(); setTimeout(() => document.querySelector('[data-action=\"open-cart\"]')?.click(), 250)">
+        Buy Now ⚡
       </button>
     </div>
   </aside>
