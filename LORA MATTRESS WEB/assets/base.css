@@ -3322,10 +3322,12 @@ button, input, select {
 /* ==========================================================================
    LORA MOBILE-FIRST ECOMMERCE ENGINE (<768px & <480px)
    ========================================================================== */
-html, body {
-  overflow-x: clip;
-  max-width: 100%;
+html {
   -webkit-text-size-adjust: 100%;
+}
+body {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -3670,21 +3672,56 @@ html, body {
   }
 
   /* Floating WhatsApp coordinate with Sticky Bar */
-  .whatsapp-float, a[href*="wa.me"] {
+  .whatsapp-float, .floating-whatsapp-badge {
+    position: fixed !important;
     bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 1rem !important;
+    right: 14px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.6) !important;
     z-index: 9997 !important;
   }
+  .floating-whatsapp-badge span,
+  .whatsapp-float span {
+    display: none !important;
+  }
+  .floating-whatsapp-badge svg,
+  .whatsapp-float svg {
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+  }
 
-  /* Compact Mobile Header & Drawer */
+  /* Compact Mobile Header Docking & No Ghost Bleed */
   .site-header {
-    padding: 0.5rem 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 !important;
+    background: rgba(6, 9, 19, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(0, 180, 216, 0.22) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    z-index: 1000 !important;
   }
   .header-container {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0.4rem 1rem !important;
+    padding: 0.5rem 1rem !important;
+    padding-top: calc(0.5rem + env(safe-area-inset-top, 0px)) !important;
+    border-radius: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
   }
   .brand-logo-img {
     height: 32px !important;
@@ -3692,12 +3729,187 @@ html, body {
   .header-actions {
     display: flex !important;
     align-items: center !important;
-    gap: 0.5rem !important;
+    gap: 0.45rem !important;
+  }
+  #top-nav-whatsapp, #pdp-top-whatsapp, .pdp-header-nav .btn-whatsapp {
+    display: none !important;
+  }
+  .header-auth-btn {
+    height: 34px !important;
+    padding: 0 0.65rem !important;
+    font-size: 0.75rem !important;
+    gap: 0.35rem !important;
   }
   .btn-cart-trigger {
-    min-height: 40px !important;
-    padding: 0 0.75rem !important;
+    min-height: 36px !important;
+    height: 36px !important;
+    padding: 0 0.65rem !important;
+    font-size: 0.76rem !important;
+  }
+
+  /* Hero Mobile Refinement - Eliminating Callout Pin Overlap & Tightening Spacing */
+  .hero-callout-overlay {
+    display: none !important;
+  }
+  .hero-content-overlay {
+    padding: calc(4.75rem + env(safe-area-inset-top, 0px)) var(--gutter) 2.5rem !important;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 7.5vw, 2.5rem) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 1rem !important;
+  }
+  .hero-supporting-copy {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .hero-cta-group {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+  .hero-cta-group .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.85rem 1.25rem !important;
+  }
+  .hero-trust-bar {
+    margin-top: 1.25rem !important;
+    gap: 0.65rem !important;
     font-size: 0.78rem !important;
+  }
+  .hero-footer-bar {
+    padding-top: 1rem !important;
+    margin-top: 1rem !important;
+    gap: 0.75rem !important;
+  }
+  .circadian-controller {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+  }
+  .phase-buttons {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+  }
+  .phase-btn {
+    padding: 0.45rem 0.2rem !important;
+    font-size: 0.68rem !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    border-radius: 6px !important;
+  }
+  .timeline-track-wrapper, .hero-loop-toggle {
+    display: none !important;
+  }
+
+  /* Segmented Full-Width Grid Variant Selectors on Mattress Cards */
+  .card-config-selectors {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    padding: 0.75rem 0.85rem !important;
+    background: rgba(10, 15, 29, 0.85) !important;
+    border: 1px solid rgba(0, 180, 216, 0.2) !important;
+    border-radius: var(--radius-md) !important;
+    margin: 0.85rem 0 1.15rem !important;
+  }
+  .card-selector-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+  }
+  .card-selector-label {
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #94A3B8 !important;
+    letter-spacing: 0.06em !important;
+    min-width: unset !important;
+  }
+  .card-pills-wrap {
+    width: 100% !important;
+    display: grid !important;
+    gap: 0.35rem !important;
+    justify-content: stretch !important;
+  }
+  .card-selector-row:nth-of-type(1) .card-pills-wrap {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .card-selector-row:nth-of-type(2) .card-pills-wrap,
+  .card-inch-wrap {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .card-selector-row:nth-of-type(3) .card-pills-wrap,
+  .card-thick-wrap {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .card-pill-btn {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0.45rem 0.2rem !important;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 36px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Card Tabs Navigation on Mobile */
+  .card-tab-nav {
+    display: flex !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    background: rgba(8, 12, 22, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 180, 216, 0.15) !important;
+    gap: 0 !important;
+  }
+  .card-tab-nav::-webkit-scrollbar {
+    display: none !important;
+  }
+  .card-tab-btn {
+    flex: 1 0 auto !important;
+    padding: 0.7rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+    min-height: 38px !important;
+  }
+
+  /* Card Action Footer on Mobile */
+  .card-action-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+  .card-action-btns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+  }
+  .card-action-btns .btn-primary {
+    grid-column: 1 / -1 !important;
+    min-height: 44px !important;
+    font-size: 0.92rem !important;
+  }
+  .card-action-btns .btn-secondary {
+    min-height: 38px !important;
+    font-size: 0.78rem !important;
+    padding: 0.4rem 0.5rem !important;
+    justify-content: center !important;
   }
 
   /* Mobile Quick Navigation Toggle & Drawer */
@@ -3705,8 +3917,8 @@ html, body {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 38px !important;
+    height: 38px !important;
     background: rgba(255, 255, 255, 0.06) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: var(--radius-pill) !important;
@@ -3716,7 +3928,7 @@ html, body {
   }
   .mobile-nav-drawer {
     position: fixed;
-    top: 54px;
+    top: calc(52px + env(safe-area-inset-top, 0px));
     left: 0;
     right: 0;
     background: rgba(6, 9, 19, 0.98);
