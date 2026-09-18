@@ -461,6 +461,8 @@
       .deep-dive-grid {
         grid-template-columns: 1fr;
       }
+    }
+
     /* Cart Drawer */
     .cart-drawer-overlay {
       position: fixed;
@@ -583,7 +585,7 @@
           ← Back to All Mattresses
         </a>
         <a href="index.html" class="brand-logo-link">
-          <img src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="brand-logo-img" style="height: 38px;">
+          <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="brand-logo-img" style="height: 38px;">
         </a>
       </div>
 
@@ -617,9 +619,27 @@
           </svg>
           <span class="cart-count-badge">1</span>
         </button>
+
+        <!-- Mobile Quick Menu Toggle -->
+        <button type="button" class="mobile-menu-toggle" id="btn-mobile-menu-toggle" aria-label="Toggle navigation menu" onclick="window.toggleMobileNav()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <a href="index.html#the-collection" class="mobile-nav-link" onclick="window.closeMobileNav()">The 8 Mattresses <span>→</span></a>
+    <a href="index.html#spine-simulator" class="mobile-nav-link" onclick="window.closeMobileNav()">SpineAlign™ Science <span>→</span></a>
+    <a href="index.html#factory-direct" class="mobile-nav-link" onclick="window.closeMobileNav()">Direct from Factory <span>→</span></a>
+    <a href="index.html#sleep-quiz" class="mobile-nav-link" onclick="window.closeMobileNav()">Sleep Match AI <span>→</span></a>
+    <a href="index.html#studios" class="mobile-nav-link" onclick="window.closeMobileNav()">Store Locator <span>→</span></a>
+  </div>
 
   <!-- =========================================================
        2. QUICK MODEL SWITCHER BAR (EXPLORE ANY OF THE 8 MODELS)
@@ -658,16 +678,16 @@
 
           <div class="pdp-thumb-strip">
             <button type="button" class="pdp-thumb-btn active" data-img="assets/comfort-plush.jpg" id="thumb-1">
-              <img src="assets/comfort-plush.jpg" alt="Studio view" class="pdp-thumb-img">
+              <img loading="lazy" src="assets/comfort-plush.jpg" alt="Studio view" class="pdp-thumb-img">
             </button>
             <button type="button" class="pdp-thumb-btn" data-img="assets/hero-stage-2-exploded.jpg" id="thumb-2">
-              <img src="assets/hero-stage-2-exploded.jpg" alt="Layer anatomy" class="pdp-thumb-img">
+              <img loading="lazy" src="assets/hero-stage-2-exploded.jpg" alt="Layer anatomy" class="pdp-thumb-img">
             </button>
             <button type="button" class="pdp-thumb-btn" data-img="assets/hero-stage-3-spine.jpg" id="thumb-3">
-              <img src="assets/hero-stage-3-spine.jpg" alt="Spine biometrics" class="pdp-thumb-img">
+              <img loading="lazy" src="assets/hero-stage-3-spine.jpg" alt="Spine biometrics" class="pdp-thumb-img">
             </button>
             <button type="button" class="pdp-thumb-btn" data-img="assets/lifestyle-editorial.jpg" id="thumb-4">
-              <img src="assets/lifestyle-editorial.jpg" alt="Master suite" class="pdp-thumb-img">
+              <img loading="lazy" src="assets/lifestyle-editorial.jpg" alt="Master suite" class="pdp-thumb-img">
             </button>
           </div>
         </div>
@@ -838,7 +858,7 @@
 
         <div>
           <div style="background: rgba(16, 25, 46, 0.75); border-radius: var(--radius-xl); border: 1px solid rgba(255, 255, 255, 0.08); padding: 2.5rem; text-align: center; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);">
-            <img src="assets/hero-stage-2-exploded.jpg" alt="Exploded layer architecture" style="border-radius: var(--radius-lg); width: 100%; margin-bottom: 1.5rem; box-shadow: var(--shadow-card);">
+            <img loading="lazy" src="assets/hero-stage-2-exploded.jpg" alt="Exploded layer architecture" style="border-radius: var(--radius-lg); width: 100%; margin-bottom: 1.5rem; box-shadow: var(--shadow-card);">
             <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: #FFFFFF;">SpineAlign™ 7-Zone Support Geometry</h3>
             <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
               Individually calibrated zones distribute body weight evenly across cervical, thoracic, and lumbar nodes, preventing spinal shear force and joint pressure pins.
@@ -1691,7 +1711,7 @@
       <div class="footer-top-grid">
         <div>
           <a href="index.html">
-            <img src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="footer-logo-img" style="filter: brightness(0) invert(1); height: 44px;">
+            <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="footer-logo-img" style="filter: brightness(0) invert(1); height: 44px;">
           </a>
           <p class="footer-subtext">
             Precision sleep engineering delivered direct from our robotics manufacturing plant. Up to 15 years warranty, zero middleman markups, certified materials.
@@ -2317,7 +2337,7 @@
           subtotal += (item.price || 0);
           return `
             <div class="cart-item-card" data-item-id="${item.id || idx}">
-              <img src="${item.image || 'assets/comfort-plush.jpg'}" alt="${item.title || 'LORA Mattress'}" class="cart-item-thumb">
+              <img loading="lazy" src="${item.image || 'assets/comfort-plush.jpg'}" alt="${item.title || 'LORA Mattress'}" class="cart-item-thumb">
               <div style="flex: 1;">
                 <strong style="display: block; font-size: 0.95rem; color: #FFFFFF;">${item.title || 'LORA Mattress'}</strong>
                 <span style="font-size: 0.8rem; color: #94A3B8;">${item.specs || ''}</span>
@@ -2405,6 +2425,48 @@
           openPdpCart();
         });
       }
+
+      // Mobile Navigation Handlers
+      window.toggleMobileNav = function () {
+        const drawer = document.querySelector('#mobile-nav-drawer');
+        if (drawer) drawer.classList.toggle('open');
+      };
+      window.closeMobileNav = function () {
+        const drawer = document.querySelector('#mobile-nav-drawer');
+        if (drawer) drawer.classList.remove('open');
+      };
+
+      document.addEventListener('click', function (e) {
+        const drawer = document.querySelector('#mobile-nav-drawer');
+        const toggle = document.querySelector('#btn-mobile-menu-toggle');
+        if (drawer && drawer.classList.contains('open')) {
+          if (!drawer.contains(e.target) && !toggle.contains(e.target)) {
+            drawer.classList.remove('open');
+          }
+        }
+      });
+
+      function updatePdpStickyBar() {
+        const stickyBar = document.querySelector('#mobile-sticky-bar');
+        if (!stickyBar) return;
+        const isMobile = window.innerWidth <= 768;
+        const scrolled = window.scrollY > 300;
+        const titleEl = document.querySelector('#pdp-product-name');
+        const priceEl = document.querySelector('#pdp-product-price');
+        const stickyTitle = document.querySelector('#mobile-sticky-title');
+        const stickyPrice = document.querySelector('#mobile-sticky-price');
+        if (titleEl && stickyTitle) stickyTitle.textContent = titleEl.textContent;
+        if (priceEl && stickyPrice) stickyPrice.textContent = priceEl.textContent;
+
+        if (isMobile && scrolled) {
+          stickyBar.classList.add('visible');
+        } else {
+          stickyBar.classList.remove('visible');
+        }
+      }
+      window.addEventListener('scroll', updatePdpStickyBar, { passive: true });
+      window.addEventListener('resize', updatePdpStickyBar, { passive: true });
+      setTimeout(updatePdpStickyBar, 400);
     });
   </script>
 
@@ -2435,6 +2497,19 @@
       <p style="font-size: 0.75rem; color: #64748B; text-align: center; margin-top: 0.75rem;">
         🔒 Factory Direct Craft • Up to 15 Years Warranty • Bajaj No-Cost EMI
       </p>
+    </div>
+  </aside>
+
+  <!-- Sticky Mobile Action Bar on Product Page -->
+  <aside class="mobile-sticky-bar" id="mobile-sticky-bar" aria-label="Quick Mobile Purchase Bar">
+    <div class="mobile-sticky-info">
+      <span class="mobile-sticky-title" id="mobile-sticky-title">01. LORA CLOUD 7™</span>
+      <span class="mobile-sticky-price" id="mobile-sticky-price">₹21,999</span>
+    </div>
+    <div class="mobile-sticky-actions">
+      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#btn-pdp-add-cart')?.click()">
+        🛍️ Add to Bag
+      </button>
     </div>
   </aside>
 </body>
