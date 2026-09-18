@@ -306,6 +306,30 @@
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 12px 35px rgba(37, 211, 102, 0.55);
     }
+    @media (max-width: 768px) {
+      .floating-whatsapp-badge {
+        bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+        right: 14px !important;
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+        z-index: 9997 !important;
+      }
+      .floating-whatsapp-badge span {
+        display: none !important;
+      }
+      .floating-whatsapp-badge svg {
+        width: 24px !important;
+        height: 24px !important;
+        margin: 0 !important;
+      }
+    }
 
     /* =========================================================
        SLEEP MATCH AI 2.0 ENHANCED DIAGNOSTIC SUITE
@@ -1157,7 +1181,7 @@
         <button type="button" class="header-auth-btn" id="btn-header-auth" onclick="window.handleHeaderAuthClick(event)" aria-label="Customer Account">
           <span class="header-auth-avatar" id="header-auth-avatar" style="display: none;">U</span>
           <svg id="header-auth-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span id="header-auth-label">Login / Sign Up</span>
+          <span id="header-auth-label">Login</span>
         </button>
 
         <!-- Direct Header Logout Button (visible when logged in) -->
@@ -7856,7 +7880,7 @@
           }
         } else {
           btnAuth.classList.remove('is-logged-in');
-          if (lblAuth) lblAuth.textContent = 'Login / Sign Up';
+          if (lblAuth) lblAuth.textContent = 'Login';
           if (iconAuth) iconAuth.style.display = 'inline-block';
           if (avatarAuth) avatarAuth.style.display = 'none';
           if (btnHeaderLogout) btnHeaderLogout.style.display = 'none';
