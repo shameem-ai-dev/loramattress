@@ -1,0 +1,278 @@
+[
+  {
+    "id": "LORA-2504",
+    "createdAt": "2026-09-17T15:03:19.377Z",
+    "customerName": "Shmmhd123",
+    "phone": "+919876543210",
+    "email": "shmmhd123@gmail.com",
+    "address": "Flat 302, Palm Heights, Indiranagar, Bengaluru, Karnataka - 560038",
+    "productName": "01. LORA CLOUD 7™ Luxury Ortho",
+    "size": "King Size • 78\" × 72\" (6.5 × 6.0 ft) • 8-inch Luxury EuroTop",
+    "quantity": 1,
+    "totalPrice": 21999,
+    "paymentMethod": "Prepaid UPI / Card (Instant Confirmation)",
+    "paymentStatus": "Paid",
+    "orderNotes": "",
+    "status": "Order Received",
+    "statusHistory": [
+      {
+        "status": "Order Received",
+        "timestamp": "2026-09-17T15:03:19.377Z",
+        "staff": "Customer Online Storefront",
+        "notes": "Order placed by customer via direct factory checkout. Mode: Prepaid UPI / Card (Instant Confirmation)."
+      }
+    ],
+    "courier": "",
+    "awb": "",
+    "dispatchDate": "",
+    "expectedDelivery": "",
+    "dispatchNotes": ""
+  },
+  {
+    "id": "LORA-9041",
+    "createdAt": "2026-09-16T08:32:24.272Z",
+    "customerName": "Vikramaditya Singhania",
+    "phone": "+919820145890",
+    "email": "vikram.singhania@example.com",
+    "address": "Villa 12, Palm Meadows, Whitefield, Bengaluru, Karnataka - 560066",
+    "productName": "LORA CLOUD 7™ Luxury Ortho",
+    "size": "King Size • 78\" × 72\" (6.5 × 6.0 ft) • 10-inch Luxury EuroTop",
+    "quantity": 1,
+    "totalPrice": 28999,
+    "paymentMethod": "Prepaid UPI (Verified)",
+    "paymentStatus": "Paid",
+    "orderNotes": "Please call 30 mins before arrival. Deliver on Saturday morning.",
+    "status": "Ready for Dispatch",
+    "statusHistory": [
+      {
+        "status": "Order Received",
+        "timestamp": "2026-09-16T08:32:24.272Z",
+        "staff": "Customer Checkout Engine",
+        "notes": "New prepaid order placed online."
+      },
+      {
+        "status": "Picking",
+        "timestamp": "2026-09-16T09:00:08.232Z",
+        "staff": "manoj(Store Team)",
+        "notes": "Status updated by store keeper: Picking"
+      },
+      {
+        "status": "Packed",
+        "timestamp": "2026-09-16T09:00:10.131Z",
+        "staff": "manoj(Store Team)",
+        "notes": "Status updated by store keeper: Packed"
+      },
+      {
+        "status": "Ready for Dispatch",
+        "timestamp": "2026-09-16T09:00:11.984Z",
+        "staff": "manoj(Store Team)",
+        "notes": "Status updated by store keeper: Ready for Dispatch"
+      }
+    ],
+    "courier": "",
+    "awb": "",
+    "dispatchDate": "",
+    "expectedDelivery": "",
+    "dispatchNotes": ""
+  },
+  {
+    "id": "LORA-8924",
+    "createdAt": "2026-09-16T05:57:24.272Z",
+    "customerName": "Ananya Deshmukh",
+    "phone": "+919833421098",
+    "email": "ananya.d@example.com",
+    "address": "Apartment 704, Marvel Zephyr, Kharadi, Pune, Maharashtra - 411014",
+    "productName": "LORA CLOUD ORTHO™ Dual Firmness",
+    "size": "Queen Size • 78\" × 60\" (6.5 × 5.0 ft) • 8-inch Ortho Balance",
+    "quantity": 1,
+    "totalPrice": 23499,
+    "paymentMethod": "Prepaid NetBanking",
+    "paymentStatus": "Paid",
+    "orderNotes": "Kindly ensure dual-comfort side label is intact for doctor inspection.",
+    "status": "Ready for Dispatch",
+    "statusHistory": [
+      {
+        "status": "Order Received",
+        "timestamp": "2026-09-16T05:57:24.272Z",
+        "staff": "Customer Checkout Engine",
+        "notes": "Order placed via storefront."
+      },
+      {
+        "status": "Picking",
+        "timestamp": "2026-09-16T07:22:24.272Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Mattress retrieved from Bay 4. Layer inspection in progress."
+      },
+      {
+        "status": "Packed",
+        "timestamp": "2026-09-16T09:00:12.883Z",
+        "staff": "manoj(Store Team)",
+        "notes": "Status updated by store keeper: Packed"
+      },
+      {
+        "status": "Ready for Dispatch",
+        "timestamp": "2026-09-16T09:00:13.631Z",
+        "staff": "manoj(Store Team)",
+        "notes": "Status updated by store keeper: Ready for Dispatch"
+      }
+    ],
+    "courier": "",
+    "awb": "",
+    "dispatchDate": "",
+    "expectedDelivery": "",
+    "dispatchNotes": ""
+  },
+  {
+    "id": "LORA-8812",
+    "createdAt": "2026-09-16T02:57:24.272Z",
+    "customerName": "Dr. Rajesh Nair",
+    "phone": "+919447123984",
+    "email": "dr.nair@example.com",
+    "address": "House 45, Skyline Riveria, Marine Drive, Kochi, Kerala - 682011",
+    "productName": "LORA ORTHO LATEX™ 100% Organic",
+    "size": "King Size • 75\" × 72\" (6.25 × 6.0 ft) • 8-inch Pin-Core Latex",
+    "quantity": 1,
+    "totalPrice": 32999,
+    "paymentMethod": "Pay on Delivery (COD)",
+    "paymentStatus": "COD (Collect ₹32,999)",
+    "orderNotes": "Organic Latex certification seal must be visible on the carton.",
+    "status": "RTO",
+    "statusHistory": [
+      {
+        "status": "Order Received",
+        "timestamp": "2026-09-16T02:57:24.272Z",
+        "staff": "Customer Checkout Engine",
+        "notes": "Order placed with Pay on Delivery."
+      },
+      {
+        "status": "Picking",
+        "timestamp": "2026-09-16T04:57:24.272Z",
+        "staff": "Ramesh K. (Store Staff)",
+        "notes": "Picking pin-core Dunlop organic latex block."
+      },
+      {
+        "status": "Packed",
+        "timestamp": "2026-09-16T06:57:24.272Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Double vacuum-sealed in heavy-duty weatherproof poly sleeve."
+      },
+      {
+        "status": "Ready for Dispatch",
+        "timestamp": "2026-09-16T15:06:54.877Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Status updated by store keeper: Ready for Dispatch"
+      },
+      {
+        "status": "Picked Up",
+        "timestamp": "2026-09-16T15:10:30.535Z",
+        "staff": "Sunil (Dispatch Lead)",
+        "notes": "Logistics transit updated to Picked Up"
+      },
+      {
+        "status": "Shipped",
+        "timestamp": "2026-09-16T15:10:32.536Z",
+        "staff": "Sunil (Dispatch Lead)",
+        "notes": "Logistics transit updated to Shipped"
+      },
+      {
+        "status": "Out for Delivery",
+        "timestamp": "2026-09-16T15:10:34.601Z",
+        "staff": "Sunil (Dispatch Lead)",
+        "notes": "Logistics transit updated to Out for Delivery"
+      },
+      {
+        "status": "RTO",
+        "timestamp": "2026-09-16T15:10:39.934Z",
+        "staff": "Sunil (Dispatch Lead)",
+        "notes": "Logistics transit updated to RTO"
+      }
+    ],
+    "courier": "",
+    "awb": "",
+    "dispatchDate": "",
+    "expectedDelivery": "",
+    "dispatchNotes": ""
+  },
+  {
+    "id": "LORA-8705",
+    "createdAt": "2026-09-15T08:57:24.272Z",
+    "customerName": "Pooja Agarwal",
+    "phone": "+919910487123",
+    "email": "pooja.agarwal@example.com",
+    "address": "B-42, Greater Kailash Part 1, New Delhi - 110048",
+    "productName": "LORA PLUSH™ Hotel Collection",
+    "size": "Queen Size • 78\" × 60\" (6.5 × 5.0 ft) • 10-inch Cloud EuroTop",
+    "quantity": 1,
+    "totalPrice": 26999,
+    "paymentMethod": "Prepaid Card",
+    "paymentStatus": "Paid",
+    "orderNotes": "Lift is available. Delivery on 3rd floor.",
+    "status": "Shipped",
+    "statusHistory": [
+      {
+        "status": "Order Received",
+        "timestamp": "2026-09-15T08:57:24.272Z",
+        "staff": "Customer Checkout Engine",
+        "notes": "Order placed."
+      },
+      {
+        "status": "Ready for Dispatch",
+        "timestamp": "2026-09-15T14:57:24.272Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Packed and transferred to Dispatch dock."
+      },
+      {
+        "status": "Shipped",
+        "timestamp": "2026-09-15T22:57:24.272Z",
+        "staff": "Sunil (Dispatch Lead)",
+        "notes": "Handed over to BlueDart Express hub."
+      }
+    ],
+    "courier": "BlueDart Express",
+    "awb": "BLR89210948",
+    "dispatchDate": "2026-09-15",
+    "expectedDelivery": "2026-09-18",
+    "dispatchNotes": "Fragile luxury bedding transit insurance attached."
+  },
+  {
+    "id": "LORA-8549",
+    "createdAt": "2026-09-13T08:57:24.272Z",
+    "customerName": "Karthik Raman",
+    "phone": "+919840291845",
+    "email": "karthik.raman@example.com",
+    "address": "Plot 18, Anna Nagar West Extension, Chennai, Tamil Nadu - 600101",
+    "productName": "LORA HYBRID FUSION™ Pocket Spring",
+    "size": "Single Size • 75\" × 36\" (6.25 × 3.0 ft) • 6-inch Dynamic Pocket",
+    "quantity": 1,
+    "totalPrice": 17499,
+    "paymentMethod": "Prepaid UPI",
+    "paymentStatus": "Paid",
+    "orderNotes": "Standard delivery.",
+    "status": "Delivered",
+    "statusHistory": [
+      {
+        "status": "Order Received",
+        "timestamp": "2026-09-13T08:57:24.272Z",
+        "staff": "Customer Checkout Engine",
+        "notes": "Order placed."
+      },
+      {
+        "status": "Shipped",
+        "timestamp": "2026-09-14T08:57:24.272Z",
+        "staff": "Sunil (Dispatch Lead)",
+        "notes": "Dispatched via Delhivery Express."
+      },
+      {
+        "status": "Delivered",
+        "timestamp": "2026-09-16T02:57:24.272Z",
+        "staff": "Delhivery Courier API",
+        "notes": "Consignment safely delivered and unboxed at residence."
+      }
+    ],
+    "courier": "Delhivery Express",
+    "awb": "DLH78451290",
+    "dispatchDate": "2026-09-13",
+    "expectedDelivery": "2026-09-16",
+    "dispatchNotes": "Delivered on schedule."
+  }
+]

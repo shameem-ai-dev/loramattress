@@ -1,0 +1,107 @@
+<section class="showrooms-section" id="showrooms">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow">{{ section.settings.eyebrow | default: 'In-Person Sanctuary' }}</span>
+      <h2 class="font-serif">{{ section.settings.title | default: 'Experience LORA in Person' }}</h2>
+      <p>{{ section.settings.subtitle | default: 'Visit our quiet sleep studios for an unhurried, private 30-minute rest consultation with our certified sleep guides.' }}</p>
+    </div>
+
+    <div class="showrooms-grid">
+      <!-- Mumbai Flagship -->
+      <div class="showroom-card">
+        <span class="eyebrow" style="color: var(--color-olive);">Flagship Studio</span>
+        <h3 class="showroom-city">Mumbai</h3>
+        <p class="showroom-address">
+          Ground Floor, High Street Phoenix, Senapati Bapat Marg, Lower Parel, Mumbai, Maharashtra 400013
+        </p>
+        <p class="showroom-hours">Open Daily: 11:00 AM &ndash; 8:30 PM IST</p>
+        <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}?text=Hello,%20I%20would%20like%20to%20reserve%20a%20private%20consultation%20at%20LORA%20Mumbai%20Studio." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn btn-secondary btn-sm" 
+           style="width: 100%;">
+          Reserve Mumbai Visit →
+        </a>
+      </div>
+
+      <!-- Bengaluru Studio -->
+      <div class="showroom-card">
+        <span class="eyebrow" style="color: var(--color-olive);">Sleep Studio</span>
+        <h3 class="showroom-city">Bengaluru</h3>
+        <p class="showroom-address">
+          12th Main Road, Indiranagar, Near 100 Feet Road, Bengaluru, Karnataka 560038
+        </p>
+        <p class="showroom-hours">Open Daily: 11:00 AM &ndash; 8:00 PM IST</p>
+        <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}?text=Hello,%20I%20would%20like%20to%20reserve%20a%20private%20consultation%20at%20LORA%20Bengaluru%20Studio." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn btn-secondary btn-sm" 
+           style="width: 100%;">
+          Reserve Bengaluru Visit →
+        </a>
+      </div>
+
+      <!-- Delhi Studio -->
+      <div class="showroom-card">
+        <span class="eyebrow" style="color: var(--color-olive);">Sleep Studio</span>
+        <h3 class="showroom-city">New Delhi</h3>
+        <p class="showroom-address">
+          The Chanakya, Chanakyapuri, Diplomatic Enclave, New Delhi 110021
+        </p>
+        <p class="showroom-hours">Open Daily: 11:00 AM &ndash; 8:30 PM IST</p>
+        <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}?text=Hello,%20I%20would%20like%20to%20reserve%20a%20private%20consultation%20at%20LORA%20Delhi%20Studio." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn btn-secondary btn-sm" 
+           style="width: 100%;">
+          Reserve Delhi Visit →
+        </a>
+      </div>
+    </div>
+
+    <!-- Direct Sleep Concierge Banner -->
+    <div style="margin-top: 3.5rem; background: var(--color-espresso); color: var(--color-ivory); border-radius: 4px; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+      <div>
+        <h4 class="font-serif" style="color: var(--color-ivory); font-size: 1.6rem; margin-bottom: 0.35rem;">Can't visit a sleep studio in person?</h4>
+        <p style="color: rgba(245, 242, 235, 0.8); font-size: 0.95rem;">Connect with our senior sleep concierge on WhatsApp for personalised guidance and custom cot dimensions.</p>
+      </div>
+      <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}?text={{ settings.whatsapp_default_message | url_encode }}" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="btn btn-brass">
+        Chat on WhatsApp (+91 98765 43210)
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Showrooms & Assistance",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "In-Person Sanctuary"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Experience LORA in Person"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Visit our quiet sleep studios for an unhurried, private 30-minute rest consultation with our certified sleep guides."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Showrooms & Assistance"
+    }
+  ]
+}
+{% endschema %}

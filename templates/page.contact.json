@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "showrooms": {
+      "type": "showrooms-assistance",
+      "settings": {
+        "title": "Contact LORA Sleep Concierge",
+        "subtitle": "Reach our senior sleep guides for tailored cot dimensions, white-glove logistics, or showroom reservations."
+      }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "settings": {}
+    }
+  },
+  "order": [
+    "showrooms",
+    "faq"
+  ]
+}
