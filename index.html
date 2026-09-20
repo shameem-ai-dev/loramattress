@@ -1448,11 +1448,11 @@
         <div class="inner-pdp-grid">
           <!-- Left Sticky Gallery -->
           <div class="inner-gallery-box">
+            <div class="pdp-badge-floating">
+              <span class="badge-verified">FACTORY DIRECT LUXURY</span>
+              <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="inner-warr-badge">10 YEARS WARRANTY</span>
+            </div>
             <div class="inner-main-stage">
-              <div class="pdp-badge-floating">
-                <span class="badge-verified">FACTORY DIRECT LUXURY</span>
-                <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="inner-warr-badge">10 YEARS WARRANTY</span>
-              </div>
               <img loading="lazy" src="assets/comfort-plush.jpg" alt="LORA Mattress" class="inner-main-img" id="inner-active-img">
             </div>
 
@@ -6521,12 +6521,19 @@
         if (trigger) {
           e.preventDefault();
           const modelKey = trigger.getAttribute('data-model') || '01';
+          if (window.innerWidth <= 768) {
+            // Direct seamless transition to the dedicated zero-crop PDP page on mobile
+            window.location.href = `product.html?model=${modelKey}`;
+            return;
+          }
           if (innerSuite) {
             innerSuite.classList.add('active');
             renderInnerSuite(modelKey);
-            if (typeof innerSuite.scrollIntoView === 'function') {
-              innerSuite.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            setTimeout(function () {
+              const rect = innerSuite.getBoundingClientRect();
+              const scrollTop = window.pageYOffset + rect.top - 60;
+              window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+            }, 60);
           }
         }
       });
@@ -8887,12 +8894,13 @@
         }
 
         const stickyBar = document.querySelector('#mobile-sticky-bar');
+        const innerSuite = document.querySelector('#inner-product-suite');
         if (stickyBar) {
           const isMobile = window.innerWidth <= 768;
-          const scrolledPastHero = window.scrollY > 380;
+          const isInnerSuiteActive = innerSuite && innerSuite.classList.contains('active');
           const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 450);
 
-          if (isMobile && scrolledPastHero && !nearBottom) {
+          if (isMobile && isInnerSuiteActive && !nearBottom) {
             stickyBar.classList.add('visible');
           } else {
             stickyBar.classList.remove('visible');

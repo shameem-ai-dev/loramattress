@@ -3443,25 +3443,34 @@ body {
     color: var(--brand-cyan) !important;
   }
   .card-visual-stage {
-    aspect-ratio: 16 / 11 !important;
+    aspect-ratio: 1 / 1 !important;
     min-height: unset !important;
-    max-height: 120px !important;
-    height: 115px !important;
+    max-height: 145px !important;
+    height: auto !important;
     position: relative !important;
     overflow: hidden !important;
-    background: #040711 !important;
+    background: radial-gradient(circle at 50% 45%, #131E33 0%, #080D1A 90%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
   }
   .card-hero-link {
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 100% !important;
     height: 100% !important;
+    padding: 4px !important;
+    box-sizing: border-box !important;
   }
   .card-hero-img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
     object-position: center !important;
     display: block !important;
+    transition: transform 0.25s ease !important;
   }
   .card-body-view {
     padding: 0.45rem 0.5rem 0.55rem !important;
@@ -3469,16 +3478,20 @@ body {
     flex-direction: column !important;
     flex: 1 !important;
     justify-content: space-between !important;
-    gap: 0.3rem !important;
+    gap: 0.25rem !important;
   }
   .mattress-name {
-    font-size: 0.76rem !important;
+    font-size: 0.74rem !important;
     line-height: 1.25 !important;
-    font-weight: 800 !important;
+    font-weight: 700 !important;
     margin: 0 !important;
-    white-space: nowrap !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    white-space: normal !important;
     overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    min-height: 2.5em !important;
+    color: #FFFFFF !important;
   }
   .mattress-title-link {
     color: #FFFFFF !important;
@@ -3493,7 +3506,7 @@ body {
     margin-top: 0.15rem !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 0.3rem !important;
+    gap: 0.25rem !important;
   }
   .price-block {
     display: flex !important;
@@ -3523,11 +3536,12 @@ body {
   .card-action-btns [data-action="view-inner-pdp"],
   .card-action-btns .btn-view-model {
     width: 100% !important;
-    min-height: 30px !important;
-    height: 30px !important;
+    min-height: 32px !important;
+    height: 32px !important;
     padding: 0 0.4rem !important;
-    font-size: 0.7rem !important;
+    font-size: 0.72rem !important;
     font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
     border-radius: 6px !important;
     background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%) !important;
     color: #FFFFFF !important;
@@ -3893,37 +3907,130 @@ body {
     font-size: 0.76rem !important;
   }
 
-  /* Hero Mobile Refinement - Eliminating Callout Pin Overlap & Tightening Spacing */
+  /* Hero Zero-Crop & Contrast Protection */
   .hero-callout-overlay {
     display: none !important;
   }
+  .hero-visual-stage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+  .hero-stage-layer {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+  .hero-vignette-overlay {
+    background: linear-gradient(180deg, rgba(6, 9, 19, 0.96) 0%, rgba(6, 9, 19, 0.86) 42%, rgba(6, 9, 19, 0.97) 100%) !important;
+  }
   .hero-content-overlay {
-    padding: calc(4.75rem + env(safe-area-inset-top, 0px)) var(--gutter) 2.5rem !important;
+    padding: calc(4.25rem + env(safe-area-inset-top, 0px)) 1rem 1.5rem !important;
+    position: relative !important;
+    z-index: 10 !important;
   }
   .hero-title {
-    font-size: clamp(2rem, 7.5vw, 2.5rem) !important;
+    font-size: clamp(1.85rem, 7vw, 2.35rem) !important;
     line-height: 1.15 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.75rem !important;
   }
   .hero-supporting-copy {
-    font-size: 0.88rem !important;
-    line-height: 1.55 !important;
-    margin-bottom: 1.5rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1.15rem !important;
+    color: #CBD5E1 !important;
   }
-  .hero-cta-group {
+  .hero-ctas {
+    display: flex !important;
     flex-direction: column !important;
-    gap: 0.75rem !important;
+    gap: 0.6rem !important;
     width: 100% !important;
   }
-  .hero-cta-group .btn {
+  .hero-ctas .btn {
     width: 100% !important;
     justify-content: center !important;
-    padding: 0.85rem 1.25rem !important;
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.92rem !important;
   }
   .hero-trust-bar {
     margin-top: 1.25rem !important;
     gap: 0.65rem !important;
     font-size: 0.78rem !important;
+  }
+
+  /* Zero-Crop Product Detail Gallery & Badges */
+  .inner-main-stage, .pdp-main-stage {
+    aspect-ratio: 4 / 3 !important;
+    max-height: 320px !important;
+    background: #080D1A !important;
+    border-radius: 12px !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
+  }
+  .inner-main-img, .pdp-main-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    display: block !important;
+  }
+  .pdp-badge-floating {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 0.4rem !important;
+    margin-bottom: 0.65rem !important;
+    width: 100% !important;
+  }
+  .pdp-badge-floating .badge-verified {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0.55rem !important;
+  }
+  .inner-thumb-strip, .pdp-thumb-strip {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.5rem !important;
+    margin-top: 0.75rem !important;
+  }
+  .inner-thumb-btn, .pdp-thumb-btn {
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 8px !important;
+    background: #080D1A !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2px !important;
+  }
+  .inner-thumb-btn img, .pdp-thumb-btn img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  /* Zero-Crop Comparison & Supporting Visuals */
+  .proof-card-media, .measure-step-img-box {
+    background: #080D1A !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+  }
+  .proof-card-media img, .measure-step-img-box img {
+    object-fit: contain !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 220px !important;
   }
   .hero-footer-bar {
     padding-top: 1rem !important;

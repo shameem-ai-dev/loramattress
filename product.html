@@ -530,6 +530,56 @@
         padding: 0 0.65rem !important;
         font-size: 0.74rem !important;
       }
+      .pdp-main-stage {
+        aspect-ratio: 4 / 3 !important;
+        max-height: 320px !important;
+        background: #080D1A !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px !important;
+        box-sizing: border-box !important;
+      }
+      .pdp-main-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        object-position: center !important;
+      }
+      .pdp-badge-floating {
+        position: static !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 0.4rem !important;
+        margin-bottom: 0.65rem !important;
+        width: 100% !important;
+      }
+      .pdp-badge-floating .badge-verified {
+        font-size: 0.65rem !important;
+        padding: 0.25rem 0.55rem !important;
+      }
+      .pdp-thumb-strip {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 0.45rem !important;
+        margin-top: 0.65rem !important;
+      }
+      .pdp-thumb-btn {
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 8px !important;
+        background: #080D1A !important;
+        overflow: hidden !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 2px !important;
+      }
+      .pdp-thumb-btn img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+      }
     }
 
     /* Cart Drawer */
@@ -738,11 +788,11 @@
 
         <!-- Sticky Left Gallery -->
         <div class="pdp-gallery-sticky">
+          <div class="pdp-badge-floating">
+            <span class="badge-verified">FACTORY DIRECT</span>
+            <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="pdp-warranty-badge">10 YEARS WARRANTY</span>
+          </div>
           <div class="pdp-main-stage">
-            <div class="pdp-badge-floating">
-              <span class="badge-verified">FACTORY DIRECT</span>
-              <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="pdp-warranty-badge">10 YEARS WARRANTY</span>
-            </div>
             <img src="assets/comfort-plush.jpg" alt="LORA Mattress" class="pdp-main-img" id="pdp-active-img">
           </div>
 
