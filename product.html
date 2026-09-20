@@ -2257,33 +2257,36 @@
         });
       });
 
-      // Size Pill Selector
-      document.querySelectorAll('.pdp-pill-choice').forEach(btn => {
-        btn.addEventListener('click', function () {
+      // Size Pill Selector (Delegated & Direct)
+      document.addEventListener('click', function (e) {
+        const sizeBtn = e.target.closest('.pdp-pill-choice');
+        if (sizeBtn) {
+          e.preventDefault();
           document.querySelectorAll('.pdp-pill-choice').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
+          sizeBtn.classList.add('active');
 
-          currentSizeMultiplier = parseFloat(this.getAttribute('data-multiplier') || '1.0');
-          const sizeTitle = this.querySelector('.pdp-pill-title')?.textContent || 'Queen';
+          currentSizeMultiplier = parseFloat(sizeBtn.getAttribute('data-multiplier') || '1.0');
+          const sizeTitle = sizeBtn.querySelector('.pdp-pill-title')?.textContent || sizeBtn.textContent.trim();
           const sizeLabel = document.querySelector('#pdp-selected-size-label');
           if (sizeLabel) sizeLabel.textContent = sizeTitle;
 
           updatePriceDisplay();
-        });
-      });
+          return;
+        }
 
-      // Thickness Selector
-      document.querySelectorAll('[data-thick]').forEach(btn => {
-        btn.addEventListener('click', function () {
+        const thickBtn = e.target.closest('[data-thick]');
+        if (thickBtn) {
+          e.preventDefault();
           document.querySelectorAll('[data-thick]').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
+          thickBtn.classList.add('active');
 
-          currentThickAdd = parseInt(this.getAttribute('data-thick-add') || '0', 10);
+          currentThickAdd = parseInt(thickBtn.getAttribute('data-thick-add') || '0', 10);
           const thickLabel = document.querySelector('#pdp-selected-thick-label');
-          if (thickLabel) thickLabel.textContent = this.textContent;
+          if (thickLabel) thickLabel.textContent = thickBtn.textContent.trim();
 
           updatePriceDisplay();
-        });
+          return;
+        }
       });
 
       // Synchronize Cart Glow & Count on PDP

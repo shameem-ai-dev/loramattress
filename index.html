@@ -6386,21 +6386,25 @@
         if (waBtn) waBtn.href = `https://wa.me/919876543210?text=${waMsg}`;
       }
 
-      // Cot Type Pill Selection
-      document.querySelectorAll('.inner-size-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.inner-size-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          activeCotType = this.getAttribute('data-type') || 'queen';
+      // Bed Type / Cot Type Pill Selection (Queen, King, Double, Single, Custom)
+      function initInnerBedTypeButtons() {
+        document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            activeCotType = this.getAttribute('data-type') || 'queen';
 
-          const title = this.querySelector('.inner-size-title')?.textContent || 'Queen';
-          const label = document.querySelector('#inner-cot-type-label');
-          if (label) label.textContent = title;
+            const title = (this.querySelector('.inner-size-title')?.textContent || this.textContent).trim();
+            const label = document.querySelector('#inner-cot-type-label');
+            if (label) label.textContent = title;
 
-          renderInchButtons();
-          updateInnerPrice();
+            renderInchButtons();
+            updateInnerPrice();
+          });
         });
-      });
+      }
+      initInnerBedTypeButtons();
 
       // Custom Dim Calculator Button
       const calcCustomBtn = document.querySelector('#btn-calc-custom');
@@ -6416,20 +6420,63 @@
         });
       }
 
-      // Thickness Pill Selection (6" to 12")
-      document.querySelectorAll('.inner-thick-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.inner-thick-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          activeThickness = parseInt(this.getAttribute('data-thick') || '8', 10);
+      // Thickness Pill Selection (6", 8", 10", 12")
+      function initInnerThicknessButtons() {
+        document.querySelectorAll('.inner-thick-pill-btn, .inner-thick-btn').forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('.inner-thick-pill-btn, .inner-thick-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            activeThickness = parseInt(this.getAttribute('data-thick') || '8', 10);
 
-          const title = this.querySelector('strong')?.textContent || `${activeThickness}-Inch`;
-          const label = document.querySelector('#inner-thick-label');
-          if (label) label.textContent = title;
+            const title = (this.querySelector('strong')?.textContent || this.textContent).trim();
+            const label = document.querySelector('#inner-thick-label');
+            if (label) label.textContent = title;
 
-          updateInnerPrice();
+            updateInnerPrice();
+          });
         });
-      });
+      }
+      initInnerThicknessButtons();
+
+      // Robust Event Delegation for Inner Suite Bed Types & Thickness
+      const innerSuiteConfigCard = document.querySelector('#inner-product-suite');
+      if (innerSuiteConfigCard) {
+        innerSuiteConfigCard.addEventListener('click', function (e) {
+          // Bed type click
+          const bedBtn = e.target.closest('.inner-bed-type-btn, .inner-size-btn');
+          if (bedBtn) {
+            e.preventDefault();
+            innerSuiteConfigCard.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(b => b.classList.remove('active'));
+            bedBtn.classList.add('active');
+            activeCotType = bedBtn.getAttribute('data-type') || 'queen';
+
+            const title = (bedBtn.querySelector('.inner-size-title')?.textContent || bedBtn.textContent).trim();
+            const label = document.querySelector('#inner-cot-type-label');
+            if (label) label.textContent = title;
+
+            renderInchButtons();
+            updateInnerPrice();
+            return;
+          }
+
+          // Thickness click
+          const thickBtn = e.target.closest('.inner-thick-pill-btn, .inner-thick-btn');
+          if (thickBtn) {
+            e.preventDefault();
+            innerSuiteConfigCard.querySelectorAll('.inner-thick-pill-btn, .inner-thick-btn').forEach(b => b.classList.remove('active'));
+            thickBtn.classList.add('active');
+            activeThickness = parseInt(thickBtn.getAttribute('data-thick') || '8', 10);
+
+            const title = (thickBtn.querySelector('strong')?.textContent || thickBtn.textContent).trim();
+            const label = document.querySelector('#inner-thick-label');
+            if (label) label.textContent = title;
+
+            updateInnerPrice();
+            return;
+          }
+        });
+      }
 
       // Coupon Application
       const applyCouponBtn = document.querySelector('#apply-coupon-btn');
