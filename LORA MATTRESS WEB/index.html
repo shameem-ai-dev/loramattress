@@ -1428,6 +1428,9 @@
           <button type="button" class="inner-pdp-back-btn" id="inner-close-btn">
             ← Return to All 8 Mattresses Grid
           </button>
+          <a href="product.html?model=01" class="inner-pdp-back-btn" id="inner-standalone-btn" style="background: rgba(0, 180, 216, 0.15); border-color: rgba(0, 180, 216, 0.4); color: #38BDF8; text-decoration: none;">
+            Dedicated PDP Page ↗
+          </a>
 
           <div class="inner-pdp-model-pills">
             <button type="button" class="inner-model-pill active" data-inner-model="01">01. CLOUD 7™</button>
@@ -1764,7 +1767,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="01" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20CLOUD%207" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -1886,7 +1889,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="02" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20CLOUD%20ORTHO" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -2001,7 +2004,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="03" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20PLUSH" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -2115,7 +2118,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="04" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20ORTHO%20HYBRID" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -2229,7 +2232,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="05" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20ORTHO%20LATEX" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -2342,7 +2345,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="06" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20COMFORT%20CORE" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -2456,7 +2459,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="07" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20POCKET%20LUXE" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -2570,7 +2573,7 @@
                   Add to Bag
                 </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="08" title="View detailed specifications in inner area">
-                  Inspect Details ↓
+                  View Details →
                 </button>
                 <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20LORA%20HYBRID%20FUSION" target="_blank" class="btn btn-secondary btn-sm">
                   Consult
@@ -6133,6 +6136,8 @@
 
         const warrBadge = document.querySelector('#inner-warr-badge');
         if (warrBadge) warrBadge.textContent = data.warranty.toUpperCase();
+        const standaloneBtn = document.querySelector('#inner-standalone-btn');
+        if (standaloneBtn) standaloneBtn.href = `product.html?model=${modelKey}`;
         const guarWarr = document.querySelector('#inner-guar-warr');
         if (guarWarr) guarWarr.textContent = `${data.warranty} Direct Factory Coverage`;
 
@@ -6381,21 +6386,25 @@
         if (waBtn) waBtn.href = `https://wa.me/919876543210?text=${waMsg}`;
       }
 
-      // Cot Type Pill Selection
-      document.querySelectorAll('.inner-size-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.inner-size-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          activeCotType = this.getAttribute('data-type') || 'queen';
+      // Bed Type / Cot Type Pill Selection (Queen, King, Double, Single, Custom)
+      function initInnerBedTypeButtons() {
+        document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            activeCotType = this.getAttribute('data-type') || 'queen';
 
-          const title = this.querySelector('.inner-size-title')?.textContent || 'Queen';
-          const label = document.querySelector('#inner-cot-type-label');
-          if (label) label.textContent = title;
+            const title = (this.querySelector('.inner-size-title')?.textContent || this.textContent).trim();
+            const label = document.querySelector('#inner-cot-type-label');
+            if (label) label.textContent = title;
 
-          renderInchButtons();
-          updateInnerPrice();
+            renderInchButtons();
+            updateInnerPrice();
+          });
         });
-      });
+      }
+      initInnerBedTypeButtons();
 
       // Custom Dim Calculator Button
       const calcCustomBtn = document.querySelector('#btn-calc-custom');
@@ -6411,20 +6420,63 @@
         });
       }
 
-      // Thickness Pill Selection (6" to 12")
-      document.querySelectorAll('.inner-thick-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.inner-thick-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          activeThickness = parseInt(this.getAttribute('data-thick') || '8', 10);
+      // Thickness Pill Selection (6", 8", 10", 12")
+      function initInnerThicknessButtons() {
+        document.querySelectorAll('.inner-thick-pill-btn, .inner-thick-btn').forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('.inner-thick-pill-btn, .inner-thick-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            activeThickness = parseInt(this.getAttribute('data-thick') || '8', 10);
 
-          const title = this.querySelector('strong')?.textContent || `${activeThickness}-Inch`;
-          const label = document.querySelector('#inner-thick-label');
-          if (label) label.textContent = title;
+            const title = (this.querySelector('strong')?.textContent || this.textContent).trim();
+            const label = document.querySelector('#inner-thick-label');
+            if (label) label.textContent = title;
 
-          updateInnerPrice();
+            updateInnerPrice();
+          });
         });
-      });
+      }
+      initInnerThicknessButtons();
+
+      // Robust Event Delegation for Inner Suite Bed Types & Thickness
+      const innerSuiteConfigCard = document.querySelector('#inner-product-suite');
+      if (innerSuiteConfigCard) {
+        innerSuiteConfigCard.addEventListener('click', function (e) {
+          // Bed type click
+          const bedBtn = e.target.closest('.inner-bed-type-btn, .inner-size-btn');
+          if (bedBtn) {
+            e.preventDefault();
+            innerSuiteConfigCard.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(b => b.classList.remove('active'));
+            bedBtn.classList.add('active');
+            activeCotType = bedBtn.getAttribute('data-type') || 'queen';
+
+            const title = (bedBtn.querySelector('.inner-size-title')?.textContent || bedBtn.textContent).trim();
+            const label = document.querySelector('#inner-cot-type-label');
+            if (label) label.textContent = title;
+
+            renderInchButtons();
+            updateInnerPrice();
+            return;
+          }
+
+          // Thickness click
+          const thickBtn = e.target.closest('.inner-thick-pill-btn, .inner-thick-btn');
+          if (thickBtn) {
+            e.preventDefault();
+            innerSuiteConfigCard.querySelectorAll('.inner-thick-pill-btn, .inner-thick-btn').forEach(b => b.classList.remove('active'));
+            thickBtn.classList.add('active');
+            activeThickness = parseInt(thickBtn.getAttribute('data-thick') || '8', 10);
+
+            const title = (thickBtn.querySelector('strong')?.textContent || thickBtn.textContent).trim();
+            const label = document.querySelector('#inner-thick-label');
+            if (label) label.textContent = title;
+
+            updateInnerPrice();
+            return;
+          }
+        });
+      }
 
       // Coupon Application
       const applyCouponBtn = document.querySelector('#apply-coupon-btn');
@@ -6473,6 +6525,17 @@
             if (typeof innerSuite.scrollIntoView === 'function') {
               innerSuite.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+          }
+        }
+      });
+
+      // Whole Mattress Card Tap Handler (Opens detailed view for that product)
+      document.addEventListener('click', function (e) {
+        const card = e.target.closest('.mattress-card');
+        if (card && !e.target.closest('button, a, input, select')) {
+          const inspectTrigger = card.querySelector('[data-action="view-inner-pdp"]');
+          if (inspectTrigger) {
+            inspectTrigger.click();
           }
         }
       });
@@ -6815,7 +6878,7 @@
                       ${isOOS ? 'Out of Stock' : 'Add to Bag'}
                     </button>
                     <button type="button" class="btn btn-secondary btn-sm" data-action="view-inner-pdp" data-model="${mKey}" title="View detailed specifications in inner area">
-                      Inspect Details ↓
+                      View Details →
                     </button>
                     <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20${encodeURIComponent(item.name)}" target="_blank" class="btn btn-secondary btn-sm">
                       Consult
