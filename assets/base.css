@@ -569,12 +569,10 @@ button, input, select {
   pointer-events: none;
 }
 
-/* 3D Floating Feature Callouts */
-.hero-callout-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  pointer-events: none;
+/* 3D Floating Feature Callouts (Disabled) */
+.hero-callout-overlay,
+.hero-callout-pin {
+  display: none !important;
 }
 
 .hero-callout-pin {
