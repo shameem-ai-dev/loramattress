@@ -1238,6 +1238,7 @@
        ========================================================= -->
   <section class="hero-scroll-wrapper" id="signature-hero" aria-label="LORA Deconstructed Sleep Science">
     <div class="hero-sticky-container">
+      <!-- 3D Stage (Absolute on Desktop, Illuminated Luxury Showcase on Mobile) -->
       <div class="hero-visual-stage">
         <img src="assets/hero-stage-1-assembled.jpg" alt="LORA Assembled Zero-G Mattress" class="hero-stage-layer stage-layer-assembled" fetchpriority="high">
         <img src="assets/hero-stage-2-exploded.jpg" alt="LORA 4-Tier Deconstructed Architectural Layers" class="hero-stage-layer stage-layer-exploded" loading="eager">
@@ -1262,6 +1263,15 @@
             Leave the day behind. The unified LORA core floats in zero-gravity suspension. Molecular comfort foam meets zoned titanium coils—scroll to deconstruct the architecture.
           </p>
 
+          <!-- Mobile Integrated Phase Controller (Directly under Mattress) -->
+          <div class="hero-mobile-phase-ctrl">
+            <div class="phase-buttons">
+              <button type="button" class="phase-btn active" data-phase="0.12">01. Assembled</button>
+              <button type="button" class="phase-btn" data-phase="0.48">02. Deconstructed</button>
+              <button type="button" class="phase-btn" data-phase="0.84">03. SpineAlign™</button>
+            </div>
+          </div>
+
           <div class="hero-ctas">
             <a href="#the-collection" class="btn btn-primary" style="padding: 1.05rem 2.25rem; font-size: 1rem;">
               Explore The 8 Models ↓
@@ -1271,7 +1281,7 @@
             </a>
           </div>
 
-          <div style="display: flex; gap: 1.75rem; margin-top: 2rem; font-size: 0.84rem; color: #E2E8F0; align-items: center; flex-wrap: wrap;">
+          <div class="hero-trust-bar" style="display: flex; gap: 1.75rem; margin-top: 1.25rem; font-size: 0.84rem; color: #E2E8F0; align-items: center; flex-wrap: wrap;">
             <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
               <strong style="color: #38BDF8;">★ 4.9/5</strong> Google Rated (5,00,000+ Sleepers)
             </span>
@@ -1375,14 +1385,6 @@
           <div>
             <div class="proof-title">Up to 15 Years Warranty</div>
             <div class="proof-subtext">100% replacement guarantee</div>
-          </div>
-        </div>
-
-        <div class="proof-item">
-          <div class="proof-icon-box">🏭</div>
-          <div>
-            <div class="proof-title">Direct Factory Craft</div>
-            <div class="proof-subtext">Zero middleman markup guaranteed</div>
           </div>
         </div>
 
@@ -7016,14 +7018,14 @@
             }
           }
 
-          // 6. Update Hero Stage Layers if Model 01
+          // 6. Update Hero Stage Layers if Model 01 (Guard against corrupt base64)
           if (mKey === '01') {
             const stageAssembled = document.querySelector('.hero-stage-layer.stage-layer-assembled');
-            if (stageAssembled && item.heroImg) stageAssembled.src = item.heroImg;
+            if (stageAssembled && item.heroStageImg && !item.heroStageImg.startsWith('data:')) stageAssembled.src = item.heroStageImg;
             const stageExploded = document.querySelector('.hero-stage-layer.stage-layer-exploded');
-            if (stageExploded && item.explodedImg) stageExploded.src = item.explodedImg;
+            if (stageExploded && item.explodedImg && !item.explodedImg.startsWith('data:')) stageExploded.src = item.explodedImg;
             const stageSpine = document.querySelector('.hero-stage-layer.stage-layer-spine');
-            if (stageSpine && item.spineImg) stageSpine.src = item.spineImg;
+            if (stageSpine && item.spineImg && !item.spineImg.startsWith('data:')) stageSpine.src = item.spineImg;
           }
         });
       }

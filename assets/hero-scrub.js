@@ -156,9 +156,10 @@
         updateCallouts(activeIndex);
       }
 
-      // Highlight corresponding phase button
+      // Highlight corresponding phase button (supports both desktop & mobile controls)
       phaseBtns.forEach((btn, idx) => {
-        if (idx === activeIndex) {
+        const stageIndex = idx % STAGES.length;
+        if (stageIndex === activeIndex) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -222,10 +223,11 @@
       });
     }
 
-    // Phase Buttons Click
+    // Phase Buttons Click (Handles both desktop and mobile buttons)
     phaseBtns.forEach((btn, idx) => {
       btn.addEventListener('click', function () {
-        const stage = STAGES[idx];
+        const stageIndex = idx % STAGES.length;
+        const stage = STAGES[stageIndex];
         if (stage) {
           targetProgress = stage.progress;
           loopProgress = stage.progress;
