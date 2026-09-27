@@ -481,7 +481,7 @@
 
     @media (max-width: 768px) {
       .pdp-header-nav {
-        padding: 0.5rem 0 !important;
+        padding: 0.45rem 0 !important;
         background: rgba(6, 9, 19, 0.98) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
@@ -494,51 +494,35 @@
         font-size: 0.76rem !important;
         white-space: nowrap !important;
       }
-      .pdp-title {
-        font-size: 1.65rem !important;
-        line-height: 1.18 !important;
-        margin-bottom: 0.4rem !important;
+      .model-switcher-strip {
+        padding: 0.4rem 0 !important;
       }
-      .pdp-price-val {
-        font-size: 1.65rem !important;
-      }
-      .pdp-opt-pills {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 0.45rem !important;
-      }
-      .pdp-pill-choice {
-        padding: 0.6rem 0.65rem !important;
-      }
-      .pdp-pill-title {
-        font-size: 0.78rem !important;
-      }
-      .pdp-pill-sub {
-        font-size: 0.68rem !important;
-      }
-      .pdp-thickness-row {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.45rem !important;
-      }
-      .pdp-thickness-row .size-pill-btn {
-        padding: 0.6rem 0.25rem !important;
+      .model-switch-btn {
+        padding: 0.32rem 0.75rem !important;
         font-size: 0.72rem !important;
-        text-align: center !important;
       }
-      .header-auth-btn {
-        height: 34px !important;
-        padding: 0 0.65rem !important;
-        font-size: 0.74rem !important;
+      .pdp-main-section {
+        padding: 0.75rem 0 5rem !important;
+      }
+      .pdp-grid {
+        gap: 1rem !important;
+      }
+      .pdp-gallery-sticky {
+        gap: 0.5rem !important;
       }
       .pdp-main-stage {
-        aspect-ratio: 4 / 3 !important;
-        max-height: 320px !important;
-        background: #080D1A !important;
+        aspect-ratio: 16 / 10 !important;
+        height: 220px !important;
+        max-height: 220px !important;
+        background: radial-gradient(circle at 50% 50%, #152238 0%, #060913 90%) !important;
+        border: 1px solid rgba(0, 180, 216, 0.25) !important;
+        border-radius: 14px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         padding: 6px !important;
         box-sizing: border-box !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 180, 216, 0.12) !important;
       }
       .pdp-main-img {
         width: 100% !important;
@@ -551,34 +535,160 @@
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
-        gap: 0.4rem !important;
-        margin-bottom: 0.65rem !important;
+        gap: 0.35rem !important;
+        margin-bottom: 0.45rem !important;
         width: 100% !important;
       }
       .pdp-badge-floating .badge-verified {
         font-size: 0.65rem !important;
-        padding: 0.25rem 0.55rem !important;
+        padding: 0.22rem 0.55rem !important;
       }
       .pdp-thumb-strip {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
         gap: 0.45rem !important;
-        margin-top: 0.65rem !important;
+        margin-top: 0.45rem !important;
       }
       .pdp-thumb-btn {
-        aspect-ratio: 1 / 1 !important;
+        height: 48px !important;
+        aspect-ratio: unset !important;
         border-radius: 8px !important;
-        background: #080D1A !important;
+        background: #0B132B !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
         overflow: hidden !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         padding: 2px !important;
       }
+      .pdp-thumb-btn.active {
+        border-color: #00B4D8 !important;
+        box-shadow: 0 0 10px rgba(0, 180, 216, 0.4) !important;
+      }
       .pdp-thumb-btn img {
         width: 100% !important;
         height: 100% !important;
         object-fit: contain !important;
+      }
+      .pdp-config-panel {
+        padding: 1.15rem 0.85rem !important;
+        border-radius: 16px !important;
+        margin-top: 0.4rem !important;
+      }
+      .pdp-model-tag {
+        font-size: 0.72rem !important;
+        padding: 0.22rem 0.65rem !important;
+        margin-bottom: 0.45rem !important;
+      }
+      .pdp-title {
+        font-size: 1.45rem !important;
+        line-height: 1.18 !important;
+        margin-bottom: 0.25rem !important;
+        letter-spacing: -0.02em !important;
+      }
+      .pdp-tagline {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.65rem !important;
+        color: #38BDF8 !important;
+      }
+      .pdp-trust-rating-strip {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.35rem 0.6rem !important;
+        margin-bottom: 0.85rem !important;
+        font-size: 0.74rem !important;
+        line-height: 1.35 !important;
+        color: #94A3B8 !important;
+      }
+      .pdp-price-row {
+        padding: 0.75rem 0 !important;
+        margin-bottom: 0.85rem !important;
+        gap: 0.65rem !important;
+      }
+      .pdp-price-val {
+        font-size: 1.65rem !important;
+        color: #38BDF8 !important;
+      }
+      .pdp-mrp-val {
+        font-size: 1rem !important;
+      }
+      .pdp-save-badge {
+        font-size: 0.72rem !important;
+        padding: 0.2rem 0.55rem !important;
+      }
+      .pdp-emi-card {
+        padding: 0.65rem 0.85rem !important;
+        margin-bottom: 1.15rem !important;
+        background: rgba(13, 20, 38, 0.85) !important;
+        border: 1px solid rgba(0, 180, 216, 0.3) !important;
+      }
+      .pdp-opt-group {
+        margin-bottom: 1.15rem !important;
+      }
+      .pdp-opt-label {
+        font-size: 0.78rem !important;
+        margin-bottom: 0.45rem !important;
+      }
+      .pdp-opt-pills {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.45rem !important;
+      }
+      .pdp-pill-choice {
+        padding: 0.55rem 0.65rem !important;
+        border-radius: 9px !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+      .pdp-pill-choice.active {
+        border-color: #00B4D8 !important;
+        background: rgba(0, 180, 216, 0.18) !important;
+        box-shadow: 0 0 12px rgba(0, 180, 216, 0.3) !important;
+      }
+      .pdp-pill-title {
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
+      }
+      .pdp-pill-sub {
+        font-size: 0.66rem !important;
+        color: #94A3B8 !important;
+      }
+      .pdp-thickness-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.45rem !important;
+      }
+      .size-pill-btn {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #CBD5E1 !important;
+        border-radius: 9px !important;
+        padding: 0.55rem 0.25rem !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        min-height: 44px !important;
+      }
+      .size-pill-btn.active {
+        border-color: #00B4D8 !important;
+        background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 0 12px rgba(0, 180, 216, 0.35) !important;
+      }
+      .pdp-actions-stack {
+        gap: 0.65rem !important;
+        margin-top: 1.35rem !important;
+      }
+      .pdp-actions-stack .btn {
+        min-height: 48px !important;
+        font-size: 0.92rem !important;
+        font-weight: 800 !important;
+      }
+      .header-auth-btn {
+        height: 34px !important;
+        padding: 0 0.65rem !important;
+        font-size: 0.74rem !important;
       }
     }
 
@@ -818,12 +928,13 @@
           <h1 class="pdp-title" id="pdp-title">01. LORA CLOUD 7™</h1>
           <p class="pdp-tagline" id="pdp-tagline">Super Soft 7-Zone Dual Comfort</p>
 
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.88rem;">
-            <span style="color: #F59E0B; font-weight: 700;">★ 4.9 / 5.0</span>
-            <span style="color: var(--text-secondary);">•</span>
-            <span style="color: var(--text-secondary);">Google Verified (5,00,000+ Sleepers)</span>
-            <span style="color: var(--text-secondary);">•</span>
-            <span style="color: #059669; font-weight: 700;">In Stock • Ready to Dispatch</span>
+          <div class="pdp-trust-rating-strip">
+            <span style="color: #F59E0B; font-weight: 800;">★ 4.9</span>
+            <span>(5,00,000+ Sleepers)</span>
+            <span>•</span>
+            <span style="color: #10B981; font-weight: 700;">Direct from Factory</span>
+            <span>•</span>
+            <span style="color: #38BDF8; font-weight: 700;">In Stock</span>
           </div>
 
           <div class="pdp-price-row">
@@ -835,13 +946,13 @@
           <!-- Bajaj Finserv EMI Card -->
           <div class="pdp-emi-card">
             <div>
-              <strong style="font-size: 0.95rem; color: var(--brand-royal); display: block;" id="pdp-emi-text">
+              <strong style="font-size: 0.95rem; color: #38BDF8; display: block;" id="pdp-emi-text">
                 ⚡ ₹1,833 / month with Bajaj Finserv 0% EMI
               </strong>
-              <span style="font-size: 0.78rem; color: #64748B;">Zero down payment • 12 easy monthly installments</span>
+              <span style="font-size: 0.78rem; color: #94A3B8;">Zero down payment • 12 easy monthly installments</span>
             </div>
-            <span style="font-size: 0.75rem; font-weight: 700; background: #FFFFFF; border: 1px solid rgba(0, 180, 216, 0.3); padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); color: var(--brand-royal);">
-              NO COST
+            <span style="font-size: 0.75rem; font-weight: 800; background: rgba(0, 180, 216, 0.15); border: 1px solid rgba(0, 180, 216, 0.35); padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); color: #38BDF8; white-space: nowrap;">
+              0% NO COST
             </span>
           </div>
 
@@ -849,24 +960,24 @@
           <div class="pdp-opt-group">
             <label class="pdp-opt-label">
               <span>1. Select Cot Size</span>
-              <span style="color: var(--brand-royal); font-weight: 600;" id="pdp-selected-size-label">Queen (78" × 60")</span>
+              <span style="color: #38BDF8; font-weight: 700;" id="pdp-selected-size-label">Queen (78" × 60")</span>
             </label>
             <div class="pdp-opt-pills">
               <button type="button" class="pdp-pill-choice active" data-size="queen" data-multiplier="1.0">
                 <span class="pdp-pill-title">Queen (78" × 60")</span>
-                <span class="pdp-pill-sub">198 × 152 cm • Most Popular</span>
+                <span class="pdp-pill-sub">198 × 152 cm • Popular</span>
               </button>
               <button type="button" class="pdp-pill-choice" data-size="king" data-multiplier="1.18">
                 <span class="pdp-pill-title">King (78" × 72")</span>
-                <span class="pdp-pill-sub">198 × 183 cm • Spacious Luxury</span>
+                <span class="pdp-pill-sub">198 × 183 cm • Spacious</span>
               </button>
               <button type="button" class="pdp-pill-choice" data-size="single" data-multiplier="0.68">
                 <span class="pdp-pill-title">Single (72" × 36")</span>
-                <span class="pdp-pill-sub">183 × 91 cm • Individual Bed</span>
+                <span class="pdp-pill-sub">183 × 91 cm • Individual</span>
               </button>
               <button type="button" class="pdp-pill-choice" data-size="double" data-multiplier="0.82">
                 <span class="pdp-pill-title">Double (72" × 48")</span>
-                <span class="pdp-pill-sub">183 × 122 cm • Compact Suite</span>
+                <span class="pdp-pill-sub">183 × 122 cm • Compact</span>
               </button>
             </div>
           </div>
@@ -875,7 +986,7 @@
           <div class="pdp-opt-group">
             <label class="pdp-opt-label">
               <span>2. Select Mattress Thickness</span>
-              <span style="color: var(--brand-royal); font-weight: 600;" id="pdp-selected-thick-label">8-Inch (20 cm)</span>
+              <span style="color: #38BDF8; font-weight: 700;" id="pdp-selected-thick-label">8-Inch (20 cm)</span>
             </label>
             <div class="pdp-thickness-row" style="display: flex; gap: 0.6rem;">
               <button type="button" class="size-pill-btn" data-thick="6" data-thick-add="-2000" style="flex: 1; padding: 0.75rem;">6-Inch (15 cm)</button>
@@ -888,7 +999,7 @@
           <div class="pdp-opt-group">
             <label class="pdp-opt-label">
               <span>3. Ergonomic Firmness Index</span>
-              <span style="color: var(--brand-royal); font-weight: 700;" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
+              <span style="color: #38BDF8; font-weight: 700;" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
             </label>
             <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
               <div class="meter-labels" style="margin-bottom: 0.5rem; font-size: 0.74rem;">

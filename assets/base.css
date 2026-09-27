@@ -4160,16 +4160,19 @@ body {
 
   /* Zero-Crop Product Detail Gallery & Badges */
   .inner-main-stage, .pdp-main-stage {
-    aspect-ratio: 4 / 3 !important;
-    max-height: 320px !important;
-    background: #080D1A !important;
-    border-radius: 12px !important;
+    aspect-ratio: 16 / 10 !important;
+    height: 220px !important;
+    max-height: 220px !important;
+    background: radial-gradient(circle at 50% 50%, #152238 0%, #060913 90%) !important;
+    border: 1px solid rgba(0, 180, 216, 0.25) !important;
+    border-radius: 14px !important;
     position: relative !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     padding: 6px !important;
     box-sizing: border-box !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 180, 216, 0.12) !important;
   }
   .inner-main-img, .pdp-main-img {
     width: 100% !important;
@@ -4195,12 +4198,13 @@ body {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
     gap: 0.5rem !important;
-    margin-top: 0.75rem !important;
+    margin-top: 0.5rem !important;
   }
   .inner-thumb-btn, .pdp-thumb-btn {
-    aspect-ratio: 1 / 1 !important;
+    height: 48px !important;
+    aspect-ratio: unset !important;
     border-radius: 8px !important;
-    background: #080D1A !important;
+    background: #0B132B !important;
     border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
     overflow: hidden !important;
     display: flex !important;
@@ -4208,10 +4212,96 @@ body {
     justify-content: center !important;
     padding: 2px !important;
   }
+  .inner-thumb-btn.active, .pdp-thumb-btn.active {
+    border-color: #00B4D8 !important;
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.4) !important;
+  }
   .inner-thumb-btn img, .pdp-thumb-btn img {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
+  }
+
+  /* Eliminate Mobile Section Gaps across entire site */
+  .simulator-section {
+    padding: 2.75rem 0 !important;
+  }
+  .simulator-container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .simulator-graphic-card {
+    padding: 1.25rem !important;
+  }
+  .factory-direct-section {
+    padding: 2.5rem 0 !important;
+  }
+  .measure-guide-section {
+    padding: 2.5rem 0 !important;
+  }
+  .quiz-section {
+    padding: 2.5rem 0 !important;
+  }
+  .quiz-card {
+    padding: 1.5rem 1rem !important;
+  }
+  .store-locator-section {
+    padding: 2.5rem 0 !important;
+  }
+  .site-footer {
+    padding: 2.75rem 0 2rem !important;
+  }
+
+  /* Compact & Aligned Inner Product Suite for Mobile */
+  .inner-pdp-suite {
+    padding: 1.25rem 0 2.5rem !important;
+  }
+  .inner-pdp-top-nav {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+    margin-bottom: 1.25rem !important;
+    padding-bottom: 0.85rem !important;
+  }
+  .inner-pdp-model-pills {
+    display: flex !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    gap: 0.4rem !important;
+    padding-bottom: 0.35rem !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .inner-pdp-model-pills::-webkit-scrollbar {
+    display: none !important;
+  }
+  .inner-model-pill {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 0.4rem 0.85rem !important;
+    font-size: 0.74rem !important;
+  }
+  .inner-config-card {
+    padding: 1.25rem 0.85rem !important;
+  }
+
+  /* Dark Luxury Thickness Buttons across entire site (No White Boxes) */
+  .size-pill-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #CBD5E1 !important;
+    border-radius: 10px !important;
+    padding: 0.55rem 0.35rem !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    transition: all var(--duration-fast) ease !important;
+  }
+  .size-pill-btn.active {
+    border-color: #00B4D8 !important;
+    background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 0 14px rgba(0, 180, 216, 0.35) !important;
   }
 
   /* Zero-Crop Comparison & Supporting Visuals */
