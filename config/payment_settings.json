@@ -1,0 +1,10 @@
+{
+  "razorpay_enabled": true,
+  "razorpay_key_id": "rzp_test_51L0RA9876DEMO",
+  "razorpay_key_secret": "",
+  "razorpay_mode": "test",
+  "razorpay_theme_color": "#00B4D8",
+  "cod_enabled": true,
+  "cod_max_amount": 50000,
+  "cod_notice": "Cash or UPI accepted upon delivery arrival."
+}

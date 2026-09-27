@@ -3506,6 +3506,59 @@ fbq('track', 'PageView');
             </div>
           </div>
 
+          <!-- Payment Settings: Razorpay Payment Gateway -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title">Razorpay Payment Gateway (UPI, Cards, NetBanking, 0% EMI)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                  Accept instant prepaid payments via Google Pay, PhonePe, Paytm, Debit/Credit Cards, NetBanking, and No-Cost EMI with 256-bit SSL encryption.
+                </p>
+              </div>
+              <span id="settings-rzp-badge" class="status-badge status-delivered">● Razorpay Active (Test Mode)</span>
+            </div>
+
+            <div class="field-grid-2">
+              <div class="input-block">
+                <label>Razorpay Key ID *</label>
+                <input type="text" id="cfg-rzp-key-id" class="admin-input" placeholder="rzp_test_... or rzp_live_..." value="rzp_test_51L0RA9876DEMO">
+                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Obtained from your Razorpay Dashboard → Settings → API Keys.</span>
+              </div>
+              <div class="input-block">
+                <label>Razorpay Key Secret</label>
+                <div style="position: relative;">
+                  <input type="password" id="cfg-rzp-key-secret" class="admin-input" placeholder="Enter Razorpay Key Secret" style="padding-right: 3.5rem;">
+                  <button type="button" id="btn-toggle-rzp-secret" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 0.78rem;">Show</button>
+                </div>
+                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Used for server-side HMAC-SHA256 payment signature verification.</span>
+              </div>
+            </div>
+
+            <div class="field-grid-2">
+              <div class="input-block">
+                <label>Gateway Environment Mode</label>
+                <select id="cfg-rzp-mode" class="admin-input">
+                  <option value="test" selected>Sandbox / Test Mode (Instant Dev Testing)</option>
+                  <option value="live">Production / Live Mode (Real Bank Transactions)</option>
+                </select>
+                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Switch between test mock transactions and production bank gateway.</span>
+              </div>
+              <div class="input-block">
+                <label>Checkout Modal Accent Color</label>
+                <input type="text" id="cfg-rzp-theme" class="admin-input" value="#00B4D8" placeholder="#00B4D8">
+                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Matches LORA brand identity on the Razorpay customer modal.</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+              <button type="button" class="btn-action-secondary" id="btn-save-rzp-settings">Save Razorpay Configuration</button>
+              <button type="button" class="btn-op-action btn-op-secondary" id="btn-test-rzp-connection" style="height: 38px; font-size: 0.8rem;">
+                Test Connection ⚡
+              </button>
+              <span id="rzp-settings-feedback" style="display: none; font-size: 0.8rem; color: #6EE7B7; font-weight: 700;">✓ Razorpay Settings Saved</span>
+            </div>
+          </div>
+
           <!-- Payment Settings: Cash on Delivery (COD) Control -->
           <div class="admin-card">
             <div class="admin-card-header">
@@ -5238,6 +5291,130 @@ Order Notes: [Customer Instructions]</pre>
       }
 
       syncCodUI();
+
+      // Razorpay Payment Gateway Settings Controls
+      const inputRzpKeyId = document.querySelector('#cfg-rzp-key-id');
+      const inputRzpKeySecret = document.querySelector('#cfg-rzp-key-secret');
+      const selectRzpMode = document.querySelector('#cfg-rzp-mode');
+      const inputRzpTheme = document.querySelector('#cfg-rzp-theme');
+      const btnSaveRzpSettings = document.querySelector('#btn-save-rzp-settings');
+      const btnTestRzpConnection = document.querySelector('#btn-test-rzp-connection');
+      const btnToggleRzpSecret = document.querySelector('#btn-toggle-rzp-secret');
+      const rzpSettingsFeedback = document.querySelector('#rzp-settings-feedback');
+      const settingsRzpBadge = document.querySelector('#settings-rzp-badge');
+
+      // Toggle Secret Visibility
+      if (btnToggleRzpSecret && inputRzpKeySecret) {
+        btnToggleRzpSecret.addEventListener('click', function () {
+          if (inputRzpKeySecret.type === 'password') {
+            inputRzpKeySecret.type = 'text';
+            btnToggleRzpSecret.textContent = 'Hide';
+          } else {
+            inputRzpKeySecret.type = 'password';
+            btnToggleRzpSecret.textContent = 'Show';
+          }
+        });
+      }
+
+      function updateRzpBadge(keyId, mode) {
+        if (!settingsRzpBadge) return;
+        const isLive = (keyId && keyId.startsWith('rzp_live_')) || mode === 'live';
+        if (isLive) {
+          settingsRzpBadge.className = 'status-badge status-delivered';
+          settingsRzpBadge.textContent = '● Razorpay Live (Production)';
+        } else {
+          settingsRzpBadge.className = 'status-badge status-intransit';
+          settingsRzpBadge.style.color = '#38BDF8';
+          settingsRzpBadge.textContent = '● Razorpay Active (Sandbox)';
+        }
+      }
+
+      // Fetch active Razorpay settings from backend
+      async function loadRazorpaySettings() {
+        try {
+          const res = await fetch('/api/payment-settings');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.settings) {
+              if (inputRzpKeyId) inputRzpKeyId.value = data.settings.razorpay_key_id || 'rzp_test_51L0RA9876DEMO';
+              if (inputRzpKeySecret && data.settings.razorpay_key_secret) inputRzpKeySecret.value = data.settings.razorpay_key_secret;
+              if (selectRzpMode) selectRzpMode.value = data.settings.razorpay_mode || 'test';
+              if (inputRzpTheme) inputRzpTheme.value = data.settings.razorpay_theme_color || '#00B4D8';
+              updateRzpBadge(data.settings.razorpay_key_id, data.settings.razorpay_mode);
+            }
+          }
+        } catch (e) {
+          console.warn('[ADMIN] Could not load backend payment settings:', e);
+        }
+      }
+      loadRazorpaySettings();
+
+      // Save Razorpay Settings
+      if (btnSaveRzpSettings) {
+        btnSaveRzpSettings.addEventListener('click', async function () {
+          const keyId = inputRzpKeyId ? inputRzpKeyId.value.trim() : '';
+          const keySecret = inputRzpKeySecret ? inputRzpKeySecret.value.trim() : '';
+          const mode = selectRzpMode ? selectRzpMode.value : 'test';
+          const theme = inputRzpTheme ? inputRzpTheme.value.trim() : '#00B4D8';
+
+          try {
+            btnSaveRzpSettings.disabled = true;
+            btnSaveRzpSettings.textContent = 'Saving...';
+
+            const res = await fetch('/api/payment-settings', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_key_id: keyId,
+                razorpay_key_secret: keySecret,
+                razorpay_mode: mode,
+                razorpay_theme_color: theme
+              })
+            });
+
+            if (res.ok) {
+              updateRzpBadge(keyId, mode);
+              if (rzpSettingsFeedback) {
+                rzpSettingsFeedback.style.display = 'inline';
+                setTimeout(() => { rzpSettingsFeedback.style.display = 'none'; }, 3000);
+              }
+            } else {
+              alert('Error saving Razorpay settings');
+            }
+          } catch (e) {
+            alert('Failed to save settings: ' + e.message);
+          } finally {
+            btnSaveRzpSettings.disabled = false;
+            btnSaveRzpSettings.textContent = 'Save Razorpay Configuration';
+          }
+        });
+      }
+
+      // Test Connection Button
+      if (btnTestRzpConnection) {
+        btnTestRzpConnection.addEventListener('click', async function () {
+          const keyId = inputRzpKeyId ? inputRzpKeyId.value.trim() : '';
+          const keySecret = inputRzpKeySecret ? inputRzpKeySecret.value.trim() : '';
+
+          btnTestRzpConnection.disabled = true;
+          btnTestRzpConnection.textContent = 'Testing... ⚡';
+
+          try {
+            const res = await fetch('/api/razorpay/test-connection', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ key_id: keyId, key_secret: keySecret })
+            });
+            const data = await res.json();
+            alert(data.message || (data.success ? 'Connection validated successfully!' : 'Validation failed'));
+          } catch (err) {
+            alert('Connection test failed: ' + err.message);
+          } finally {
+            btnTestRzpConnection.disabled = false;
+            btnTestRzpConnection.textContent = 'Test Connection ⚡';
+          }
+        });
+      }
 
       // Populate Settings Inputs
       const inputDispatchPhone = document.querySelector('#cfg-dispatch-phone');
