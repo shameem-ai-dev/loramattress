@@ -61,18 +61,9 @@
   // ==========================================
   const CartDrawer = {
     cartData: {
-      items: [
-        {
-          id: 101,
-          title: "LORA CLOUD 7™",
-          variant: "Queen (78\" × 60\") • 7-Inch Eurotop",
-          price: 26999,
-          quantity: 1,
-          image: "comfort-plush.jpg"
-        }
-      ],
-      itemCount: 1,
-      totalPrice: 26999
+      items: [],
+      itemCount: 0,
+      totalPrice: 0
     },
 
     threshold: 35000, // ₹35,000 Free White Glove Setup

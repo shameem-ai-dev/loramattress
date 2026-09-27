@@ -1202,13 +1202,13 @@
           <span>WhatsApp</span>
         </a>
 
-        <button type="button" class="header-action-btn has-items" data-action="open-cart" aria-label="View Sleep Bag">
+        <button type="button" class="header-action-btn" data-action="open-cart" aria-label="View Sleep Bag">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          <span class="cart-count-badge">1</span>
+          <span class="cart-count-badge" style="display: none;">0</span>
         </button>
 
         <!-- Mobile Quick Menu Toggle -->
@@ -4562,23 +4562,13 @@
     </div>
 
     <div class="cart-items-scroll" id="cart-items-container">
-      <div class="cart-item-card" data-item-id="cart-item-default">
-        <img loading="lazy" src="assets/comfort-plush.jpg" alt="LORA CLOUD 7" class="cart-item-thumb">
-        <div style="flex: 1;">
-          <strong style="display: block; font-size: 0.95rem;">01. LORA CLOUD 7™</strong>
-          <span style="font-size: 0.8rem; color: #64748B;">Queen 78×60" • 8-Inch</span>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
-            <strong style="color: #38BDF8;">₹21,999</strong>
-            <button type="button" style="background:none; border:none; color:#EF4444; font-size:0.75rem; cursor:pointer;" data-action="remove-item">Remove</button>
-          </div>
-        </div>
-      </div>
+      <!-- Populated dynamically by renderCartUI() -->
     </div>
 
-    <div class="cart-footer-block" id="cart-footer-block">
+    <div class="cart-footer-block" id="cart-footer-block" style="display: none;">
       <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem;">
         <span>Subtotal</span>
-        <strong style="font-size: 1.15rem;" id="cart-subtotal-val">₹21,999</strong>
+        <strong style="font-size: 1.15rem;" id="cart-subtotal-val">₹0</strong>
       </div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.82rem; color: #059669;">
         <span>Insured Pan-India Express Delivery</span>
@@ -7099,24 +7089,14 @@
       const cartSubtotalVal = document.querySelector('#cart-subtotal-val');
       const cartFooterBlock = document.querySelector('#cart-footer-block');
 
-      // Initialize cart state from local storage or default starter item
+      // Initialize cart state from local storage (starts empty for new visitors)
       let currentCartItems = [];
       try {
         const storedCart = localStorage.getItem('lora_cart_items_v1');
         if (storedCart) {
           currentCartItems = JSON.parse(storedCart);
         } else {
-          currentCartItems = [
-            {
-              id: 'cart-item-cloud7',
-              title: '01. LORA CLOUD 7™',
-              specs: 'Queen 78×60" • 8-Inch',
-              price: 21999,
-              image: 'assets/comfort-plush.jpg'
-            }
-          ];
-          localStorage.setItem('lora_cart_items_v1', JSON.stringify(currentCartItems));
-          localStorage.setItem('lora_cart_count_v1', currentCartItems.length);
+          currentCartItems = [];
         }
       } catch (e) {
         currentCartItems = [];
@@ -7174,6 +7154,7 @@
               </button>
             </div>
           `;
+          if (cartSubtotalVal) cartSubtotalVal.textContent = '₹0';
           if (cartFooterBlock) cartFooterBlock.style.display = 'none';
 
           // Re-bind close button inside empty view
