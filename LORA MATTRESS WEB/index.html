@@ -7963,6 +7963,18 @@
           let rzpKeyId = 'rzp_test_51L0RA9876DEMO';
           let rzpThemeColor = '#00B4D8';
 
+          // 1. Instant hydration from admin-configured storage
+          try {
+            const localRzp = JSON.parse(localStorage.getItem('lora_rzp_settings_v1') || '{}');
+            if (localRzp.razorpay_key_id) {
+              rzpKeyId = localRzp.razorpay_key_id.trim();
+            }
+            if (localRzp.razorpay_theme_color) {
+              rzpThemeColor = localRzp.razorpay_theme_color.trim();
+            }
+          } catch (e) {}
+
+          // 2. Fetch server order ID from serverless /api/razorpay/create-order
           try {
             const rzpRes = await fetch('/api/razorpay/create-order', {
               method: 'POST',
@@ -7971,6 +7983,8 @@
                 amount: finalOrderPrice,
                 currency: 'INR',
                 receipt: orderId,
+                key_id: rzpKeyId,
+                theme_color: rzpThemeColor,
                 notes: {
                   order_id: orderId,
                   customer_name: name,
@@ -7981,10 +7995,13 @@
               })
             });
             if (rzpRes.ok) {
-              const rzpData = await rzpRes.json();
-              if (rzpData.order_id) rzpOrderId = rzpData.order_id;
-              if (rzpData.key_id) rzpKeyId = rzpData.key_id;
-              if (rzpData.theme_color) rzpThemeColor = rzpData.theme_color;
+              const contentType = rzpRes.headers.get('content-type') || '';
+              if (contentType.includes('application/json')) {
+                const rzpData = await rzpRes.json();
+                if (rzpData.order_id) rzpOrderId = rzpData.order_id;
+                if (rzpData.key_id) rzpKeyId = rzpData.key_id;
+                if (rzpData.theme_color) rzpThemeColor = rzpData.theme_color;
+              }
             }
           } catch (netErr) {
             console.warn('[CHECKOUT] Backend Razorpay order create notice:', netErr);
