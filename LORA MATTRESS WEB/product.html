@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/base.css?v=20260917v5">
+  <!-- Razorpay Checkout Gateway SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <style>
     /* Dedicated Product Detail Page Styles */
@@ -273,64 +275,324 @@
       margin-bottom: 2rem;
     }
 
-    /* Option Selectors */
-    .pdp-opt-group {
-      margin-bottom: 1.75rem;
+    /* ========================================================
+       EASY COMMON-MAN HORIZONTAL PILL CONFIGURATOR (LIKE OUTSIDE CARD)
+       ======================================================== */
+    .pdp-quick-selector-card {
+      background: rgba(13, 20, 38, 0.85);
+      border: 1px solid rgba(0, 180, 216, 0.25);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
     }
 
-    .pdp-opt-label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #FFFFFF;
-      margin-bottom: 0.65rem;
+    .pdp-pill-row {
+      margin-bottom: 1.15rem;
+    }
+
+    .pdp-pill-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      gap: 0.5rem;
     }
 
-    .pdp-opt-pills {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.6rem;
-    }
-
-    .pdp-pill-choice {
-      padding: 0.75rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all var(--duration-fast) ease;
-      text-align: left;
-    }
-
-    .pdp-pill-choice:hover {
-      border-color: var(--brand-cyan);
-      background: rgba(0, 180, 216, 0.08);
-    }
-
-    .pdp-pill-choice.active {
-      border-color: #00B4D8;
-      background: rgba(0, 180, 216, 0.2);
-      box-shadow: 0 0 14px rgba(0, 180, 216, 0.35);
-    }
-
-    .pdp-pill-title {
-      font-size: 0.88rem;
-      font-weight: 700;
+    .pdp-pill-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: #FFFFFF;
-      display: block;
+    }
+
+    .pdp-pill-val-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+    }
+
+    .pdp-measure-guide-link {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #94A3B8;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      transition: all 180ms ease;
+    }
+    .pdp-measure-guide-link:hover {
+      color: #38BDF8;
+      border-color: #38BDF8;
+      background: rgba(0, 180, 216, 0.1);
+    }
+
+    .pdp-pills-wrap {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pdp-pill-btn {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+      color: #CBD5E1 !important;
+      border-radius: 9999px !important;
+      padding: 0.5rem 0.95rem !important;
+      font-size: 0.84rem !important;
+      font-weight: 700 !important;
+      font-family: inherit !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.35rem !important;
+      transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      outline: none !important;
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+    }
+
+    .pdp-pill-btn:hover {
+      background: rgba(0, 180, 216, 0.1) !important;
+      border-color: rgba(0, 180, 216, 0.4) !important;
+      color: #FFFFFF !important;
+    }
+
+    .pdp-pill-btn.active {
+      background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+      border-color: #00B4D8 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 14px rgba(0, 180, 216, 0.35) !important;
+    }
+
+    .pdp-pill-icon {
+      font-size: 1rem;
+      line-height: 1;
     }
 
     .pdp-pill-sub {
-      font-size: 0.74rem;
-      color: var(--text-secondary);
-      margin-top: 0.15rem;
-      display: block;
+      font-size: 0.72rem;
+      color: #94A3B8;
+      font-weight: 600;
+      margin-left: 0.15rem;
     }
 
-    /* Action Buttons */
+    .pdp-pill-btn.active .pdp-pill-sub {
+      color: #BAE6FD;
+    }
+
+    .pdp-pill-star {
+      font-size: 0.65rem;
+      color: #FBBF24;
+      font-weight: 800;
+      background: rgba(251, 191, 36, 0.15);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      margin-left: 0.2rem;
+    }
+
+    .pdp-dim-helper-line {
+      margin-top: 0.5rem;
+      font-size: 0.76rem;
+      color: #94A3B8;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      border-left: 2.5px solid #00B4D8;
+    }
+
+    .pdp-helper-dot {
+      color: #10B981;
+      font-weight: 800;
+    }
+
+    /* Compact Custom Builder */
+    .pdp-custom-builder-compact {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      border-radius: 12px;
+      padding: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .pdp-custom-compact-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      font-size: 0.82rem;
+      color: #FFFFFF;
+    }
+
+    .pdp-badge-zero-extra {
+      font-size: 0.68rem;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      font-weight: 700;
+    }
+
+    .pdp-custom-compact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .pdp-custom-compact-col label {
+      display: block;
+      font-size: 0.7rem;
+      color: #94A3B8;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .pdp-input-chip-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pdp-input-chip-group input {
+      width: 100%;
+      background: rgba(6, 9, 19, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 0.45rem 2.5rem 0.45rem 0.65rem;
+      box-sizing: border-box;
+    }
+
+    .pdp-input-chip-group input:focus {
+      border-color: #00B4D8;
+      outline: none;
+    }
+
+    .pdp-chip-unit {
+      position: absolute;
+      right: 0.55rem;
+      font-size: 0.7rem;
+      color: #64748B;
+      pointer-events: none;
+    }
+
+    .pdp-chip-presets {
+      display: flex;
+      gap: 0.25rem;
+      margin-top: 0.35rem;
+    }
+
+    .pdp-preset-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .pdp-preset-chip.active {
+      background: rgba(0, 180, 216, 0.2);
+      border-color: #00B4D8;
+      color: #38BDF8;
+    }
+
+    .pdp-custom-compact-feedback {
+      font-size: 0.75rem;
+      color: #CBD5E1;
+      background: rgba(0, 180, 216, 0.08);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+    }
+    .pdp-custom-compact-feedback strong {
+      color: #38BDF8;
+    }
+
+    /* Dual Purchase Action Row (Common Man Conversion Focused) */
+    .pdp-dual-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+    .btn-pdp-buy-now {
+      background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 800 !important;
+      font-size: 1.02rem !important;
+      border-radius: var(--radius-md) !important;
+      border: none !important;
+      padding: 1.05rem !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 18px rgba(0, 180, 216, 0.4) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.4rem !important;
+      transition: all 180ms ease !important;
+      text-decoration: none !important;
+    }
+    .btn-pdp-buy-now:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 180, 216, 0.5) !important;
+    }
+    .btn-pdp-add-bag {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      font-size: 0.98rem !important;
+      border-radius: var(--radius-md) !important;
+      padding: 1.05rem !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.4rem !important;
+      transition: all 180ms ease !important;
+    }
+    .btn-pdp-add-bag:hover {
+      background: rgba(255, 255, 255, 0.14) !important;
+      border-color: #38BDF8 !important;
+      color: #38BDF8 !important;
+    }
+
+    /* Fallback global rule ensuring size-pill-btn is NEVER white on any device */
+    .size-pill-btn {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #CBD5E1 !important;
+      border-radius: 10px !important;
+    }
+    .size-pill-btn.active {
+      border-color: #00B4D8 !important;
+      background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+      color: #FFFFFF !important;
+    }
     .pdp-actions-stack {
       display: flex;
       flex-direction: column;
@@ -481,7 +743,7 @@
 
     @media (max-width: 768px) {
       .pdp-header-nav {
-        padding: 0.5rem 0 !important;
+        padding: 0.45rem 0 !important;
         background: rgba(6, 9, 19, 0.98) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
@@ -494,51 +756,35 @@
         font-size: 0.76rem !important;
         white-space: nowrap !important;
       }
-      .pdp-title {
-        font-size: 1.65rem !important;
-        line-height: 1.18 !important;
-        margin-bottom: 0.4rem !important;
+      .model-switcher-strip {
+        padding: 0.4rem 0 !important;
       }
-      .pdp-price-val {
-        font-size: 1.65rem !important;
-      }
-      .pdp-opt-pills {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 0.45rem !important;
-      }
-      .pdp-pill-choice {
-        padding: 0.6rem 0.65rem !important;
-      }
-      .pdp-pill-title {
-        font-size: 0.78rem !important;
-      }
-      .pdp-pill-sub {
-        font-size: 0.68rem !important;
-      }
-      .pdp-thickness-row {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.45rem !important;
-      }
-      .pdp-thickness-row .size-pill-btn {
-        padding: 0.6rem 0.25rem !important;
+      .model-switch-btn {
+        padding: 0.32rem 0.75rem !important;
         font-size: 0.72rem !important;
-        text-align: center !important;
       }
-      .header-auth-btn {
-        height: 34px !important;
-        padding: 0 0.65rem !important;
-        font-size: 0.74rem !important;
+      .pdp-main-section {
+        padding: 0.75rem 0 5rem !important;
+      }
+      .pdp-grid {
+        gap: 1rem !important;
+      }
+      .pdp-gallery-sticky {
+        gap: 0.5rem !important;
       }
       .pdp-main-stage {
-        aspect-ratio: 4 / 3 !important;
-        max-height: 320px !important;
-        background: #080D1A !important;
+        aspect-ratio: 16 / 10 !important;
+        height: 220px !important;
+        max-height: 220px !important;
+        background: radial-gradient(circle at 50% 50%, #152238 0%, #060913 90%) !important;
+        border: 1px solid rgba(0, 180, 216, 0.25) !important;
+        border-radius: 14px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         padding: 6px !important;
         box-sizing: border-box !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 180, 216, 0.12) !important;
       }
       .pdp-main-img {
         width: 100% !important;
@@ -551,34 +797,160 @@
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
-        gap: 0.4rem !important;
-        margin-bottom: 0.65rem !important;
+        gap: 0.35rem !important;
+        margin-bottom: 0.45rem !important;
         width: 100% !important;
       }
       .pdp-badge-floating .badge-verified {
         font-size: 0.65rem !important;
-        padding: 0.25rem 0.55rem !important;
+        padding: 0.22rem 0.55rem !important;
       }
       .pdp-thumb-strip {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
         gap: 0.45rem !important;
-        margin-top: 0.65rem !important;
+        margin-top: 0.45rem !important;
       }
       .pdp-thumb-btn {
-        aspect-ratio: 1 / 1 !important;
+        height: 48px !important;
+        aspect-ratio: unset !important;
         border-radius: 8px !important;
-        background: #080D1A !important;
+        background: #0B132B !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
         overflow: hidden !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         padding: 2px !important;
       }
+      .pdp-thumb-btn.active {
+        border-color: #00B4D8 !important;
+        box-shadow: 0 0 10px rgba(0, 180, 216, 0.4) !important;
+      }
       .pdp-thumb-btn img {
         width: 100% !important;
         height: 100% !important;
         object-fit: contain !important;
+      }
+      .pdp-config-panel {
+        padding: 1.15rem 0.85rem !important;
+        border-radius: 16px !important;
+        margin-top: 0.4rem !important;
+      }
+      .pdp-model-tag {
+        font-size: 0.72rem !important;
+        padding: 0.22rem 0.65rem !important;
+        margin-bottom: 0.45rem !important;
+      }
+      .pdp-title {
+        font-size: 1.45rem !important;
+        line-height: 1.18 !important;
+        margin-bottom: 0.25rem !important;
+        letter-spacing: -0.02em !important;
+      }
+      .pdp-tagline {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.65rem !important;
+        color: #38BDF8 !important;
+      }
+      .pdp-trust-rating-strip {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.35rem 0.6rem !important;
+        margin-bottom: 0.85rem !important;
+        font-size: 0.74rem !important;
+        line-height: 1.35 !important;
+        color: #94A3B8 !important;
+      }
+      .pdp-price-row {
+        padding: 0.75rem 0 !important;
+        margin-bottom: 0.85rem !important;
+        gap: 0.65rem !important;
+      }
+      .pdp-price-val {
+        font-size: 1.65rem !important;
+        color: #38BDF8 !important;
+      }
+      .pdp-mrp-val {
+        font-size: 1rem !important;
+      }
+      .pdp-save-badge {
+        font-size: 0.72rem !important;
+        padding: 0.2rem 0.55rem !important;
+      }
+      .pdp-emi-card {
+        padding: 0.65rem 0.85rem !important;
+        margin-bottom: 1.15rem !important;
+        background: rgba(13, 20, 38, 0.85) !important;
+        border: 1px solid rgba(0, 180, 216, 0.3) !important;
+      }
+      .pdp-opt-group {
+        margin-bottom: 1.15rem !important;
+      }
+      .pdp-opt-label {
+        font-size: 0.78rem !important;
+        margin-bottom: 0.45rem !important;
+      }
+      .pdp-opt-pills {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.45rem !important;
+      }
+      .pdp-pill-choice {
+        padding: 0.55rem 0.65rem !important;
+        border-radius: 9px !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+      .pdp-pill-choice.active {
+        border-color: #00B4D8 !important;
+        background: rgba(0, 180, 216, 0.18) !important;
+        box-shadow: 0 0 12px rgba(0, 180, 216, 0.3) !important;
+      }
+      .pdp-pill-title {
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
+      }
+      .pdp-pill-sub {
+        font-size: 0.66rem !important;
+        color: #94A3B8 !important;
+      }
+      .pdp-thickness-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.45rem !important;
+      }
+      .size-pill-btn {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #CBD5E1 !important;
+        border-radius: 9px !important;
+        padding: 0.55rem 0.25rem !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        min-height: 44px !important;
+      }
+      .size-pill-btn.active {
+        border-color: #00B4D8 !important;
+        background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 0 12px rgba(0, 180, 216, 0.35) !important;
+      }
+      .pdp-actions-stack {
+        gap: 0.65rem !important;
+        margin-top: 1.35rem !important;
+      }
+      .pdp-actions-stack .btn {
+        min-height: 48px !important;
+        font-size: 0.92rem !important;
+        font-weight: 800 !important;
+      }
+      .header-auth-btn {
+        height: 34px !important;
+        padding: 0 0.65rem !important;
+        font-size: 0.74rem !important;
       }
     }
 
@@ -731,13 +1103,13 @@
           <span>Logout</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
         </button>
-        <button type="button" class="header-action-btn has-items" data-action="open-cart" aria-label="View Sleep Bag">
+        <button type="button" class="header-action-btn" data-action="open-cart" aria-label="View Sleep Bag">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          <span class="cart-count-badge">1</span>
+          <span class="cart-count-badge" style="display: none;">0</span>
         </button>
 
         <!-- Mobile Quick Menu Toggle -->
@@ -818,12 +1190,13 @@
           <h1 class="pdp-title" id="pdp-title">01. LORA CLOUD 7™</h1>
           <p class="pdp-tagline" id="pdp-tagline">Super Soft 7-Zone Dual Comfort</p>
 
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.88rem;">
-            <span style="color: #F59E0B; font-weight: 700;">★ 4.9 / 5.0</span>
-            <span style="color: var(--text-secondary);">•</span>
-            <span style="color: var(--text-secondary);">Google Verified (5,00,000+ Sleepers)</span>
-            <span style="color: var(--text-secondary);">•</span>
-            <span style="color: #059669; font-weight: 700;">In Stock • Ready to Dispatch</span>
+          <div class="pdp-trust-rating-strip">
+            <span style="color: #F59E0B; font-weight: 800;">★ 4.9</span>
+            <span>(5,00,000+ Sleepers)</span>
+            <span>•</span>
+            <span style="color: #10B981; font-weight: 700;">Direct from Factory</span>
+            <span>•</span>
+            <span style="color: #38BDF8; font-weight: 700;">In Stock</span>
           </div>
 
           <div class="pdp-price-row">
@@ -835,60 +1208,132 @@
           <!-- Bajaj Finserv EMI Card -->
           <div class="pdp-emi-card">
             <div>
-              <strong style="font-size: 0.95rem; color: var(--brand-royal); display: block;" id="pdp-emi-text">
+              <strong style="font-size: 0.95rem; color: #38BDF8; display: block;" id="pdp-emi-text">
                 ⚡ ₹1,833 / month with Bajaj Finserv 0% EMI
               </strong>
-              <span style="font-size: 0.78rem; color: #64748B;">Zero down payment • 12 easy monthly installments</span>
+              <span style="font-size: 0.78rem; color: #94A3B8;">Zero down payment • 12 easy monthly installments</span>
             </div>
-            <span style="font-size: 0.75rem; font-weight: 700; background: #FFFFFF; border: 1px solid rgba(0, 180, 216, 0.3); padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); color: var(--brand-royal);">
-              NO COST
+            <span style="font-size: 0.75rem; font-weight: 800; background: rgba(0, 180, 216, 0.15); border: 1px solid rgba(0, 180, 216, 0.35); padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); color: #38BDF8; white-space: nowrap;">
+              0% NO COST
             </span>
           </div>
 
-          <!-- Select Cot Size -->
-          <div class="pdp-opt-group">
-            <label class="pdp-opt-label">
-              <span>1. Select Cot Size</span>
-              <span style="color: var(--brand-royal); font-weight: 600;" id="pdp-selected-size-label">Queen (78" × 60")</span>
-            </label>
-            <div class="pdp-opt-pills">
-              <button type="button" class="pdp-pill-choice active" data-size="queen" data-multiplier="1.0">
-                <span class="pdp-pill-title">Queen (78" × 60")</span>
-                <span class="pdp-pill-sub">198 × 152 cm • Most Popular</span>
-              </button>
-              <button type="button" class="pdp-pill-choice" data-size="king" data-multiplier="1.18">
-                <span class="pdp-pill-title">King (78" × 72")</span>
-                <span class="pdp-pill-sub">198 × 183 cm • Spacious Luxury</span>
-              </button>
-              <button type="button" class="pdp-pill-choice" data-size="single" data-multiplier="0.68">
-                <span class="pdp-pill-title">Single (72" × 36")</span>
-                <span class="pdp-pill-sub">183 × 91 cm • Individual Bed</span>
-              </button>
-              <button type="button" class="pdp-pill-choice" data-size="double" data-multiplier="0.82">
-                <span class="pdp-pill-title">Double (72" × 48")</span>
-                <span class="pdp-pill-sub">183 × 122 cm • Compact Suite</span>
-              </button>
+          <!-- QUICK COMMON-MAN VARIANT SELECTOR CARD -->
+          <div class="pdp-quick-selector-card">
+            <!-- 1. Cot Size Row -->
+            <div class="pdp-pill-row">
+              <div class="pdp-pill-header">
+                <span class="pdp-pill-label">1. Select Cot Size:</span>
+                <span class="pdp-pill-val-tag" id="pdp-selected-cot-label">Queen (5.0 ft)</span>
+              </div>
+              <div class="pdp-pills-wrap pdp-bed-pills-wrap">
+                <button type="button" class="pdp-pill-btn active" data-type="queen">
+                  <span class="pdp-pill-icon">🛏️</span> Queen
+                </button>
+                <button type="button" class="pdp-pill-btn" data-type="king">
+                  <span class="pdp-pill-icon">👑</span> King
+                </button>
+                <button type="button" class="pdp-pill-btn" data-type="double">
+                  <span class="pdp-pill-icon">👥</span> Double
+                </button>
+                <button type="button" class="pdp-pill-btn" data-type="single">
+                  <span class="pdp-pill-icon">👤</span> Single
+                </button>
+                <button type="button" class="pdp-pill-btn pdp-pill-btn-custom" data-type="custom">
+                  <span class="pdp-pill-icon">📐</span> Custom Size
+                </button>
+              </div>
             </div>
-          </div>
 
-          <!-- Select Thickness -->
-          <div class="pdp-opt-group">
-            <label class="pdp-opt-label">
-              <span>2. Select Mattress Thickness</span>
-              <span style="color: var(--brand-royal); font-weight: 600;" id="pdp-selected-thick-label">8-Inch (20 cm)</span>
-            </label>
-            <div class="pdp-thickness-row" style="display: flex; gap: 0.6rem;">
-              <button type="button" class="size-pill-btn" data-thick="6" data-thick-add="-2000" style="flex: 1; padding: 0.75rem;">6-Inch (15 cm)</button>
-              <button type="button" class="size-pill-btn active" data-thick="8" data-thick-add="0" style="flex: 1; padding: 0.75rem;">8-Inch (20 cm) [Standard]</button>
-              <button type="button" class="size-pill-btn" data-thick="10" data-thick-add="3500" style="flex: 1; padding: 0.75rem;">10-Inch (25 cm) [Eurotop]</button>
+            <!-- 2. Inch Size Row -->
+            <div class="pdp-pill-row" id="pdp-inch-row-wrap">
+              <div class="pdp-pill-header">
+                <span class="pdp-pill-label">2. Select Inch Size:</span>
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                  <span class="pdp-pill-val-tag" id="pdp-selected-inch-label">78" × 60"</span>
+                  <a href="#how-to-measure" class="pdp-measure-guide-link">📏 Measure Guide</a>
+                </div>
+              </div>
+              <div class="pdp-pills-wrap pdp-inch-pills-wrap" id="pdp-inch-container">
+                <!-- Dynamically populated based on active Bed Type -->
+              </div>
+              <!-- Compact Dimension Callout -->
+              <div class="pdp-dim-helper-line" id="pdp-dim-helper-line">
+                <span class="pdp-helper-dot">✓</span>
+                <span id="pdp-dim-helper-text">6.5 × 5.0 ft (198 × 152 cm) • Standard Master Bed Choice</span>
+              </div>
+            </div>
+
+            <!-- Custom Size Input Card (Displayed when 'custom' is active) -->
+            <div class="pdp-custom-builder-compact" id="pdp-custom-wrap" style="display: none;">
+              <div class="pdp-custom-compact-top">
+                <strong>📐 Custom Dimension Builder (Exact Inches)</strong>
+                <span class="pdp-badge-zero-extra">0% Extra Customization Charge</span>
+              </div>
+              <div class="pdp-custom-compact-grid">
+                <div class="pdp-custom-compact-col">
+                  <label for="pdp-custom-len">Length (Head to Toe):</label>
+                  <div class="pdp-input-chip-group">
+                    <input type="number" id="pdp-custom-len" value="78" min="60" max="86" step="1" title="Length in inches">
+                    <span class="pdp-chip-unit">Inches</span>
+                  </div>
+                  <div class="pdp-chip-presets">
+                    <button type="button" class="pdp-preset-chip" onclick="setPdpCustomDim('len', 72)">72"</button>
+                    <button type="button" class="pdp-preset-chip" onclick="setPdpCustomDim('len', 75)">75"</button>
+                    <button type="button" class="pdp-preset-chip active" onclick="setPdpCustomDim('len', 78)">78"</button>
+                    <button type="button" class="pdp-preset-chip" onclick="setPdpCustomDim('len', 84)">84"</button>
+                  </div>
+                </div>
+                <div class="pdp-custom-compact-col">
+                  <label for="pdp-custom-wid">Width (Side to Side):</label>
+                  <div class="pdp-input-chip-group">
+                    <input type="number" id="pdp-custom-wid" value="60" min="30" max="84" step="1" title="Width in inches">
+                    <span class="pdp-chip-unit">Inches</span>
+                  </div>
+                  <div class="pdp-chip-presets">
+                    <button type="button" class="pdp-preset-chip" onclick="setPdpCustomDim('wid', 36)">36"</button>
+                    <button type="button" class="pdp-preset-chip" onclick="setPdpCustomDim('wid', 48)">48"</button>
+                    <button type="button" class="pdp-preset-chip active" onclick="setPdpCustomDim('wid', 60)">60"</button>
+                    <button type="button" class="pdp-preset-chip" onclick="setPdpCustomDim('wid', 72)">72"</button>
+                  </div>
+                </div>
+              </div>
+              <div class="pdp-custom-compact-feedback" id="pdp-custom-summary-text">
+                Custom Size: <strong>78" × 60"</strong> (6.50 × 5.00 ft • 198 × 152 cm) • Direct factory custom build
+              </div>
+            </div>
+
+            <!-- 3. Thickness Row -->
+            <div class="pdp-pill-row">
+              <div class="pdp-pill-header">
+                <span class="pdp-pill-label">3. Select Mattress Thickness:</span>
+                <span class="pdp-pill-val-tag" id="pdp-selected-thick-label">8-Inch (20 cm) [Standard]</span>
+              </div>
+              <div class="pdp-pills-wrap pdp-thick-pills-wrap">
+                <button type="button" class="pdp-pill-btn" data-thick="6">
+                  6" (15 cm) <span class="pdp-pill-sub">-₹2.5k</span>
+                </button>
+                <button type="button" class="pdp-pill-btn active" data-thick="8">
+                  8" (20 cm) <span class="pdp-pill-star">★ Popular</span>
+                </button>
+                <button type="button" class="pdp-pill-btn" data-thick="10">
+                  10" (25 cm) <span class="pdp-pill-sub">Eurotop</span>
+                </button>
+                <button type="button" class="pdp-pill-btn" data-thick="12">
+                  12" (30 cm) <span class="pdp-pill-sub">Grand Luxe</span>
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- Firmness Dial -->
           <div class="pdp-opt-group">
-            <label class="pdp-opt-label">
-              <span>3. Ergonomic Firmness Index</span>
-              <span style="color: var(--brand-royal); font-weight: 700;" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
+            <label class="pdp-opt-label-main" style="margin-bottom: 0.65rem; display: flex; justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 0.45rem;">
+                <span class="pdp-step-badge" style="background: rgba(255, 255, 255, 0.15);">4</span>
+                <span>Ergonomic Firmness Index</span>
+              </span>
+              <span style="color: #38BDF8; font-weight: 700;" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
             </label>
             <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
               <div class="meter-labels" style="margin-bottom: 0.5rem; font-size: 0.74rem;">
@@ -905,12 +1350,18 @@
             </div>
           </div>
 
-          <!-- Primary Actions -->
+          <!-- Primary Actions (Dual Direct Purchase Row) -->
           <div class="pdp-actions-stack">
-            <button type="button" class="btn btn-primary" id="pdp-add-bag-btn" style="padding: 1.15rem; font-size: 1.05rem;">
-              Add to Sleep Bag • Instant Free Delivery →
-            </button>
-            <a id="pdp-action-whatsapp" href="#" target="_blank" class="btn btn-whatsapp" style="padding: 1rem; font-size: 1rem;">
+            <div class="pdp-dual-actions-row">
+              <button type="button" class="btn-pdp-add-bag" id="pdp-add-bag-btn">
+                🛍️ Add to Bag
+              </button>
+              <button type="button" class="btn-pdp-buy-now" id="pdp-buy-now-btn">
+                ⚡ Buy Now (Instant Checkout)
+              </button>
+            </div>
+
+            <a id="pdp-action-whatsapp" href="#" target="_blank" class="btn btn-whatsapp" style="padding: 0.95rem; font-size: 0.95rem; margin-top: 0.5rem;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
               </svg>
@@ -1901,16 +2352,39 @@
         category: "Cloud Soft Plush Series",
         basePrice: 21999,
         mrp: 36999,
-        emi: 1833,
         warranty: "10 Years Warranty",
         firmnessVal: "SOFT ●●○○○ FIRM (2.0/5)",
         feelLabel: "Gentle Cloud Cushioning",
         meterPercent: "38%",
         postureRec: "Recommended for side sleepers and sleepers seeking deep joint pressure relief with zero shoulder pinch.",
         heroImg: "assets/comfort-plush.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "7-Zone Adaptive Cloud Foam + Aerodynamic Transition Core",
         cover: "Micro-Quilted Cloud Knitted Fabric with PCM Cooling Technology",
         motion: "Zero Motion Disturbance (Independent Absorption)",
+        defaultStock: "in-stock",
+        dispatchLoc: "Bengaluru / Mumbai Direct Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "LIMITED FESTIVE OFFER: FLAT 15% OFF + FREE SLEEP BUNDLE",
+          desc: "Includes 2 Ergonomic Memory Pillows + 1 Waterproof Mattress Protector (Worth ₹4,999) complimentary today.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Micro-Quilted Cloud Knitted Cover with Active Cooling PCM", desc: "Phase-change material woven directly into high-GSM circular knit fabric to absorb body heat and maintain thermal equilibrium." },
           { num: 2, title: "7-Zone Pressure-Relief Adaptive Cloud Foam", desc: "Segmented into 7 anatomical relief zones that soften under broad shoulders and hips while supporting the lumbar spine." },
@@ -1926,16 +2400,39 @@
         category: "Clinical Orthopedic Series",
         basePrice: 23499,
         mrp: 38999,
-        emi: 1958,
         warranty: "12 Years Warranty",
         firmnessVal: "SOFT ●●●●○ FIRM (4.0/5)",
         feelLabel: "Targeted Lumbar Support",
         meterPercent: "78%",
         postureRec: "Recommended for back sleepers, individuals with lower back stiffness, and those needing spine doctor recommended support.",
         heroImg: "assets/comfort-firm.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "High-Density Orthopedic Pressure Relief Foam + SpineSupport Bonded Core",
         cover: "Antibacterial Bamboo Air-Mesh Fabric with Anti-Allergenic Guard",
         motion: "High Structural Motion Resistance",
+        defaultStock: "in-stock",
+        dispatchLoc: "Hyderabad / Bengaluru Direct Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "ORTHOPEDIC SPINE CARE SALE: FLAT 15% OFF",
+          desc: "Includes 2 Contoured Cervical Memory Foam Pillows (Worth ₹3,499) complimentary today.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Antibacterial Bamboo Fabric with Airflow Quilting", desc: "Naturally hypoallergenic bamboo fibers woven with micro-ventilation channels to stay dust-mite free and fresh." },
           { num: 2, title: "High-Density Orthopedic Pressure Relief Foam", desc: "Firm, resilient foam that contours to the lumbar curve without allowing the spine to sink into unnatural lordosis." },
@@ -1951,16 +2448,39 @@
         category: "Natural Latex & Eurotop",
         basePrice: 27999,
         mrp: 44999,
-        emi: 2333,
         warranty: "12 Years Warranty",
         firmnessVal: "SOFT ●●○○○ FIRM (2.5/5)",
         feelLabel: "5-Star Hotel Decadence",
         meterPercent: "32%",
         postureRec: "Recommended for side and combination sleepers who crave the floating buoyancy of 100% natural organic latex.",
         heroImg: "assets/comfort-plush.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "100% Organic Dunlop Latex Sheet + High Resilience Aerating Foundation",
         cover: "Cashmere-Infused Belgium Knitted Eurotop with Silk Piping",
         motion: "Zero Vibration Lateral Isolation",
+        defaultStock: "in-stock",
+        dispatchLoc: "Mumbai Direct Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "5-STAR LUXURY UPGRADE: 15% OFF + HOTEL BEDDING KIT",
+          desc: "Complimentary 400 TC Egyptian Cotton Fitted Sheet + 2 Down Alternative Pillows.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Cashmere-Infused Belgium Knitted Eurotop", desc: "Ultra-soft, hand-tufted European pillowtop layer that offers immediate luxurious sinking comfort." },
           { num: 2, title: "100% Organic Dunlop Latex Comfort Sheet", desc: "Harvested from Kerala rubber trees. Naturally buoyant, antimicrobial, and ventilated with thousands of pin-core air channels." },
@@ -1976,16 +2496,39 @@
         category: "Orthopedic Pocket Hybrid",
         basePrice: 29499,
         mrp: 48999,
-        emi: 2458,
         warranty: "12 Years Warranty",
         firmnessVal: "SOFT ●●●◐○ FIRM (3.5/5)",
         feelLabel: "Balanced Contour & Bounce",
         meterPercent: "65%",
         postureRec: "Ideal for couples with different weights, back and stomach sleepers, and anyone who hates motion disturbance.",
         heroImg: "assets/comfort-balanced.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "Individually Encased 5-Zone Pocket Springs + High Resilience Foam",
         cover: "Thermoregulating Knitted Top Fabric with Breathable Mesh Borders",
         motion: "Absolute Zero Partner Disturbance",
+        defaultStock: "in-stock",
+        dispatchLoc: "Bengaluru Factory",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "ZERO MOTION HYBRID DEAL: 15% OFF + 2 FREE PILLOWS",
+          desc: "Zero disturbance guaranteed: Direct factory manufacturing with free home delivery.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Thermoregulating Knitted Top Fabric", desc: "Active cooling fabric that releases heat build-up throughout the night." },
           { num: 2, title: "High Resilience Adaptive Foam Cushioning", desc: "Ergonomic comfort layer that cushions joint pressure while preserving responsiveness." },
@@ -2001,16 +2544,39 @@
         category: "Eco-Organic Latex",
         basePrice: 34999,
         mrp: 58999,
-        emi: 2916,
         warranty: "15 Years Warranty",
         firmnessVal: "SOFT ●●●●○ FIRM (4.0/5)",
         feelLabel: "Resilient Organic Pushback",
         meterPercent: "75%",
         postureRec: "Best for eco-conscious sleepers, hot sleepers, and those who need firm pushback without synthetic chemical off-gassing.",
         heroImg: "assets/material-natural-latex.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "100% Pure Natural Dunlop Latex + High-Density Orthopedic Substrate",
         cover: "GOTS Certified Organic Cotton Jacquard Quilted Cover",
         motion: "Natural Organic Pin-Core Absorption",
+        defaultStock: "in-stock",
+        dispatchLoc: "Kerala / Bengaluru Direct Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "ORGANIC SLEEP HARVEST: FLAT ₹5,000 OFF",
+          desc: "100% Natural GOLS/GOTS certified latex. Free organic cotton protector included.",
+          type: "flat",
+          value: 5000,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "GOTS Certified Organic Cotton Jacquard Quilted Cover", desc: "100% pure organic cotton free from synthetic bleaches, pesticides, or chemical dyes. Silky and cool." },
           { num: 2, title: "100% Pure Natural Dunlop Latex (Kerala Sourced)", desc: "Zero synthetic blends. Provides instant buoyant pushback to keep spine straight and releases body heat naturally." },
@@ -2026,16 +2592,39 @@
         category: "Dual Comfort Reversible",
         basePrice: 19499,
         mrp: 32999,
-        emi: 1624,
         warranty: "10 Years Warranty",
         firmnessVal: "SOFT ●●●○○ FIRM (3.0/5)",
         feelLabel: "Reversible Medium Soft / Medium Firm",
         meterPercent: "50%",
         postureRec: "Universal comfort for master suites, guest rooms, and sleepers whose preferences shift between soft and medium-firm.",
         heroImg: "assets/comfort-balanced.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "Dual-Sided Adaptive High-Resilience Ergonomic Core",
         cover: "Breathable Air-Mesh Quilted Top with Reversible Zip",
         motion: "Dual-Layer Dampening",
+        defaultStock: "in-stock",
+        dispatchLoc: "Delhi NCR Direct Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "VERSATILE DUAL COMFORT SALE: 15% OFF",
+          desc: "2 Firmnesses in 1 mattress. Includes 2 reversible microfiber pillows.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Breathable Air-Mesh Quilted Top Cover", desc: "Lightweight, breathable stretch-knit fabric with 3D ventilation mesh along the borders." },
           { num: 2, title: "Dual-Sided Adaptive High-Resilience Core", desc: "Side A is medium-soft contouring; flip to Side B for medium-firm orthopedic resilience." },
@@ -2050,16 +2639,39 @@
         category: "Pocket Spring Luxury",
         basePrice: 28999,
         mrp: 47999,
-        emi: 2416,
         warranty: "12 Years Warranty",
         firmnessVal: "SOFT ●●●◐○ FIRM (3.5/5)",
         feelLabel: "Zero Partner Disturbance",
         meterPercent: "60%",
         postureRec: "Engineered specifically for light sleepers whose partners toss and turn, get in/out of bed, or have different sleep hours.",
         heroImg: "assets/material-pocket-springs.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "1,200+ Individually Calibrated Pocket Springs + EdgeGuard Wall",
         cover: "Silk-Touch Quilted Pillowtop Fabric with Acoustic Dampening",
         motion: "100% Isolated Motion Transfer (Water Glass Tested)",
+        defaultStock: "in-stock",
+        dispatchLoc: "Bengaluru Factory Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "POCKET LUXE SPECIAL: 15% OFF + SLEEP TECH BUNDLE",
+          desc: "Guaranteed undisturbed sleep. Includes 2 ergonomic pocket coil pillows.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Silk-Touch Quilted Pillowtop Fabric", desc: "Decadent microfiber quilting providing an acoustic buffer and plush surface touch." },
           { num: 2, title: "High-Density Cushioning Transition Layer", desc: "Buffers your body from direct spring contact while letting coils respond to pressure dynamically." },
@@ -2075,16 +2687,39 @@
         category: "Flagship Multi-Tier Hybrid",
         basePrice: 36999,
         mrp: 62999,
-        emi: 3083,
         warranty: "15 Years Warranty",
         firmnessVal: "SOFT ●●●●○ FIRM (4.0/5)",
         feelLabel: "The Masterpiece Flagship",
         meterPercent: "70%",
         postureRec: "For sleepers who demand the absolute best of both worlds: pure organic Dunlop latex buoyancy combined with titanium pocket coil spine care.",
         heroImg: "assets/lifestyle-editorial.jpg",
+        explodedImg: "assets/hero-stage-2-exploded.jpg",
+        spineImg: "assets/hero-stage-3-spine.jpg",
+        roomImg: "assets/lifestyle-editorial.jpg",
         core: "Organic Dunlop Latex + 7-Zone Titanium Encased Coils + High Density Core",
         cover: "Phase-Change Cooling Surface Fabric with Tailored Midnight Navy Borders",
         motion: "Dual Acoustic & Mechanical Motion Dissipation",
+        defaultStock: "in-stock",
+        dispatchLoc: "Bengaluru Master Craftsman Hub",
+        multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
+        thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+        inchAddons: {
+          king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
+          queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
+          single: { "72x36": 0, "75x36": 500, "78x36": 900, "75x42": 1600 },
+          double: { "72x48": 0, "75x48": 600, "78x48": 1200 }
+        },
+        combinationOverrides: {},
+        combinationStock: {},
+        offer: {
+          active: true,
+          title: "FLAGSHIP LAUNCH CELEBRATION: FLAT 15% OFF + ROYAL SANCTUARY SUITE",
+          desc: "Includes 2 Organic Latex Pillows + 1 All-Season Duvet + 1 Mattress Protector (Worth ₹8,999) FREE.",
+          type: "percent",
+          value: 15,
+          couponCode: "LORA10",
+          couponPct: 10
+        },
         layers: [
           { num: 1, title: "Phase-Change Cooling Surface Fabric", desc: "State-of-the-art micro-encapsulated cooling fabric that absorbs excess heat and stays cool to the touch all night." },
           { num: 2, title: "100% Organic Dunlop Latex Comfort Layer", desc: "Delivers resilient buoyant support and prevents partner depression zones from forming." },
@@ -2119,16 +2754,45 @@
     }
     syncServerCatalogPdp();
 
-    // State
+    // Common-Man Dimension Definitions
+    const INCH_SPECS = {
+      queen: [
+        { id: "78x60", title: "78\" × 60\"", feet: "6.5 × 5.0 ft", cm: "198 × 152 cm", label: "Standard Master Bed Choice", popular: true },
+        { id: "75x60", title: "75\" × 60\"", feet: "6.25 × 5.0 ft", cm: "190 × 152 cm", label: "Apartment Master Frame" },
+        { id: "72x60", title: "72\" × 60\"", feet: "6.0 × 5.0 ft", cm: "183 × 152 cm", label: "Compact Bedroom Fit" },
+        { id: "78x66", title: "78\" × 66\"", feet: "6.5 × 5.5 ft", cm: "198 × 168 cm", label: "Olympic Extra Width" }
+      ],
+      king: [
+        { id: "78x72", title: "78\" × 72\"", feet: "6.5 × 6.0 ft", cm: "198 × 183 cm", label: "Master King Bed Choice", popular: true },
+        { id: "75x72", title: "75\" × 72\"", feet: "6.25 × 6.0 ft", cm: "190 × 183 cm", label: "Contemporary King Frame" },
+        { id: "72x72", title: "72\" × 72\"", feet: "6.0 × 6.0 ft", cm: "183 × 183 cm", label: "Square Classic Fit" },
+        { id: "84x72", title: "84\" × 72\"", feet: "7.0 × 6.0 ft", cm: "213 × 183 cm", label: "Extra Tall Grand King" }
+      ],
+      double: [
+        { id: "75x48", title: "75\" × 48\"", feet: "6.25 × 4.0 ft", cm: "190 × 122 cm", label: "Standard Double Bed", popular: true },
+        { id: "72x48", title: "72\" × 48\"", feet: "6.0 × 4.0 ft", cm: "183 × 122 cm", label: "Compact Double Cot" },
+        { id: "78x48", title: "78\" × 48\"", feet: "6.5 × 4.0 ft", cm: "198 × 122 cm", label: "Extended Double Cot" }
+      ],
+      single: [
+        { id: "75x36", title: "75\" × 36\"", feet: "6.25 × 3.0 ft", cm: "190 × 91 cm", label: "Standard Single / Diwan", popular: true },
+        { id: "72x36", title: "72\" × 36\"", feet: "6.0 × 3.0 ft", cm: "183 × 91 cm", label: "Compact Single Cot" },
+        { id: "78x36", title: "78\" × 36\"", feet: "6.5 × 3.0 ft", cm: "198 × 91 cm", label: "Tall Single Cot" },
+        { id: "75x42", title: "75\" × 42\"", feet: "6.25 × 3.5 ft", cm: "190 × 107 cm", label: "Maxi Single / Teen Bed" }
+      ]
+    };
+
+    // Active Selection State
     let currentModelKey = "01";
-    let currentSizeMultiplier = 1.0;
-    let currentThickAdd = 0;
+    let activeCotType = "queen";
+    let activeInchId = "78x60";
+    let activeThickness = 8;
+    let customLenInches = 78;
+    let customWidInches = 60;
 
     function parseModelFromUrl() {
       const urlParams = new URLSearchParams(window.location.search);
       let model = urlParams.get('model');
       if (!model) {
-        // Check pathname
         const path = window.location.pathname;
         const match = path.match(/lora-([a-z0-9-]+)/);
         if (match) {
@@ -2144,15 +2808,156 @@
         }
       }
 
-      if (model && PRODUCTS_DATA[model]) {
-        return model;
+      if (!model || !PRODUCTS_DATA[model]) {
+        model = "01";
       }
-      return "01";
+
+      const cotParam = urlParams.get('cot');
+      if (cotParam && ['queen', 'king', 'double', 'single', 'custom'].includes(cotParam.toLowerCase())) {
+        activeCotType = cotParam.toLowerCase();
+      }
+
+      const inchParam = urlParams.get('inch');
+      if (inchParam) {
+        activeInchId = inchParam;
+      }
+
+      const thickParam = parseInt(urlParams.get('thick'), 10);
+      if (thickParam && [6, 8, 10, 12].includes(thickParam)) {
+        activeThickness = thickParam;
+      }
+
+      return model;
     }
 
-    function calculateCurrentPrice(basePrice) {
-      const price = Math.round(basePrice * currentSizeMultiplier) + currentThickAdd;
-      return price;
+    function computeDiscounts(data, rawPrice) {
+      let finalPrice = rawPrice;
+      const offer = data.offer || {};
+      if (offer.active) {
+        if (offer.type === 'percent') {
+          const pct = parseFloat(offer.value) || 0;
+          finalPrice = Math.round(finalPrice * (1 - pct / 100));
+        } else if (offer.type === 'flat') {
+          const flat = parseInt(offer.value, 10) || 0;
+          finalPrice = Math.max(5000, finalPrice - flat);
+        }
+      }
+      return finalPrice;
+    }
+
+    function calculateCurrentPrice() {
+      const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
+      if (!data) return 21999;
+
+      const combKey = `${activeCotType}_${activeInchId}_${activeThickness}`;
+
+      if (data.combinationOverrides && data.combinationOverrides[combKey] !== undefined) {
+        const rawPrice = parseInt(data.combinationOverrides[combKey], 10);
+        return computeDiscounts(data, rawPrice);
+      }
+
+      const base = data.basePrice || 21999;
+      const mult = (data.multipliers && data.multipliers[activeCotType]) || 1.0;
+      const thickOffsets = data.thicknessOffsets || { "6": -2500, "8": 0, "10": 3800, "12": 7500 };
+      const thickDelta = thickOffsets[String(activeThickness)] !== undefined ? thickOffsets[String(activeThickness)] : 0;
+
+      let inchDelta = 0;
+      if (activeCotType === 'custom') {
+        const sqInches = (customLenInches || 78) * (customWidInches || 60);
+        inchDelta = Math.round(base * ((sqInches / 4680) - 1) * 0.85);
+      } else if (data.inchAddons && data.inchAddons[activeCotType]) {
+        inchDelta = data.inchAddons[activeCotType][activeInchId] || 0;
+      }
+
+      const calculated = Math.round(base * mult) + thickDelta + inchDelta;
+      return computeDiscounts(data, calculated);
+    }
+
+    function renderInchOptions() {
+      const container = document.querySelector('#pdp-inch-container');
+      const customWrap = document.querySelector('#pdp-custom-wrap');
+      const inchRowWrap = document.querySelector('#pdp-inch-row-wrap');
+      const inchLabel = document.querySelector('#pdp-selected-inch-label');
+      const cotLabel = document.querySelector('#pdp-selected-cot-label');
+      const helperText = document.querySelector('#pdp-dim-helper-text');
+
+      if (cotLabel) {
+        const cotNames = {
+          queen: 'Queen (5.0 ft)',
+          king: 'King (6.0 ft)',
+          double: 'Double (4.0 ft)',
+          single: 'Single (3.0 ft)',
+          custom: 'Custom Dimension'
+        };
+        cotLabel.textContent = cotNames[activeCotType] || activeCotType.toUpperCase();
+      }
+
+      if (activeCotType === 'custom') {
+        if (inchRowWrap) inchRowWrap.style.display = 'none';
+        if (customWrap) customWrap.style.display = 'block';
+        if (inchLabel) inchLabel.textContent = `Custom (${customLenInches}" × ${customWidInches}")`;
+        updatePdpCustomSummary();
+        return;
+      }
+
+      if (inchRowWrap) inchRowWrap.style.display = 'block';
+      if (customWrap) customWrap.style.display = 'none';
+      if (!container) return;
+
+      const specs = INCH_SPECS[activeCotType] || [];
+      if (!specs.find(s => s.id === activeInchId)) {
+        activeInchId = specs[0] ? specs[0].id : '78x60';
+      }
+
+      container.innerHTML = specs.map(s => `
+        <button type="button" class="pdp-pill-btn ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
+          ${s.title} ${s.popular ? '<span class="pdp-pill-star">★ Popular</span>' : ''}
+        </button>
+      `).join('');
+
+      const activeSpec = specs.find(s => s.id === activeInchId) || specs[0];
+      if (inchLabel && activeSpec) {
+        inchLabel.textContent = `${activeSpec.title} (${activeSpec.feet})`;
+      }
+      if (helperText && activeSpec) {
+        helperText.textContent = `${activeSpec.feet} (${activeSpec.cm}) • ${activeSpec.label}`;
+      }
+    }
+
+    window.setPdpCustomDim = function(dim, val) {
+      if (dim === 'len') {
+        customLenInches = parseInt(val, 10) || 78;
+        const input = document.querySelector('#pdp-custom-len');
+        if (input) input.value = customLenInches;
+        document.querySelectorAll('#pdp-custom-wrap .pdp-custom-compact-col:nth-child(1) .pdp-preset-chip').forEach(b => {
+          b.classList.toggle('active', parseInt(b.textContent, 10) === customLenInches);
+        });
+      } else {
+        customWidInches = parseInt(val, 10) || 60;
+        const input = document.querySelector('#pdp-custom-wid');
+        if (input) input.value = customWidInches;
+        document.querySelectorAll('#pdp-custom-wrap .pdp-custom-compact-col:nth-child(2) .pdp-preset-chip').forEach(b => {
+          b.classList.toggle('active', parseInt(b.textContent, 10) === customWidInches);
+        });
+      }
+      updatePdpCustomSummary();
+      updatePriceDisplay();
+    };
+
+    function updatePdpCustomSummary() {
+      const summaryText = document.querySelector('#pdp-custom-summary-text');
+      const inchLabel = document.querySelector('#pdp-selected-inch-label');
+      const feetL = (customLenInches / 12).toFixed(2);
+      const feetW = (customWidInches / 12).toFixed(2);
+      const cmL = Math.round(customLenInches * 2.54);
+      const cmW = Math.round(customWidInches * 2.54);
+
+      if (summaryText) {
+        summaryText.innerHTML = `Custom Size: <strong>${customLenInches}" × ${customWidInches}"</strong> (${feetL} × ${feetW} ft • ${cmL} × ${cmW} cm) • Direct factory custom build`;
+      }
+      if (inchLabel) {
+        inchLabel.textContent = `Custom (${customLenInches}" × ${customWidInches}")`;
+      }
     }
 
     function renderProduct(modelKey) {
@@ -2168,11 +2973,7 @@
 
       // Update model switcher buttons
       document.querySelectorAll('.model-switch-btn').forEach(btn => {
-        if (btn.getAttribute('data-model') === modelKey) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+        btn.classList.toggle('active', btn.getAttribute('data-model') === modelKey);
       });
 
       // Update Gallery
@@ -2181,10 +2982,29 @@
       const thumb1 = document.querySelector('#thumb-1');
       if (thumb1) {
         thumb1.setAttribute('data-img', data.heroImg);
-        thumb1.querySelector('img').src = data.heroImg;
+        const t1 = thumb1.querySelector('img');
+        if (t1) t1.src = data.heroImg;
+      }
+      const thumb2 = document.querySelector('#thumb-2');
+      if (thumb2 && data.explodedImg) {
+        thumb2.setAttribute('data-img', data.explodedImg);
+        const t2 = thumb2.querySelector('img');
+        if (t2) t2.src = data.explodedImg;
+      }
+      const thumb3 = document.querySelector('#thumb-3');
+      if (thumb3 && data.spineImg) {
+        thumb3.setAttribute('data-img', data.spineImg);
+        const t3 = thumb3.querySelector('img');
+        if (t3) t3.src = data.spineImg;
+      }
+      const thumb4 = document.querySelector('#thumb-4');
+      if (thumb4 && data.roomImg) {
+        thumb4.setAttribute('data-img', data.roomImg);
+        const t4 = thumb4.querySelector('img');
+        if (t4) t4.src = data.roomImg;
       }
 
-      // Update Header & Pricing
+      // Update Header & Tags
       const titleEl = document.querySelector('#pdp-title');
       if (titleEl) titleEl.textContent = data.name;
       const tagEl = document.querySelector('#pdp-tag');
@@ -2237,15 +3057,48 @@
       const tWarr = document.querySelector('#table-warranty');
       if (tWarr) tWarr.textContent = data.warranty;
 
+      // Sync active state on bed type pills
+      document.querySelectorAll('.pdp-pill-btn[data-type]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-type') === activeCotType);
+      });
+
+      // Sync active state on thickness pills
+      document.querySelectorAll('.pdp-pill-btn[data-thick]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.getAttribute('data-thick'), 10) === activeThickness);
+      });
+      const thickLabel = document.querySelector('#pdp-selected-thick-label');
+      if (thickLabel) {
+        const names = {
+          6: '6-Inch (15 cm)',
+          8: '8-Inch (20 cm) [Standard]',
+          10: '10-Inch (25 cm) [Eurotop]',
+          12: '12-Inch (30 cm) [Grand Luxe]'
+        };
+        thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+      }
+
+      renderInchOptions();
       updatePriceDisplay();
     }
 
     function updatePriceDisplay() {
-      const data = PRODUCTS_DATA[currentModelKey];
+      const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
       if (!data) return;
 
-      const finalPrice = calculateCurrentPrice(data.basePrice);
-      const finalMrp = Math.round(finalPrice * 1.65);
+      const finalPrice = calculateCurrentPrice();
+      const base = data.basePrice || 21999;
+      const mult = (data.multipliers && data.multipliers[activeCotType]) || 1.0;
+      const thickOffsets = data.thicknessOffsets || { "6": -2500, "8": 0, "10": 3800, "12": 7500 };
+      const thickDelta = thickOffsets[String(activeThickness)] !== undefined ? thickOffsets[String(activeThickness)] : 0;
+      let inchDelta = 0;
+      if (activeCotType === 'custom') {
+        const sqInches = (customLenInches || 78) * (customWidInches || 60);
+        inchDelta = Math.round(base * ((sqInches / 4680) - 1) * 0.85);
+      } else if (data.inchAddons && data.inchAddons[activeCotType]) {
+        inchDelta = data.inchAddons[activeCotType][activeInchId] || 0;
+      }
+      const rawPrice = Math.round(base * mult) + thickDelta + inchDelta;
+      const finalMrp = Math.round(rawPrice * 1.65);
       const savings = finalMrp - finalPrice;
       const emiVal = Math.round(finalPrice / 12);
 
@@ -2265,9 +3118,10 @@
       if (transPrice) transPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
 
       // Update WhatsApp link with prefilled order details
-      const selectedSize = document.querySelector('#pdp-selected-size-label')?.textContent || 'Queen';
+      const selectedCot = document.querySelector('#pdp-selected-cot-label')?.textContent || 'Queen';
+      const selectedSize = document.querySelector('#pdp-selected-inch-label')?.textContent || '78" × 60"';
       const selectedThick = document.querySelector('#pdp-selected-thick-label')?.textContent || '8-Inch';
-      const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in size ${selectedSize} (${selectedThick}) for ₹${finalPrice.toLocaleString('en-IN')}. Please confirm direct factory delivery and Bajaj EMI details.`);
+      const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in ${selectedCot} [${selectedSize}, ${selectedThick}] for ₹${finalPrice.toLocaleString('en-IN')}. Please confirm direct factory delivery and Bajaj EMI details.`);
       
       const waAction = document.querySelector('#pdp-action-whatsapp');
       if (waAction) waAction.href = `https://wa.me/919876543210?text=${waMsg}`;
@@ -2276,21 +3130,59 @@
 
       // Stock Status button control
       const buyBtn = document.querySelector('#pdp-add-bag-btn');
-      if (buyBtn) {
-        if (data.defaultStock === 'out-of-stock') {
+      const buyNowBtn = document.querySelector('#pdp-buy-now-btn');
+      if (data.defaultStock === 'out-of-stock') {
+        if (buyBtn) {
           buyBtn.disabled = true;
-          buyBtn.textContent = '✕ Out of Stock • Currently Unavailable';
+          buyBtn.textContent = '✕ Out of Stock';
           buyBtn.style.opacity = '0.55';
           buyBtn.style.cursor = 'not-allowed';
-          buyBtn.style.background = '#475569';
-        } else {
+        }
+        if (buyNowBtn) {
+          buyNowBtn.disabled = true;
+          buyNowBtn.textContent = '✕ Unavailable';
+          buyNowBtn.style.opacity = '0.55';
+          buyNowBtn.style.cursor = 'not-allowed';
+        }
+      } else {
+        if (buyBtn) {
           buyBtn.disabled = false;
-          buyBtn.textContent = 'Add to Sleep Bag • Instant Free Delivery →';
+          buyBtn.textContent = '🛍️ Add to Bag';
           buyBtn.style.opacity = '1';
           buyBtn.style.cursor = 'pointer';
-          buyBtn.style.background = '';
+        }
+        if (buyNowBtn) {
+          buyNowBtn.disabled = false;
+          buyNowBtn.textContent = `⚡ Buy Now (₹${finalPrice.toLocaleString('en-IN')})`;
+          buyNowBtn.style.opacity = '1';
+          buyNowBtn.style.cursor = 'pointer';
         }
       }
+
+      // Update sticky mobile bar
+      const stickyPrice = document.querySelector('#mobile-sticky-price');
+      if (stickyPrice) stickyPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+    }
+
+    function getSelectedPdpOrderPayload() {
+      const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
+      const finalPrice = calculateCurrentPrice();
+      let sizeText = '';
+      if (activeCotType === 'custom') {
+        sizeText = `Custom (${customLenInches}" × ${customWidInches}") • ${activeThickness}-Inch`;
+      } else {
+        const specs = INCH_SPECS[activeCotType] || [];
+        const spec = specs.find(s => s.id === activeInchId) || specs[0];
+        const cotTitle = activeCotType.charAt(0).toUpperCase() + activeCotType.slice(1);
+        sizeText = `${cotTitle} Size • ${spec ? spec.title : ''} • ${activeThickness}-Inch`;
+      }
+      return {
+        productName: data.name,
+        size: sizeText,
+        price: finalPrice,
+        quantity: 1,
+        image: data.heroImg
+      };
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -2308,41 +3200,114 @@
         });
       });
 
-      // Size Pill Selector (Delegated & Direct)
+      // Bed Type, Dimension & Thickness Pill Click Handlers
       document.addEventListener('click', function (e) {
-        const sizeBtn = e.target.closest('.pdp-pill-choice');
-        if (sizeBtn) {
+        // 1. Bed Type Pill (Queen, King, Double, Single, Custom)
+        const bedPill = e.target.closest('.pdp-pill-btn[data-type], .pdp-bed-card');
+        if (bedPill) {
           e.preventDefault();
-          document.querySelectorAll('.pdp-pill-choice').forEach(b => b.classList.remove('active'));
-          sizeBtn.classList.add('active');
-
-          currentSizeMultiplier = parseFloat(sizeBtn.getAttribute('data-multiplier') || '1.0');
-          const sizeTitle = sizeBtn.querySelector('.pdp-pill-title')?.textContent || sizeBtn.textContent.trim();
-          const sizeLabel = document.querySelector('#pdp-selected-size-label');
-          if (sizeLabel) sizeLabel.textContent = sizeTitle;
-
+          document.querySelectorAll('.pdp-pill-btn[data-type], .pdp-bed-card').forEach(b => b.classList.remove('active'));
+          bedPill.classList.add('active');
+          activeCotType = bedPill.getAttribute('data-type') || 'queen';
+          const specs = INCH_SPECS[activeCotType] || [];
+          if (!specs.find(s => s.id === activeInchId)) {
+            activeInchId = specs[0] ? specs[0].id : '78x60';
+          }
+          renderInchOptions();
           updatePriceDisplay();
           return;
         }
 
-        const thickBtn = e.target.closest('[data-thick]');
-        if (thickBtn) {
+        // 2. Numeric Dimension Pill
+        const dimPill = e.target.closest('.pdp-pill-btn[data-inch], .pdp-dim-card');
+        if (dimPill) {
           e.preventDefault();
-          document.querySelectorAll('[data-thick]').forEach(b => b.classList.remove('active'));
-          thickBtn.classList.add('active');
-
-          currentThickAdd = parseInt(thickBtn.getAttribute('data-thick-add') || '0', 10);
-          const thickLabel = document.querySelector('#pdp-selected-thick-label');
-          if (thickLabel) thickLabel.textContent = thickBtn.textContent.trim();
-
+          document.querySelectorAll('.pdp-pill-btn[data-inch], .pdp-dim-card').forEach(b => b.classList.remove('active'));
+          dimPill.classList.add('active');
+          activeInchId = dimPill.getAttribute('data-inch');
+          const specs = INCH_SPECS[activeCotType] || [];
+          const activeSpec = specs.find(s => s.id === activeInchId) || specs[0];
+          const inchLabel = document.querySelector('#pdp-selected-inch-label');
+          const helperText = document.querySelector('#pdp-dim-helper-text');
+          if (inchLabel && activeSpec) {
+            inchLabel.textContent = `${activeSpec.title} (${activeSpec.feet})`;
+          }
+          if (helperText && activeSpec) {
+            helperText.textContent = `${activeSpec.feet} (${activeSpec.cm}) • ${activeSpec.label}`;
+          }
           updatePriceDisplay();
+          return;
+        }
+
+        // 3. Thickness Pill
+        const thickPill = e.target.closest('.pdp-pill-btn[data-thick], .pdp-thick-card, [data-thick]');
+        if (thickPill) {
+          e.preventDefault();
+          document.querySelectorAll('.pdp-pill-btn[data-thick], .pdp-thick-card, [data-thick]').forEach(b => b.classList.remove('active'));
+          thickPill.classList.add('active');
+          activeThickness = parseInt(thickPill.getAttribute('data-thick') || '8', 10);
+          const thickLabel = document.querySelector('#pdp-selected-thick-label');
+          if (thickLabel) {
+            const names = {
+              6: '6-Inch (15 cm)',
+              8: '8-Inch (20 cm) [Standard]',
+              10: '10-Inch (25 cm) [Eurotop]',
+              12: '12-Inch (30 cm) [Grand Luxe]'
+            };
+            thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+          }
+          updatePriceDisplay();
+          return;
+        }
+
+        // 4. Model Switcher Pill
+        const modelBtn = e.target.closest('.model-switch-btn');
+        if (modelBtn) {
+          e.preventDefault();
+          const targetModel = modelBtn.getAttribute('data-model');
+          if (targetModel && PRODUCTS_DATA[targetModel]) {
+            const newUrl = `product.html?model=${targetModel}&cot=${activeCotType}&inch=${activeInchId}&thick=${activeThickness}`;
+            window.history.pushState({ model: targetModel }, '', newUrl);
+            renderProduct(targetModel);
+          }
           return;
         }
       });
 
+      // Custom Dimension Input Listeners
+      const customLenInput = document.querySelector('#pdp-custom-len');
+      const customWidInput = document.querySelector('#pdp-custom-wid');
+      if (customLenInput) {
+        customLenInput.addEventListener('input', function () {
+          customLenInches = parseInt(this.value, 10) || 78;
+          updatePdpCustomSummary();
+          updatePriceDisplay();
+        });
+      }
+      if (customWidInput) {
+        customWidInput.addEventListener('input', function () {
+          customWidInches = parseInt(this.value, 10) || 60;
+          updatePdpCustomSummary();
+          updatePriceDisplay();
+        });
+      }
+
+      // Buy Now Button -> Directly triggers Instant Checkout Pipeline
+      const buyNowBtn = document.querySelector('#pdp-buy-now-btn');
+      if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          const payload = getSelectedPdpOrderPayload();
+          try {
+            localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(payload));
+          } catch (err) {}
+          window.location.href = 'index.html?checkout=1';
+        });
+      }
+
       // Synchronize Cart Glow & Count on PDP
       function syncPdpCartUI() {
-        let count = 1;
+        let count = 0;
         try {
           const stored = localStorage.getItem('lora_cart_count_v1');
           if (stored !== null) {
@@ -2442,6 +3407,7 @@
 
         const container = document.getElementById('pdp-cart-items-container');
         const subtotalEl = document.getElementById('pdp-cart-subtotal-val');
+        const footerEl = document.getElementById('pdp-cart-footer-block');
         if (!container) return;
 
         if (!items || items.length === 0) {
@@ -2453,8 +3419,11 @@
             </div>
           `;
           if (subtotalEl) subtotalEl.textContent = '₹0';
+          if (footerEl) footerEl.style.display = 'none';
           return;
         }
+
+        if (footerEl) footerEl.style.display = 'block';
 
         let subtotal = 0;
         container.innerHTML = items.map((item, idx) => {
@@ -2504,12 +3473,8 @@
 
       if (addBagBtn) {
         addBagBtn.addEventListener('click', function () {
-          const data = PRODUCTS_DATA[currentModelKey];
-          const finalPrice = calculateCurrentPrice(data.basePrice);
-          const selectedSize = document.querySelector('#pdp-selected-size-label')?.textContent || 'Queen Size';
-          const selectedThick = document.querySelector('#pdp-selected-thick-label')?.textContent || '8-Inch';
-
-          const fingerprint = `${data.name}_${selectedSize}_${selectedThick}_${finalPrice}`;
+          const payload = getSelectedPdpOrderPayload();
+          const fingerprint = `${payload.productName}_${payload.size}_${payload.price}`;
           const now = Date.now();
           if (fingerprint === pdpLastAddFingerprint && (now - pdpLastAddTs < 500)) {
             console.warn('[PDP] Dropped duplicate add to bag within 500ms');
@@ -2518,25 +3483,18 @@
           pdpLastAddTs = now;
           pdpLastAddFingerprint = fingerprint;
 
-          const checkoutItem = {
-            productName: data.name,
-            size: `${selectedSize} • ${selectedThick}`,
-            price: finalPrice,
-            quantity: 1
-          };
-
           try {
-            localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(checkoutItem));
+            localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(payload));
             // Also append into cart items
             let cart = [];
             const stored = localStorage.getItem('lora_cart_items_v1');
             if (stored) cart = JSON.parse(stored);
             cart.push({
               id: 'item-pdp-' + Date.now(),
-              title: data.name,
-              specs: `${selectedSize} • ${selectedThick}`,
-              price: finalPrice,
-              image: data.image
+              title: payload.productName,
+              specs: payload.size,
+              price: payload.price,
+              image: payload.image
             });
             localStorage.setItem('lora_cart_items_v1', JSON.stringify(cart));
             localStorage.setItem('lora_cart_count_v1', cart.length);
@@ -2634,7 +3592,7 @@
       <button type="button" class="mobile-sticky-btn mobile-sticky-btn-cart" id="mobile-sticky-btn-cart" onclick="document.querySelector('#pdp-add-bag-btn')?.click()">
         🛍️ Add
       </button>
-      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#pdp-add-bag-btn')?.click(); setTimeout(() => document.querySelector('[data-action=\"open-cart\"]')?.click(), 250)">
+      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#pdp-buy-now-btn')?.click()">
         Buy Now ⚡
       </button>
     </div>

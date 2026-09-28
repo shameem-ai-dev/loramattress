@@ -64,11 +64,7 @@
         m1Label: 'Core Architecture',
         m1Val: 'Multi-Tier Unified',
         m2Label: 'Surface Cooling',
-        m2Val: 'Active Micro-Knit',
-        callouts: [
-          { top: '38%', left: '55%', text: 'Diamond Cooling Knit Top' },
-          { top: '64%', left: '72%', text: 'Cyan Luminescence Edge Piping' }
-        ]
+        m2Val: 'Active Micro-Knit'
       },
       {
         progress: 0.48,
@@ -79,13 +75,7 @@
         m1Label: 'Pocket Spring Grid',
         m1Val: '1,200+ Independent Coils',
         m2Label: 'Latex Matrix',
-        m2Val: '100% Dunlop Pin-Core',
-        callouts: [
-          { top: '24%', left: '60%', text: 'Tier 1: Phase-Change Quilt' },
-          { top: '42%', left: '68%', text: 'Tier 2: 100% Organic Latex' },
-          { top: '58%', left: '76%', text: 'Tier 3: Titanium Pocket Coils' },
-          { top: '75%', left: '65%', text: 'Tier 4: Acoustic Anti-Sag Base' }
-        ]
+        m2Val: '100% Dunlop Pin-Core'
       },
       {
         progress: 0.84,
@@ -96,29 +86,14 @@
         m1Label: 'Lumbar Lordosis Support',
         m1Val: '100% Neutral Fill',
         m2Label: 'Vertebral Shear Force',
-        m2Val: '0.0 N (Zero-Shear)',
-        callouts: [
-          { top: '35%', left: '58%', text: 'Cervical Zero-Shear Zone' },
-          { top: '50%', left: '66%', text: 'Active Lumbar Pushback' },
-          { top: '65%', left: '52%', text: 'Bioluminescent Pressure Mesh' }
-        ]
+        m2Val: '0.0 N (Zero-Shear)'
       }
     ];
 
-    function updateCallouts(stageIndex) {
-      if (!calloutOverlay) return;
-      const stage = STAGES[stageIndex];
-      if (!stage || !stage.callouts) {
+    function updateCallouts() {
+      if (calloutOverlay) {
         calloutOverlay.innerHTML = '';
-        return;
       }
-
-      calloutOverlay.innerHTML = stage.callouts.map(c => `
-        <div class="hero-callout-pin" style="top: ${c.top}; left: ${c.left};">
-          <span class="callout-dot"></span>
-          <span class="callout-pill">${c.text}</span>
-        </div>
-      `).join('');
     }
 
     function applyStageProgress(prog) {
@@ -181,9 +156,10 @@
         updateCallouts(activeIndex);
       }
 
-      // Highlight corresponding phase button
+      // Highlight corresponding phase button (supports both desktop & mobile controls)
       phaseBtns.forEach((btn, idx) => {
-        if (idx === activeIndex) {
+        const stageIndex = idx % STAGES.length;
+        if (stageIndex === activeIndex) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -247,10 +223,11 @@
       });
     }
 
-    // Phase Buttons Click
+    // Phase Buttons Click (Handles both desktop and mobile buttons)
     phaseBtns.forEach((btn, idx) => {
       btn.addEventListener('click', function () {
-        const stage = STAGES[idx];
+        const stageIndex = idx % STAGES.length;
+        const stage = STAGES[stageIndex];
         if (stage) {
           targetProgress = stage.progress;
           loopProgress = stage.progress;

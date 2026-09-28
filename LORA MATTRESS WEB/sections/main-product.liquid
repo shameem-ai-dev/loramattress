@@ -82,27 +82,46 @@
           Our premier multi-layer comfort system unites Natural Latex Foam, pressure-relieving Memory Foam, and high-density Orthopedic Foam with a dedicated 15-year warranty. Engineered for sleepers wanting advanced multi-layer comfort and stronger spinal support.
         </p>
 
-        <!-- Variant Selector: Standard Indian Size -->
+        <!-- Variant Selector: 1. Select Cot Size & 2. Select Inch Size -->
         <div class="variant-selector-group">
           <div class="variant-label-row">
-            <span>Select Cot Size</span>
+            <span>1. Select Cot Size</span>
             <button type="button" data-action="open-size-guide" style="color: var(--color-brass); text-decoration: underline; font-size: 0.8rem; font-weight: 500;">
               Indian Cot Size Guide
             </button>
           </div>
-          <div class="swatches-grid">
-            <button type="button" class="swatch-pill selected" data-size="King">
-              King (78" × 72")
-            </button>
-            <button type="button" class="swatch-pill" data-size="Queen">
-              Queen (78" × 60")
-            </button>
-            <button type="button" class="swatch-pill" data-size="Double">
-              Double (72" × 48")
-            </button>
-            <button type="button" class="swatch-pill" data-size="Single">
-              Single (72" × 36")
-            </button>
+          <div class="swatches-grid" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
+            <button type="button" class="swatch-pill selected" data-cot="queen">Queen</button>
+            <button type="button" class="swatch-pill" data-cot="king">King</button>
+            <button type="button" class="swatch-pill" data-cot="double">Double</button>
+            <button type="button" class="swatch-pill" data-cot="single">Single</button>
+            <button type="button" class="swatch-pill" data-cot="custom">Custom</button>
+          </div>
+        </div>
+
+        <div class="variant-selector-group" style="margin-top: 1rem;">
+          <div class="variant-label-row">
+            <span>2. Select Inch Size</span>
+            <span style="font-size: 0.8rem; color: #38BDF8;" id="liquid-inch-label">78" × 60"</span>
+          </div>
+          <div class="swatches-grid" id="liquid-inch-grid" style="grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));">
+            <button type="button" class="swatch-pill selected" data-inch="78x60">78" × 60"</button>
+            <button type="button" class="swatch-pill" data-inch="75x60">75" × 60"</button>
+            <button type="button" class="swatch-pill" data-inch="72x60">72" × 60"</button>
+            <button type="button" class="swatch-pill" data-inch="78x66">78" × 66"</button>
+          </div>
+        </div>
+
+        <div class="variant-selector-group" style="margin-top: 1rem;">
+          <div class="variant-label-row">
+            <span>3. Select Mattress Thickness</span>
+            <span style="font-size: 0.8rem; color: #38BDF8;" id="liquid-thick-label">8-Inch (Standard)</span>
+          </div>
+          <div class="swatches-grid" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
+            <button type="button" class="swatch-pill" data-thick="6">6 Inch</button>
+            <button type="button" class="swatch-pill selected" data-thick="8">8 Inch</button>
+            <button type="button" class="swatch-pill" data-thick="10">10 Inch</button>
+            <button type="button" class="swatch-pill" data-thick="12">12 Inch</button>
           </div>
         </div>
 
