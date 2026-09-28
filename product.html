@@ -275,64 +275,460 @@
       margin-bottom: 2rem;
     }
 
-    /* Option Selectors */
+    /* ========================================================
+       COMMON MAN PURCHASABLE MODEL UI: BED TYPE, SIZE, THICKNESS
+       ======================================================== */
     .pdp-opt-group {
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.6rem;
     }
 
-    .pdp-opt-label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #FFFFFF;
-      margin-bottom: 0.65rem;
+    .pdp-opt-header-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      gap: 0.5rem;
     }
 
-    .pdp-opt-pills {
+    .pdp-opt-label-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #FFFFFF;
+      margin: 0;
+    }
+
+    .pdp-step-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00B4D8, #0077B6);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+    }
+
+    .pdp-opt-selected-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      padding: 0.22rem 0.65rem;
+      border-radius: 9999px;
+      letter-spacing: 0.02em;
+    }
+
+    .pdp-measure-guide-link {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #94A3B8;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      transition: all 180ms ease;
+    }
+    .pdp-measure-guide-link:hover {
+      color: #38BDF8;
+      border-color: #38BDF8;
+      background: rgba(0, 180, 216, 0.1);
+    }
+
+    /* Bed Type Grid (5 Cards: Queen, King, Double, Single, Custom) */
+    .pdp-bed-type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) 1.25fr;
+      gap: 0.5rem;
+    }
+
+    .pdp-bed-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 0.65rem 0.45rem;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 180ms ease;
+      color: #CBD5E1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .pdp-bed-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(0, 180, 216, 0.4);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+    .pdp-bed-card.active {
+      border-color: #00B4D8 !important;
+      background: linear-gradient(180deg, rgba(0, 180, 216, 0.22) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 16px rgba(0, 180, 216, 0.35) !important;
+    }
+    .pdp-bed-icon {
+      font-size: 1.15rem;
+      display: block;
+      margin-bottom: 0.2rem;
+      line-height: 1;
+    }
+    .pdp-bed-name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: block;
+      line-height: 1.2;
+    }
+    .pdp-bed-desc {
+      font-size: 0.66rem;
+      color: #94A3B8;
+      display: block;
+      margin-top: 0.2rem;
+      line-height: 1.2;
+    }
+    .pdp-bed-badge {
+      position: absolute;
+      top: -7px;
+      right: -4px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #00B4D8;
+      background: #080D1A;
+      border: 1px solid #00B4D8;
+      border-radius: 9999px;
+      padding: 0.1rem 0.45rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    .pdp-bed-badge-cyan {
+      color: #38BDF8;
+      border-color: #38BDF8;
+    }
+
+    /* Dimension in Numbers (Length × Width) */
+    .pdp-dim-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
-
-    .pdp-pill-choice {
-      padding: 0.75rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .pdp-dim-card {
       background: rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
       cursor: pointer;
-      transition: all var(--duration-fast) ease;
+      transition: all 180ms ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       text-align: left;
     }
-
-    .pdp-pill-choice:hover {
-      border-color: var(--brand-cyan);
-      background: rgba(0, 180, 216, 0.08);
+    .pdp-dim-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(0, 180, 216, 0.4);
     }
-
-    .pdp-pill-choice.active {
-      border-color: #00B4D8;
-      background: rgba(0, 180, 216, 0.2);
-      box-shadow: 0 0 14px rgba(0, 180, 216, 0.35);
+    .pdp-dim-card.active {
+      border-color: #00B4D8 !important;
+      background: rgba(0, 180, 216, 0.18) !important;
+      box-shadow: 0 0 14px rgba(0, 180, 216, 0.3) !important;
     }
-
-    .pdp-pill-title {
+    .pdp-dim-title {
       font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 800;
       color: #FFFFFF;
       display: block;
     }
-
-    .pdp-pill-sub {
-      font-size: 0.74rem;
-      color: var(--text-secondary);
-      margin-top: 0.15rem;
+    .pdp-dim-sub {
+      font-size: 0.72rem;
+      color: #94A3B8;
       display: block;
+      margin-top: 0.15rem;
+    }
+    .pdp-dim-badge {
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #38BDF8;
+      background: rgba(0, 180, 216, 0.15);
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      padding: 0.18rem 0.45rem;
+      border-radius: 6px;
+      white-space: nowrap;
     }
 
-    /* Action Buttons */
+    /* Custom Size Builder */
+    .pdp-custom-builder-card {
+      background: rgba(11, 19, 36, 0.85);
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      border-radius: 14px;
+      padding: 1.15rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .pdp-custom-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.95rem;
+      gap: 0.75rem;
+    }
+    .pdp-custom-inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+    .pdp-custom-field label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+    .pdp-custom-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .pdp-custom-input-box input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 0.55rem 3.5rem 0.55rem 0.75rem;
+      box-sizing: border-box;
+      transition: all 180ms ease;
+    }
+    .pdp-custom-input-box input:focus {
+      border-color: #00B4D8;
+      box-shadow: 0 0 10px rgba(0, 180, 216, 0.35);
+      outline: none;
+    }
+    .pdp-unit {
+      position: absolute;
+      right: 0.75rem;
+      font-size: 0.74rem;
+      color: #64748B;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .pdp-preset-pills {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.45rem;
+      flex-wrap: wrap;
+    }
+    .pdp-preset-tag {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94A3B8;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+    .pdp-preset-tag:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    }
+    .pdp-preset-tag.active {
+      background: rgba(0, 180, 216, 0.2);
+      border-color: #00B4D8;
+      color: #38BDF8;
+    }
+    .pdp-custom-live-summary {
+      background: rgba(0, 180, 216, 0.08);
+      border: 1px solid rgba(0, 180, 216, 0.2);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .pdp-custom-summary-text {
+      font-size: 0.84rem;
+      color: #E2E8F0;
+    }
+    .pdp-custom-summary-text strong {
+      color: #38BDF8;
+    }
+    .pdp-custom-tape-tip {
+      font-size: 0.74rem;
+      color: #94A3B8;
+    }
+
+    /* Thickness Cards (100% Dark Luxury - Never White) */
+    .pdp-thickness-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+    .pdp-thick-card {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 12px !important;
+      padding: 0.75rem 0.55rem !important;
+      text-align: center !important;
+      cursor: pointer !important;
+      position: relative !important;
+      transition: all 180ms ease !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      min-height: 96px !important;
+      color: #CBD5E1 !important;
+      box-sizing: border-box !important;
+    }
+    .pdp-thick-card:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(0, 180, 216, 0.4) !important;
+      color: #FFFFFF !important;
+    }
+    .pdp-thick-card.active {
+      border-color: #00B4D8 !important;
+      background: linear-gradient(180deg, rgba(0, 180, 216, 0.22) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 16px rgba(0, 180, 216, 0.35) !important;
+    }
+    .pdp-thick-popular-badge {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #00B4D8;
+      background: #080D1A;
+      border: 1px solid #00B4D8;
+      border-radius: 9999px;
+      padding: 0.1rem 0.55rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    .pdp-thick-top {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      margin-bottom: 0.2rem;
+    }
+    .pdp-thick-num {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+    .pdp-thick-cm {
+      font-size: 0.72rem;
+      color: #94A3B8;
+      font-weight: 600;
+    }
+    .pdp-thick-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      display: block;
+      line-height: 1.2;
+    }
+    .pdp-thick-desc {
+      font-size: 0.66rem;
+      color: #94A3B8;
+      display: block;
+      margin-top: 0.15rem;
+      line-height: 1.2;
+    }
+    .pdp-thick-mod {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #38BDF8;
+      margin-top: 0.35rem;
+      background: rgba(56, 189, 248, 0.12);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+    }
+
+    /* Dual Purchase Action Row (Common Man Conversion Focused) */
+    .pdp-dual-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .btn-pdp-buy-now {
+      background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 800 !important;
+      font-size: 1.02rem !important;
+      border-radius: var(--radius-md) !important;
+      border: none !important;
+      padding: 1.15rem !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 18px rgba(0, 180, 216, 0.4) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.4rem !important;
+      transition: all 180ms ease !important;
+      text-decoration: none !important;
+    }
+    .btn-pdp-buy-now:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 180, 216, 0.5) !important;
+    }
+    .btn-pdp-add-bag {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      font-size: 0.98rem !important;
+      border-radius: var(--radius-md) !important;
+      padding: 1.15rem !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.4rem !important;
+      transition: all 180ms ease !important;
+    }
+    .btn-pdp-add-bag:hover {
+      background: rgba(255, 255, 255, 0.14) !important;
+      border-color: #38BDF8 !important;
+      color: #38BDF8 !important;
+    }
+
+    /* Fallback global rule ensuring size-pill-btn is NEVER white on any device */
+    .size-pill-btn {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #CBD5E1 !important;
+      border-radius: 10px !important;
+    }
+    .size-pill-btn.active {
+      border-color: #00B4D8 !important;
+      background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+      color: #FFFFFF !important;
+    }
     .pdp-actions-stack {
       display: flex;
       flex-direction: column;
@@ -958,49 +1354,177 @@
             </span>
           </div>
 
-          <!-- Select Cot Size -->
+          <!-- 1. Select Bed / Cot Type (King, Queen, Double, Single, Custom) -->
           <div class="pdp-opt-group">
-            <label class="pdp-opt-label">
-              <span>1. Select Cot Size</span>
-              <span style="color: #38BDF8; font-weight: 700;" id="pdp-selected-size-label">Queen (78" × 60")</span>
-            </label>
-            <div class="pdp-opt-pills">
-              <button type="button" class="pdp-pill-choice active" data-size="queen" data-multiplier="1.0">
-                <span class="pdp-pill-title">Queen (78" × 60")</span>
-                <span class="pdp-pill-sub">198 × 152 cm • Popular</span>
+            <div class="pdp-opt-header-row">
+              <label class="pdp-opt-label-main">
+                <span class="pdp-step-badge">1</span>
+                <span>Select Bed Type</span>
+              </label>
+              <span class="pdp-opt-selected-tag" id="pdp-selected-cot-label">Queen (5.0 ft)</span>
+            </div>
+            
+            <div class="pdp-bed-type-grid">
+              <button type="button" class="pdp-bed-card active" data-type="queen">
+                <span class="pdp-bed-icon">🛏️</span>
+                <span class="pdp-bed-name">Queen</span>
+                <span class="pdp-bed-desc">5.0 ft • Master Bed</span>
+                <span class="pdp-bed-badge">Top Choice</span>
               </button>
-              <button type="button" class="pdp-pill-choice" data-size="king" data-multiplier="1.18">
-                <span class="pdp-pill-title">King (78" × 72")</span>
-                <span class="pdp-pill-sub">198 × 183 cm • Spacious</span>
+              <button type="button" class="pdp-bed-card" data-type="king">
+                <span class="pdp-bed-icon">👑</span>
+                <span class="pdp-bed-name">King</span>
+                <span class="pdp-bed-desc">6.0 ft • Spacious Luxury</span>
               </button>
-              <button type="button" class="pdp-pill-choice" data-size="single" data-multiplier="0.68">
-                <span class="pdp-pill-title">Single (72" × 36")</span>
-                <span class="pdp-pill-sub">183 × 91 cm • Individual</span>
+              <button type="button" class="pdp-bed-card" data-type="double">
+                <span class="pdp-bed-icon">👥</span>
+                <span class="pdp-bed-name">Double</span>
+                <span class="pdp-bed-desc">4.0 ft • Compact Room</span>
               </button>
-              <button type="button" class="pdp-pill-choice" data-size="double" data-multiplier="0.82">
-                <span class="pdp-pill-title">Double (72" × 48")</span>
-                <span class="pdp-pill-sub">183 × 122 cm • Compact</span>
+              <button type="button" class="pdp-bed-card" data-type="single">
+                <span class="pdp-bed-icon">👤</span>
+                <span class="pdp-bed-name">Single</span>
+                <span class="pdp-bed-desc">3.0 ft • Individual Bed</span>
+              </button>
+              <button type="button" class="pdp-bed-card pdp-bed-card-custom" data-type="custom">
+                <span class="pdp-bed-icon">📐</span>
+                <span class="pdp-bed-name">Custom Size</span>
+                <span class="pdp-bed-desc">Any Inches • Exact Fit</span>
+                <span class="pdp-bed-badge pdp-bed-badge-cyan">Custom Fit</span>
               </button>
             </div>
           </div>
 
-          <!-- Select Thickness -->
+          <!-- 2. Select Exact Bed Size in Numbers (Length × Width) -->
           <div class="pdp-opt-group">
-            <label class="pdp-opt-label">
-              <span>2. Select Mattress Thickness</span>
-              <span style="color: #38BDF8; font-weight: 700;" id="pdp-selected-thick-label">8-Inch (20 cm)</span>
-            </label>
-            <div class="pdp-thickness-row" style="display: flex; gap: 0.6rem;">
-              <button type="button" class="size-pill-btn" data-thick="6" data-thick-add="-2000" style="flex: 1; padding: 0.75rem;">6-Inch (15 cm)</button>
-              <button type="button" class="size-pill-btn active" data-thick="8" data-thick-add="0" style="flex: 1; padding: 0.75rem;">8-Inch (20 cm) [Standard]</button>
-              <button type="button" class="size-pill-btn" data-thick="10" data-thick-add="3500" style="flex: 1; padding: 0.75rem;">10-Inch (25 cm) [Eurotop]</button>
+            <div class="pdp-opt-header-row">
+              <label class="pdp-opt-label-main">
+                <span class="pdp-step-badge">2</span>
+                <span>Select Size (Inches / Numbers)</span>
+              </label>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="pdp-opt-selected-tag" id="pdp-selected-inch-label">78" × 60"</span>
+                <a href="#how-to-measure" class="pdp-measure-guide-link" title="How to measure cot size with tape">
+                  📏 Measure Guide
+                </a>
+              </div>
+            </div>
+
+            <!-- Standard Size Pills Container -->
+            <div class="pdp-dim-grid" id="pdp-inch-container">
+              <!-- Dynamically populated based on active Bed Type -->
+            </div>
+
+            <!-- Custom Size Input Card (Displayed when 'custom' is active) -->
+            <div class="pdp-custom-builder-card" id="pdp-custom-wrap" style="display: none;">
+              <div class="pdp-custom-header">
+                <div>
+                  <h4 style="margin: 0; font-size: 0.95rem; color: #FFFFFF; font-weight: 700;">📐 Custom Dimension Builder</h4>
+                  <p style="margin: 0.2rem 0 0; font-size: 0.78rem; color: #94A3B8;">
+                    Enter exact inner bed frame dimensions in inches. Precision factory crafted with zero fit errors.
+                  </p>
+                </div>
+                <span style="font-size: 0.72rem; font-weight: 700; color: #38BDF8; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.25rem 0.55rem; border-radius: 6px; white-space: nowrap;">
+                  0% Extra Charge
+                </span>
+              </div>
+
+              <div class="pdp-custom-inputs-grid">
+                <div class="pdp-custom-field">
+                  <label for="pdp-custom-len">Length (Head to Toe in Inches)</label>
+                  <div class="pdp-custom-input-box">
+                    <input type="number" id="pdp-custom-len" value="78" min="60" max="86" step="1">
+                    <span class="pdp-unit">Inches</span>
+                  </div>
+                  <div class="pdp-preset-pills">
+                    <button type="button" class="pdp-preset-tag" onclick="setPdpCustomDim('len', 72)">72"</button>
+                    <button type="button" class="pdp-preset-tag" onclick="setPdpCustomDim('len', 75)">75"</button>
+                    <button type="button" class="pdp-preset-tag active" onclick="setPdpCustomDim('len', 78)">78"</button>
+                    <button type="button" class="pdp-preset-tag" onclick="setPdpCustomDim('len', 84)">84"</button>
+                  </div>
+                </div>
+
+                <div class="pdp-custom-field">
+                  <label for="pdp-custom-wid">Width (Side to Side in Inches)</label>
+                  <div class="pdp-custom-input-box">
+                    <input type="number" id="pdp-custom-wid" value="60" min="30" max="84" step="1">
+                    <span class="pdp-unit">Inches</span>
+                  </div>
+                  <div class="pdp-preset-pills">
+                    <button type="button" class="pdp-preset-tag" onclick="setPdpCustomDim('wid', 36)">36"</button>
+                    <button type="button" class="pdp-preset-tag" onclick="setPdpCustomDim('wid', 48)">48"</button>
+                    <button type="button" class="pdp-preset-tag active" onclick="setPdpCustomDim('wid', 60)">60"</button>
+                    <button type="button" class="pdp-preset-tag" onclick="setPdpCustomDim('wid', 72)">72"</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pdp-custom-live-summary">
+                <span class="pdp-custom-summary-text" id="pdp-custom-summary-text">
+                  Custom Size: <strong>78" × 60"</strong> (6.5 × 5.0 ft • 198 × 152 cm)
+                </span>
+                <span class="pdp-custom-tape-tip">💡 Tip: Measure inside edges where the mattress will drop in.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Select Mattress Thickness -->
+          <div class="pdp-opt-group">
+            <div class="pdp-opt-header-row">
+              <label class="pdp-opt-label-main">
+                <span class="pdp-step-badge">3</span>
+                <span>Select Mattress Thickness</span>
+              </label>
+              <span class="pdp-opt-selected-tag" id="pdp-selected-thick-label">8-Inch (20 cm)</span>
+            </div>
+
+            <div class="pdp-thickness-cards-grid">
+              <button type="button" class="pdp-thick-card" data-thick="6" data-thick-add="-2000">
+                <div class="pdp-thick-top">
+                  <span class="pdp-thick-num">6"</span>
+                  <span class="pdp-thick-cm">15 cm</span>
+                </div>
+                <div class="pdp-thick-info">
+                  <strong class="pdp-thick-title">Standard Sleek</strong>
+                  <span class="pdp-thick-desc">Bunk / Guest Bed • Sleek Support</span>
+                </div>
+                <span class="pdp-thick-mod">-₹2,000</span>
+              </button>
+
+              <button type="button" class="pdp-thick-card active" data-thick="8" data-thick-add="0">
+                <div class="pdp-thick-popular-badge">★ Most Popular</div>
+                <div class="pdp-thick-top">
+                  <span class="pdp-thick-num">8"</span>
+                  <span class="pdp-thick-cm">20 cm</span>
+                </div>
+                <div class="pdp-thick-info">
+                  <strong class="pdp-thick-title">Recommended Luxe</strong>
+                  <span class="pdp-thick-desc">Optimal 7-Zone Spine Alignment</span>
+                </div>
+                <span class="pdp-thick-mod">Standard</span>
+              </button>
+
+              <button type="button" class="pdp-thick-card" data-thick="10" data-thick-add="3500">
+                <div class="pdp-thick-top">
+                  <span class="pdp-thick-num">10"</span>
+                  <span class="pdp-thick-cm">25 cm</span>
+                </div>
+                <div class="pdp-thick-info">
+                  <strong class="pdp-thick-title">Presidential EuroTop</strong>
+                  <span class="pdp-thick-desc">Deep 5-Star Hotel Plush Cushion</span>
+                </div>
+                <span class="pdp-thick-mod">+₹3,500</span>
+              </button>
             </div>
           </div>
 
           <!-- Firmness Dial -->
           <div class="pdp-opt-group">
-            <label class="pdp-opt-label">
-              <span>3. Ergonomic Firmness Index</span>
+            <label class="pdp-opt-label-main" style="margin-bottom: 0.65rem; display: flex; justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 0.45rem;">
+                <span class="pdp-step-badge" style="background: rgba(255, 255, 255, 0.15);">4</span>
+                <span>Ergonomic Firmness Index</span>
+              </span>
               <span style="color: #38BDF8; font-weight: 700;" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
             </label>
             <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
@@ -1018,12 +1542,18 @@
             </div>
           </div>
 
-          <!-- Primary Actions -->
+          <!-- Primary Actions (Dual Direct Purchase Row) -->
           <div class="pdp-actions-stack">
-            <button type="button" class="btn btn-primary" id="pdp-add-bag-btn" style="padding: 1.15rem; font-size: 1.05rem;">
-              Add to Sleep Bag • Instant Free Delivery →
-            </button>
-            <a id="pdp-action-whatsapp" href="#" target="_blank" class="btn btn-whatsapp" style="padding: 1rem; font-size: 1rem;">
+            <div class="pdp-dual-actions-row">
+              <button type="button" class="btn-pdp-add-bag" id="pdp-add-bag-btn">
+                🛍️ Add to Bag
+              </button>
+              <button type="button" class="btn-pdp-buy-now" id="pdp-buy-now-btn">
+                ⚡ Buy Now (Instant Checkout)
+              </button>
+            </div>
+
+            <a id="pdp-action-whatsapp" href="#" target="_blank" class="btn btn-whatsapp" style="padding: 0.95rem; font-size: 0.95rem; margin-top: 0.5rem;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
               </svg>
@@ -2232,10 +2762,40 @@
     }
     syncServerCatalogPdp();
 
-    // State
+    // Configurator Dimensions & Specifications Data
+    const INCH_SPECS = {
+      queen: [
+        { id: "78x60", title: "78\" × 60\"", feet: "6.5 × 5.0 ft", cm: "198 × 152 cm", label: "Standard Master", popular: true, mult: 1.0 },
+        { id: "75x60", title: "75\" × 60\"", feet: "6.25 × 5.0 ft", cm: "190 × 152 cm", label: "Compact Master", mult: 0.98 },
+        { id: "72x60", title: "72\" × 60\"", feet: "6.0 × 5.0 ft", cm: "183 × 152 cm", label: "Short Master", mult: 0.96 },
+        { id: "78x66", title: "78\" × 66\"", feet: "6.5 × 5.5 ft", cm: "198 × 168 cm", label: "Olympic Queen", mult: 1.08 }
+      ],
+      king: [
+        { id: "78x72", title: "78\" × 72\"", feet: "6.5 × 6.0 ft", cm: "198 × 183 cm", label: "Standard King", popular: true, mult: 1.18 },
+        { id: "75x72", title: "75\" × 72\"", feet: "6.25 × 6.0 ft", cm: "190 × 183 cm", label: "Compact King", mult: 1.14 },
+        { id: "72x72", title: "72\" × 72\"", feet: "6.0 × 6.0 ft", cm: "183 × 183 cm", label: "Square King", mult: 1.10 },
+        { id: "84x72", title: "84\" × 72\"", feet: "7.0 × 6.0 ft", cm: "213 × 183 cm", label: "Grand King", mult: 1.25 }
+      ],
+      double: [
+        { id: "75x48", title: "75\" × 48\"", feet: "6.25 × 4.0 ft", cm: "190 × 122 cm", label: "Standard Double", popular: true, mult: 0.84 },
+        { id: "72x48", title: "72\" × 48\"", feet: "6.0 × 4.0 ft", cm: "183 × 122 cm", label: "Compact Double", mult: 0.82 },
+        { id: "78x48", title: "78\" × 48\"", feet: "6.5 × 4.0 ft", cm: "198 × 122 cm", label: "Long Double", mult: 0.88 }
+      ],
+      single: [
+        { id: "75x36", title: "75\" × 36\"", feet: "6.25 × 3.0 ft", cm: "190 × 91 cm", label: "Standard Single", popular: true, mult: 0.70 },
+        { id: "72x36", title: "72\" × 36\"", feet: "6.0 × 3.0 ft", cm: "183 × 91 cm", label: "Compact Single", mult: 0.68 },
+        { id: "78x36", title: "78\" × 36\"", feet: "6.5 × 3.0 ft", cm: "198 × 91 cm", label: "Tall Single", mult: 0.72 },
+        { id: "75x42", title: "75\" × 42\"", feet: "6.25 × 3.5 ft", cm: "190 × 107 cm", label: "Maxi Single", mult: 0.76 }
+      ]
+    };
+
+    // State Variables
     let currentModelKey = "01";
-    let currentSizeMultiplier = 1.0;
-    let currentThickAdd = 0;
+    let activeCotType = "queen";
+    let activeInchId = "78x60";
+    let activeThickness = 8;
+    let customLenInches = 78;
+    let customWidInches = 60;
 
     function parseModelFromUrl() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -2264,8 +2824,103 @@
     }
 
     function calculateCurrentPrice(basePrice) {
-      const price = Math.round(basePrice * currentSizeMultiplier) + currentThickAdd;
-      return price;
+      let mult = 1.0;
+      if (activeCotType === 'custom') {
+        const sqInches = (customLenInches || 78) * (customWidInches || 60);
+        mult = Math.max(0.65, Math.min(1.45, sqInches / 4680));
+      } else {
+        const specs = INCH_SPECS[activeCotType] || [];
+        const item = specs.find(s => s.id === activeInchId) || specs[0];
+        if (item && item.mult) mult = item.mult;
+      }
+      const thickOffset = activeThickness === 6 ? -2000 : (activeThickness === 10 ? 3500 : 0);
+      return Math.round(basePrice * mult) + thickOffset;
+    }
+
+    function renderInchOptions() {
+      const container = document.querySelector('#pdp-inch-container');
+      const customWrap = document.querySelector('#pdp-custom-wrap');
+      const inchLabel = document.querySelector('#pdp-selected-inch-label');
+      const cotLabel = document.querySelector('#pdp-selected-cot-label');
+
+      if (cotLabel) {
+        const cotNames = {
+          queen: 'Queen (5.0 ft)',
+          king: 'King (6.0 ft)',
+          double: 'Double (4.0 ft)',
+          single: 'Single (3.0 ft)',
+          custom: 'Custom (Inches)'
+        };
+        cotLabel.textContent = cotNames[activeCotType] || activeCotType.toUpperCase();
+      }
+
+      if (activeCotType === 'custom') {
+        if (container) container.style.display = 'none';
+        if (customWrap) customWrap.style.display = 'block';
+        if (inchLabel) inchLabel.textContent = `Custom (${customLenInches}" × ${customWidInches}")`;
+        updatePdpCustomSummary();
+        return;
+      }
+
+      if (customWrap) customWrap.style.display = 'none';
+      if (!container) return;
+      container.style.display = 'grid';
+
+      const specs = INCH_SPECS[activeCotType] || [];
+      if (!specs.find(s => s.id === activeInchId)) {
+        activeInchId = specs[0] ? specs[0].id : '';
+      }
+
+      container.innerHTML = specs.map(s => `
+        <button type="button" class="pdp-dim-card ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
+          <div>
+            <strong class="pdp-dim-title">${s.title}</strong>
+            <span class="pdp-dim-sub">${s.feet} • ${s.cm}</span>
+          </div>
+          ${s.popular ? '<span class="pdp-dim-badge">Popular</span>' : `<span style="font-size:0.7rem; color:#94A3B8;">${s.label}</span>`}
+        </button>
+      `).join('');
+
+      const activeSpec = specs.find(s => s.id === activeInchId);
+      if (inchLabel && activeSpec) {
+        inchLabel.textContent = `${activeSpec.title} (${activeSpec.feet})`;
+      }
+    }
+
+    window.setPdpCustomDim = function(dim, val) {
+      if (dim === 'len') {
+        customLenInches = parseInt(val, 10) || 78;
+        const input = document.querySelector('#pdp-custom-len');
+        if (input) input.value = customLenInches;
+        document.querySelectorAll('#pdp-custom-wrap .pdp-custom-field:nth-child(1) .pdp-preset-tag').forEach(b => {
+          b.classList.toggle('active', parseInt(b.textContent, 10) === customLenInches);
+        });
+      } else {
+        customWidInches = parseInt(val, 10) || 60;
+        const input = document.querySelector('#pdp-custom-wid');
+        if (input) input.value = customWidInches;
+        document.querySelectorAll('#pdp-custom-wrap .pdp-custom-field:nth-child(2) .pdp-preset-tag').forEach(b => {
+          b.classList.toggle('active', parseInt(b.textContent, 10) === customWidInches);
+        });
+      }
+      updatePdpCustomSummary();
+      updatePriceDisplay();
+    };
+
+    function updatePdpCustomSummary() {
+      const summaryText = document.querySelector('#pdp-custom-summary-text');
+      const inchLabel = document.querySelector('#pdp-selected-inch-label');
+      const feetL = (customLenInches / 12).toFixed(2);
+      const feetW = (customWidInches / 12).toFixed(2);
+      const cmL = Math.round(customLenInches * 2.54);
+      const cmW = Math.round(customWidInches * 2.54);
+
+      if (summaryText) {
+        summaryText.innerHTML = `Custom Size: <strong>${customLenInches}" × ${customWidInches}"</strong> (${feetL} × ${feetW} ft • ${cmL} × ${cmW} cm)`;
+      }
+      if (inchLabel) {
+        inchLabel.textContent = `Custom (${customLenInches}" × ${customWidInches}")`;
+      }
     }
 
     function renderProduct(modelKey) {
@@ -2350,6 +3005,7 @@
       const tWarr = document.querySelector('#table-warranty');
       if (tWarr) tWarr.textContent = data.warranty;
 
+      renderInchOptions();
       updatePriceDisplay();
     }
 
@@ -2378,9 +3034,10 @@
       if (transPrice) transPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
 
       // Update WhatsApp link with prefilled order details
-      const selectedSize = document.querySelector('#pdp-selected-size-label')?.textContent || 'Queen';
+      const selectedCot = document.querySelector('#pdp-selected-cot-label')?.textContent || 'Queen';
+      const selectedSize = document.querySelector('#pdp-selected-inch-label')?.textContent || '78" × 60"';
       const selectedThick = document.querySelector('#pdp-selected-thick-label')?.textContent || '8-Inch';
-      const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in size ${selectedSize} (${selectedThick}) for ₹${finalPrice.toLocaleString('en-IN')}. Please confirm direct factory delivery and Bajaj EMI details.`);
+      const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in ${selectedCot} [${selectedSize}, ${selectedThick}] for ₹${finalPrice.toLocaleString('en-IN')}. Please confirm direct factory delivery and Bajaj EMI details.`);
       
       const waAction = document.querySelector('#pdp-action-whatsapp');
       if (waAction) waAction.href = `https://wa.me/919876543210?text=${waMsg}`;
@@ -2389,21 +3046,59 @@
 
       // Stock Status button control
       const buyBtn = document.querySelector('#pdp-add-bag-btn');
-      if (buyBtn) {
-        if (data.defaultStock === 'out-of-stock') {
+      const buyNowBtn = document.querySelector('#pdp-buy-now-btn');
+      if (data.defaultStock === 'out-of-stock') {
+        if (buyBtn) {
           buyBtn.disabled = true;
-          buyBtn.textContent = '✕ Out of Stock • Currently Unavailable';
+          buyBtn.textContent = '✕ Out of Stock';
           buyBtn.style.opacity = '0.55';
           buyBtn.style.cursor = 'not-allowed';
-          buyBtn.style.background = '#475569';
-        } else {
+        }
+        if (buyNowBtn) {
+          buyNowBtn.disabled = true;
+          buyNowBtn.textContent = '✕ Unavailable';
+          buyNowBtn.style.opacity = '0.55';
+          buyNowBtn.style.cursor = 'not-allowed';
+        }
+      } else {
+        if (buyBtn) {
           buyBtn.disabled = false;
-          buyBtn.textContent = 'Add to Sleep Bag • Instant Free Delivery →';
+          buyBtn.textContent = '🛍️ Add to Bag';
           buyBtn.style.opacity = '1';
           buyBtn.style.cursor = 'pointer';
-          buyBtn.style.background = '';
+        }
+        if (buyNowBtn) {
+          buyNowBtn.disabled = false;
+          buyNowBtn.textContent = `⚡ Buy Now (₹${finalPrice.toLocaleString('en-IN')})`;
+          buyNowBtn.style.opacity = '1';
+          buyNowBtn.style.cursor = 'pointer';
         }
       }
+
+      // Update sticky mobile bar
+      const stickyPrice = document.querySelector('#mobile-sticky-price');
+      if (stickyPrice) stickyPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+    }
+
+    function getSelectedPdpOrderPayload() {
+      const data = PRODUCTS_DATA[currentModelKey];
+      const finalPrice = calculateCurrentPrice(data.basePrice);
+      let sizeText = '';
+      if (activeCotType === 'custom') {
+        sizeText = `Custom (${customLenInches}" × ${customWidInches}") • ${activeThickness}-Inch`;
+      } else {
+        const specs = INCH_SPECS[activeCotType] || [];
+        const spec = specs.find(s => s.id === activeInchId) || specs[0];
+        const cotTitle = activeCotType.charAt(0).toUpperCase() + activeCotType.slice(1);
+        sizeText = `${cotTitle} Size • ${spec ? spec.title : ''} • ${activeThickness}-Inch`;
+      }
+      return {
+        productName: data.name,
+        size: sizeText,
+        price: finalPrice,
+        quantity: 1,
+        image: data.heroImg
+      };
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -2421,37 +3116,84 @@
         });
       });
 
-      // Size Pill Selector (Delegated & Direct)
+      // Bed Type, Dimension & Thickness Click Handlers
       document.addEventListener('click', function (e) {
-        const sizeBtn = e.target.closest('.pdp-pill-choice');
-        if (sizeBtn) {
+        // 1. Bed Type Card (Queen, King, Double, Single, Custom)
+        const bedCard = e.target.closest('.pdp-bed-card');
+        if (bedCard) {
           e.preventDefault();
-          document.querySelectorAll('.pdp-pill-choice').forEach(b => b.classList.remove('active'));
-          sizeBtn.classList.add('active');
-
-          currentSizeMultiplier = parseFloat(sizeBtn.getAttribute('data-multiplier') || '1.0');
-          const sizeTitle = sizeBtn.querySelector('.pdp-pill-title')?.textContent || sizeBtn.textContent.trim();
-          const sizeLabel = document.querySelector('#pdp-selected-size-label');
-          if (sizeLabel) sizeLabel.textContent = sizeTitle;
-
+          document.querySelectorAll('.pdp-bed-card').forEach(b => b.classList.remove('active'));
+          bedCard.classList.add('active');
+          activeCotType = bedCard.getAttribute('data-type') || 'queen';
+          renderInchOptions();
           updatePriceDisplay();
           return;
         }
 
-        const thickBtn = e.target.closest('[data-thick]');
-        if (thickBtn) {
+        // 2. Numeric Dimension Card
+        const dimCard = e.target.closest('.pdp-dim-card');
+        if (dimCard) {
           e.preventDefault();
-          document.querySelectorAll('[data-thick]').forEach(b => b.classList.remove('active'));
-          thickBtn.classList.add('active');
+          document.querySelectorAll('.pdp-dim-card').forEach(b => b.classList.remove('active'));
+          dimCard.classList.add('active');
+          activeInchId = dimCard.getAttribute('data-inch');
+          const specs = INCH_SPECS[activeCotType] || [];
+          const item = specs.find(s => s.id === activeInchId);
+          const inchLabel = document.querySelector('#pdp-selected-inch-label');
+          if (inchLabel && item) {
+            inchLabel.textContent = `${item.title} (${item.feet})`;
+          }
+          updatePriceDisplay();
+          return;
+        }
 
-          currentThickAdd = parseInt(thickBtn.getAttribute('data-thick-add') || '0', 10);
+        // 3. Thickness Card
+        const thickCard = e.target.closest('.pdp-thick-card, [data-thick]');
+        if (thickCard) {
+          e.preventDefault();
+          document.querySelectorAll('.pdp-thick-card, [data-thick]').forEach(b => b.classList.remove('active'));
+          thickCard.classList.add('active');
+          activeThickness = parseInt(thickCard.getAttribute('data-thick') || '8', 10);
           const thickLabel = document.querySelector('#pdp-selected-thick-label');
-          if (thickLabel) thickLabel.textContent = thickBtn.textContent.trim();
-
+          if (thickLabel) {
+            const names = { 6: '6-Inch (15 cm)', 8: '8-Inch (20 cm) [Standard]', 10: '10-Inch (25 cm) [Eurotop]' };
+            thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+          }
           updatePriceDisplay();
           return;
         }
       });
+
+      // Custom Dimension Input Listeners
+      const customLenInput = document.querySelector('#pdp-custom-len');
+      const customWidInput = document.querySelector('#pdp-custom-wid');
+      if (customLenInput) {
+        customLenInput.addEventListener('input', function () {
+          customLenInches = parseInt(this.value, 10) || 78;
+          updatePdpCustomSummary();
+          updatePriceDisplay();
+        });
+      }
+      if (customWidInput) {
+        customWidInput.addEventListener('input', function () {
+          customWidInches = parseInt(this.value, 10) || 60;
+          updatePdpCustomSummary();
+          updatePriceDisplay();
+        });
+      }
+
+      // Buy Now Button -> Directly triggers Instant Checkout Pipeline
+      const buyNowBtn = document.querySelector('#pdp-buy-now-btn');
+      if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          const payload = getSelectedPdpOrderPayload();
+          try {
+            localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(payload));
+          } catch (err) {}
+          window.location.href = 'index.html?checkout=1';
+        });
+      }
 
       // Synchronize Cart Glow & Count on PDP
       function syncPdpCartUI() {
@@ -2621,12 +3363,8 @@
 
       if (addBagBtn) {
         addBagBtn.addEventListener('click', function () {
-          const data = PRODUCTS_DATA[currentModelKey];
-          const finalPrice = calculateCurrentPrice(data.basePrice);
-          const selectedSize = document.querySelector('#pdp-selected-size-label')?.textContent || 'Queen Size';
-          const selectedThick = document.querySelector('#pdp-selected-thick-label')?.textContent || '8-Inch';
-
-          const fingerprint = `${data.name}_${selectedSize}_${selectedThick}_${finalPrice}`;
+          const payload = getSelectedPdpOrderPayload();
+          const fingerprint = `${payload.productName}_${payload.size}_${payload.price}`;
           const now = Date.now();
           if (fingerprint === pdpLastAddFingerprint && (now - pdpLastAddTs < 500)) {
             console.warn('[PDP] Dropped duplicate add to bag within 500ms');
@@ -2635,25 +3373,18 @@
           pdpLastAddTs = now;
           pdpLastAddFingerprint = fingerprint;
 
-          const checkoutItem = {
-            productName: data.name,
-            size: `${selectedSize} • ${selectedThick}`,
-            price: finalPrice,
-            quantity: 1
-          };
-
           try {
-            localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(checkoutItem));
+            localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(payload));
             // Also append into cart items
             let cart = [];
             const stored = localStorage.getItem('lora_cart_items_v1');
             if (stored) cart = JSON.parse(stored);
             cart.push({
               id: 'item-pdp-' + Date.now(),
-              title: data.name,
-              specs: `${selectedSize} • ${selectedThick}`,
-              price: finalPrice,
-              image: data.image
+              title: payload.productName,
+              specs: payload.size,
+              price: payload.price,
+              image: payload.image
             });
             localStorage.setItem('lora_cart_items_v1', JSON.stringify(cart));
             localStorage.setItem('lora_cart_count_v1', cart.length);
@@ -2751,7 +3482,7 @@
       <button type="button" class="mobile-sticky-btn mobile-sticky-btn-cart" id="mobile-sticky-btn-cart" onclick="document.querySelector('#pdp-add-bag-btn')?.click()">
         🛍️ Add
       </button>
-      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#pdp-add-bag-btn')?.click(); setTimeout(() => document.querySelector('[data-action=\"open-cart\"]')?.click(), 250)">
+      <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#pdp-buy-now-btn')?.click()">
         Buy Now ⚡
       </button>
     </div>

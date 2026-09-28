@@ -3319,6 +3319,40 @@ button, input, select {
 }
 
 /* ==========================================================================
+   GLOBAL DARK LUXURY SELECTION CONTROLS (ELIMINATES BROWSER WHITE BUTTONS)
+   ========================================================================== */
+.size-pill-btn,
+.pdp-thick-card,
+.card-thick-pill {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  color: #CBD5E1 !important;
+  border-radius: 10px !important;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif) !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+
+.size-pill-btn:hover,
+.pdp-thick-card:hover,
+.card-thick-pill:hover {
+  border-color: rgba(0, 180, 216, 0.5) !important;
+  background: rgba(0, 180, 216, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+.size-pill-btn.active,
+.pdp-thick-card.active,
+.card-thick-pill.active {
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+  border-color: #00B4D8 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 16px rgba(0, 180, 216, 0.35), inset 0 0 10px rgba(0, 180, 216, 0.2) !important;
+}
+
+/* ==========================================================================
    LORA MOBILE-FIRST ECOMMERCE ENGINE (<768px & <480px)
    ========================================================================== */
 html {
