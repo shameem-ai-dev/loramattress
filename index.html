@@ -6135,10 +6135,31 @@
       // ==========================================
       // INNER PDP RENDERING & PRICE ENGINE
       // ==========================================
-      function renderInnerSuite(modelKey) {
+      function renderInnerSuite(modelKey, cot, inch, thick) {
         const data = catalog[modelKey];
         if (!data) return;
         activeInnerModelKey = modelKey;
+        if (cot) activeCotType = cot;
+        if (inch) activeInchId = inch;
+        if (thick) activeThickness = parseInt(thick, 10);
+
+        // Sync Bed Type buttons
+        document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(btn => {
+          btn.classList.toggle('active', (btn.getAttribute('data-type') || btn.getAttribute('data-cot')) === activeCotType);
+        });
+        const cotNames = { queen: 'Queen (5.0 ft)', king: 'King (6.0 ft)', double: 'Double (4.0 ft)', single: 'Single (3.0 ft)', custom: 'Custom Dimension' };
+        const cotLabel = document.querySelector('#inner-cot-type-label');
+        if (cotLabel) cotLabel.textContent = cotNames[activeCotType] || activeCotType.toUpperCase();
+
+        // Sync Thickness buttons
+        document.querySelectorAll('.inner-thick-pill, .inner-thick-btn').forEach(btn => {
+          btn.classList.toggle('active', parseInt(btn.getAttribute('data-thick'), 10) === activeThickness);
+        });
+        const thickLabel = document.querySelector('#inner-thick-label');
+        if (thickLabel) {
+          const names = { 6: '6-Inch (15 cm)', 8: '8-Inch (20 cm) [Standard]', 10: '10-Inch (25 cm) [Eurotop]', 12: '12-Inch (30 cm) [Grand Luxe]' };
+          thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+        }
 
         // Model Switcher pills
         document.querySelectorAll('.inner-model-pill').forEach(pill => {
@@ -6160,7 +6181,7 @@
         const warrBadge = document.querySelector('#inner-warr-badge');
         if (warrBadge) warrBadge.textContent = data.warranty.toUpperCase();
         const standaloneBtn = document.querySelector('#inner-standalone-btn');
-        if (standaloneBtn) standaloneBtn.href = `product.html?model=${modelKey}`;
+        if (standaloneBtn) standaloneBtn.href = `product.html?model=${modelKey}&cot=${activeCotType}&inch=${activeInchId}&thick=${activeThickness}`;
         const guarWarr = document.querySelector('#inner-guar-warr');
         if (guarWarr) guarWarr.textContent = `${data.warranty} Direct Factory Coverage`;
 
@@ -6405,8 +6426,8 @@
         const inchLabel = document.querySelector('#inner-inch-label')?.textContent || '78" × 60"';
         const thickLabel = document.querySelector('#inner-thick-label')?.textContent || '8-Inch';
         const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in ${cotLabel} [${inchLabel}, ${thickLabel}] for ₹${calc.price.toLocaleString('en-IN')}. Please confirm factory direct express delivery.`);
-        const waBtn = document.querySelector('#inner-wa-btn');
-        if (waBtn) waBtn.href = `https://wa.me/919876543210?text=${waMsg}`;
+        const standaloneBtn = document.querySelector('#inner-standalone-btn');
+        if (standaloneBtn) standaloneBtn.href = `product.html?model=${activeInnerModelKey}&cot=${activeCotType}&inch=${activeInchId}&thick=${activeThickness}`;
       }
 
       // Bed Type / Cot Type Pill Selection (Queen, King, Double, Single, Custom)
@@ -6542,14 +6563,19 @@
         if (trigger) {
           e.preventDefault();
           const modelKey = trigger.getAttribute('data-model') || '01';
+          const card = trigger.closest('.catalog-product-card, .mattress-card');
+          const cot = card ? (card.querySelector('.card-type-pill.active')?.getAttribute('data-type') || 'queen') : 'queen';
+          const inch = card ? (card.querySelector('.card-inch-pill.active')?.getAttribute('data-inch') || '78x60') : '78x60';
+          const thick = card ? (card.querySelector('.card-thick-pill.active')?.getAttribute('data-thick') || '8') : '8';
+
           if (window.innerWidth <= 768) {
             // Direct seamless transition to the dedicated zero-crop PDP page on mobile
-            window.location.href = `product.html?model=${modelKey}`;
+            window.location.href = `product.html?model=${modelKey}&cot=${encodeURIComponent(cot)}&inch=${encodeURIComponent(inch)}&thick=${encodeURIComponent(thick)}`;
             return;
           }
           if (innerSuite) {
             innerSuite.classList.add('active');
-            renderInnerSuite(modelKey);
+            renderInnerSuite(modelKey, cot, inch, thick);
             setTimeout(function () {
               const rect = innerSuite.getBoundingClientRect();
               const scrollTop = window.pageYOffset + rect.top - 60;
