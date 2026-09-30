@@ -2309,7 +2309,6 @@
             <li><a href="index.html#sleep-quiz" class="footer-link">Sleep Match AI</a></li>
             <li><a href="index.html#studios" class="footer-link">Experience Studios in India</a></li>
             <li><a href="#" class="footer-link">Factory Direct Quality Assurance</a></li>
-            <li><a href="admin.html" class="footer-link" style="color: #38BDF8;">Merchant Admin Portal</a></li>
           </ul>
         </div>
 
@@ -3546,6 +3545,14 @@
       window.addEventListener('scroll', updatePdpStickyBar, { passive: true });
       window.addEventListener('resize', updatePdpStickyBar, { passive: true });
       setTimeout(updatePdpStickyBar, 200);
+
+      // Secret merchant admin hotkey (Ctrl+Shift+A or Cmd+Shift+A)
+      document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+          e.preventDefault();
+          window.location.href = 'admin.html';
+        }
+      });
     });
   </script>
 
