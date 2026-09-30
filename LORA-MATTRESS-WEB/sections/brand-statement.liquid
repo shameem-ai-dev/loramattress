@@ -1,0 +1,57 @@
+<section class="brand-statement-section" id="about-lora">
+  <div class="container container-narrow">
+    <span class="eyebrow">{{ section.settings.eyebrow | default: 'The Philosophy of Rest' }}</span>
+    <h2 class="brand-statement-quote font-serif">
+      “{{ section.settings.heading | default: 'Make room for better rest.' }}”
+    </h2>
+    <p class="brand-statement-desc">
+      {{ section.settings.subtext | default: 'Crafted without haste using uncompromised natural Dunlop latex, European pocket coils, and Belgian linen. Designed to quiet the mind and align the body from the moment you lie down.' }}
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 3.5rem; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <span style="font-family: var(--font-serif); font-size: 2.2rem; color: var(--color-espresso); display: block;">100%</span>
+        <span style="font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);">Natural Latex & Linen</span>
+      </div>
+      <div style="text-align: center;">
+        <span style="font-family: var(--font-serif); font-size: 2.2rem; color: var(--color-espresso); display: block;">Zero</span>
+        <span style="font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);">Motion Transfer</span>
+      </div>
+      <div style="text-align: center;">
+        <span style="font-family: var(--font-serif); font-size: 2.2rem; color: var(--color-espresso); display: block;">10 Years</span>
+        <span style="font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);">Comprehensive Warranty</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Statement",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "The Philosophy of Rest"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Statement Heading",
+      "default": "Make room for better rest."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Editorial Subtext",
+      "default": "Crafted without haste using uncompromised natural Dunlop latex, European pocket coils, and Belgian linen. Designed to quiet the mind and align the body from the moment you lie down."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Statement"
+    }
+  ]
+}
+{% endschema %}
