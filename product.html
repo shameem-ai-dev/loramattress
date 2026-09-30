@@ -775,67 +775,77 @@
         gap: 1rem !important;
       }
       .pdp-gallery-sticky {
-        gap: 0.5rem !important;
+        gap: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
       }
       .pdp-main-stage {
-        aspect-ratio: 16 / 10 !important;
-        height: 220px !important;
-        max-height: 220px !important;
-        background: radial-gradient(circle at 50% 50%, #152238 0%, #060913 90%) !important;
-        border: 1px solid rgba(0, 180, 216, 0.25) !important;
-        border-radius: 14px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 6px !important;
+        aspect-ratio: 4 / 3 !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: 340px !important;
+        min-height: 240px !important;
+        background: #080D1A !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+        position: relative !important;
+        overflow: hidden !important;
+        display: block !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 180, 216, 0.12) !important;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 180, 216, 0.12) !important;
       }
       .pdp-main-img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: contain !important;
+        object-fit: cover !important;
         object-position: center !important;
+        display: block !important;
       }
       .pdp-badge-floating {
-        position: static !important;
+        position: absolute !important;
+        top: 0.75rem !important;
+        left: 0.75rem !important;
+        z-index: 5 !important;
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
         gap: 0.35rem !important;
-        margin-bottom: 0.45rem !important;
-        width: 100% !important;
+        margin-bottom: 0 !important;
+        width: auto !important;
+        pointer-events: none !important;
       }
       .pdp-badge-floating .badge-verified {
-        font-size: 0.65rem !important;
+        font-size: 0.62rem !important;
         padding: 0.22rem 0.55rem !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
       }
       .pdp-thumb-strip {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
-        gap: 0.45rem !important;
-        margin-top: 0.45rem !important;
+        gap: 0.5rem !important;
+        margin-top: 0.5rem !important;
       }
       .pdp-thumb-btn {
-        height: 48px !important;
-        aspect-ratio: unset !important;
+        aspect-ratio: 4 / 3 !important;
+        height: auto !important;
         border-radius: 8px !important;
         background: #0B132B !important;
-        border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
         overflow: hidden !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 2px !important;
+        display: block !important;
+        padding: 0 !important;
       }
       .pdp-thumb-btn.active {
         border-color: #00B4D8 !important;
-        box-shadow: 0 0 10px rgba(0, 180, 216, 0.4) !important;
+        box-shadow: 0 0 10px rgba(0, 180, 216, 0.5) !important;
       }
       .pdp-thumb-btn img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: contain !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        display: block !important;
       }
       .pdp-config-panel {
         padding: 1.15rem 0.85rem !important;
@@ -1165,11 +1175,11 @@
 
         <!-- Sticky Left Gallery -->
         <div class="pdp-gallery-sticky">
-          <div class="pdp-badge-floating">
-            <span class="badge-verified">FACTORY DIRECT</span>
-            <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="pdp-warranty-badge">10 YEARS WARRANTY</span>
-          </div>
           <div class="pdp-main-stage">
+            <div class="pdp-badge-floating">
+              <span class="badge-verified">FACTORY DIRECT</span>
+              <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="pdp-warranty-badge">10 YEARS WARRANTY</span>
+            </div>
             <img src="assets/comfort-plush.jpg" alt="LORA Mattress" class="pdp-main-img" id="pdp-active-img">
           </div>
 
@@ -2728,6 +2738,16 @@
       const stored = localStorage.getItem('lora_product_catalog_v3');
       if (stored) {
         const parsed = JSON.parse(stored);
+        Object.keys(parsed).forEach(k => {
+          if (parsed[k]) {
+            ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
+              if (parsed[k][prop] && (parsed[k][prop].length >= 500000 || !parsed[k][prop].startsWith('assets/'))) {
+                // Keep default clean asset path instead of corrupt data URL
+                delete parsed[k][prop];
+              }
+            });
+          }
+        });
         Object.assign(PRODUCTS_DATA, parsed);
       }
     } catch (e) {
@@ -2740,6 +2760,15 @@
         const res = await fetch('/api/catalog');
         const data = await res.json();
         if (data && data.success && data.catalog) {
+          Object.keys(data.catalog).forEach(k => {
+            if (data.catalog[k]) {
+              ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
+                if (data.catalog[k][prop] && (data.catalog[k][prop].length >= 500000 || !data.catalog[k][prop].startsWith('assets/'))) {
+                  delete data.catalog[k][prop];
+                }
+              });
+            }
+          });
           Object.assign(PRODUCTS_DATA, data.catalog);
           const initialModel = parseModelFromUrl();
           renderProduct(initialModel);
