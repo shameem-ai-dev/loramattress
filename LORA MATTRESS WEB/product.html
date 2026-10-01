@@ -378,31 +378,36 @@
       box-shadow: 0 0 14px rgba(0, 180, 216, 0.35) !important;
     }
 
-    .pdp-pill-icon {
-      font-size: 1rem;
-      line-height: 1;
-    }
-
     .pdp-pill-sub {
       font-size: 0.72rem;
       color: #94A3B8;
       font-weight: 600;
-      margin-left: 0.15rem;
+      margin-left: 0.25rem;
     }
 
     .pdp-pill-btn.active .pdp-pill-sub {
       color: #BAE6FD;
     }
 
-    .pdp-pill-star {
-      font-size: 0.65rem;
-      color: #FBBF24;
-      font-weight: 800;
-      background: rgba(251, 191, 36, 0.15);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      padding: 0.1rem 0.45rem;
-      border-radius: 9999px;
-      margin-left: 0.2rem;
+    .pdp-pill-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #38BDF8;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      padding: 0.12rem 0.42rem;
+      border-radius: 4px;
+      margin-left: 0.35rem;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .pdp-pill-btn.active .pdp-pill-tag {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #FFFFFF;
     }
 
     .pdp-dim-helper-line {
@@ -770,67 +775,77 @@
         gap: 1rem !important;
       }
       .pdp-gallery-sticky {
-        gap: 0.5rem !important;
+        gap: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
       }
       .pdp-main-stage {
-        aspect-ratio: 16 / 10 !important;
-        height: 220px !important;
-        max-height: 220px !important;
-        background: radial-gradient(circle at 50% 50%, #152238 0%, #060913 90%) !important;
-        border: 1px solid rgba(0, 180, 216, 0.25) !important;
-        border-radius: 14px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 6px !important;
+        aspect-ratio: 4 / 3 !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: 340px !important;
+        min-height: 240px !important;
+        background: #080D1A !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+        position: relative !important;
+        overflow: hidden !important;
+        display: block !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 180, 216, 0.12) !important;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 180, 216, 0.12) !important;
       }
       .pdp-main-img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: contain !important;
+        object-fit: cover !important;
         object-position: center !important;
+        display: block !important;
       }
       .pdp-badge-floating {
-        position: static !important;
+        position: absolute !important;
+        top: 0.75rem !important;
+        left: 0.75rem !important;
+        z-index: 5 !important;
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
         gap: 0.35rem !important;
-        margin-bottom: 0.45rem !important;
-        width: 100% !important;
+        margin-bottom: 0 !important;
+        width: auto !important;
+        pointer-events: none !important;
       }
       .pdp-badge-floating .badge-verified {
-        font-size: 0.65rem !important;
+        font-size: 0.62rem !important;
         padding: 0.22rem 0.55rem !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
       }
       .pdp-thumb-strip {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
-        gap: 0.45rem !important;
-        margin-top: 0.45rem !important;
+        gap: 0.5rem !important;
+        margin-top: 0.5rem !important;
       }
       .pdp-thumb-btn {
-        height: 48px !important;
-        aspect-ratio: unset !important;
+        aspect-ratio: 4 / 3 !important;
+        height: auto !important;
         border-radius: 8px !important;
         background: #0B132B !important;
-        border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
         overflow: hidden !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 2px !important;
+        display: block !important;
+        padding: 0 !important;
       }
       .pdp-thumb-btn.active {
         border-color: #00B4D8 !important;
-        box-shadow: 0 0 10px rgba(0, 180, 216, 0.4) !important;
+        box-shadow: 0 0 10px rgba(0, 180, 216, 0.5) !important;
       }
       .pdp-thumb-btn img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: contain !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        display: block !important;
       }
       .pdp-config-panel {
         padding: 1.15rem 0.85rem !important;
@@ -1160,26 +1175,26 @@
 
         <!-- Sticky Left Gallery -->
         <div class="pdp-gallery-sticky">
-          <div class="pdp-badge-floating">
-            <span class="badge-verified">FACTORY DIRECT</span>
-            <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="pdp-warranty-badge">10 YEARS WARRANTY</span>
-          </div>
           <div class="pdp-main-stage">
+            <div class="pdp-badge-floating">
+              <span class="badge-verified">FACTORY DIRECT</span>
+              <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="pdp-warranty-badge">10 YEARS WARRANTY</span>
+            </div>
             <img src="assets/comfort-plush.jpg" alt="LORA Mattress" class="pdp-main-img" id="pdp-active-img">
           </div>
 
           <div class="pdp-thumb-strip">
             <button type="button" class="pdp-thumb-btn active" data-img="assets/comfort-plush.jpg" id="thumb-1">
-              <img loading="lazy" src="assets/comfort-plush.jpg" alt="Studio view" class="pdp-thumb-img">
+              <img src="assets/comfort-plush.jpg" alt="Studio view" class="pdp-thumb-img">
             </button>
             <button type="button" class="pdp-thumb-btn" data-img="assets/hero-stage-2-exploded.jpg" id="thumb-2">
-              <img loading="lazy" src="assets/hero-stage-2-exploded.jpg" alt="Layer anatomy" class="pdp-thumb-img">
+              <img src="assets/hero-stage-2-exploded.jpg" alt="Layer anatomy" class="pdp-thumb-img">
             </button>
             <button type="button" class="pdp-thumb-btn" data-img="assets/hero-stage-3-spine.jpg" id="thumb-3">
-              <img loading="lazy" src="assets/hero-stage-3-spine.jpg" alt="Spine biometrics" class="pdp-thumb-img">
+              <img src="assets/hero-stage-3-spine.jpg" alt="Spine biometrics" class="pdp-thumb-img">
             </button>
             <button type="button" class="pdp-thumb-btn" data-img="assets/lifestyle-editorial.jpg" id="thumb-4">
-              <img loading="lazy" src="assets/lifestyle-editorial.jpg" alt="Master suite" class="pdp-thumb-img">
+              <img src="assets/lifestyle-editorial.jpg" alt="Master suite" class="pdp-thumb-img">
             </button>
           </div>
         </div>
@@ -1191,7 +1206,7 @@
           <p class="pdp-tagline" id="pdp-tagline">Super Soft 7-Zone Dual Comfort</p>
 
           <div class="pdp-trust-rating-strip">
-            <span style="color: #F59E0B; font-weight: 800;">★ 4.9</span>
+            <span style="color: #F59E0B; font-weight: 800; display: inline-flex; align-items: center; gap: 0.25rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 4.9</span>
             <span>(5,00,000+ Sleepers)</span>
             <span>•</span>
             <span style="color: #10B981; font-weight: 700;">Direct from Factory</span>
@@ -1209,7 +1224,7 @@
           <div class="pdp-emi-card">
             <div>
               <strong style="font-size: 0.95rem; color: #38BDF8; display: block;" id="pdp-emi-text">
-                ⚡ ₹1,833 / month with Bajaj Finserv 0% EMI
+                0% EMI from ₹1,833 / month with Bajaj Finserv
               </strong>
               <span style="font-size: 0.78rem; color: #94A3B8;">Zero down payment • 12 easy monthly installments</span>
             </div>
@@ -1227,21 +1242,11 @@
                 <span class="pdp-pill-val-tag" id="pdp-selected-cot-label">Queen (5.0 ft)</span>
               </div>
               <div class="pdp-pills-wrap pdp-bed-pills-wrap">
-                <button type="button" class="pdp-pill-btn active" data-type="queen">
-                  <span class="pdp-pill-icon">🛏️</span> Queen
-                </button>
-                <button type="button" class="pdp-pill-btn" data-type="king">
-                  <span class="pdp-pill-icon">👑</span> King
-                </button>
-                <button type="button" class="pdp-pill-btn" data-type="double">
-                  <span class="pdp-pill-icon">👥</span> Double
-                </button>
-                <button type="button" class="pdp-pill-btn" data-type="single">
-                  <span class="pdp-pill-icon">👤</span> Single
-                </button>
-                <button type="button" class="pdp-pill-btn pdp-pill-btn-custom" data-type="custom">
-                  <span class="pdp-pill-icon">📐</span> Custom Size
-                </button>
+                <button type="button" class="pdp-pill-btn active" data-type="queen">Queen</button>
+                <button type="button" class="pdp-pill-btn" data-type="king">King</button>
+                <button type="button" class="pdp-pill-btn" data-type="double">Double</button>
+                <button type="button" class="pdp-pill-btn" data-type="single">Single</button>
+                <button type="button" class="pdp-pill-btn pdp-pill-btn-custom" data-type="custom">Custom Size</button>
               </div>
             </div>
 
@@ -1251,7 +1256,7 @@
                 <span class="pdp-pill-label">2. Select Inch Size:</span>
                 <div style="display:flex; align-items:center; gap:0.5rem;">
                   <span class="pdp-pill-val-tag" id="pdp-selected-inch-label">78" × 60"</span>
-                  <a href="#how-to-measure" class="pdp-measure-guide-link">📏 Measure Guide</a>
+                  <a href="#how-to-measure" class="pdp-measure-guide-link">Size Guide ↗</a>
                 </div>
               </div>
               <div class="pdp-pills-wrap pdp-inch-pills-wrap" id="pdp-inch-container">
@@ -1267,7 +1272,7 @@
             <!-- Custom Size Input Card (Displayed when 'custom' is active) -->
             <div class="pdp-custom-builder-compact" id="pdp-custom-wrap" style="display: none;">
               <div class="pdp-custom-compact-top">
-                <strong>📐 Custom Dimension Builder (Exact Inches)</strong>
+                <strong>Custom Dimension Builder (Exact Inches)</strong>
                 <span class="pdp-badge-zero-extra">0% Extra Customization Charge</span>
               </div>
               <div class="pdp-custom-compact-grid">
@@ -1314,7 +1319,7 @@
                   6" (15 cm) <span class="pdp-pill-sub">-₹2.5k</span>
                 </button>
                 <button type="button" class="pdp-pill-btn active" data-thick="8">
-                  8" (20 cm) <span class="pdp-pill-star">★ Popular</span>
+                  8" (20 cm) <span class="pdp-pill-tag">Popular</span>
                 </button>
                 <button type="button" class="pdp-pill-btn" data-thick="10">
                   10" (25 cm) <span class="pdp-pill-sub">Eurotop</span>
@@ -1354,10 +1359,10 @@
           <div class="pdp-actions-stack">
             <div class="pdp-dual-actions-row">
               <button type="button" class="btn-pdp-add-bag" id="pdp-add-bag-btn">
-                🛍️ Add to Bag
+                Add to Bag
               </button>
               <button type="button" class="btn-pdp-buy-now" id="pdp-buy-now-btn">
-                ⚡ Buy Now (Instant Checkout)
+                Buy Now →
               </button>
             </div>
 
@@ -1372,28 +1377,28 @@
           <!-- Official Guarantees Strip -->
           <div class="pdp-guarantee-strip">
             <div class="pdp-guarantee-item">
-              <span style="font-size: 1.25rem;">🛡️</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               <div>
                 <strong style="display: block; color: var(--text-primary);" id="pdp-guarantee-warr">Up to 15 Years Warranty</strong>
                 <span style="font-size: 0.75rem;">100% Direct Factory Replacement</span>
               </div>
             </div>
             <div class="pdp-guarantee-item">
-              <span style="font-size: 1.25rem;">💤</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M2 12h20M2 12a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5M2 12a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5"/></svg>
               <div>
                 <strong style="display: block; color: var(--text-primary);">Zero Motion Transfer</strong>
                 <span style="font-size: 0.75rem;">Undisturbed peaceful sleep</span>
               </div>
             </div>
             <div class="pdp-guarantee-item">
-              <span style="font-size: 1.25rem;">🚚</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               <div>
                 <strong style="display: block; color: var(--text-primary);">Free Pan-India Delivery</strong>
                 <span style="font-size: 0.75rem;">Full-size flat delivery in protective casing</span>
               </div>
             </div>
             <div class="pdp-guarantee-item">
-              <span style="font-size: 1.25rem;">🏭</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               <div>
                 <strong style="display: block; color: var(--text-primary);">Factory Direct Pricing</strong>
                 <span style="font-size: 0.75rem;">Zero 40% showroom markup</span>
@@ -2314,7 +2319,6 @@
             <li><a href="index.html#sleep-quiz" class="footer-link">Sleep Match AI</a></li>
             <li><a href="index.html#studios" class="footer-link">Experience Studios in India</a></li>
             <li><a href="#" class="footer-link">Factory Direct Quality Assurance</a></li>
-            <li><a href="admin.html" class="footer-link" style="color: #38BDF8;">Merchant Admin Portal 🔒</a></li>
           </ul>
         </div>
 
@@ -2734,6 +2738,16 @@
       const stored = localStorage.getItem('lora_product_catalog_v3');
       if (stored) {
         const parsed = JSON.parse(stored);
+        Object.keys(parsed).forEach(k => {
+          if (parsed[k]) {
+            ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
+              if (parsed[k][prop] && (parsed[k][prop].length >= 500000 || !parsed[k][prop].startsWith('assets/'))) {
+                // Keep default clean asset path instead of corrupt data URL
+                delete parsed[k][prop];
+              }
+            });
+          }
+        });
         Object.assign(PRODUCTS_DATA, parsed);
       }
     } catch (e) {
@@ -2746,6 +2760,15 @@
         const res = await fetch('/api/catalog');
         const data = await res.json();
         if (data && data.success && data.catalog) {
+          Object.keys(data.catalog).forEach(k => {
+            if (data.catalog[k]) {
+              ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
+                if (data.catalog[k][prop] && (data.catalog[k][prop].length >= 500000 || !data.catalog[k][prop].startsWith('assets/'))) {
+                  delete data.catalog[k][prop];
+                }
+              });
+            }
+          });
           Object.assign(PRODUCTS_DATA, data.catalog);
           const initialModel = parseModelFromUrl();
           renderProduct(initialModel);
@@ -2911,7 +2934,7 @@
 
       container.innerHTML = specs.map(s => `
         <button type="button" class="pdp-pill-btn ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
-          ${s.title} ${s.popular ? '<span class="pdp-pill-star">★ Popular</span>' : ''}
+          ${s.title} ${s.popular ? '<span class="pdp-pill-tag">Popular</span>' : ''}
         </button>
       `).join('');
 
@@ -3112,7 +3135,7 @@
       if (saveEl) saveEl.textContent = `SAVE ₹${savings.toLocaleString('en-IN')} (DIRECT)`;
 
       const emiText = document.querySelector('#pdp-emi-text');
-      if (emiText) emiText.textContent = `⚡ ₹${emiVal.toLocaleString('en-IN')} / month with Bajaj Finserv 0% EMI`;
+      if (emiText) emiText.textContent = `0% EMI from ₹${emiVal.toLocaleString('en-IN')} / month with Bajaj Finserv`;
 
       const transPrice = document.querySelector('#pdp-trans-price');
       if (transPrice) transPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
@@ -3134,26 +3157,26 @@
       if (data.defaultStock === 'out-of-stock') {
         if (buyBtn) {
           buyBtn.disabled = true;
-          buyBtn.textContent = '✕ Out of Stock';
+          buyBtn.textContent = 'Out of Stock';
           buyBtn.style.opacity = '0.55';
           buyBtn.style.cursor = 'not-allowed';
         }
         if (buyNowBtn) {
           buyNowBtn.disabled = true;
-          buyNowBtn.textContent = '✕ Unavailable';
+          buyNowBtn.textContent = 'Unavailable';
           buyNowBtn.style.opacity = '0.55';
           buyNowBtn.style.cursor = 'not-allowed';
         }
       } else {
         if (buyBtn) {
           buyBtn.disabled = false;
-          buyBtn.textContent = '🛍️ Add to Bag';
+          buyBtn.textContent = 'Add to Bag';
           buyBtn.style.opacity = '1';
           buyBtn.style.cursor = 'pointer';
         }
         if (buyNowBtn) {
           buyNowBtn.disabled = false;
-          buyNowBtn.textContent = `⚡ Buy Now (₹${finalPrice.toLocaleString('en-IN')})`;
+          buyNowBtn.textContent = `Buy Now (₹${finalPrice.toLocaleString('en-IN')}) →`;
           buyNowBtn.style.opacity = '1';
           buyNowBtn.style.cursor = 'pointer';
         }
@@ -3413,7 +3436,9 @@
         if (!items || items.length === 0) {
           container.innerHTML = `
             <div style="text-align: center; padding: 3rem 1rem; color: #94A3B8;">
-              <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛌</div>
+              <div style="margin-bottom: 1rem;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
               <h4 style="font-size: 1.1rem; color: #FFFFFF; margin-bottom: 0.5rem;">Your Sleep Bag is Empty</h4>
               <p style="font-size: 0.85rem;">Discover our master-crafted mattresses.</p>
             </div>
@@ -3549,6 +3574,14 @@
       window.addEventListener('scroll', updatePdpStickyBar, { passive: true });
       window.addEventListener('resize', updatePdpStickyBar, { passive: true });
       setTimeout(updatePdpStickyBar, 200);
+
+      // Secret merchant admin hotkey (Ctrl+Shift+A or Cmd+Shift+A)
+      document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+          e.preventDefault();
+          window.location.href = 'admin.html';
+        }
+      });
     });
   </script>
 
@@ -3577,7 +3610,7 @@
         Proceed to Secure Checkout →
       </button>
       <p style="font-size: 0.75rem; color: #64748B; text-align: center; margin-top: 0.75rem;">
-        🔒 Factory Direct Craft • Up to 15 Years Warranty • Bajaj No-Cost EMI
+        Factory Direct Craft • Up to 15 Years Warranty • Bajaj No-Cost EMI
       </p>
     </div>
   </aside>
@@ -3590,10 +3623,10 @@
     </div>
     <div class="mobile-sticky-actions">
       <button type="button" class="mobile-sticky-btn mobile-sticky-btn-cart" id="mobile-sticky-btn-cart" onclick="document.querySelector('#pdp-add-bag-btn')?.click()">
-        🛍️ Add
+        Add to Bag
       </button>
       <button type="button" class="mobile-sticky-btn mobile-sticky-btn-buy" id="mobile-sticky-btn-buy" onclick="document.querySelector('#pdp-buy-now-btn')?.click()">
-        Buy Now ⚡
+        Buy Now →
       </button>
     </div>
   </aside>

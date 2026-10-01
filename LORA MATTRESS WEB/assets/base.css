@@ -3479,31 +3479,29 @@ body {
     color: var(--brand-cyan) !important;
   }
   .card-visual-stage {
-    aspect-ratio: 1 / 1 !important;
-    min-height: unset !important;
-    max-height: 145px !important;
+    aspect-ratio: 4 / 3 !important;
+    min-height: 180px !important;
+    max-height: 230px !important;
     height: auto !important;
+    width: 100% !important;
     position: relative !important;
     overflow: hidden !important;
-    background: radial-gradient(circle at 50% 45%, #131E33 0%, #080D1A 90%) !important;
+    background: #080D1A !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
   .card-hero-link {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: block !important;
     width: 100% !important;
     height: 100% !important;
-    padding: 4px !important;
-    box-sizing: border-box !important;
+    padding: 0 !important;
   }
   .card-hero-img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important;
+    object-fit: cover !important;
     object-position: center !important;
     display: block !important;
     transition: transform 0.25s ease !important;
@@ -4274,10 +4272,11 @@ body {
     padding: 2.5rem 0 !important;
   }
   .quiz-section {
-    padding: 2.5rem 0 !important;
+    padding: 1.5rem 0 2rem !important;
   }
-  .quiz-card {
-    padding: 1.5rem 1rem !important;
+  .quiz-card,
+  .quiz-card-enhanced {
+    padding: 0.9rem 0.75rem 0.85rem !important;
   }
   .store-locator-section {
     padding: 2.5rem 0 !important;
