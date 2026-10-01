@@ -896,15 +896,247 @@
       .dossier-card-grid {
         grid-template-columns: 1fr;
       }
-      .quiz-choices-grid {
-        grid-template-columns: 1fr;
-      }
-      .quiz-stepper-pills {
-        grid-template-columns: repeat(2, 1fr);
-      }
       .dossier-runnerup-box {
         flex-direction: column;
         align-items: flex-start;
+      }
+    }
+
+    /* Mobile Sleep Match AI: Ultra-compact to display all options on a single screen */
+    @media (max-width: 768px) {
+      .quiz-section {
+        padding: 1.5rem 0 2rem !important;
+      }
+      .quiz-section .section-head-center {
+        margin-bottom: 0.85rem !important;
+      }
+      .quiz-section .eyebrow {
+        font-size: 0.65rem !important;
+        padding: 0.2rem 0.65rem !important;
+        letter-spacing: 0.05em !important;
+      }
+      .quiz-section h2 {
+        font-size: 1.3rem !important;
+        margin: 0.35rem 0 0.2rem !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
+      }
+      .quiz-section p {
+        font-size: 0.78rem !important;
+        line-height: 1.35 !important;
+        max-width: 95% !important;
+        margin: 0 auto 0.65rem !important;
+      }
+
+      /* Compact Quiz Container */
+      .quiz-card-enhanced {
+        padding: 0.9rem 0.75rem 0.85rem !important;
+        border-radius: 18px !important;
+        margin: 0 auto !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      /* Compact Stepper Header */
+      .quiz-stepper-header {
+        gap: 0.3rem !important;
+        margin-bottom: 0.65rem !important;
+        padding-bottom: 0.45rem !important;
+      }
+      .quiz-stepper-meta {
+        font-size: 0.72rem !important;
+      }
+      .quiz-step-tag {
+        font-size: 0.70rem !important;
+        letter-spacing: 0.05em !important;
+        gap: 0.35rem !important;
+      }
+      .quiz-step-tag::before {
+        width: 6px !important;
+        height: 6px !important;
+      }
+      .quiz-step-counter {
+        font-size: 0.70rem !important;
+        font-weight: 700 !important;
+        color: var(--brand-cyan) !important;
+      }
+      .quiz-progress-track {
+        height: 3.5px !important;
+        margin: 0.15rem 0 !important;
+      }
+      .quiz-stepper-pills {
+        display: none !important; /* Hide bulky pills on mobile to keep entire question in single screen */
+      }
+
+      /* Compact Step Title Block */
+      .quiz-step-title-block {
+        margin-bottom: 0.6rem !important;
+      }
+      .quiz-step-title-block h3 {
+        font-size: 0.98rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        margin-bottom: 0.15rem !important;
+      }
+      .quiz-step-title-block p {
+        font-size: 0.72rem !important;
+        line-height: 1.25 !important;
+        color: #94A3B8 !important;
+        margin: 0 !important;
+      }
+
+      /* Compact 2-Column Choices Grid */
+      .quiz-choices-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.45rem !important;
+      }
+
+      /* Compact Option Cards */
+      .quiz-opt-card {
+        padding: 0.55rem 0.5rem !important;
+        border-radius: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.25rem !important;
+        min-height: 66px !important;
+        box-sizing: border-box !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        text-align: left !important;
+      }
+      .quiz-opt-card:hover,
+      .quiz-opt-card.selected {
+        background: rgba(0, 180, 216, 0.16) !important;
+        border-color: var(--brand-cyan) !important;
+        transform: none !important;
+      }
+      .quiz-opt-icon-wrap {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 0.95rem !important;
+        border-radius: 6px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-bottom: 0 !important;
+        flex-shrink: 0 !important;
+      }
+      .quiz-opt-content {
+        width: 100% !important;
+      }
+      .quiz-opt-title {
+        font-size: 0.76rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        color: #FFFFFF !important;
+        margin-bottom: 0.1rem !important;
+        letter-spacing: -0.01em !important;
+      }
+      .quiz-opt-desc {
+        font-size: 0.64rem !important;
+        line-height: 1.2 !important;
+        color: #94A3B8 !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+      }
+
+      /* Step 2 Fifth Option (Pure Luxury) spanning across 2 columns as a neat wide chip */
+      .quiz-opt-card[data-val="pure_luxury"] {
+        grid-column: span 2 !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        min-height: 42px !important;
+        padding: 0.45rem 0.65rem !important;
+      }
+      .quiz-opt-card[data-val="pure_luxury"] .quiz-opt-icon-wrap {
+        margin-bottom: 0 !important;
+      }
+      .quiz-opt-card[data-val="pure_luxury"] .quiz-opt-title {
+        margin-bottom: 0 !important;
+      }
+      .quiz-opt-card[data-val="pure_luxury"] .quiz-opt-desc {
+        -webkit-line-clamp: 1 !important;
+      }
+
+      /* Compact Nav Actions */
+      .quiz-nav-actions {
+        margin-top: 0.65rem !important;
+        padding-top: 0.45rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+      .btn-quiz-back {
+        font-size: 0.74rem !important;
+        padding: 0.25rem 0.55rem !important;
+        gap: 0.35rem !important;
+      }
+      .quiz-nav-actions span {
+        font-size: 0.68rem !important;
+      }
+
+      /* Compact Telemetry Scanner */
+      .quiz-telemetry-state {
+        padding: 1.25rem 0.5rem !important;
+      }
+      .scanner-orb-wrap {
+        width: 64px !important;
+        height: 64px !important;
+        margin: 0 auto 0.75rem !important;
+      }
+      .scanner-ring-outer {
+        width: 64px !important;
+        height: 64px !important;
+      }
+      .scanner-ring-inner {
+        width: 44px !important;
+        height: 44px !important;
+      }
+      .telemetry-title {
+        font-size: 1rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+      .telemetry-log-live {
+        font-size: 0.74rem !important;
+      }
+
+      /* Compact Result Dossier */
+      .quiz-result-dossier {
+        padding: 0.25rem 0 !important;
+      }
+      .quiz-result-dossier > div:first-child {
+        margin-bottom: 0.85rem !important;
+      }
+      .dossier-top-badge {
+        font-size: 0.65rem !important;
+        padding: 0.2rem 0.6rem !important;
+      }
+      .quiz-result-dossier h3 {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+      .dossier-card-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+      }
+      .dossier-product-visual {
+        aspect-ratio: 16 / 10 !important;
+        max-height: 170px !important;
+        border-radius: 12px !important;
+      }
+      .dossier-title {
+        font-size: 1.1rem !important;
+      }
+      .dossier-actions-row {
+        flex-direction: column !important;
+        gap: 0.45rem !important;
+      }
+      .dossier-actions-row .btn {
+        width: 100% !important;
+        text-align: center !important;
+        padding: 0.7rem 1rem !important;
       }
     }
 
