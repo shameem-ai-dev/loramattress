@@ -37,15 +37,15 @@
       stroke: url(#spine-cyan-grad);
       stroke-width: 3.5;
       stroke-linecap: round;
-      filter: drop-shadow(0 0 8px rgba(0, 180, 216, 0.6));
+      filter: drop-shadow(0 0 6px rgba(2, 132, 199, 0.4));
       transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .spine-node-dot {
-      fill: #00B4D8;
+      fill: #0284C7;
       stroke: #FFFFFF;
       stroke-width: 2;
-      filter: drop-shadow(0 0 6px #00B4D8);
+      filter: drop-shadow(0 0 4px #0284C7);
       transition: all 400ms ease;
     }
 
@@ -53,7 +53,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(6, 9, 19, 0.85);
+      background: rgba(10, 15, 29, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 99999;
@@ -70,9 +70,9 @@
     }
 
     .modal-dialog {
-      background: #0D1629;
+      background: #0D1527;
       color: #FFFFFF;
-      border: 1px solid rgba(0, 180, 216, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-xl);
       max-width: 800px;
       width: 100%;
@@ -80,7 +80,7 @@
       overflow-y: auto;
       padding: 2.5rem;
       position: relative;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 180, 216, 0.15);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 25px rgba(2, 132, 199, 0.1);
     }
 
     .modal-close-btn {
@@ -902,52 +902,69 @@
       }
     }
 
-    /* Mobile Sleep Match AI: Ultra-compact to display all options on a single screen */
+    /* Mobile Sleep Match AI: Ultra-compact to display all options on a single screen with zero overflow */
     @media (max-width: 768px) {
       .quiz-section {
-        padding: 1.5rem 0 2rem !important;
+        padding: 1.25rem 0 1.75rem !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+      }
+      .quiz-section .container {
+        padding: 0 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
       }
       .quiz-section .section-head-center {
-        margin-bottom: 0.85rem !important;
+        margin-bottom: 0.65rem !important;
+        padding: 0 4px !important;
       }
       .quiz-section .eyebrow {
-        font-size: 0.65rem !important;
-        padding: 0.2rem 0.65rem !important;
+        font-size: 0.62rem !important;
+        padding: 0.2rem 0.55rem !important;
         letter-spacing: 0.05em !important;
       }
       .quiz-section h2 {
-        font-size: 1.3rem !important;
+        font-size: 1.25rem !important;
         margin: 0.35rem 0 0.2rem !important;
         line-height: 1.25 !important;
         letter-spacing: -0.01em !important;
       }
       .quiz-section p {
-        font-size: 0.78rem !important;
-        line-height: 1.35 !important;
-        max-width: 95% !important;
-        margin: 0 auto 0.65rem !important;
+        font-size: 0.74rem !important;
+        line-height: 1.3 !important;
+        max-width: 100% !important;
+        margin: 0 auto 0.5rem !important;
+        color: #94A3B8 !important;
       }
 
       /* Compact Quiz Container */
       .quiz-card-enhanced {
-        padding: 0.9rem 0.75rem 0.85rem !important;
-        border-radius: 18px !important;
-        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.85rem 0.75rem !important;
+        border-radius: 16px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
       }
 
       /* Compact Stepper Header */
       .quiz-stepper-header {
-        gap: 0.3rem !important;
-        margin-bottom: 0.65rem !important;
-        padding-bottom: 0.45rem !important;
+        gap: 0.25rem !important;
+        margin-bottom: 0.5rem !important;
+        padding-bottom: 0.4rem !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
       }
       .quiz-stepper-meta {
-        font-size: 0.72rem !important;
+        font-size: 0.70rem !important;
       }
       .quiz-step-tag {
-        font-size: 0.70rem !important;
-        letter-spacing: 0.05em !important;
+        font-size: 0.68rem !important;
+        letter-spacing: 0.04em !important;
         gap: 0.35rem !important;
       }
       .quiz-step-tag::before {
@@ -955,13 +972,13 @@
         height: 6px !important;
       }
       .quiz-step-counter {
-        font-size: 0.70rem !important;
+        font-size: 0.68rem !important;
         font-weight: 700 !important;
         color: var(--brand-cyan) !important;
       }
       .quiz-progress-track {
-        height: 3.5px !important;
-        margin: 0.15rem 0 !important;
+        height: 3px !important;
+        margin: 0.1rem 0 !important;
       }
       .quiz-stepper-pills {
         display: none !important; /* Hide bulky pills on mobile to keep entire question in single screen */
@@ -969,94 +986,119 @@
 
       /* Compact Step Title Block */
       .quiz-step-title-block {
-        margin-bottom: 0.6rem !important;
+        margin-bottom: 0.55rem !important;
+        text-align: left !important;
       }
       .quiz-step-title-block h3 {
-        font-size: 0.98rem !important;
+        font-size: 0.95rem !important;
         font-weight: 800 !important;
         line-height: 1.25 !important;
         margin-bottom: 0.15rem !important;
+        color: #FFFFFF !important;
+        letter-spacing: -0.01em !important;
       }
       .quiz-step-title-block p {
-        font-size: 0.72rem !important;
+        font-size: 0.70rem !important;
         line-height: 1.25 !important;
         color: #94A3B8 !important;
         margin: 0 !important;
       }
 
-      /* Compact 2-Column Choices Grid */
+      /* Compact Choices List: Full-width rows guaranteed never to overflow or clip */
       .quiz-choices-grid {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.45rem !important;
-      }
-
-      /* Compact Option Cards */
-      .quiz-opt-card {
-        padding: 0.55rem 0.5rem !important;
-        border-radius: 12px !important;
         display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 0.25rem !important;
-        min-height: 66px !important;
+        gap: 0.4rem !important;
+        width: 100% !important;
         box-sizing: border-box !important;
-        background: rgba(255, 255, 255, 0.04) !important;
+      }
+
+      /* Compact Full-width Option Cards */
+      .quiz-opt-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.65rem !important;
+        padding: 0.5rem 0.75rem !important;
+        border-radius: 12px !important;
+        min-height: 48px !important;
+        box-sizing: border-box !important;
+        background: rgba(255, 255, 255, 0.035) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         text-align: left !important;
+        cursor: pointer !important;
+        transition: all 0.18s ease !important;
+        grid-column: unset !important;
       }
-      .quiz-opt-card:hover,
+      .quiz-opt-card:active,
       .quiz-opt-card.selected {
         background: rgba(0, 180, 216, 0.16) !important;
         border-color: var(--brand-cyan) !important;
+        box-shadow: 0 0 14px rgba(0, 180, 216, 0.28) !important;
         transform: none !important;
       }
       .quiz-opt-icon-wrap {
-        width: 26px !important;
-        height: 26px !important;
-        font-size: 0.95rem !important;
-        border-radius: 6px !important;
-        display: inline-flex !important;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 1.05rem !important;
+        border-radius: 8px !important;
+        background: rgba(0, 180, 216, 0.12) !important;
+        border: 1px solid rgba(0, 180, 216, 0.25) !important;
+        display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         margin-bottom: 0 !important;
         flex-shrink: 0 !important;
       }
       .quiz-opt-content {
-        width: 100% !important;
+        flex: 1 !important;
+        min-width: 0 !important;
       }
       .quiz-opt-title {
-        font-size: 0.76rem !important;
+        font-size: 0.80rem !important;
         font-weight: 700 !important;
         line-height: 1.2 !important;
         color: #FFFFFF !important;
         margin-bottom: 0.1rem !important;
         letter-spacing: -0.01em !important;
+        white-space: normal !important;
       }
       .quiz-opt-desc {
-        font-size: 0.64rem !important;
+        font-size: 0.66rem !important;
         line-height: 1.2 !important;
         color: #94A3B8 !important;
         display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
+        -webkit-line-clamp: 1 !important;
         -webkit-box-orient: vertical !important;
         overflow: hidden !important;
       }
 
-      /* Step 2 Fifth Option (Pure Luxury) spanning across 2 columns as a neat wide chip */
+      /* Radio indicator circle on right edge of card */
+      .quiz-opt-card::after {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        flex-shrink: 0;
+        margin-left: auto;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+      }
+      .quiz-opt-card.selected::after {
+        border-color: var(--brand-cyan);
+        background: var(--brand-cyan);
+        box-shadow: 0 0 8px var(--brand-cyan);
+      }
+
+      /* Step 2 Fifth Option (Pure Luxury) */
       .quiz-opt-card[data-val="pure_luxury"] {
-        grid-column: span 2 !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 0.5rem !important;
-        min-height: 42px !important;
-        padding: 0.45rem 0.65rem !important;
-      }
-      .quiz-opt-card[data-val="pure_luxury"] .quiz-opt-icon-wrap {
-        margin-bottom: 0 !important;
-      }
-      .quiz-opt-card[data-val="pure_luxury"] .quiz-opt-title {
-        margin-bottom: 0 !important;
+        grid-column: unset !important;
+        width: 100% !important;
+        padding: 0.5rem 0.75rem !important;
+        min-height: 48px !important;
       }
       .quiz-opt-card[data-val="pure_luxury"] .quiz-opt-desc {
         -webkit-line-clamp: 1 !important;
@@ -1064,9 +1106,13 @@
 
       /* Compact Nav Actions */
       .quiz-nav-actions {
-        margin-top: 0.65rem !important;
-        padding-top: 0.45rem !important;
+        margin-top: 0.55rem !important;
+        padding-top: 0.4rem !important;
         border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
       }
       .btn-quiz-back {
         font-size: 0.74rem !important;
@@ -1539,9 +1585,9 @@
           <svg class="spine-contour-svg" viewBox="0 0 320 60">
             <defs>
               <linearGradient id="spine-cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#00B4D8" />
-                <stop offset="50%" stop-color="#48CAE4" />
-                <stop offset="100%" stop-color="#0077B6" />
+                <stop offset="0%" stop-color="#0284C7" />
+                <stop offset="50%" stop-color="#38BDF8" />
+                <stop offset="100%" stop-color="#1D4ED8" />
               </linearGradient>
             </defs>
             <path id="hero-spine-path" class="spine-svg-line" d="M 10 32 Q 45 20, 90 28 T 160 34 T 240 26 T 310 32" />
@@ -1713,46 +1759,15 @@
             <h2 class="inner-pdp-title" id="inner-title">01. LORA CLOUD 7™</h2>
             <p class="inner-pdp-tagline" id="inner-tagline">Super Soft 7-Zone Dual Comfort</p>
 
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; font-size: 0.82rem; flex-wrap: wrap;">
               <span style="color: #F59E0B; font-weight: 700;">★ 4.9 / 5.0</span>
-              <span style="color: var(--text-secondary);">•</span>
-              <span style="color: var(--text-secondary);">Google Verified (5,00,000+ Sleepers)</span>
-              <span style="color: var(--text-secondary);">•</span>
-              <span style="color: #059669; font-weight: 700;">Direct from Factory</span>
-            </div>
-
-            <div class="inner-price-row">
-              <span class="inner-price-val" id="inner-price">₹21,999</span>
-              <span class="inner-mrp-val" id="inner-mrp">₹36,999</span>
-              <span class="badge-verified" style="background: #DCFCE7; color: #15803D; border: none;" id="inner-save">SAVE ₹15,000</span>
-            </div>
-
-            <!-- Bajaj Finserv EMI Card -->
-            <div class="inner-emi-card">
-              <div>
-                <strong style="font-size: 0.92rem; color: var(--brand-royal); display: block;" id="inner-emi-text">
-                  0% EMI from ₹1,833 / month with Bajaj Finserv
-                </strong>
-                <span style="font-size: 0.76rem; color: #64748B;">Zero down payment • 12 easy installments</span>
-              </div>
-              <span class="badge-verified">NO COST</span>
-            </div>
-
-            <!-- Real-time Stock Availability Badge -->
-            <div class="inner-stock-indicator in-stock" id="inner-stock-badge">
-              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#15803D;"></span>
-              <span id="inner-stock-text">In Stock • Ready to Dispatch in 24 Hours</span>
-            </div>
-
-            <!-- Active Promotional Offer Banner -->
-            <div class="inner-offer-banner" id="inner-offer-banner">
-              <div class="inner-offer-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-              </div>
-              <div class="inner-offer-text">
-                <h5 id="inner-offer-title">LIMITED FESTIVE OFFER: FLAT 15% OFF + FREE SLEEP BUNDLE</h5>
-                <p id="inner-offer-desc">Includes 2 Ergonomic Memory Pillows + 1 Waterproof Mattress Protector (Worth ₹4,999) complimentary today.</p>
-              </div>
+              <span style="color: rgba(255,255,255,0.2);">•</span>
+              <span style="color: var(--text-secondary);">Direct from Factory</span>
+              <span style="color: rgba(255,255,255,0.2);">•</span>
+              <span id="inner-stock-badge" style="color: #059669; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+                <span style="width:7px; height:7px; border-radius:50%; background:#10B981; display:inline-block;"></span>
+                <span id="inner-stock-text">In Stock • Dispatches in 24 Hrs</span>
+              </span>
             </div>
 
             <!-- 1. Bed Type (King / Queen / Single / Double / Custom) -->
@@ -1770,7 +1785,7 @@
               </div>
             </div>
 
-            <!-- 2. Size in Inches (Completely Separate) -->
+            <!-- 2. Size in Inches -->
             <div class="inner-opt-group">
               <label class="inner-opt-label">
                 <span>2. Select Size in Inches</span>
@@ -1792,7 +1807,7 @@
             <!-- 3. Thickness (6 to 12 inches) -->
             <div class="inner-opt-group">
               <label class="inner-opt-label">
-                <span>3. Select Thickness in Inches</span>
+                <span>3. Select Mattress Thickness</span>
                 <span style="color: var(--brand-royal); font-weight: 700;" id="inner-thick-label">8 Inch</span>
               </label>
               <div class="inner-thickness-row">
@@ -1803,90 +1818,213 @@
               </div>
             </div>
 
-            <!-- 4. Coupon Code Discount Box -->
-            <div class="inner-opt-group" style="margin-bottom: 1.25rem;">
-              <label class="inner-opt-label">
-                <span>Promotional Coupon Code</span>
-                <span style="color: #059669; font-weight: 600;" id="coupon-status-hint">Try code: LORA10</span>
-              </label>
-              <div class="coupon-box-wrap">
-                <input type="text" class="coupon-input" id="coupon-code-input" placeholder="ENTER COUPON CODE" value="LORA10">
-                <button type="button" class="coupon-btn" id="apply-coupon-btn">Apply</button>
-              </div>
-              <div class="coupon-success-tag" id="coupon-tag-wrap" style="display: flex;">
-                <span>✓</span> <span id="coupon-tag-text">Code LORA10 Applied: Extra 10% Off</span>
-              </div>
+            <!-- Final Price Display -->
+            <div class="inner-price-row" style="margin-top: 1.25rem; margin-bottom: 0.5rem; display: flex; align-items: baseline; gap: 0.85rem; flex-wrap: wrap;">
+              <span class="inner-price-val" id="inner-price" style="font-size: 2.2rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">₹21,999</span>
+              <span class="inner-mrp-val" id="inner-mrp" style="text-decoration: line-through; color: var(--text-muted); font-size: 1.15rem;">₹36,999</span>
+              <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 6px;" id="inner-save">SAVE ₹15,000</span>
             </div>
 
-            <!-- 3. Firmness Dial -->
-            <div class="inner-opt-group">
-              <label class="inner-opt-label">
-                <span>3. Ergonomic Firmness Index</span>
-                <span style="color: var(--brand-royal); font-weight: 700;" id="inner-firm-val">SOFT ●●○○○ FIRM</span>
-              </label>
-              <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <div class="meter-labels" style="margin-bottom: 0.5rem; font-size: 0.74rem;">
-                  <span>Plush Soft</span>
-                  <span style="color: #38BDF8;" id="inner-feel-label">Gentle Cloud Cushioning</span>
-                  <span>Orthopedic Firm</span>
-                </div>
-                <div class="meter-track-graphic" style="margin: 0;">
-                  <div class="meter-bar-fill"><div class="meter-bar-progress" id="inner-meter-fill" style="width: 38%;"></div></div>
-                </div>
-                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.75rem;" id="inner-posture-rec">
-                  <strong>Recommended for:</strong> Side sleepers seeking zero shoulder pinch and cloud-like joint cradling.
-                </p>
-              </div>
+            <!-- 0% EMI Micro Strip -->
+            <div class="pdp-emi-micro-strip" style="margin-bottom: 1.25rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <span id="inner-emi-text">0% EMI from ₹1,833/mo • Zero down payment • 12 easy installments</span>
             </div>
 
-            <!-- CTAs -->
-            <div class="inner-actions-stack">
-              <button type="button" class="btn btn-primary" id="inner-add-bag-btn" onclick="window.handleInnerAddToBag()" style="padding: 1.15rem; font-size: 1.05rem; cursor: pointer;">
-                Add to Sleep Bag • Instant Free Delivery →
+            <!-- Action Buttons: Clear Buy Now & Add to Bag (No WhatsApp) -->
+            <div class="pdp-dual-actions-row">
+              <button type="button" class="btn-pdp-buy-now" id="inner-buy-now-btn" onclick="window.handleInnerBuyNow()">
+                Buy Now — Express Delivery →
               </button>
-              <a id="inner-wa-btn" href="#" target="_blank" class="btn btn-whatsapp" style="padding: 1rem; font-size: 1rem;">
-                <span>Order via WhatsApp Concierge</span>
-              </a>
+              <button type="button" class="btn-pdp-add-bag" id="inner-add-bag-btn" onclick="window.handleInnerAddToBag()">
+                Add to Sleep Bag
+              </button>
             </div>
 
-            <div class="inner-guarantee-row">
-              <div style="display:flex;align-items:center;gap:0.4rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-royal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <strong id="inner-guar-warr">10 Years Factory Warranty</strong></div>
-              <div style="display:flex;align-items:center;gap:0.4rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-royal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 12a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5M2 12a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5"/></svg> <strong>Zero Disturbance Motion Isolation</strong></div>
-              <div style="display:flex;align-items:center;gap:0.4rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-royal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> <strong>Free Insured Express Delivery</strong></div>
-              <div style="display:flex;align-items:center;gap:0.4rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-royal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> <strong>Zero Middleman 40% Markup</strong></div>
+            <!-- Compact Reassurance Micro Strip -->
+            <div class="pdp-reassurance-micro">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <strong id="inner-guar-warr">10-Yr Warranty</strong></span>
+              <span>•</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Free Insured Delivery</span>
+              <span>•</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Factory Direct</span>
+            </div>
+
+            <!-- Quiet Fallback container for offer/coupon DOM nodes to guarantee JS safety -->
+            <div style="display: none;" aria-hidden="true">
+              <div id="inner-offer-banner"><h5 id="inner-offer-title"></h5><p id="inner-offer-desc"></p></div>
+              <span id="coupon-status-hint"></span>
+              <input type="text" id="coupon-code-input" value="LORA10">
+              <button type="button" id="apply-coupon-btn"></button>
+              <div id="coupon-tag-wrap"><span id="coupon-tag-text"></span></div>
             </div>
           </div>
         </div>
 
-        <!-- Deep Dive Section: Layer Anatomy & Specs Table -->
-        <div class="inner-deep-section">
-          <span class="eyebrow eyebrow-pill">Technical Specification Sheet</span>
-          <h3 style="font-size: 1.85rem; margin-bottom: 0.5rem;">Layer-by-Layer Engineering Anatomy</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">
-            Constructed with pure botanical Dunlop latex, zero-motion pocket coils, and breathable phase-change knitted fabrics.
-          </p>
+        <!-- ==========================================
+             SECONDARY DETAILS: ELEGANT EXPANDABLE ACCORDIONS
+             ========================================== -->
+        <div class="lora-accordion-suite" style="margin-top: 3.5rem;">
 
-          <div class="inner-layers-grid" id="inner-layers-box">
-            <!-- Injected dynamically -->
-          </div>
-
-          <!-- Technical Specs Table -->
-          <div class="specs-table-card" style="margin-top: 3rem;">
-            <div style="padding: 1.25rem 2rem; background: var(--brand-midnight); color: #FFFFFF; display: flex; justify-content: space-between; align-items: center;">
-              <h4 style="color: #FFFFFF; font-size: 1.05rem; margin: 0;">Certified Laboratory Specifications</h4>
-              <span class="badge-verified">ISO 9001:2015</span>
+          <!-- Accordion 1: Layer Architecture & Sleep Materials -->
+          <details class="lora-accordion" open>
+            <summary class="lora-accordion-summary">
+              <div class="lora-accordion-title-wrap">
+                <span class="lora-accordion-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                </span>
+                <div>
+                  <span class="lora-accordion-title">Layer Architecture & Sleep Materials</span>
+                  <span class="lora-accordion-subtitle">Engineered multi-layer core • Botanical Dunlop Latex & Breathable PCM Fabrics</span>
+                </div>
+              </div>
+              <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="lora-accordion-body">
+              <div class="inner-layers-grid" id="inner-layers-box">
+                <!-- Injected dynamically -->
+              </div>
             </div>
-            <table class="specs-table">
-              <tbody>
-                <tr><th>Model Name</th><td id="inner-tbl-name">01. LORA CLOUD 7™</td></tr>
-                <tr><th>Comfort Profile</th><td id="inner-tbl-cat">Super Soft 7-Zone Dual Comfort</td></tr>
-                <tr><th>Internal Core</th><td id="inner-tbl-core">7-Zone Adaptive Cloud Foam + Aerodynamic Transition Core</td></tr>
-                <tr><th>Cover Fabric</th><td id="inner-tbl-cover">Micro-Quilted Cloud Knitted Fabric with PCM Cooling Technology</td></tr>
-                <tr><th>Motion Transfer</th><td id="inner-tbl-motion">Zero Motion Disturbance (Independent Absorption)</td></tr>
-                <tr><th>Warranty</th><td id="inner-tbl-warr">10 Years Direct Factory Replacement</td></tr>
-              </tbody>
-            </table>
-          </div>
+          </details>
+
+          <!-- Accordion 2: Certified Laboratory Technical Specifications -->
+          <details class="lora-accordion">
+            <summary class="lora-accordion-summary">
+              <div class="lora-accordion-title-wrap">
+                <span class="lora-accordion-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </span>
+                <div>
+                  <span class="lora-accordion-title">Certified Laboratory Technical Specifications</span>
+                  <span class="lora-accordion-subtitle">ISO 9001:2015 tested • Motion isolation & material metrics</span>
+                </div>
+              </div>
+              <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="lora-accordion-body">
+              <div class="specs-table-card" style="margin-top: 0; border: none; background: transparent; box-shadow: none;">
+                <table class="specs-table">
+                  <tbody>
+                    <tr><th>Model Name</th><td id="inner-tbl-name">01. LORA CLOUD 7™</td></tr>
+                    <tr><th>Comfort Profile</th><td id="inner-tbl-cat">Super Soft 7-Zone Dual Comfort</td></tr>
+                    <tr><th>Internal Core</th><td id="inner-tbl-core">7-Zone Adaptive Cloud Foam + Aerodynamic Transition Core</td></tr>
+                    <tr><th>Cover Fabric</th><td id="inner-tbl-cover">Micro-Quilted Cloud Knitted Fabric with PCM Cooling Technology</td></tr>
+                    <tr><th>Motion Transfer</th><td id="inner-tbl-motion">Zero Motion Disturbance (Independent Absorption)</td></tr>
+                    <tr><th>Warranty</th><td id="inner-tbl-warr">10 Years Direct Factory Replacement</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion 3: Ergonomic Firmness Index & Posture Guide -->
+          <details class="lora-accordion">
+            <summary class="lora-accordion-summary">
+              <div class="lora-accordion-title-wrap">
+                <span class="lora-accordion-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 19 7"/></svg>
+                </span>
+                <div>
+                  <span class="lora-accordion-title">Ergonomic Firmness Index & Sleep Posture Guide</span>
+                  <span class="lora-accordion-subtitle" id="inner-firm-val">SOFT ●●○○○ FIRM</span>
+                </div>
+              </div>
+              <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="lora-accordion-body">
+              <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+                <div class="meter-labels" style="margin-bottom: 0.65rem; font-size: 0.8rem; display: flex; justify-content: space-between;">
+                  <span>Plush Soft</span>
+                  <span style="color: #38BDF8; font-weight: 700;" id="inner-feel-label">Gentle Cloud Cushioning</span>
+                  <span>Orthopedic Firm</span>
+                </div>
+                <div class="meter-track-graphic" style="margin: 0; height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden;">
+                  <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="inner-meter-fill" style="width: 38%; height: 100%; background: linear-gradient(90deg, #38BDF8, #0284C7); border-radius: 9999px;"></div></div>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 1rem; line-height: 1.6;" id="inner-posture-rec">
+                  <strong>Recommended for:</strong> Side sleepers seeking zero shoulder pinch and cloud-like joint cradling.
+                </p>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion 4: Full-Size Flat Delivery vs Rolled Box Compromise -->
+          <details class="lora-accordion">
+            <summary class="lora-accordion-summary">
+              <div class="lora-accordion-title-wrap">
+                <span class="lora-accordion-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </span>
+                <div>
+                  <span class="lora-accordion-title">Full-Size Flat Delivery vs The Rolled-Box Compromise</span>
+                  <span class="lora-accordion-subtitle">Delivered 100% flat in protective casing • Never crushed</span>
+                </div>
+              </div>
+              <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="lora-accordion-body">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 1.25rem;">
+                  <span style="font-size: 0.74rem; font-weight: 800; color: #EF4444; letter-spacing: 0.08em; text-transform: uppercase;">The Industry Shortcut</span>
+                  <h4 style="color: #FFFFFF; font-size: 1.05rem; margin: 0.35rem 0 0.5rem 0;">Rolled & Compressed Box</h4>
+                  <p style="font-size: 0.84rem; color: #CBD5E1; line-height: 1.55; margin: 0;">
+                    Crushed under 20-ton hydraulic rollers and vacuum-sealed for container shipping convenience. High risk of damaged internal pocket coil bonds and collapsed perimeter foam.
+                  </p>
+                </div>
+                <div style="background: rgba(2, 132, 199, 0.1); border: 1px solid rgba(2, 132, 199, 0.35); border-radius: 12px; padding: 1.25rem;">
+                  <span style="font-size: 0.74rem; font-weight: 800; color: #38BDF8; letter-spacing: 0.08em; text-transform: uppercase;">The LORA Standard</span>
+                  <h4 style="color: #FFFFFF; font-size: 1.05rem; margin: 0.35rem 0 0.5rem 0;">Delivered Full-Size & Flat</h4>
+                  <p style="font-size: 0.84rem; color: #CBD5E1; line-height: 1.55; margin: 0;">
+                    Delivered straight from our robotic plant to your home in its natural flat form with 3-ply heavy-duty waterproof casing. Coils and comfort foam remain 100% uncompromised.
+                  </p>
+                </div>
+              </div>
+              <div class="usp-points-row" style="margin-top: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div class="usp-point-card" style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);"><div class="usp-point-title" style="color: #38BDF8; font-weight: 700;">✦ Zero Coil Sag</div><div class="usp-point-desc" style="font-size: 0.8rem; color: #94A3B8;">Full mechanical resilience preserved</div></div>
+                <div class="usp-point-card" style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);"><div class="usp-point-title" style="color: #38BDF8; font-weight: 700;">✦ Direct from Factory</div><div class="usp-point-desc" style="font-size: 0.8rem; color: #94A3B8;">Freshly crafted, not sitting in warehouses</div></div>
+                <div class="usp-point-card" style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);"><div class="usp-point-title" style="color: #38BDF8; font-weight: 700;">✦ No Showroom Markup</div><div class="usp-point-desc" style="font-size: 0.8rem; color: #94A3B8;">Direct factory pricing saves you 40%</div></div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion 5: Bed Measurement & Cot Sizing Guide -->
+          <details class="lora-accordion" id="inner-how-to-measure">
+            <summary class="lora-accordion-summary">
+              <div class="lora-accordion-title-wrap">
+                <span class="lora-accordion-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0L1.7 15.7a1 1 0 0 1 0-1.4L14.3 1.7a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6" y2="12"/><line x1="10.5" y1="7.5" x2="9" y2="9"/><line x1="13.5" y1="4.5" x2="12" y2="6"/></svg>
+                </span>
+                <div>
+                  <span class="lora-accordion-title">Bed Measurement & Cot Sizing Guide</span>
+                  <span class="lora-accordion-subtitle">Measure inside frame edges in inches for a perfect drop-in fit</span>
+                </div>
+              </div>
+              <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="lora-accordion-body">
+              <div style="background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem;">
+                <h4 style="color: #FFFFFF; font-size: 1.05rem; margin-bottom: 0.75rem;">Standard Indian Bed Frame Sizing Chart</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+                  <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                    <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">Queen Size (5.0 ft)</strong>
+                    <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 60" or 75" × 60"<br>Standard Master Bedroom</span>
+                  </div>
+                  <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                    <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">King Size (6.0 ft)</strong>
+                    <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 72" or 75" × 72"<br>Spacious Luxury Master</span>
+                  </div>
+                  <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                    <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">Double / Single</strong>
+                    <span style="font-size: 0.84rem; color: #CBD5E1;">75" × 48" or 72" × 36"<br>Guest / Compact Rooms</span>
+                  </div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                  <strong>Pro Measurement Tip:</strong> Always use a steel tape measure along the inside perimeter of your bed frame (from inside left edge to inside right edge, and inside headboard to footboard). We manufacture each mattress with exact precision to seamlessly fit your frame.
+                </p>
+              </div>
+            </div>
+          </details>
+
         </div>
       </div>
 
@@ -2878,12 +3016,12 @@
 
           <div class="spine-canvas-box">
             <svg viewBox="0 0 400 120" style="width: 100%; height: 100%;">
-              <path id="sim-spine-path" d="M 30 60 Q 90 40, 160 55 T 260 62 T 370 58" fill="none" stroke="#00B4D8" stroke-width="4" stroke-linecap="round" filter="drop-shadow(0 0 10px #00B4D8)" />
-              <circle id="node-1" cx="90" cy="48" r="5" fill="#FFFFFF" stroke="#00B4D8" stroke-width="2" />
-              <circle id="node-2" cx="160" cy="55" r="5" fill="#FFFFFF" stroke="#00B4D8" stroke-width="2" />
-              <circle id="node-3" cx="260" cy="62" r="5" fill="#FFFFFF" stroke="#00B4D8" stroke-width="2" />
+              <path id="sim-spine-path" d="M 30 60 Q 90 40, 160 55 T 260 62 T 370 58" fill="none" stroke="#0284C7" stroke-width="4" stroke-linecap="round" filter="drop-shadow(0 0 6px rgba(2, 132, 199, 0.5))" />
+              <circle id="node-1" cx="90" cy="48" r="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
+              <circle id="node-2" cx="160" cy="55" r="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
+              <circle id="node-3" cx="260" cy="62" r="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
             </svg>
-            <div style="position: absolute; bottom: 0.85rem; left: 1.25rem; font-size: 0.76rem; color: #00B4D8; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
+            <div style="position: absolute; bottom: 0.85rem; left: 1.25rem; font-size: 0.76rem; color: #38BDF8; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
               ● LORA 7-Zone Dynamic Alignment: 100% Neutral
             </div>
           </div>
@@ -4149,14 +4287,14 @@
       box-sizing: border-box;
     }
     .locator-input:focus {
-      border-color: #00B4D8;
-      box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.25);
+      border-color: #0284C7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
     }
     .locator-input::placeholder {
       color: #64748B;
     }
     .btn-locator-submit {
-      background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
       color: #FFFFFF;
       border: none;
       font-family: inherit;
@@ -4172,7 +4310,7 @@
       transition: all 200ms ease;
       white-space: nowrap;
       height: 46px;
-      box-shadow: 0 4px 15px rgba(0, 180, 216, 0.35);
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
     }
     .btn-locator-submit:hover {
       transform: translateY(-2px);
@@ -4191,10 +4329,10 @@
 
     .studio-match-card {
       background: linear-gradient(180deg, rgba(16, 31, 56, 0.95) 0%, rgba(10, 19, 36, 0.95) 100%);
-      border: 1.5px solid #00B4D8;
+      border: 1px solid rgba(2, 132, 199, 0.4);
       border-radius: 20px;
       padding: 2.25rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 180, 216, 0.25);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(2, 132, 199, 0.15);
       display: grid;
       grid-template-columns: 1.5fr 1fr;
       gap: 2rem;
@@ -4847,12 +4985,12 @@
         </div>
 
         <!-- Direct In-Checkout Login Prompt (Shown only when NOT logged in) -->
-        <div id="checkout-auth-banner" style="background: rgba(0, 180, 216, 0.1); border: 1.5px dashed rgba(0, 180, 216, 0.4); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+        <div id="checkout-auth-banner" style="background: rgba(2, 132, 199, 0.1); border: 1.5px dashed rgba(2, 132, 199, 0.4); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
           <div>
             <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;" id="checkout-auth-title">Have a LORA Account?</div>
             <div style="font-size: 0.74rem; color: #94A3B8;" id="checkout-auth-subtitle">Login with OTP to auto-fill your saved address and speed up checkout.</div>
           </div>
-          <button type="button" id="btn-checkout-login-banner" onclick="handleCheckoutLoginClick()" style="background: #0A0F1D; color: #38BDF8; border: 1.5px solid #00B4D8; border-radius: var(--radius-pill); font-size: 0.78rem; font-weight: 800; padding: 0.45rem 0.9rem; cursor: pointer; white-space: nowrap;">
+          <button type="button" id="btn-checkout-login-banner" onclick="handleCheckoutLoginClick()" style="background: #0A0F1D; color: #38BDF8; border: 1.5px solid #0284C7; border-radius: var(--radius-pill); font-size: 0.78rem; font-weight: 800; padding: 0.45rem 0.9rem; cursor: pointer; white-space: nowrap;">
             Login with OTP →
           </button>
         </div>
@@ -5076,7 +5214,7 @@
        CUSTOMER AUTHENTICATION MODAL (OTP LOGIN / SIGN UP)
        ========================================================= -->
   <div class="modal-overlay" id="modal-customer-auth">
-    <div class="modal-dialog" style="max-width: 480px; padding: 2.25rem; background: #0D1629; border: 1px solid rgba(0, 180, 216, 0.35); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 180, 216, 0.2);">
+    <div class="modal-dialog" style="max-width: 480px; padding: 2.25rem; background: #0D1527; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(2, 132, 199, 0.15);">
       <button type="button" class="modal-close-btn" id="btn-close-cust-auth" onclick="closeCustomerAuthModal()" aria-label="Close modal">✕</button>
 
       <!-- Step 1: Identifier Entry & OTP Channel Choice -->
@@ -5102,8 +5240,8 @@
               Receive OTP via
             </label>
             <div id="cust-channels-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label class="otp-channel-pill selected" data-channel="whatsapp" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(0, 180, 216, 0.08); border: 1px solid #00B4D8;">
-                <input type="radio" name="cust_selected_channel" value="whatsapp" class="otp-channel-radio" checked style="accent-color: #00B4D8;">
+              <label class="otp-channel-pill selected" data-channel="whatsapp" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(2, 132, 199, 0.1); border: 1.5px solid #0284C7;">
+                <input type="radio" name="cust_selected_channel" value="whatsapp" class="otp-channel-radio" checked style="accent-color: #0284C7;">
                 <span style="font-size: 1.2rem;">💬</span>
                 <div style="flex: 1;">
                   <strong style="font-size: 0.88rem; color: #FFFFFF; display: block;">WhatsApp OTP</strong>
@@ -6817,6 +6955,16 @@
         }
       });
 
+      // Auto-open Inner Suite if specified in URL (?inner=01 or hash #inner-product-suite)
+      const urlInnerParam = new URLSearchParams(window.location.search).get('inner');
+      if (urlInnerParam || window.location.hash === '#inner-product-suite') {
+        const targetModel = (urlInnerParam && urlInnerParam !== '1') ? urlInnerParam : '01';
+        if (innerSuite) {
+          innerSuite.classList.add('active');
+          renderInnerSuite(targetModel);
+        }
+      }
+
       // Whole Mattress Card Tap Handler (Opens detailed view for that product)
       document.addEventListener('click', function (e) {
         const card = e.target.closest('.mattress-card');
@@ -6894,6 +7042,44 @@
         }
       }
       window.handleInnerAddToBag = handleInnerAddToBag;
+
+      // Inner Buy Now (from #inner-product-suite)
+      function handleInnerBuyNow() {
+        const titleEl = document.querySelector('#inner-title');
+        const priceEl = document.querySelector('#inner-price');
+        const cotTypeEl = document.querySelector('#inner-cot-type-label');
+        const inchEl = document.querySelector('#inner-inch-label');
+        const thickEl = document.querySelector('#inner-thick-label');
+        const imgEl = document.querySelector('#inner-active-img');
+
+        const title = titleEl ? titleEl.textContent.trim() : '01. LORA CLOUD 7™';
+        const priceNum = priceEl ? parseInt(priceEl.textContent.replace(/[^0-9]/g, ''), 10) : 21999;
+        const cot = cotTypeEl ? cotTypeEl.textContent.trim() : 'Queen';
+        const inch = inchEl ? inchEl.textContent.trim() : '78" × 60"';
+        const thick = thickEl ? thickEl.textContent.trim() : '8 Inch';
+        const img = (imgEl && imgEl.src) ? imgEl.src : 'assets/comfort-plush.jpg';
+        const specs = `${cot} • ${inch} • ${thick}`;
+
+        window.currentCheckoutOrder = {
+          productName: title,
+          size: specs,
+          price: priceNum || 21999,
+          quantity: 1,
+          image: img
+        };
+
+        try {
+          localStorage.setItem('lora_pending_checkout_v1', JSON.stringify(window.currentCheckoutOrder));
+          sessionStorage.setItem('lora_pending_checkout_v1', JSON.stringify(window.currentCheckoutOrder));
+        } catch (e) {}
+
+        if (typeof window.openCheckoutModal === 'function') {
+          window.openCheckoutModal();
+        } else {
+          window.location.href = `checkout.html?model=${activeInnerModelKey || '01'}&price=${priceNum}`;
+        }
+      }
+      window.handleInnerBuyNow = handleInnerBuyNow;
 
       // ==========================================
       // 8. CARD CONFIGURATOR ENGINE (BED TYPE, INCHES, THICKNESS)
@@ -8193,7 +8379,7 @@
 
           let rzpOrderId = '';
           let rzpKeyId = 'rzp_test_51L0RA9876DEMO';
-          let rzpThemeColor = '#00B4D8';
+          let rzpThemeColor = '#0284C7';
 
           // 1. Instant hydration from admin-configured storage
           try {
