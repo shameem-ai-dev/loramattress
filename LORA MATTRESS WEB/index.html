@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/base.css?v=20260917v5">
+  <link rel="stylesheet" href="assets/lumi.css?v=20261004v1">
   <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -190,8 +191,6 @@
       display: none;
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
       background: rgba(6, 9, 19, 0.85);
       -webkit-backdrop-filter: blur(14px);
       backdrop-filter: blur(14px);
@@ -201,6 +200,7 @@
       padding: 1.5rem;
       box-sizing: border-box;
       overflow-y: auto;
+      overflow-x: hidden;
     }
     .checkout-modal-overlay.active {
       display: flex !important;
@@ -211,10 +211,11 @@
       border: 1px solid rgba(0, 180, 216, 0.25);
       border-radius: var(--radius-lg);
       width: 100%;
-      max-width: 640px;
-      max-height: 90vh;
+      max-width: 580px;
+      min-width: 0;
+      max-height: 96vh;
       overflow-y: auto;
-      padding: 2rem;
+      padding: 1.15rem 1.45rem;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 180, 216, 0.15);
       position: relative;
     }
@@ -222,9 +223,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 1.25rem;
+      padding-bottom: 0.85rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .checkout-close-btn {
       background: rgba(255, 255, 255, 0.08);
@@ -246,25 +247,25 @@
       border-color: #00B4D8;
     }
     .checkout-input-block {
-      margin-bottom: 1.15rem;
+      margin-bottom: 0.5rem;
     }
     .checkout-input-block label {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       color: #CBD5E1;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.25rem;
     }
     .checkout-input {
       width: 100%;
       background: rgba(10, 15, 29, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: var(--radius-md);
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 0.85rem;
       color: #FFFFFF;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-family: inherit;
       outline: none;
       box-sizing: border-box;
@@ -281,57 +282,34 @@
       gap: 1rem;
     }
     @media (max-width: 600px) {
-      .checkout-grid-2 { grid-template-columns: 1fr; }
+      .checkout-modal-overlay {
+        padding: 0.5rem;
+        align-items: flex-start;
+      }
+      .checkout-modal-card {
+        padding: 0.9rem 0.75rem;
+        border-radius: var(--radius-md);
+        max-height: 96vh;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      .checkout-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      #checkout-auth-banner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.45rem !important;
+      }
+      #btn-checkout-login-banner {
+        align-self: flex-start;
+      }
     }
 
-    /* Floating WhatsApp Pill */
-    .floating-whatsapp-badge {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 998;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      background: #25D366;
-      color: #FFFFFF;
-      padding: 0.75rem 1.35rem;
-      border-radius: var(--radius-pill);
-      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      transition: all 250ms var(--ease-spring);
-    }
-
-    .floating-whatsapp-badge:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 35px rgba(37, 211, 102, 0.55);
-    }
-    @media (max-width: 768px) {
-      .floating-whatsapp-badge {
-        bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-        right: 14px !important;
-        width: 48px !important;
-        height: 48px !important;
-        min-width: 48px !important;
-        padding: 0 !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.6) !important;
-        z-index: 9997 !important;
-      }
-      .floating-whatsapp-badge span {
-        display: none !important;
-      }
-      .floating-whatsapp-badge svg {
-        width: 24px !important;
-        height: 24px !important;
-        margin: 0 !important;
-      }
-    }
+    /* Floating WhatsApp removed so Buy Now CTA commands full attention */
 
     /* =========================================================
        SLEEP MATCH AI 2.0 ENHANCED DIAGNOSTIC SUITE
@@ -1464,24 +1442,6 @@
           <span id="header-auth-label">Login</span>
         </button>
 
-        <!-- Direct Header Logout Button (visible when logged in) -->
-        <button type="button" class="header-logout-btn" id="btn-header-logout" onclick="window.handleCustomerLogout(event)" style="display: none;" title="Logout of customer account">
-          <span>Logout</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-        </button>
-
-        <a id="top-nav-whatsapp"
-           href="https://wa.me/919876543210?text=Hello%20LORA,%20I'd%20like%20guidance%20on%20selecting%20a%20mattress." 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn btn-whatsapp btn-sm"
-           style="border-radius: var(--radius-pill); font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.45rem;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFFFFF">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
-          </svg>
-          <span>WhatsApp</span>
-        </a>
-
         <button type="button" class="header-action-btn" data-action="open-cart" aria-label="View Sleep Bag">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -1505,11 +1465,16 @@
 
   <!-- Mobile Navigation Drawer -->
   <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-    <a href="#the-collection" class="mobile-nav-link" onclick="window.closeMobileNav()">The 8 Mattresses <span>→</span></a>
-    <a href="#spine-simulator" class="mobile-nav-link" onclick="window.closeMobileNav()">SpineAlign™ Science <span>→</span></a>
-    <a href="#factory-direct" class="mobile-nav-link" onclick="window.closeMobileNav()">Direct from Factory <span>→</span></a>
-    <a href="#sleep-quiz" class="mobile-nav-link" onclick="window.closeMobileNav()">Sleep Match AI <span>→</span></a>
-    <a href="#studios" class="mobile-nav-link" onclick="window.closeMobileNav()">Store Locator <span>→</span></a>
+    <div class="mobile-drawer-account" id="index-drawer-account">
+      <!-- Injected via updateHeaderAuthUI -->
+    </div>
+    <div class="mobile-drawer-links">
+      <a href="#the-collection" class="mobile-nav-link" onclick="window.closeMobileNav()">The 8 Mattresses <span>→</span></a>
+      <a href="#spine-simulator" class="mobile-nav-link" onclick="window.closeMobileNav()">SpineAlign™ Science <span>→</span></a>
+      <a href="#factory-direct" class="mobile-nav-link" onclick="window.closeMobileNav()">Direct from Factory <span>→</span></a>
+      <a href="#sleep-quiz" class="mobile-nav-link" onclick="window.closeMobileNav()">Sleep Match AI <span>→</span></a>
+      <a href="#studios" class="mobile-nav-link" onclick="window.closeMobileNav()">Store Locator <span>→</span></a>
+    </div>
   </div>
 
   <!-- =========================================================
@@ -1755,21 +1720,29 @@
 
           <!-- Right Configurator Panel -->
           <div class="inner-config-card">
-            <span class="model-index-tag" id="inner-tag">01 / CLOUD SERIES</span>
-            <h2 class="inner-pdp-title" id="inner-title">01. LORA CLOUD 7™</h2>
-            <p class="inner-pdp-tagline" id="inner-tagline">Super Soft 7-Zone Dual Comfort</p>
+            <!-- 1. Name & Price (Photos → Name and Price) -->
+            <div class="inner-identity-header">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.35rem;">
+                <span class="model-index-tag" id="inner-tag">01 / CLOUD SERIES</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem;">
+                  <span style="color: #F59E0B; font-weight: 700;">★ 4.9 / 5.0</span>
+                  <span style="color: rgba(255,255,255,0.2);">•</span>
+                  <span style="color: var(--text-secondary);">Direct from Factory</span>
+                </div>
+              </div>
 
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; font-size: 0.82rem; flex-wrap: wrap;">
-              <span style="color: #F59E0B; font-weight: 700;">★ 4.9 / 5.0</span>
-              <span style="color: rgba(255,255,255,0.2);">•</span>
-              <span style="color: var(--text-secondary);">Direct from Factory</span>
-              <span style="color: rgba(255,255,255,0.2);">•</span>
-              <span id="inner-stock-badge" style="color: #059669; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
-                <span style="width:7px; height:7px; border-radius:50%; background:#10B981; display:inline-block;"></span>
-                <span id="inner-stock-text">In Stock • Dispatches in 24 Hrs</span>
-              </span>
+              <h2 class="inner-pdp-title" id="inner-title" style="margin-bottom: 0.2rem;">01. LORA CLOUD 7™</h2>
+              <p class="inner-pdp-tagline" id="inner-tagline" style="margin-bottom: 0.85rem;">Super Soft 7-Zone Dual Comfort</p>
+
+              <!-- Final Price Display immediately under Name -->
+              <div class="inner-price-row" style="margin-top: 0.5rem; margin-bottom: 1.25rem; padding: 0.75rem 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: baseline; gap: 0.85rem; flex-wrap: wrap;">
+                <span class="inner-price-val" id="inner-price" style="font-size: 2.2rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">₹21,999</span>
+                <span class="inner-mrp-val" id="inner-mrp" style="text-decoration: line-through; color: var(--text-muted); font-size: 1.15rem;">₹36,999</span>
+                <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 6px;" id="inner-save">SAVE ₹15,000</span>
+              </div>
             </div>
 
+            <!-- 2. Type, Size and Thickness (Compact selector groups) -->
             <!-- 1. Bed Type (King / Queen / Single / Double / Custom) -->
             <div class="inner-opt-group">
               <label class="inner-opt-label">
@@ -1789,10 +1762,69 @@
             <div class="inner-opt-group">
               <label class="inner-opt-label">
                 <span>2. Select Size in Inches</span>
-                <span style="color: var(--brand-royal); font-weight: 700;" id="inner-inch-label">78" × 60"</span>
+                <div style="display:inline-flex; align-items:center; gap:0.5rem;">
+                  <span style="color: var(--brand-royal); font-weight: 700;" id="inner-inch-label">78" × 60"</span>
+                  <button type="button" class="pdp-measure-guide-link" id="inner-size-guide-toggle" onclick="toggleInnerSizeGuide(event)" aria-expanded="false" style="font-size:0.72rem; padding:0.18rem 0.55rem;">
+                    📐 Size Guide ▾
+                  </button>
+                </div>
               </label>
               <div class="inner-inches-row" id="inner-inch-container">
                 <!-- Pure inch dimensions dynamically rendered -->
+              </div>
+
+              <!-- Inline Size Guide Card (Opens directly beside size selector) -->
+              <div class="pdp-inline-size-guide" id="inner-inline-size-guide" style="display: none;">
+                <div class="pdp-inline-sg-header">
+                  <div class="pdp-inline-sg-title">
+                    <span style="color: #38BDF8;">📐</span>
+                    <span>Standard Bed & Cot Sizing (Inches)</span>
+                  </div>
+                  <button type="button" class="pdp-inline-sg-close" onclick="toggleInnerSizeGuide(event)" aria-label="Close size guide">✕</button>
+                </div>
+
+                <div class="pdp-inline-sg-grid">
+                  <div class="pdp-inline-sg-card" onclick="selectInnerCotFromGuide('queen')" role="button" tabindex="0" title="Click to choose Queen size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">Queen (5.0 ft)</strong>
+                      <span class="pdp-inline-sg-badge">Popular</span>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 60" &bull; 75" × 60" &bull; 72" × 60"</div>
+                    <div class="pdp-inline-sg-desc">Standard master bedroom, fits 2 adults comfortably</div>
+                  </div>
+
+                  <div class="pdp-inline-sg-card" onclick="selectInnerCotFromGuide('king')" role="button" tabindex="0" title="Click to choose King size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">King (6.0 ft)</strong>
+                      <span class="pdp-inline-sg-badge">Luxury</span>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 72" &bull; 75" × 72" &bull; 72" × 72"</div>
+                    <div class="pdp-inline-sg-desc">Spacious master suite, 2 adults + 1 child</div>
+                  </div>
+
+                  <div class="pdp-inline-sg-card" onclick="selectInnerCotFromGuide('double')" role="button" tabindex="0" title="Click to choose Double size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">Double (4.0 ft)</strong>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 48" &bull; 75" × 48" &bull; 72" × 48"</div>
+                    <div class="pdp-inline-sg-desc">Guest rooms or single sleeper needing extra width</div>
+                  </div>
+
+                  <div class="pdp-inline-sg-card" onclick="selectInnerCotFromGuide('single')" role="button" tabindex="0" title="Click to choose Single size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">Single (3.0 ft)</strong>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 36" &bull; 75" × 36" &bull; 72" × 36"</div>
+                    <div class="pdp-inline-sg-desc">Individual sleepers, kids rooms, or diwan beds</div>
+                  </div>
+                </div>
+
+                <div class="pdp-inline-sg-tip">
+                  <div class="pdp-inline-sg-tip-icon">💡</div>
+                  <div>
+                    <strong>How to Measure:</strong> Measure inside frame edges of your cot (where mattress drops in). Need custom sizes? Choose <strong>"Custom"</strong> with 0% extra fee!
+                  </div>
+                </div>
               </div>
               <div class="inner-custom-dim-row" id="inner-custom-dim-wrap" style="display:none;">
                 <span style="font-size:0.82rem; font-weight:600;">Custom Dimension:</span>
@@ -1818,26 +1850,15 @@
               </div>
             </div>
 
-            <!-- Final Price Display -->
-            <div class="inner-price-row" style="margin-top: 1.25rem; margin-bottom: 0.5rem; display: flex; align-items: baseline; gap: 0.85rem; flex-wrap: wrap;">
-              <span class="inner-price-val" id="inner-price" style="font-size: 2.2rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">₹21,999</span>
-              <span class="inner-mrp-val" id="inner-mrp" style="text-decoration: line-through; color: var(--text-muted); font-size: 1.15rem;">₹36,999</span>
-              <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 6px;" id="inner-save">SAVE ₹15,000</span>
-            </div>
-
-            <!-- 0% EMI Micro Strip -->
-            <div class="pdp-emi-micro-strip" style="margin-bottom: 1.25rem;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-              <span id="inner-emi-text">0% EMI from ₹1,833/mo • Zero down payment • 12 easy installments</span>
-            </div>
-
-            <!-- Action Buttons: Clear Buy Now & Add to Bag (No WhatsApp) -->
-            <div class="pdp-dual-actions-row">
+            <!-- 3. Action Buttons: Buy Now (Strongest Primary CTA) & Add to Bag -->
+            <div class="pdp-dual-actions-row" style="margin-top: 1.25rem;">
               <button type="button" class="btn-pdp-buy-now" id="inner-buy-now-btn" onclick="window.handleInnerBuyNow()">
-                Buy Now — Express Delivery →
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <span>Buy Now — Express Delivery →</span>
               </button>
               <button type="button" class="btn-pdp-add-bag" id="inner-add-bag-btn" onclick="window.handleInnerAddToBag()">
-                Add to Sleep Bag
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Add to Sleep Bag</span>
               </button>
             </div>
 
@@ -1850,6 +1871,58 @@
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Factory Direct</span>
             </div>
 
+            <!-- ==========================================
+                 BELOW BUYING BUTTONS: LARGE EMI BOX & DETAILED FIRMNESS EXPLANATION
+                 ========================================== -->
+            <div class="pdp-below-buy-section">
+              <!-- Large EMI Financing Box -->
+              <div class="pdp-large-emi-box" id="inner-large-emi-box">
+                <div class="pdp-large-emi-top">
+                  <div class="pdp-large-emi-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  </div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+                      <strong class="pdp-large-emi-title" id="inner-emi-text">0% EMI from ₹1,833 / month with Bajaj Finserv</strong>
+                      <span class="badge-verified" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; border-color: rgba(56, 189, 248, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">NO COST EMI</span>
+                    </div>
+                    <p class="pdp-large-emi-desc">
+                      Zero down payment • Instant digital paperless approval • Up to 12 flexible installments
+                    </p>
+                    <div class="pdp-emi-tenure-pills">
+                      <span class="pdp-emi-tenure-chip">✦ 3 Mo: ₹6,233/mo</span>
+                      <span class="pdp-emi-tenure-chip">✦ 6 Mo: ₹3,116/mo</span>
+                      <span class="pdp-emi-tenure-chip">✦ 12 Mo: ₹1,558/mo</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detailed Firmness Explanation Box -->
+              <div class="pdp-detailed-firmness-box" id="inner-detailed-firmness-box">
+                <div class="pdp-firmness-box-header">
+                  <div class="pdp-firmness-box-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 19 7"/></svg>
+                    <span>Ergonomic Firmness Index & Posture Guide</span>
+                  </div>
+                  <span class="pdp-firmness-val-badge" id="inner-firm-val">SOFT ●●○○○ FIRM</span>
+                </div>
+                <div class="pdp-firmness-meter-wrapper">
+                  <div class="meter-labels" style="display:flex; justify-content:space-between; font-size:0.75rem; color:#94A3B8; margin-bottom:0.45rem;">
+                    <span>Plush Soft</span>
+                    <span style="color: #38BDF8; font-weight: 700;" id="inner-feel-label">Gentle Cloud Cushioning</span>
+                    <span>Orthopedic Firm</span>
+                  </div>
+                  <div class="meter-track-graphic" style="margin: 0; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden;">
+                    <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="inner-meter-fill" style="width: 38%; height: 100%; background: linear-gradient(90deg, #38BDF8, #0284C7); border-radius: 9999px;"></div></div>
+                  </div>
+                  <p class="pdp-firmness-posture-text" id="inner-posture-rec">
+                    <strong>Recommended for:</strong> Side sleepers seeking zero shoulder pinch and cloud-like joint cradling.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <!-- Quiet Fallback container for offer/coupon DOM nodes to guarantee JS safety -->
             <div style="display: none;" aria-hidden="true">
               <div id="inner-offer-banner"><h5 id="inner-offer-title"></h5><p id="inner-offer-desc"></p></div>
@@ -1858,16 +1931,16 @@
               <button type="button" id="apply-coupon-btn"></button>
               <div id="coupon-tag-wrap"><span id="coupon-tag-text"></span></div>
             </div>
-          </div>
+          </div>          </div>
         </div>
 
         <!-- ==========================================
              SECONDARY DETAILS: ELEGANT EXPANDABLE ACCORDIONS
              ========================================== -->
-        <div class="lora-accordion-suite" style="margin-top: 3.5rem;">
+        <div class="lora-accordion-suite" style="margin-top: 2rem;">
 
           <!-- Accordion 1: Layer Architecture & Sleep Materials -->
-          <details class="lora-accordion" open>
+          <details class="lora-accordion">
             <summary class="lora-accordion-summary">
               <div class="lora-accordion-title-wrap">
                 <span class="lora-accordion-icon">
@@ -1913,37 +1986,6 @@
                     <tr><th>Warranty</th><td id="inner-tbl-warr">10 Years Direct Factory Replacement</td></tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </details>
-
-          <!-- Accordion 3: Ergonomic Firmness Index & Posture Guide -->
-          <details class="lora-accordion">
-            <summary class="lora-accordion-summary">
-              <div class="lora-accordion-title-wrap">
-                <span class="lora-accordion-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 19 7"/></svg>
-                </span>
-                <div>
-                  <span class="lora-accordion-title">Ergonomic Firmness Index & Sleep Posture Guide</span>
-                  <span class="lora-accordion-subtitle" id="inner-firm-val">SOFT ●●○○○ FIRM</span>
-                </div>
-              </div>
-              <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="lora-accordion-body">
-              <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <div class="meter-labels" style="margin-bottom: 0.65rem; font-size: 0.8rem; display: flex; justify-content: space-between;">
-                  <span>Plush Soft</span>
-                  <span style="color: #38BDF8; font-weight: 700;" id="inner-feel-label">Gentle Cloud Cushioning</span>
-                  <span>Orthopedic Firm</span>
-                </div>
-                <div class="meter-track-graphic" style="margin: 0; height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden;">
-                  <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="inner-meter-fill" style="width: 38%; height: 100%; background: linear-gradient(90deg, #38BDF8, #0284C7); border-radius: 9999px;"></div></div>
-                </div>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 1rem; line-height: 1.6;" id="inner-posture-rec">
-                  <strong>Recommended for:</strong> Side sleepers seeking zero shoulder pinch and cloud-like joint cradling.
-                </p>
               </div>
             </div>
           </details>
@@ -4854,11 +4896,6 @@
           <p class="footer-subtext">
             Precision sleep science delivered direct from our manufacturing facility. Engineered for anatomical spine alignment, zero partner disturbance, and climate-adaptive rest across India.
           </p>
-          <div style="display: flex; gap: 0.65rem;">
-            <a href="https://wa.me/919876543210" class="btn btn-whatsapp btn-sm" target="_blank">
-              WhatsApp Concierge
-            </a>
-          </div>
         </div>
 
         <div>
@@ -4958,12 +4995,12 @@
   <!-- Checkout Modal Overlay -->
   <div class="checkout-modal-overlay" id="checkout-modal">
     <div class="checkout-modal-card">
-      <div class="checkout-modal-header">
+      <div class="checkout-modal-header" style="padding-bottom: 0.65rem; margin-bottom: 0.75rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA" style="height: 22px;">
           <div>
-            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0F172A;">Direct Factory Order Checkout</h3>
-            <p style="margin: 0; font-size: 0.76rem; color: #64748B;">Insured White-Glove Dispatch directly from LORA Works</p>
+            <h3 style="margin: 0; font-size: 1.12rem; font-weight: 800; color: #FFFFFF;">Direct Factory Order Checkout</h3>
+            <p style="margin: 0; font-size: 0.74rem; color: #94A3B8;">Insured White-Glove Dispatch directly from LORA Works</p>
           </div>
         </div>
         <button type="button" class="checkout-close-btn" id="btn-close-checkout">✕</button>
@@ -4972,152 +5009,155 @@
       <!-- Checkout Form View -->
       <div id="checkout-form-view">
         <!-- Order Item Summary Box -->
-        <div style="background: rgba(16, 25, 46, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="background: rgba(16, 25, 46, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 0.7rem 0.95rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <strong style="color: #FFFFFF; font-size: 0.95rem;" id="chk-summary-product">01. LORA CLOUD 7™ Luxury Ortho</strong>
-              <div style="font-size: 0.78rem; color: #94A3B8; margin-top: 0.2rem;" id="chk-summary-specs">
+              <strong style="color: #FFFFFF; font-size: 0.92rem;" id="chk-summary-product">01. LORA CLOUD 7™ Luxury Ortho</strong>
+              <div style="font-size: 0.75rem; color: #94A3B8; margin-top: 0.15rem;" id="chk-summary-specs">
                 King Size • 78" × 72" (6.5 × 6.0 ft) • 8-inch Luxury EuroTop
               </div>
             </div>
-            <strong style="color: #34D399; font-size: 1.1rem;" id="chk-summary-price">₹21,999</strong>
+            <strong style="color: #34D399; font-size: 1.05rem;" id="chk-summary-price">₹21,999</strong>
           </div>
         </div>
 
         <!-- Direct In-Checkout Login Prompt (Shown only when NOT logged in) -->
-        <div id="checkout-auth-banner" style="background: rgba(2, 132, 199, 0.1); border: 1.5px dashed rgba(2, 132, 199, 0.4); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+        <div id="checkout-auth-banner" style="background: rgba(2, 132, 199, 0.08); border: 1.5px dashed rgba(2, 132, 199, 0.35); border-radius: var(--radius-md); padding: 0.65rem 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
           <div>
-            <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;" id="checkout-auth-title">Have a LORA Account?</div>
-            <div style="font-size: 0.74rem; color: #94A3B8;" id="checkout-auth-subtitle">Login with OTP to auto-fill your saved address and speed up checkout.</div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: #FFFFFF;" id="checkout-auth-title">Have a LORA Account?</div>
+            <div style="font-size: 0.72rem; color: #94A3B8;" id="checkout-auth-subtitle">Login with OTP to auto-fill your saved address and speed up checkout.</div>
           </div>
-          <button type="button" id="btn-checkout-login-banner" onclick="handleCheckoutLoginClick()" style="background: #0A0F1D; color: #38BDF8; border: 1.5px solid #0284C7; border-radius: var(--radius-pill); font-size: 0.78rem; font-weight: 800; padding: 0.45rem 0.9rem; cursor: pointer; white-space: nowrap;">
+          <button type="button" id="btn-checkout-login-banner" onclick="handleCheckoutLoginClick()" style="background: #0A0F1D; color: #38BDF8; border: 1.5px solid #0284C7; border-radius: var(--radius-pill); font-size: 0.76rem; font-weight: 800; padding: 0.4rem 0.85rem; cursor: pointer; white-space: nowrap;">
             Login with OTP →
           </button>
         </div>
 
-        <form id="storefront-checkout-form">
-          <!-- Section 1: Contact Information -->
-          <div style="margin-bottom: 1.25rem;">
-            <div style="font-size: 0.82rem; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
-              <span>👤</span>
-              <span>1. Contact Details</span>
+        <form id="storefront-checkout-form" novalidate>
+          <!-- Section 1: Contact Information (1 Clean Row) -->
+          <div class="chk-section">
+            <div class="chk-section-header">
+              <span class="chk-step-num">1</span>
+              <span class="chk-section-title">Contact Details</span>
             </div>
 
             <div class="checkout-grid-2">
-              <div class="checkout-input-block">
+              <div class="checkout-input-block" style="margin-bottom: 0.5rem;">
                 <label for="chk-customer-name">Full Name *</label>
-                <input type="text" id="chk-customer-name" class="checkout-input" placeholder="e.g. Rajesh Sharma" required>
+                <input type="text" id="chk-customer-name" class="checkout-input" placeholder="e.g. Rajesh Sharma" required autocomplete="name">
+                <span class="checkout-field-error" id="err-customer-name"></span>
               </div>
-              <div class="checkout-input-block">
-                <label for="chk-customer-phone">Contact Number *</label>
-                <input type="tel" id="chk-customer-phone" class="checkout-input" placeholder="e.g. 9876543210" pattern="[0-9]{10}" maxlength="10" required>
-              </div>
-            </div>
-
-            <div class="checkout-grid-2">
-              <div class="checkout-input-block">
-                <label for="chk-customer-alt-phone">Alternate Contact Number <span style="color: #64748B; font-weight: 400; text-transform: none;">(Optional)</span></label>
-                <input type="tel" id="chk-customer-alt-phone" class="checkout-input" placeholder="e.g. 9845012345" maxlength="10">
-              </div>
-              <div class="checkout-input-block">
-                <label for="chk-customer-email">Email Address <span style="color: #64748B; font-weight: 400; text-transform: none;">(For Invoice & Warranty)</span></label>
-                <input type="email" id="chk-customer-email" class="checkout-input" placeholder="e.g. rajesh@example.com">
+              <div class="checkout-input-block" style="margin-bottom: 0.5rem;">
+                <label for="chk-customer-phone">Mobile Number *</label>
+                <div class="checkout-phone-wrap" id="chk-phone-wrap">
+                  <span class="checkout-phone-prefix">🇮🇳 +91</span>
+                  <input type="tel" id="chk-customer-phone" class="checkout-input checkout-input-phone" placeholder="9876543210" maxlength="10" required autocomplete="tel">
+                </div>
+                <span class="checkout-field-error" id="err-customer-phone"></span>
               </div>
             </div>
           </div>
 
-          <!-- Section 2: Necessary Delivery Address Fields -->
-          <div style="margin-bottom: 1.25rem;">
-            <div style="font-size: 0.82rem; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
-              <span>📍</span>
-              <span>2. Delivery Address</span>
+          <!-- Section 2: Delivery Address (PIN-First with Auto-Detect & Validation) -->
+          <div class="chk-section">
+            <div class="chk-section-header">
+              <span class="chk-step-num">2</span>
+              <span class="chk-section-title">Delivery Address</span>
+              <span class="chk-badge-free-delivery">🚚 Free Flat Delivery</span>
             </div>
 
-            <div class="checkout-input-block">
-              <label for="chk-customer-house">House / Flat / Building Name *</label>
-              <input type="text" id="chk-customer-house" class="checkout-input" placeholder="e.g. Flat 402, Tower B, Prestige Palms" required>
-            </div>
-
-            <div class="checkout-input-block">
-              <label for="chk-customer-street">Street / Area / Locality *</label>
-              <input type="text" id="chk-customer-street" class="checkout-input" placeholder="e.g. 100 Feet Road, 12th Main, Indiranagar" required>
-            </div>
-
-            <div class="checkout-input-block">
-              <label for="chk-customer-landmark">Landmark <span style="color: #64748B; font-weight: 400; text-transform: none;">(Optional)</span></label>
-              <input type="text" id="chk-customer-landmark" class="checkout-input" placeholder="e.g. Near Metro Station / Behind Apollo Clinic">
-            </div>
-
-            <div class="checkout-grid-2">
-              <div class="checkout-input-block">
-                <label for="chk-customer-city">City / Town *</label>
-                <input type="text" id="chk-customer-city" class="checkout-input" placeholder="e.g. Bengaluru" required>
+            <!-- PIN Code + Auto-Detected Hub in 1 row -->
+            <div class="checkout-grid-2" style="align-items: start; margin-bottom: 0.65rem;">
+              <div class="checkout-input-block" style="margin-bottom: 0;">
+                <label for="chk-customer-pincode">6-Digit PIN Code *</label>
+                <div style="position: relative;">
+                  <input type="text" id="chk-customer-pincode" class="checkout-input" placeholder="e.g. 560038" maxlength="6" required autocomplete="postal-code">
+                  <span id="chk-pincode-spinner" style="display: none; position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem;">⏳</span>
+                </div>
+                <span class="checkout-field-error" id="err-customer-pincode"></span>
               </div>
-              <div class="checkout-input-block">
-                <label for="chk-customer-district">District *</label>
-                <input type="text" id="chk-customer-district" class="checkout-input" placeholder="e.g. Bengaluru Urban" required>
+
+              <!-- Live Auto-Resolved Location & Deliverability Status -->
+              <div id="chk-location-resolved-box" class="chk-location-resolved-box" style="display: none;">
+                <div class="chk-loc-status-text">
+                  <span style="color: #34D399; font-weight: 700;">✓ Delivery Available</span>
+                  <span id="chk-resolved-city-state" style="color: #FFFFFF; font-size: 0.82rem; font-weight: 600;">Bengaluru, Karnataka</span>
+                </div>
+                <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 0.2rem;">
+                  Direct Flat Dispatch • 2-4 Days
+                </div>
               </div>
             </div>
 
-            <div class="checkout-grid-2">
-              <div class="checkout-input-block">
-                <label for="chk-customer-state">State *</label>
-                <select id="chk-customer-state" class="checkout-input" required style="cursor: pointer; background: #0A0F1D; color: #FFFFFF;">
-                  <option value="" disabled selected>Select State / UT</option>
-                  <option value="Andhra Pradesh">Andhra Pradesh</option>
-                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                  <option value="Assam">Assam</option>
-                  <option value="Bihar">Bihar</option>
-                  <option value="Chhattisgarh">Chhattisgarh</option>
-                  <option value="Goa">Goa</option>
-                  <option value="Gujarat">Gujarat</option>
-                  <option value="Haryana">Haryana</option>
-                  <option value="Himachal Pradesh">Himachal Pradesh</option>
-                  <option value="Jharkhand">Jharkhand</option>
-                  <option value="Karnataka">Karnataka</option>
-                  <option value="Kerala">Kerala</option>
-                  <option value="Madhya Pradesh">Madhya Pradesh</option>
-                  <option value="Maharashtra">Maharashtra</option>
-                  <option value="Manipur">Manipur</option>
-                  <option value="Meghalaya">Meghalaya</option>
-                  <option value="Mizoram">Mizoram</option>
-                  <option value="Nagaland">Nagaland</option>
-                  <option value="Odisha">Odisha</option>
-                  <option value="Punjab">Punjab</option>
-                  <option value="Rajasthan">Rajasthan</option>
-                  <option value="Sikkim">Sikkim</option>
-                  <option value="Tamil Nadu">Tamil Nadu</option>
-                  <option value="Telangana">Telangana</option>
-                  <option value="Tripura">Tripura</option>
-                  <option value="Uttar Pradesh">Uttar Pradesh</option>
-                  <option value="Uttarakhand">Uttarakhand</option>
-                  <option value="West Bengal">West Bengal</option>
-                  <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                  <option value="Chandigarh">Chandigarh</option>
-                  <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                  <option value="Delhi">Delhi (NCR)</option>
-                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                  <option value="Ladakh">Ladakh</option>
-                  <option value="Lakshadweep">Lakshadweep</option>
-                  <option value="Puducherry">Puducherry</option>
-                </select>
+            <!-- House / Flat / Floor / Building -->
+            <div class="checkout-input-block" style="margin-bottom: 0.65rem;">
+              <label for="chk-customer-house">Flat / House / Floor / Building Name *</label>
+              <input type="text" id="chk-customer-house" class="checkout-input" placeholder="e.g. Flat 402, 4th Floor, Prestige Palms" required autocomplete="address-line1">
+              <span class="checkout-field-error" id="err-customer-house"></span>
+            </div>
+
+            <!-- Street Address / Area -->
+            <div class="checkout-input-block" style="margin-bottom: 0.65rem;">
+              <label for="chk-customer-street">Street Address / Road / Area *</label>
+              <input type="text" id="chk-customer-street" class="checkout-input" placeholder="e.g. 100 Feet Road, 12th Main, Indiranagar" required autocomplete="address-line2">
+              <span class="checkout-field-error" id="err-customer-street"></span>
+            </div>
+
+            <!-- Optional Collapsible Landmark / Notes Drawer (Keeps main checkout short) -->
+            <div style="margin-bottom: 0.65rem;">
+              <button type="button" id="btn-toggle-extra-address" onclick="toggleExtraAddressFields(event)" class="chk-toggle-extra-btn">
+                <span>+ Add Landmark, Email or Delivery Instructions</span>
+                <span id="extra-fields-chevron">▾</span>
+              </button>
+
+              <div id="chk-extra-address-fields" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 8px;">
+                <div class="checkout-grid-2">
+                  <div class="checkout-input-block" style="margin-bottom: 0.5rem;">
+                    <label for="chk-customer-landmark">Landmark (Optional)</label>
+                    <input type="text" id="chk-customer-landmark" class="checkout-input" placeholder="e.g. Near Metro / Behind Apollo Clinic">
+                  </div>
+                  <div class="checkout-input-block" style="margin-bottom: 0.5rem;">
+                    <label for="chk-customer-email">Email (For Tax Invoice)</label>
+                    <input type="email" id="chk-customer-email" class="checkout-input" placeholder="e.g. rajesh@example.com" autocomplete="email">
+                  </div>
+                </div>
+                <div class="checkout-input-block" style="margin-bottom: 0;">
+                  <label for="chk-order-notes">Delivery Notes / Floor Instructions</label>
+                  <input type="text" id="chk-order-notes" class="checkout-input" placeholder="e.g. Please call 1 hour before arrival, service lift available">
+                </div>
               </div>
-              <div class="checkout-input-block">
-                <label for="chk-customer-pincode">PIN Code *</label>
-                <input type="text" id="chk-customer-pincode" class="checkout-input" placeholder="e.g. 560038" pattern="[0-9]{6}" maxlength="6" required>
+            </div>
+
+            <!-- Hidden inputs preserving complete compatibility with orders database & admin -->
+            <input type="hidden" id="chk-customer-city" value="Bengaluru">
+            <input type="hidden" id="chk-customer-district" value="Bengaluru Urban">
+            <input type="hidden" id="chk-customer-state" value="Karnataka">
+            <input type="hidden" id="chk-customer-alt-phone" value="">
+
+            <!-- Live Address Validation Reassurance Badge -->
+            <div id="chk-address-verified-badge" class="chk-address-verified-badge" style="display: none;">
+              <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                <div class="chk-verified-icon">✓</div>
+                <div>
+                  <strong style="color: #34D399; font-size: 0.8rem;">Address Validated & Routed for Direct Flat Dispatch</strong>
+                  <div id="chk-verified-address-text" style="color: #CBD5E1; font-size: 0.75rem; line-height: 1.35; margin-top: 0.2rem;"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="checkout-input-block">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-              <label style="margin-bottom: 0;">Payment Method *</label>
-              <span id="chk-cod-indicator" style="font-size: 0.72rem; font-weight: 700; color: #059669;">● COD Available</span>
+          <!-- Section 3: Payment Method -->
+          <div class="chk-section" style="margin-bottom: 1rem;">
+            <div class="chk-section-header">
+              <span class="chk-step-num">3</span>
+              <span class="chk-section-title">Payment Method</span>
+              <span id="chk-cod-indicator" style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #059669;">● COD Available</span>
             </div>
+
             <select id="chk-payment-method" class="checkout-input" style="cursor: pointer;">
               <option value="Razorpay (UPI / Card / NetBanking / EMI)" selected>Razorpay — Instant UPI, Debit/Credit Card, NetBanking, 0% EMI</option>
               <option value="Pay on Delivery (COD)" id="opt-pay-cod">Pay on Delivery (Cash / UPI at Delivery)</option>
             </select>
+
             <!-- Razorpay Trust & Payment Options Badge -->
             <div id="razorpay-method-badges" style="margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; padding: 0.55rem 0.8rem; background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.22); border-radius: 8px;">
               <div style="display: flex; align-items: center; gap: 0.4rem;">
@@ -5141,13 +5181,8 @@
             </div>
           </div>
 
-          <div class="checkout-input-block">
-            <label>Order Notes / Delivery Instructions</label>
-            <textarea id="chk-order-notes" class="checkout-input" style="min-height: 65px; resize: vertical;" placeholder="e.g. Deliver on 3rd floor, please call 1 hour before arrival"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="btn-submit-order" style="width: 100%; padding: 1rem; font-size: 1rem; margin-top: 0.5rem;">
-            Pay via Razorpay ⚡
+          <button type="submit" class="btn btn-primary" id="btn-submit-order" style="width: 100%; padding: 0.85rem 1rem; font-size: 0.98rem; font-weight: 800; margin-top: 0.65rem; box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);">
+            Proceed to Secure Payment ⚡
           </button>
         </form>
       </div>
@@ -5496,17 +5531,7 @@
     </div>
   </div>
 
-  <!-- Floating Direct WhatsApp Concierge -->
-  <a href="https://wa.me/919876543210?text=Hello%20LORA%20Sleep%20Concierge,%20I'd%20like%20to%20know%20more%20about%20your%20mattresses." 
-     class="floating-whatsapp-badge" 
-     target="_blank" 
-     rel="noopener noreferrer"
-     aria-label="Chat with LORA Sleep Concierge on WhatsApp">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
-      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
-    </svg>
-    <span>Chat with Sleep Doctor</span>
-  </a>
+
 
   <!-- SCRIPTS -->
   <script src="assets/hero-scrub.js"></script>
@@ -6427,27 +6452,27 @@
       // Dimension configurations
       const INCH_SPECS = {
         king: [
-          { id: "78x72", title: "78\" × 72\" (Standard King)", sub: "6.5 × 6.0 ft • Master Bed Choice" },
-          { id: "75x72", title: "75\" × 72\" (Compact King)", sub: "6.25 × 6.0 ft • Contemporary Frame" },
-          { id: "72x72", title: "72\" × 72\" (Square King)", sub: "6.0 × 6.0 ft • Classic Fit" },
-          { id: "84x72", title: "84\" × 72\" (Grand King)", sub: "7.0 × 6.0 ft • Extra Tall Luxury" }
+          { id: "78x72", title: "78\" × 72\"" },
+          { id: "75x72", title: "75\" × 72\"" },
+          { id: "72x72", title: "72\" × 72\"" },
+          { id: "84x72", title: "84\" × 72\"" }
         ],
         queen: [
-          { id: "78x60", title: "78\" × 60\" (Standard Queen)", sub: "6.5 × 5.0 ft • India's #1 Most Popular" },
-          { id: "75x60", title: "75\" × 60\" (Compact Queen)", sub: "6.25 × 5.0 ft • Apartment Fit" },
-          { id: "72x60", title: "72\" × 60\" (Minimalist Queen)", sub: "6.0 × 5.0 ft • Minimal Bedroom" },
-          { id: "78x66", title: "78\" × 66\" (Olympic Queen)", sub: "6.5 × 5.5 ft • Extra Width Comfort" }
+          { id: "78x60", title: "78\" × 60\"" },
+          { id: "75x60", title: "75\" × 60\"" },
+          { id: "72x60", title: "72\" × 60\"" },
+          { id: "78x66", title: "78\" × 66\"" }
         ],
         single: [
-          { id: "72x36", title: "72\" × 36\" (Standard Single)", sub: "6.0 × 3.0 ft • Individual Bed" },
-          { id: "75x36", title: "75\" × 36\" (Single Long)", sub: "6.25 × 3.0 ft • Extended Length" },
-          { id: "78x36", title: "78\" × 36\" (Tall Single)", sub: "6.5 × 3.0 ft • Tall Sleeper / Hostel" },
-          { id: "75x42", title: "75\" × 42\" (Maxi Single)", sub: "6.25 × 3.5 ft • Wide Individual" }
+          { id: "72x36", title: "72\" × 36\"" },
+          { id: "75x36", title: "75\" × 36\"" },
+          { id: "78x36", title: "78\" × 36\"" },
+          { id: "75x42", title: "75\" × 42\"" }
         ],
         double: [
-          { id: "72x48", title: "72\" × 48\" (Standard Diwan)", sub: "6.0 × 4.0 ft • Versatile Living Space" },
-          { id: "75x48", title: "75\" × 48\" (Double Long)", sub: "6.25 × 4.0 ft • Long Diwan Cot" },
-          { id: "78x48", title: "78\" × 48\" (Tall Double)", sub: "6.5 × 4.0 ft • Extended Diwan" }
+          { id: "72x48", title: "72\" × 48\"" },
+          { id: "75x48", title: "75\" × 48\"" },
+          { id: "78x48", title: "78\" × 48\"" }
         ]
       };
 
@@ -6517,7 +6542,7 @@
         document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(btn => {
           btn.classList.toggle('active', (btn.getAttribute('data-type') || btn.getAttribute('data-cot')) === activeCotType);
         });
-        const cotNames = { queen: 'Queen (5.0 ft)', king: 'King (6.0 ft)', double: 'Double (4.0 ft)', single: 'Single (3.0 ft)', custom: 'Custom Dimension' };
+        const cotNames = { queen: 'Queen', king: 'King', double: 'Double', single: 'Single', custom: 'Custom' };
         const cotLabel = document.querySelector('#inner-cot-type-label');
         if (cotLabel) cotLabel.textContent = cotNames[activeCotType] || activeCotType.toUpperCase();
 
@@ -6527,8 +6552,7 @@
         });
         const thickLabel = document.querySelector('#inner-thick-label');
         if (thickLabel) {
-          const names = { 6: '6-Inch (15 cm)', 8: '8-Inch (20 cm) [Standard]', 10: '10-Inch (25 cm) [Eurotop]', 12: '12-Inch (30 cm) [Grand Luxe]' };
-          thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+          thickLabel.textContent = `${activeThickness} Inch`;
         }
 
         // Model Switcher pills
@@ -6651,7 +6675,6 @@
         container.innerHTML = specs.map(s => `
           <button type="button" class="inner-inch-btn ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
             <strong>${s.title}</strong>
-            <span>${s.sub}</span>
           </button>
         `).join('');
 
@@ -6666,7 +6689,7 @@
             container.querySelectorAll('.inner-inch-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             activeInchId = this.getAttribute('data-inch');
-            const title = this.querySelector('strong')?.textContent || '';
+            const title = this.querySelector('strong')?.textContent.trim() || '';
             if (inchLabel) inchLabel.textContent = title;
             updateInnerPrice();
           });
@@ -6891,6 +6914,40 @@
           }
         });
       }
+
+      window.toggleInnerSizeGuide = function(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        const sg = document.getElementById('inner-inline-size-guide');
+        const btn = document.getElementById('inner-size-guide-toggle');
+        if (!sg) return;
+        const isVisible = sg.style.display === 'block';
+        if (!isVisible) {
+          sg.style.display = 'block';
+          if (btn) {
+            btn.innerHTML = '📐 Close Guide ▴';
+            btn.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        } else {
+          sg.style.display = 'none';
+          if (btn) {
+            btn.innerHTML = '📐 Size Guide ▾';
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        }
+      };
+
+      window.selectInnerCotFromGuide = function(type) {
+        const typeBtn = document.querySelector(`.inner-bed-pills-wrap .inner-bed-type-btn[data-type="${type}"], .inner-bed-type-btn[data-type="${type}"]`);
+        if (typeBtn) {
+          typeBtn.click();
+        }
+        window.toggleInnerSizeGuide();
+      };
 
       // Coupon Application
       const applyCouponBtn = document.querySelector('#apply-coupon-btn');
@@ -7990,8 +8047,11 @@
               if (chkLandmark) chkLandmark.value = currentCustomer.landmark || '';
               if (chkCity && currentCustomer.city) chkCity.value = currentCustomer.city;
               if (chkDistrict && currentCustomer.district) chkDistrict.value = currentCustomer.district;
-              if (chkState && currentCustomer.state) chkState.value = currentCustomer.state;
-              if (chkPin && currentCustomer.pincode) chkPin.value = currentCustomer.pincode;
+              if (chkPin && currentCustomer.pincode) {
+                chkPin.value = currentCustomer.pincode;
+                resolvePincode(currentCustomer.pincode);
+              }
+              updateAddressValidationStatus();
             } catch (custErr) {
               console.warn('[CHECKOUT] Could not prefill customer data', custErr);
             }
@@ -8071,6 +8131,20 @@
           }
           setTimeout(() => {
             openCheckoutModal();
+            if (urlParams.get('test_fill') === '1') {
+              setTimeout(() => {
+                const nameEl = document.querySelector('#chk-customer-name');
+                const phoneEl = document.querySelector('#chk-customer-phone');
+                const pinEl = document.querySelector('#chk-customer-pincode');
+                const houseEl = document.querySelector('#chk-customer-house');
+                const streetEl = document.querySelector('#chk-customer-street');
+                if (nameEl) { nameEl.value = 'Rajesh Sharma'; nameEl.dispatchEvent(new Event('input')); }
+                if (phoneEl) { phoneEl.value = '9876543210'; phoneEl.dispatchEvent(new Event('input')); }
+                if (pinEl) { pinEl.value = '560038'; pinEl.dispatchEvent(new Event('input')); }
+                if (houseEl) { houseEl.value = 'Flat 402, 4th Floor, Prestige Palms'; houseEl.dispatchEvent(new Event('input')); }
+                if (streetEl) { streetEl.value = '100 Feet Road, Indiranagar'; streetEl.dispatchEvent(new Event('input')); }
+              }, 400);
+            }
           }, 350);
         }
       } catch (e) {}
@@ -8288,17 +8362,103 @@
             }
           }
 
-          const name = document.querySelector('#chk-customer-name').value.trim();
-          const phone = document.querySelector('#chk-customer-phone').value.trim();
+          // Strict Form & Address Validation
+          let isFormValid = true;
+
+          const nameEl = document.querySelector('#chk-customer-name');
+          const errName = document.querySelector('#err-customer-name');
+          const name = (nameEl ? nameEl.value : '').trim();
+          if (!name || name.length < 2) {
+            isFormValid = false;
+            if (nameEl) nameEl.classList.add('is-invalid');
+            if (errName) errName.textContent = 'Please enter your full name (at least 2 letters)';
+          } else {
+            if (nameEl) {
+              nameEl.classList.remove('is-invalid');
+              nameEl.classList.add('is-valid');
+            }
+            if (errName) errName.textContent = '';
+          }
+
+          const phoneEl = document.querySelector('#chk-customer-phone');
+          const errPhone = document.querySelector('#err-customer-phone');
+          const rawPhone = (phoneEl ? phoneEl.value : '').trim();
+          const cleanPhone = rawPhone.replace(/[^0-9]/g, '').slice(-10);
+          const isPhoneValid = /^[6-9]\d{9}$/.test(cleanPhone);
+          if (!isPhoneValid) {
+            isFormValid = false;
+            if (phoneEl) phoneEl.classList.add('is-invalid');
+            if (errPhone) errPhone.textContent = 'Please enter a valid 10-digit Indian mobile number';
+          } else {
+            if (phoneEl) {
+              phoneEl.classList.remove('is-invalid');
+              phoneEl.classList.add('is-valid');
+            }
+            if (errPhone) errPhone.textContent = '';
+          }
+
+          const pinEl = document.querySelector('#chk-customer-pincode');
+          const errPin = document.querySelector('#err-customer-pincode');
+          const pincode = (pinEl ? pinEl.value : '').trim();
+          const isPinValid = /^[1-9][0-9]{5}$/.test(pincode);
+          if (!isPinValid) {
+            isFormValid = false;
+            if (pinEl) pinEl.classList.add('is-invalid');
+            if (errPin) errPin.textContent = 'Please enter a valid 6-digit Indian PIN code';
+          } else {
+            if (pinEl) {
+              pinEl.classList.remove('is-invalid');
+              pinEl.classList.add('is-valid');
+            }
+            if (errPin) errPin.textContent = '';
+          }
+
+          const houseEl = document.querySelector('#chk-customer-house');
+          const errHouse = document.querySelector('#err-customer-house');
+          const house = (houseEl ? houseEl.value : '').trim();
+          if (!house || house.length < 2) {
+            isFormValid = false;
+            if (houseEl) houseEl.classList.add('is-invalid');
+            if (errHouse) errHouse.textContent = 'Please enter flat / house number, floor, or building name';
+          } else {
+            if (houseEl) {
+              houseEl.classList.remove('is-invalid');
+              houseEl.classList.add('is-valid');
+            }
+            if (errHouse) errHouse.textContent = '';
+          }
+
+          const streetEl = document.querySelector('#chk-customer-street');
+          const errStreet = document.querySelector('#err-customer-street');
+          const street = (streetEl ? streetEl.value : '').trim();
+          if (!street || street.length < 4) {
+            isFormValid = false;
+            if (streetEl) streetEl.classList.add('is-invalid');
+            if (errStreet) errStreet.textContent = 'Please specify street address, road, or area';
+          } else {
+            if (streetEl) {
+              streetEl.classList.remove('is-invalid');
+              streetEl.classList.add('is-valid');
+            }
+            if (errStreet) errStreet.textContent = '';
+          }
+
+          if (!isFormValid) {
+            const firstErr = document.querySelector('.checkout-input.is-invalid');
+            if (firstErr) {
+              firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              firstErr.focus();
+            }
+            return;
+          }
+
+          const phone = cleanPhone;
           const altPhone = document.querySelector('#chk-customer-alt-phone')?.value.trim() || '';
           const email = document.querySelector('#chk-customer-email')?.value.trim() || '';
-          const house = document.querySelector('#chk-customer-house').value.trim();
-          const street = document.querySelector('#chk-customer-street').value.trim();
           const landmark = document.querySelector('#chk-customer-landmark')?.value.trim() || '';
-          const city = document.querySelector('#chk-customer-city').value.trim();
-          const district = document.querySelector('#chk-customer-district').value.trim();
-          const state = document.querySelector('#chk-customer-state').value.trim();
-          const pincode = document.querySelector('#chk-customer-pincode').value.trim();
+          const city = document.querySelector('#chk-customer-city')?.value.trim() || 'Bengaluru';
+          const district = document.querySelector('#chk-customer-district')?.value.trim() || city;
+          const state = document.querySelector('#chk-customer-state')?.value.trim() || 'Karnataka';
           const notes = document.querySelector('#chk-order-notes')?.value.trim() || '';
 
           const orderId = 'LORA-' + Math.floor(1000 + Math.random() * 9000);
@@ -8532,38 +8692,254 @@
         });
       }
 
-      // PIN Code auto-detection helper for Indian states
-      const chkPinInput = document.querySelector('#chk-customer-pincode');
-      const chkStateSelect = document.querySelector('#chk-customer-state');
-      if (chkPinInput && chkStateSelect) {
-        chkPinInput.addEventListener('input', function () {
-          const val = this.value.replace(/[^0-9]/g, '');
-          if (val.length >= 2) {
-            const prefix2 = val.substring(0, 2);
-            const pincodeStateMap = {
-              '11': 'Delhi', '12': 'Haryana', '13': 'Haryana', '14': 'Punjab', '15': 'Punjab', '16': 'Chandigarh',
-              '17': 'Himachal Pradesh', '18': 'Jammu and Kashmir', '19': 'Jammu and Kashmir',
-              '20': 'Uttar Pradesh', '21': 'Uttar Pradesh', '22': 'Uttar Pradesh', '23': 'Uttar Pradesh',
-              '24': 'Uttar Pradesh', '25': 'Uttar Pradesh', '26': 'Uttar Pradesh', '27': 'Uttar Pradesh', '28': 'Uttar Pradesh',
-              '30': 'Rajasthan', '31': 'Rajasthan', '32': 'Rajasthan', '33': 'Rajasthan', '34': 'Rajasthan',
-              '36': 'Gujarat', '37': 'Gujarat', '38': 'Gujarat', '39': 'Gujarat',
-              '40': 'Maharashtra', '41': 'Maharashtra', '42': 'Maharashtra', '43': 'Maharashtra', '44': 'Maharashtra',
-              '45': 'Madhya Pradesh', '46': 'Madhya Pradesh', '47': 'Madhya Pradesh', '48': 'Madhya Pradesh', '49': 'Chhattisgarh',
-              '50': 'Telangana', '51': 'Andhra Pradesh', '52': 'Andhra Pradesh', '53': 'Andhra Pradesh',
-              '56': 'Karnataka', '57': 'Karnataka', '58': 'Karnataka', '59': 'Karnataka',
-              '60': 'Tamil Nadu', '61': 'Tamil Nadu', '62': 'Tamil Nadu', '63': 'Tamil Nadu', '64': 'Tamil Nadu',
-              '67': 'Kerala', '68': 'Kerala', '69': 'Kerala',
-              '70': 'West Bengal', '71': 'West Bengal', '72': 'West Bengal', '73': 'West Bengal', '74': 'West Bengal',
-              '75': 'Odisha', '76': 'Odisha', '77': 'Odisha',
-              '78': 'Assam', '79': 'Tripura',
-              '80': 'Bihar', '81': 'Bihar', '82': 'Bihar', '83': 'Jharkhand', '84': 'Bihar', '85': 'Bihar'
-            };
-            if (!chkStateSelect.value && pincodeStateMap[prefix2]) {
-              chkStateSelect.value = pincodeStateMap[prefix2];
+      // =========================================================
+      // SHORTENED CHECKOUT: PIN CODE AUTO-RESOLVER & ADDRESS VALIDATOR
+      // =========================================================
+      const PINCODE_MAP = {
+        '560': { city: 'Bengaluru', district: 'Bengaluru Urban', state: 'Karnataka' },
+        '561': { city: 'Bengaluru Rural', district: 'Bengaluru Rural', state: 'Karnataka' },
+        '562': { city: 'Bengaluru Rural', district: 'Bengaluru Rural', state: 'Karnataka' },
+        '570': { city: 'Mysuru', district: 'Mysuru', state: 'Karnataka' },
+        '575': { city: 'Mangaluru', district: 'Dakshina Kannada', state: 'Karnataka' },
+        '580': { city: 'Hubballi-Dharwad', district: 'Dharwad', state: 'Karnataka' },
+        '590': { city: 'Belagavi', district: 'Belagavi', state: 'Karnataka' },
+        '110': { city: 'New Delhi', district: 'New Delhi', state: 'Delhi' },
+        '400': { city: 'Mumbai', district: 'Mumbai City', state: 'Maharashtra' },
+        '411': { city: 'Pune', district: 'Pune', state: 'Maharashtra' },
+        '440': { city: 'Nagpur', district: 'Nagpur', state: 'Maharashtra' },
+        '422': { city: 'Nashik', district: 'Nashik', state: 'Maharashtra' },
+        '600': { city: 'Chennai', district: 'Chennai', state: 'Tamil Nadu' },
+        '641': { city: 'Coimbatore', district: 'Coimbatore', state: 'Tamil Nadu' },
+        '625': { city: 'Madurai', district: 'Madurai', state: 'Tamil Nadu' },
+        '500': { city: 'Hyderabad', district: 'Hyderabad', state: 'Telangana' },
+        '530': { city: 'Visakhapatnam', district: 'Visakhapatnam', state: 'Andhra Pradesh' },
+        '520': { city: 'Vijayawada', district: 'Krishna', state: 'Andhra Pradesh' },
+        '682': { city: 'Kochi', district: 'Ernakulam', state: 'Kerala' },
+        '695': { city: 'Thiruvananthapuram', district: 'Thiruvananthapuram', state: 'Kerala' },
+        '673': { city: 'Kozhikode', district: 'Kozhikode', state: 'Kerala' },
+        '700': { city: 'Kolkata', district: 'Kolkata', state: 'West Bengal' },
+        '711': { city: 'Howrah', district: 'Howrah', state: 'West Bengal' },
+        '380': { city: 'Ahmedabad', district: 'Ahmedabad', state: 'Gujarat' },
+        '395': { city: 'Surat', district: 'Surat', state: 'Gujarat' },
+        '390': { city: 'Vadodara', district: 'Vadodara', state: 'Gujarat' },
+        '302': { city: 'Jaipur', district: 'Jaipur', state: 'Rajasthan' },
+        '201': { city: 'Noida / Ghaziabad', district: 'Gautam Buddha Nagar', state: 'Uttar Pradesh' },
+        '226': { city: 'Lucknow', district: 'Lucknow', state: 'Uttar Pradesh' },
+        '208': { city: 'Kanpur', district: 'Kanpur Nagar', state: 'Uttar Pradesh' },
+        '122': { city: 'Gurugram', district: 'Gurugram', state: 'Haryana' },
+        '121': { city: 'Faridabad', district: 'Faridabad', state: 'Haryana' },
+        '160': { city: 'Chandigarh', district: 'Chandigarh', state: 'Chandigarh' },
+        '248': { city: 'Dehradun', district: 'Dehradun', state: 'Uttarakhand' },
+        '751': { city: 'Bhubaneswar', district: 'Khurda', state: 'Odisha' },
+        '781': { city: 'Guwahati', district: 'Kamrup', state: 'Assam' },
+        '800': { city: 'Patna', district: 'Patna', state: 'Bihar' },
+        '834': { city: 'Ranchi', district: 'Ranchi', state: 'Jharkhand' },
+        '452': { city: 'Indore', district: 'Indore', state: 'Madhya Pradesh' },
+        '462': { city: 'Bhopal', district: 'Bhopal', state: 'Madhya Pradesh' },
+        '492': { city: 'Raipur', district: 'Raipur', state: 'Chhattisgarh' }
+      };
+
+      const PIN_STATE_PREFIX_MAP = {
+        '11': 'Delhi', '12': 'Haryana', '13': 'Haryana', '14': 'Punjab', '15': 'Punjab', '16': 'Chandigarh',
+        '17': 'Himachal Pradesh', '18': 'Jammu and Kashmir', '19': 'Jammu and Kashmir',
+        '20': 'Uttar Pradesh', '21': 'Uttar Pradesh', '22': 'Uttar Pradesh', '23': 'Uttar Pradesh',
+        '24': 'Uttarakhand', '25': 'Uttar Pradesh', '26': 'Uttarakhand', '27': 'Uttar Pradesh', '28': 'Uttar Pradesh',
+        '30': 'Rajasthan', '31': 'Rajasthan', '32': 'Rajasthan', '33': 'Rajasthan', '34': 'Rajasthan',
+        '36': 'Gujarat', '37': 'Gujarat', '38': 'Gujarat', '39': 'Gujarat',
+        '40': 'Maharashtra', '41': 'Maharashtra', '42': 'Maharashtra', '43': 'Maharashtra', '44': 'Maharashtra',
+        '45': 'Madhya Pradesh', '46': 'Madhya Pradesh', '47': 'Madhya Pradesh', '48': 'Madhya Pradesh', '49': 'Chhattisgarh',
+        '50': 'Telangana', '51': 'Andhra Pradesh', '52': 'Andhra Pradesh', '53': 'Andhra Pradesh',
+        '56': 'Karnataka', '57': 'Karnataka', '58': 'Karnataka', '59': 'Karnataka',
+        '60': 'Tamil Nadu', '61': 'Tamil Nadu', '62': 'Tamil Nadu', '63': 'Tamil Nadu', '64': 'Tamil Nadu',
+        '67': 'Kerala', '68': 'Kerala', '69': 'Kerala',
+        '70': 'West Bengal', '71': 'West Bengal', '72': 'West Bengal', '73': 'West Bengal', '74': 'West Bengal',
+        '75': 'Odisha', '76': 'Odisha', '77': 'Odisha',
+        '78': 'Assam', '79': 'Tripura',
+        '80': 'Bihar', '81': 'Bihar', '82': 'Bihar', '83': 'Jharkhand', '84': 'Bihar', '85': 'Bihar'
+      };
+
+      window.toggleExtraAddressFields = function(e) {
+        if (e) e.preventDefault();
+        const el = document.getElementById('chk-extra-address-fields');
+        const chevron = document.getElementById('extra-fields-chevron');
+        if (!el) return;
+        const isHidden = el.style.display === 'none' || !el.style.display;
+        if (isHidden) {
+          el.style.display = 'block';
+          if (chevron) chevron.textContent = '▴';
+        } else {
+          el.style.display = 'none';
+          if (chevron) chevron.textContent = '▾';
+        }
+      };
+
+      async function resolvePincode(pin) {
+        const clean = String(pin || '').replace(/[^0-9]/g, '');
+        const cityHidden = document.querySelector('#chk-customer-city');
+        const districtHidden = document.querySelector('#chk-customer-district');
+        const stateHidden = document.querySelector('#chk-customer-state');
+        const resBox = document.querySelector('#chk-location-resolved-box');
+        const resCityState = document.querySelector('#chk-resolved-city-state');
+        const errPin = document.querySelector('#err-customer-pincode');
+        const pinInput = document.querySelector('#chk-customer-pincode');
+        const spinner = document.querySelector('#chk-pincode-spinner');
+
+        if (clean.length < 6) {
+          if (resBox) resBox.style.display = 'none';
+          if (errPin) errPin.textContent = clean.length > 0 ? 'Enter complete 6-digit PIN code' : '';
+          if (pinInput) {
+            pinInput.classList.remove('is-valid');
+            if (clean.length === 0) pinInput.classList.remove('is-invalid');
+          }
+          updateAddressValidationStatus();
+          return;
+        }
+
+        if (!/^[1-9][0-9]{5}$/.test(clean)) {
+          if (errPin) errPin.textContent = 'Invalid PIN code (must be 6 digits, starting with 1-9)';
+          if (pinInput) {
+            pinInput.classList.add('is-invalid');
+            pinInput.classList.remove('is-valid');
+          }
+          if (resBox) resBox.style.display = 'none';
+          updateAddressValidationStatus();
+          return;
+        }
+
+        // Fast Offline Resolution
+        const p3 = clean.substring(0, 3);
+        const p2 = clean.substring(0, 2);
+        let resolvedCity = 'Bengaluru';
+        let resolvedDistrict = 'Bengaluru Urban';
+        let resolvedState = 'Karnataka';
+
+        if (PINCODE_MAP[p3]) {
+          resolvedCity = PINCODE_MAP[p3].city;
+          resolvedDistrict = PINCODE_MAP[p3].district;
+          resolvedState = PINCODE_MAP[p3].state;
+        } else if (PIN_STATE_PREFIX_MAP[p2]) {
+          resolvedState = PIN_STATE_PREFIX_MAP[p2];
+          resolvedCity = `${resolvedState}`;
+          resolvedDistrict = resolvedState;
+        }
+
+        if (cityHidden) cityHidden.value = resolvedCity;
+        if (districtHidden) districtHidden.value = resolvedDistrict;
+        if (stateHidden) stateHidden.value = resolvedState;
+
+        if (resBox && resCityState) {
+          resCityState.textContent = `${resolvedCity}, ${resolvedState}`;
+          resBox.style.display = 'flex';
+        }
+        if (errPin) errPin.textContent = '';
+        if (pinInput) {
+          pinInput.classList.remove('is-invalid');
+          pinInput.classList.add('is-valid');
+        }
+
+        // Async India Post API lookup for hyper-localized post office
+        if (spinner) spinner.style.display = 'inline-block';
+        try {
+          const apiRes = await fetch(`https://api.postalpincode.in/pincode/${clean}`);
+          if (apiRes.ok) {
+            const data = await apiRes.json();
+            if (Array.isArray(data) && data[0] && data[0].Status === 'Success' && data[0].PostOffice && data[0].PostOffice.length > 0) {
+              const po = data[0].PostOffice[0];
+              if (po.District) resolvedDistrict = po.District;
+              if (po.State) resolvedState = po.State;
+              resolvedCity = po.Name ? `${po.Name}` : resolvedDistrict;
+
+              if (cityHidden) cityHidden.value = resolvedCity;
+              if (districtHidden) districtHidden.value = resolvedDistrict;
+              if (stateHidden) stateHidden.value = resolvedState;
+
+              if (resCityState) resCityState.textContent = `${resolvedDistrict}, ${resolvedState}`;
             }
           }
+        } catch (e) {
+          // Offline dictionary handled it safely
+        } finally {
+          if (spinner) spinner.style.display = 'none';
+        }
+
+        updateAddressValidationStatus();
+      }
+
+      function updateAddressValidationStatus() {
+        const name = (document.querySelector('#chk-customer-name')?.value || '').trim();
+        const rawPhone = (document.querySelector('#chk-customer-phone')?.value || '').trim();
+        const cleanPhone = rawPhone.replace(/[^0-9]/g, '').slice(-10);
+        const pin = (document.querySelector('#chk-customer-pincode')?.value || '').trim();
+        const house = (document.querySelector('#chk-customer-house')?.value || '').trim();
+        const street = (document.querySelector('#chk-customer-street')?.value || '').trim();
+        const city = (document.querySelector('#chk-customer-city')?.value || '').trim();
+        const state = (document.querySelector('#chk-customer-state')?.value || '').trim();
+
+        const badge = document.querySelector('#chk-address-verified-badge');
+        const badgeText = document.querySelector('#chk-verified-address-text');
+
+        const isNameOk = name.length >= 2;
+        const isPhoneOk = /^[6-9]\d{9}$/.test(cleanPhone);
+        const isPinOk = /^[1-9][0-9]{5}$/.test(pin);
+        const isHouseOk = house.length >= 2;
+        const isStreetOk = street.length >= 4;
+
+        if (isPinOk && isHouseOk && isStreetOk && isPhoneOk && isNameOk) {
+          if (badge && badgeText) {
+            badgeText.textContent = `${house}, ${street}, ${city}, ${state} - ${pin} (Contact: +91 ${cleanPhone})`;
+            badge.style.display = 'block';
+          }
+        } else {
+          if (badge) badge.style.display = 'none';
+        }
+      }
+
+      // Wire real-time live address and field validation
+      const chkPinInput = document.querySelector('#chk-customer-pincode');
+      if (chkPinInput) {
+        chkPinInput.addEventListener('input', function () {
+          this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+          resolvePincode(this.value);
+        });
+        chkPinInput.addEventListener('blur', function () {
+          resolvePincode(this.value);
         });
       }
+
+      const chkPhoneInput = document.querySelector('#chk-customer-phone');
+      if (chkPhoneInput) {
+        chkPhoneInput.addEventListener('input', function () {
+          this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+          const errPhone = document.querySelector('#err-customer-phone');
+          if (this.value.length === 10) {
+            if (/^[6-9]\d{9}$/.test(this.value)) {
+              this.classList.remove('is-invalid');
+              this.classList.add('is-valid');
+              if (errPhone) errPhone.textContent = '';
+            } else {
+              this.classList.add('is-invalid');
+              this.classList.remove('is-valid');
+              if (errPhone) errPhone.textContent = 'Mobile number must start with 6, 7, 8, or 9';
+            }
+          } else if (this.value.length > 0) {
+            this.classList.remove('is-valid');
+            if (errPhone) errPhone.textContent = '';
+          }
+          updateAddressValidationStatus();
+        });
+      }
+
+      ['#chk-customer-name', '#chk-customer-house', '#chk-customer-street'].forEach(selector => {
+        const el = document.querySelector(selector);
+        if (el) {
+          el.addEventListener('input', function () {
+            if (this.value.trim().length >= 2) {
+              this.classList.remove('is-invalid');
+            }
+            updateAddressValidationStatus();
+          });
+        }
+      });
 
       // =========================================================
       // 8. COMPLETE CUSTOMER OTP AUTHENTICATION & DASHBOARD SYSTEM
@@ -8594,24 +8970,25 @@
         const lblAuth = document.querySelector('#header-auth-label');
         const iconAuth = document.querySelector('#header-auth-icon');
         const avatarAuth = document.querySelector('#header-auth-avatar');
-        const btnHeaderLogout = document.querySelector('#btn-header-logout');
         const navLink = document.querySelector('#nav-login-link');
         const cartAuthStatus = document.querySelector('#cart-auth-status-text');
         const cartAuthLink = document.querySelector('#btn-cart-auth-link');
+        const drawerAccount = document.querySelector('#index-drawer-account');
 
         if (!btnAuth) return;
 
         if (currentCustomer) {
           btnAuth.classList.add('is-logged-in');
           const firstName = (currentCustomer.name || 'Account').split(' ')[0];
-          if (lblAuth) lblAuth.textContent = `${firstName} (Account)`;
+          const initial = firstName.charAt(0).toUpperCase();
+
+          if (lblAuth) lblAuth.textContent = firstName;
           if (iconAuth) iconAuth.style.display = 'none';
           if (avatarAuth) {
             avatarAuth.style.display = 'inline-flex';
-            avatarAuth.textContent = firstName.charAt(0).toUpperCase();
+            avatarAuth.textContent = initial;
           }
-          if (btnHeaderLogout) btnHeaderLogout.style.display = 'inline-flex';
-          if (navLink) navLink.textContent = `Hi, ${firstName} (Account)`;
+          if (navLink) navLink.textContent = `Hi, ${firstName}`;
           if (cartAuthStatus) cartAuthStatus.textContent = `Logged in as ${firstName}`;
           if (cartAuthLink) {
             cartAuthLink.textContent = 'Logout ⏻';
@@ -8621,12 +8998,26 @@
               window.handleCustomerLogout();
             };
           }
+
+          if (drawerAccount) {
+            drawerAccount.innerHTML = `
+              <div class="drawer-account-card">
+                <div class="drawer-user-info">
+                  <span class="drawer-avatar">${initial}</span>
+                  <div>
+                    <strong>${currentCustomer.name || 'Valued Sleeper'}</strong>
+                    <small>${currentCustomer.phone || 'Verified Customer'}</small>
+                  </div>
+                </div>
+                <button type="button" class="drawer-logout-btn" onclick="window.handleCustomerLogout(event)">Log Out</button>
+              </div>
+            `;
+          }
         } else {
           btnAuth.classList.remove('is-logged-in');
           if (lblAuth) lblAuth.textContent = 'Login';
           if (iconAuth) iconAuth.style.display = 'inline-block';
           if (avatarAuth) avatarAuth.style.display = 'none';
-          if (btnHeaderLogout) btnHeaderLogout.style.display = 'none';
           if (navLink) navLink.textContent = 'Account / Login';
           if (cartAuthStatus) cartAuthStatus.textContent = 'Have a LORA account?';
           if (cartAuthLink) {
@@ -8636,6 +9027,15 @@
               if (e) e.preventDefault();
               handleCartAuthClick();
             };
+          }
+
+          if (drawerAccount) {
+            drawerAccount.innerHTML = `
+              <a href="#" class="drawer-login-btn" onclick="openCustomerAuthModal(); if (window.closeMobileNav) window.closeMobileNav(); return false;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Customer Login / Register</span>
+              </a>
+            `;
           }
         }
       }
@@ -9653,5 +10053,8 @@
       </button>
     </div>
   </aside>
+
+  <!-- Lumi — Lora's AI Sleep Assistant -->
+  <script src="assets/lumi.js?v=20261004v1"></script>
 </body>
 </html>

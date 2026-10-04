@@ -1,0 +1,98 @@
+{
+  "brand": "LORA",
+  "tagline": "Mattresses to Make You Sleep • Luxury Sleep-Tech",
+  "knowledge": {
+    "specifications": [
+      {
+        "id": "cloud-7",
+        "name": "LORA CLOUD 7™ Luxury Ortho",
+        "comfort": "Balanced Medium-Firm (6.5/10)",
+        "idealFor": "Universal sleeper, mild to moderate back ache relief, luxury EuroTop plushness with orthopaedic posture alignment.",
+        "materials": "7-Zone Aeroflux Memory Foam, High-Resilience ErgoSupport Core, Breathable Tencel Silk Quilted Cover, Zero-Partner Disturbance.",
+        "heightOptions": ["6-inch", "8-inch (Recommended)", "10-inch", "12-inch"],
+        "priceStarting": "₹16,499"
+      },
+      {
+        "id": "ortho-hybrid",
+        "name": "LORA Ortho Hybrid Multi-Zone",
+        "comfort": "Firm Orthopaedic (8.0/10)",
+        "idealFor": "Chronic spine/back support, orthopaedic doctor recommended posture, heavier sleepers.",
+        "materials": "Individually Encased Pocket Springs, Orthopaedic Bonded Transition Core, Active Spine-Align Contour Layer.",
+        "heightOptions": ["8-inch", "10-inch"],
+        "priceStarting": "₹18,999"
+      },
+      {
+        "id": "air-grid",
+        "name": "LORA Air Grid Pure Chill",
+        "comfort": "Adaptive Medium (5.5/10)",
+        "idealFor": "Hot sleepers, hyper-elastic instant response, zero heat retention.",
+        "materials": "Patented Japanese Polymer Hyper-Elastic Grid, CoolGel Aerocore, Cool-Touch Ice Silk Jacquard Cover.",
+        "heightOptions": ["8-inch", "10-inch"],
+        "priceStarting": "₹24,999"
+      },
+      {
+        "id": "natural-latex",
+        "name": "LORA Natural Latex Organic Zen",
+        "comfort": "Plush Responsive Medium (6.0/10)",
+        "idealFor": "Eco-conscious buyers, allergy & asthma sufferers, buoyant zero-chemical sleep.",
+        "materials": "100% Certified Organic Belgian Pin-Core Natural Latex, Organic Cotton Quilted Shell, Naturally Hypoallergenic.",
+        "heightOptions": ["6-inch", "8-inch"],
+        "priceStarting": "₹28,499"
+      }
+    ],
+    "sizeGuidance": {
+      "Single": "72\" x 36\", 75\" x 36\", 78\" x 36\" (Ideal for kids, single adults, guest rooms)",
+      "Twin / Diwan": "72\" x 48\", 75\" x 48\", 78\" x 48\" (Spacious single sleeper)",
+      "Queen": "72\" x 60\", 75\" x 60\", 78\" x 60\" (Most popular for couples in standard bedrooms)",
+      "King": "72\" x 72\", 75\" x 72\", 78\" x 72\" (Generous master bedroom luxury for couples + child/pet)",
+      "Custom": "Any dimension custom manufactured directly at LORA Works with 0% extra surcharge."
+    },
+    "warrantyAndTrial": {
+      "warranty": "15-Year Comprehensive Direct Factory Warranty covering sagging > 0.75\", core disintegration, or coil failure with free doorstep replacement.",
+      "trial": "100-Night Risk-Free Sleep Trial at home. If you do not love your sleep, we pick it up flat from your bedroom with a 100% full refund.",
+      "medicalDisclaimer": "LORA mattresses provide ergonomic orthopaedic alignment and pressure relief. We never claim to cure medical diseases or replace certified medical treatment."
+    },
+    "deliveryPolicies": {
+      "method": "100% Flat Uncompressed White-Glove Doorstep Delivery directly from LORA Works bay.",
+      "zeroVacuum": "We NEVER roll or vacuum-compress our luxury mattresses into boxes. Compression crushes steel spring borders and degrades high-density foams.",
+      "timeline": "Metro & Tier-1 Hubs (Bengaluru, Kochi, Mumbai, Chennai, Hyderabad): 2 to 4 business days. Other pin codes: 4 to 7 business days.",
+      "shippingCost": "100% Free Shipping across India with full transit insurance."
+    },
+    "emiAndPayment": {
+      "emi": "0% Interest No-Cost EMI available for 3, 6, 9, and 12 months through all major credit cards and Bajaj Finserv via Razorpay.",
+      "prepaid": "Instant UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards, NetBanking with 256-Bit SSL protection.",
+      "cod": "Cash / UPI on Delivery available up to ₹50,000 in serviceable postal zones."
+    },
+    "showrooms": [
+      {
+        "city": "Bengaluru",
+        "name": "LORA Experience Studio — Indiranagar",
+        "address": "100 Feet Road, HAL 2nd Stage, Indiranagar, Bengaluru 560038",
+        "hours": "10:00 AM – 9:00 PM Daily"
+      },
+      {
+        "city": "Kochi",
+        "name": "LORA Experience Studio — MG Road",
+        "address": "Opp. Maharajas College Ground, MG Road, Ernakulam, Kochi 682011",
+        "hours": "10:00 AM – 8:30 PM Daily"
+      },
+      {
+        "city": "Mumbai",
+        "name": "LORA Experience Studio — Bandra West",
+        "address": "Waterfield Road, Bandra West, Mumbai 400050",
+        "hours": "10:30 AM – 9:00 PM Daily"
+      }
+    ],
+    "support": {
+      "phone": "+91 95676 84770",
+      "email": "sleep@loramattress.com",
+      "hours": "9:00 AM – 9:00 PM IST (Monday to Sunday)"
+    }
+  },
+  "settings": {
+    "enabled": true,
+    "aiProvider": "builtin",
+    "greetingText": "Hi, I’m Lumi! Need help choosing your mattress?",
+    "promptLanguage": "multilingual"
+  }
+}

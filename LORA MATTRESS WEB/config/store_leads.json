@@ -1,5 +1,20 @@
 [
   {
+    "id": "lumi-lead-1791124200000",
+    "name": "Arun Kumar",
+    "phone": "9847123456",
+    "pincode": "682016",
+    "place": "Kochi",
+    "preferredMattress": "LORA CLOUD 7™",
+    "preferredSize": "King Size (78 x 72 in)",
+    "preferredThickness": "8 Inch",
+    "summary": "Customer needs support for mild back stiffness, requested flat doorstep delivery to Kochi PIN 682016.",
+    "source": "Lumi AI Sleep Assistant",
+    "resultType": "lumi_consultation",
+    "status": "New",
+    "createdAt": "2026-10-04T14:30:00.000Z"
+  },
+  {
     "id": "lead-1789662584027",
     "name": "ansil",
     "phone": "9567684770",
