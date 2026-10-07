@@ -4,7 +4,7 @@
     "createdAt": "2026-09-27T16:10:55.165Z",
     "customerName": "Rahul Sharma",
     "phone": "+919876543210",
-    "productName": "01. LORA CLOUD 7 Luxury Ortho",
+    "productName": "01. LORA CLOUD 7™",
     "size": "King Size (78x72) 8-inch",
     "quantity": 1,
     "totalPrice": 21999,
@@ -20,20 +20,38 @@
     "phone": "+919876543210",
     "email": "shmmhd123@gmail.com",
     "address": "Flat 302, Palm Heights, Indiranagar, Bengaluru, Karnataka - 560038",
-    "productName": "01. LORA CLOUD 7™ Luxury Ortho",
+    "productName": "01. LORA CLOUD 7™",
     "size": "King Size • 78\" × 72\" (6.5 × 6.0 ft) • 8-inch Luxury EuroTop",
     "quantity": 1,
     "totalPrice": 21999,
     "paymentMethod": "Prepaid UPI / Card (Instant Confirmation)",
     "paymentStatus": "Paid",
     "orderNotes": "",
-    "status": "Order Received",
+    "status": "Ready for Dispatch",
     "statusHistory": [
       {
         "status": "Order Received",
         "timestamp": "2026-09-17T15:03:19.377Z",
         "staff": "Customer Online Storefront",
         "notes": "Order placed by customer via direct factory checkout. Mode: Prepaid UPI / Card (Instant Confirmation)."
+      },
+      {
+        "status": "Picking",
+        "timestamp": "2026-10-06T12:33:35.103Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Status updated by store keeper: Picking"
+      },
+      {
+        "status": "Packed",
+        "timestamp": "2026-10-06T12:33:48.386Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Status updated by store keeper: Packed"
+      },
+      {
+        "status": "Ready for Dispatch",
+        "timestamp": "2026-10-06T12:33:52.237Z",
+        "staff": "Manoj (Store Team)",
+        "notes": "Status updated by store keeper: Ready for Dispatch"
       }
     ],
     "courier": "",
@@ -49,7 +67,7 @@
     "phone": "+919820145890",
     "email": "vikram.singhania@example.com",
     "address": "Villa 12, Palm Meadows, Whitefield, Bengaluru, Karnataka - 560066",
-    "productName": "LORA CLOUD 7™ Luxury Ortho",
+    "productName": "01. LORA CLOUD 7™",
     "size": "King Size • 78\" × 72\" (6.5 × 6.0 ft) • 10-inch Luxury EuroTop",
     "quantity": 1,
     "totalPrice": 28999,

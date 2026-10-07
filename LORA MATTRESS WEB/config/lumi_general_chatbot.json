@@ -1,0 +1,140 @@
+{
+  "system": {
+    "name": "Lumi",
+    "role": "LORA AI Sleep Consultant & Mattress Guide",
+    "version": "2.5-humanlike",
+    "tone": "Warm, knowledgeable, conversational, empathetic, and objective. Speaks like a helpful human in-store sleep specialist.",
+    "core_principles": [
+      "Always answer the user's specific question directly first before offering follow-up recommendations.",
+      "Never lock into one single mattress across multiple questions unless the user specifically asked to focus on that model.",
+      "When the user asks open-ended questions (e.g., 'which is best?', 'help me choose', 'what mattresses do you have?'), present the choices across the 8 models with clear distinctions.",
+      "Support English, Malayalam, and Manglish seamlessly.",
+      "Promote LORA's core values: factory-direct pricing, SpineAlign™ science, model-specific warranties up to 15 years, and Zero-Roll Full-Size Flat Delivery."
+    ]
+  },
+  "catalog_overview": {
+    "total_models": 8,
+    "categories": {
+      "soft_and_plush": [
+        {
+          "id": "03",
+          "name": "LORA PLUSH™",
+          "feel": "Plush / Soft",
+          "type": "Pillow Top",
+          "warranty": "5 Years",
+          "headline": "Cloud-like sink-in luxury with deep pressure relief",
+          "best_for": "Side sleepers and anyone who loves gentle, plush cushioning around hips and shoulders."
+        },
+        {
+          "id": "01",
+          "name": "LORA CLOUD 7™",
+          "feel": "Medium-Soft",
+          "type": "Eurotop (7-inch profile)",
+          "warranty": "3 Years",
+          "headline": "Cushioned Eurotop comfort with balanced everyday support",
+          "best_for": "Sleepers wanting softer cushioning on a sleek 7-inch profile, ideal for modern bed frames or guest rooms."
+        }
+      ],
+      "balanced_medium": [
+        {
+          "id": "02",
+          "name": "LORA CLOUD ORTHO™",
+          "feel": "Medium",
+          "type": "Eurotop (9-inch profile)",
+          "warranty": "5 Years",
+          "headline": "Balanced posture cushioning with generous 9-inch depth",
+          "best_for": "Back and side sleepers who want cushioning without sinking too deep."
+        },
+        {
+          "id": "06",
+          "name": "LORA COMFORT CORE™",
+          "feel": "Medium",
+          "type": "Pillow Top",
+          "warranty": "10 Years",
+          "headline": "Everyday balanced pillow-top comfort built for long-term durability",
+          "best_for": "Couples or solo sleepers seeking dependable, versatile everyday comfort."
+        },
+        {
+          "id": "07",
+          "name": "LORA POCKET LUXE™",
+          "feel": "Medium",
+          "type": "Pocket Spring + Pillow Top",
+          "warranty": "10 Years",
+          "headline": "Zero motion transfer with isolated pocket coil suspension",
+          "best_for": "Couples and light sleepers where partner movement or restless tossing is a concern."
+        }
+      ],
+      "support_and_firm": [
+        {
+          "id": "04",
+          "name": "LORA ORTHO HYBRID™",
+          "feel": "Medium-Firm",
+          "type": "Hybrid Ortho-Support",
+          "warranty": "10 Years",
+          "headline": "Dynamic spine alignment and responsive orthopedic support",
+          "best_for": "Back sleepers and stomach sleepers needing sturdy support for lumbar alignment."
+        },
+        {
+          "id": "05",
+          "name": "LORA ORTHO LATEX™",
+          "feel": "Medium-Firm",
+          "type": "Latex Comfort + Ortho Core",
+          "warranty": "12 Years",
+          "headline": "Naturally breathable, buoyant latex bounce with cooler sleep",
+          "best_for": "Sleepers who tend to sleep hot and prefer the buoyant, responsive feel of natural latex over memory foam."
+        },
+        {
+          "id": "08",
+          "name": "LORA HYBRID FUSION™",
+          "feel": "Medium-Firm",
+          "type": "Tri-Layer Hybrid (Natural Latex, Memory Foam, Ortho Foam)",
+          "warranty": "15 Years",
+          "headline": "Flagship multi-layer luxury with 15-year master warranty",
+          "best_for": "Those seeking the ultimate blend of pressure-relief memory foam, buoyant latex, and zoned orthopedic core support."
+        }
+      ]
+    }
+  },
+  "conversational_topics": {
+    "all_models_overview": {
+      "en": "LORA crafts 8 handcrafted mattress models across 3 distinct comfort zones:\n\n• **Plush & Soft**: Lora Plush (Pillow Top, Soft) & Cloud 7 (Eurotop 7\", Medium-Soft)\n• **Balanced Medium**: Cloud Ortho (Eurotop 9\"), Comfort Core (Pillow Top, 10-Yr), & Pocket Luxe (Pocket Spring, Zero Disturbance)\n• **Medium-Firm & Orthopedic**: Ortho Hybrid (10-Yr), Ortho Latex (Breathable Latex, 12-Yr), & Hybrid Fusion (Flagship Latex+Memory Foam, 15-Yr)\n\nWhich feel appeals to your sleeping style?",
+      "ml": "ലോറയിൽ 8 പ്രധാന മെത്തകളാണുള്ളത്:\n\n• **സോഫ്റ്റ് & പ്ലഷ്**: Lora Plush (സോഫ്റ്റ്), Cloud 7 (മീഡിയം-സോഫ്റ്റ്, 7-ഇഞ്ച്)\n• **ബാലൻസ്ഡ് മീഡിയം**: Cloud Ortho (9-ഇഞ്ച്), Comfort Core (10 വർഷ വാറന്റി), Pocket Luxe (പാർട്ണർ ഡിസ്റ്റർബൻസ് തടയുന്ന പോക്കറ്റ് സ്പ്രിംഗ്)\n• **മീഡിയം-ഫേം & ഓർത്തോ**: Ortho Hybrid, Ortho Latex (കൂളിംഗ് ലാറ്റക്സ്), Hybrid Fusion (15 വർഷ വാറന്റി ഉള്ള ഫ്ലാഗ്ഷിപ്പ് മോഡൽ)\n\nനിങ്ങൾക്ക് ഏത് തരത്തിലുള്ള കംഫർട്ടാണ് കൂടുതൽ സൗകര്യപ്രദം?",
+      "manglish": "Lora-il 8 verified mattress models undu, 3 comfort zones-il:\n\n• **Plush & Soft**: Lora Plush (Soft) & Cloud 7 (Medium-Soft, 7-inch)\n• **Balanced Medium**: Cloud Ortho (9-inch), Comfort Core (10-yr), Pocket Luxe (Pocket spring, partner disturbance illa)\n• **Medium-Firm & Ortho**: Ortho Hybrid, Ortho Latex (cooling latex, 12-yr), Hybrid Fusion (flagship, 15-yr warranty)\n\nNingalkku ethu feel aanu kooduthal comfortable?"
+    },
+    "side_sleepers": {
+      "en": "For side sleepers, the key is contouring pressure relief around your shoulders and hips to keep your spine straight.\n\n• **Best Match**: **LORA PLUSH™** (Pillow top with gentle plush cushioning)\n• **Balanced Alternative**: **LORA CLOUD 7™** (Medium-soft Eurotop) or **LORA POCKET LUXE™** (Medium feel with pocket springs that adapt to your body curves)\n\nDo you prefer a deeper sink-in plush feel, or a slightly more balanced medium feel?",
+      "ml": "വശം ചരിഞ്ഞ് കിടന്നുറങ്ങുന്നവർക്ക് തോളിലെയും ഇടുപ്പിലെയും പ്രഷർ കുറയ്ക്കാൻ സോഫ്റ്റ്/മീഡിയം കുഷ്യനിംഗ് ഉള്ള മെത്തകളാണ് ഏറ്റവും അനുയോജ്യം.\n\n• **മികച്ച ചോയ്സ്**: **LORA PLUSH™** (പ്ലഷ്/സോഫ്റ്റ് പില്ലോ ടോപ്പ്)\n• **ബാലൻസ്ഡ് ചോയ്സ്**: **LORA CLOUD 7™** (മീഡിയം-സോഫ്റ്റ്) അല്ലെങ്കിൽ **LORA POCKET LUXE™** (പോക്കറ്റ് സ്പ്രിംഗ്)\n\nനിങ്ങൾക്ക് വളരെ സോഫ്റ്റ് ഫീലാണോ അതോ കൂടുതൽ സപ്പോർട്ടുള്ള മീഡിയം ഫീലാണോ സൗകര്യപ്രദം?",
+      "manglish": "Side sleepers-inu tholilum hip-ilum pressure kurayan soft/medium contouring aanu best.\n\n• **Best Match**: **LORA PLUSH™** (Plush/Soft pillow top)\n• **Balanced Option**: **LORA CLOUD 7™** (Medium-Soft) or **LORA POCKET LUXE™** (Medium feel with pocket springs)\n\nNingalkku nalla soft sink-in aano atho balanced medium aano ishtam?"
+    },
+    "back_sleepers": {
+      "en": "For back sleepers, you need natural lumbar support that prevents your lower back from sagging while gently cradling your spine.\n\n• **Balanced Comfort**: **LORA CLOUD ORTHO™** (9-inch Medium Eurotop) or **LORA COMFORT CORE™** (Medium Pillow Top, 10-Yr warranty)\n• **Stronger Ergonomic Support**: **LORA ORTHO HYBRID™** or **LORA ORTHO LATEX™** (Medium-Firm)\n\nDo you wake up feeling better on a medium surface or a firmer mattress?",
+      "ml": "മലർന്ന് കിടന്നുറങ്ങുന്നവർക്ക് നട്ടെല്ലിന്റെ സ്വാഭാവിക വളവ് നിലനിർത്തുന്ന ബാലൻസ്ഡ് അല്ലെങ്കിൽ മീഡിയം-ഫേം മെത്തകളാണ് നല്ലത്.\n\n• **ബാലൻസ്ഡ് ചോയ്സ്**: **LORA CLOUD ORTHO™** (9-ഇഞ്ച് മീഡിയം) അല്ലെങ്കിൽ **LORA COMFORT CORE™**\n• **കൂടുതൽ സപ്പോർട്ടിന്**: **LORA ORTHO HYBRID™** അല്ലെങ്കിൽ **LORA ORTHO LATEX™** (മീഡിയം-ഫേം)\n\nനിങ്ങൾക്ക് മീഡിയം കുഷ്യനിംഗാണോ കൂടുതൽ ഫേം ആയ സപ്പോർട്ടാണോ വേണ്ടത്?",
+      "manglish": "Back sleepers-inu lumbar area support cheyyunna balanced or medium-firm mattress aanu ideal.\n\n• **Balanced**: **LORA CLOUD ORTHO™** (9-inch Medium) or **LORA COMFORT CORE™**\n• **Firm Support**: **LORA ORTHO HYBRID™** or **LORA ORTHO LATEX™** (Medium-Firm)\n\nNingalkku medium feel aano firmer feel aano thalparyam?"
+    },
+    "stomach_sleepers": {
+      "en": "For stomach sleeping, a firmer mattress is essential. Soft mattresses allow your hips to sink too deep, straining your lower back.\n\n• **Recommended**: **LORA ORTHO HYBRID™** (Medium-Firm responsive support)\n• **Premium Eco Option**: **LORA ORTHO LATEX™** (Medium-Firm with buoyant latex lift)\n• **Flagship Luxury**: **LORA HYBRID FUSION™** (Medium-Firm multi-layer)\n\nThese keep your pelvis elevated and your spine in healthy neutral alignment.",
+      "ml": "കമിഴ്ന്ന് കിടന്നുറങ്ങുന്നവർക്ക് മീഡിയം-ഫേം മെത്തകളാണ് ആവശ്യം. മൃദുവായ മെത്തകളിൽ ഇടുപ്പ് താഴേക്ക് പോകുന്നത് നടുവേദനയ്ക്ക് കാരണമാകും.\n\n• **ശുപാർശ**: **LORA ORTHO HYBRID™** (മീഡിയം-ഫേം)\n• **പ്രകൃതിദത്ത ലാറ്റക്സ്**: **LORA ORTHO LATEX™** (മീഡിയം-ഫേം, നല്ല ബൗൺസ്)\n• **ഫ്ലാഗ്ഷിപ്പ്**: **LORA HYBRID FUSION™**",
+      "manglish": "Stomach sleepers-inu hips sink aavaathe back straight aayi nilkan medium-firm support nirbandhamaanu.\n\n• **Recommended**: **LORA ORTHO HYBRID™** (Medium-Firm)\n• **Natural Latex**: **LORA ORTHO LATEX™** (Medium-Firm, resilient bounce)\n• **Luxury Flagship**: **LORA HYBRID FUSION™**"
+    },
+    "couples_motion_transfer": {
+      "en": "If you or your partner toss and turn, independent pocket coil suspension is the gold standard because each spring reacts individually without shaking the entire bed.\n\n• **Top Recommendation**: **LORA POCKET LUXE™** — features independently encased pocket springs with a plush pillow-top and 10-year warranty.\n• **Multi-Layer Alternative**: **LORA HYBRID FUSION™** — absorbs movement through latex and dense orthopedic foam.\n\nWould you like King Size (78\"×72\") or Queen Size (78\"×60\") for your bedroom?",
+      "ml": "പങ്കാളിയുടെ ചലനങ്ങൾ ഉറക്കത്തെ തടസ്സപ്പെടുത്താതിരിക്കാൻ പോക്കറ്റ് സ്പ്രിംഗ് മെത്തകളാണ് ഏറ്റവും മികച്ചത്.\n\n• **ടോപ്പ് ചോയ്സ്**: **LORA POCKET LUXE™** — വ്യക്തിഗത പോക്കറ്റ് സ്പ്രിംഗുകൾ ചലനത്തെ ഒതുക്കിനിർത്തുന്നു, 10 വർഷ വാറന്റി.\n• **മറ്റൊരു ചോയ്സ്**: **LORA HYBRID FUSION™**.\n\nകിംഗ് സൈസ് (78\"×72\") ആണോ ക്വീൻ സൈസ് (78\"×60\") ആണോ നിങ്ങൾ ഉദ്ദേശിക്കുന്നത്?",
+      "manglish": "Partner movement karanam disturbance undavunnundel Pocket Spring technology aanu best solution.\n\n• **Top Choice**: **LORA POCKET LUXE™** — individually encased pocket coils movement absorb cheyyum, 10 years warranty.\n• **Flagship**: **LORA HYBRID FUSION™**.\n\nKing size aano Queen size aano ningalkku vendathu?"
+    },
+    "cooling_and_breathability": {
+      "en": "If you tend to sleep warm, avoid dense traditional foam that traps heat. Look for open-cell latex or ventilated pocket coil cores:\n\n• **LORA ORTHO LATEX™**: Uses naturally breathable, open-cell latex with pin-core ventilation that stays naturally cool through the night.\n• **LORA POCKET LUXE™**: Pocket springs allow continuous air circulation through the mattress core, dissipating body warmth.\n• **LORA HYBRID FUSION™**: Combines ventilated natural latex foam with active breathable micro-knit surface cooling.",
+      "ml": "ചൂട് കൂടുതൽ അനുഭവപ്പെടുന്നവർക്ക് വായുസഞ്ചാരമുള്ള ലാറ്റക്സ്, പോക്കറ്റ് സ്പ്രിംഗ് മെത്തകളാണ് ഏറ്റവും അനുയോജ്യം:\n\n• **LORA ORTHO LATEX™**: സ്വാഭാവികമായി വായുസഞ്ചാരമുള്ള ലാറ്റക്സ് പാളി ചൂട് തടയുന്നു.\n• **LORA POCKET LUXE™**: സ്പ്രിംഗുകൾക്കിടയിലൂടെ വായുസഞ്ചാരം ഉറപ്പാക്കുന്നു.\n• **LORA HYBRID FUSION™**: നാച്ചുറൽ ലാറ്റക്സും ശ്വസനക്ഷമമായ ഫാബ്രിക്കും ഉൾപ്പെടുന്നു.",
+      "manglish": "Sleep cheyyumbol choodu kooduthal feel cheyyunnundel:\n\n• **LORA ORTHO LATEX™**: Naturally breathable open-cell latex aayathinaal coolness maintain cheyyum.\n• **LORA POCKET LUXE™**: Pocket coils-inte idayiloode nalla airflow undavum.\n• **LORA HYBRID FUSION™**: Natural latex foam cooling micro-knit fabrics-umayi combine cheyyunnu."
+    },
+    "flat_delivery": {
+      "en": "At LORA, **YOU SLEEP FLAT. WHY SHOULD YOUR COMFORT COME ROLLED?**\n\nMany brands crush mattresses under 50-ton hydraulic presses to squeeze them into cardboard boxes. This damages titanium coil tempered memory, fractures edge support foam, and forces you to wait days for off-gassing.\n\n**LORA Delivers 100% Flat & Assembled** direct from our factory in specialized heavy-duty transport sleeves. It arrives uncompromised, structurally intact, and ready to sleep on immediately!",
+      "ml": "ലോറയിൽ ഞങ്ങൾ നിങ്ങളുടെ കംഫർട്ട് ചുരുട്ടി ബോക്സിലാക്കി അയക്കാറില്ല! \n\nമെത്തകൾ കനത്ത പ്രസ്സിൽ ഞെരുക്കി റോൾ ചെയ്യുമ്പോൾ സ്പ്രിംഗുകളുടെയും ബോർഡർ ഫോമിന്റെയും കരുത്ത് നഷ്ടപ്പെടാം. ലോറ പൂർണ്ണമായും ഫ്ലാറ്റ് ആയി, ഫാക്ടറിയിൽ നിന്ന് നേരിട്ട് നിങ്ങളുടെ വീട്ടിൽ എത്തിക്കുന്നു. അൺപാക്ക് ചെയ്ത് അപ്പോൾ തന്നെ ഉപയോഗിക്കാം!",
+      "manglish": "Lora-il 'Flat Delivery' aanu! Box-il roll cheythu compression kodukkumbol springs and foam structure damage aavan chance undu. Lora full-size flat aayi thanne deliver cheyyunnu, so structural integrity 100% intact aayirikkum."
+    },
+    "back_pain_guidance": {
+      "en": "While a mattress is not a medical prescription or cure, healthy spinal neutrality makes a world of difference for morning stiffness.\n\nFor back care, we recommend medium-firm models that keep your spine in its natural horizontal posture:\n• **LORA ORTHO HYBRID™** (10-Yr warranty) — Sturdy, balanced orthopedic core\n• **LORA ORTHO LATEX™** (12-Yr warranty) — Pressure-relieving buoyant latex\n• **LORA CLOUD ORTHO™** (5-Yr warranty) — Medium 9\" Eurotop cushioning\n\nDo you wake up with lower back tightness, or stiffness in the upper shoulders?",
+      "ml": "നടുവേദന പൂർണ്ണമായി മാറുമെന്ന് മെഡിക്കൽ ഗ്യാരണ്ടി നൽകാൻ കഴിയില്ലെങ്കിലും, ശരിയായ നട്ടെല്ല് വിന്യാസം (SpineAlign™) ഉറക്കം സുഖകരമാക്കുന്നു.\n\nനടുവേദന ഉള്ളവർക്ക് മീഡിയം-ഫേം സപ്പോർട്ടുള്ള മോഡലുകളാണ് നല്ലത്:\n• **LORA ORTHO HYBRID™** (10 വർഷ വാറന്റി)\n• **LORA ORTHO LATEX™** (12 വർഷ വാറന്റി)\n• **LORA CLOUD ORTHO™** (5 വർഷ വാറന്റി, മീഡിയം ഫീൽ)\n\nനിങ്ങൾക്ക് കൂടുതൽ ഫേം ആയ സപ്പോർട്ടാണോ അതോ മീഡിയം കുഷ്യനിംഗാണോ ഇഷ്ടം?",
+      "manglish": "Mattress medical cure aanennu parayan pattilla, pakshe SpineAlign™ support morning back stiffness kurakkan help cheyyum.\n\nMedium-firm models aanu spine support-inu best:\n• **LORA ORTHO HYBRID™** (10-yr warranty)\n• **LORA ORTHO LATEX™** (12-yr warranty)\n• **LORA CLOUD ORTHO™** (5-yr warranty)\n\nNingalkku lower back-ilaano discomfort feel cheyyunnathu?"
+    }
+  }
+}

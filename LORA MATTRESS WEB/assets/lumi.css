@@ -1,6 +1,6 @@
 /* =========================================================
-   LUMI — LORA's AI SLEEP ASSISTANT (STYLES)
-   Miniature 3D Mattress Launcher, Ghost Character & Chat Panel
+   LUMI — LORA's AI SLEEP ASSISTANT (STYLES VERSION 2.0)
+   Luxury Sleep-Tech UI with Miniature 3D Mattress & Character
    ========================================================= */
 
 /* Root Container */
@@ -17,28 +17,28 @@
 /* Greeting Speech Bubble */
 .lumi-greeting-bubble {
   position: absolute;
-  bottom: 84px;
+  bottom: 92px;
   right: 0;
-  width: 260px;
-  background: rgba(13, 22, 41, 0.95);
-  border: 1px solid rgba(0, 180, 216, 0.35);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 180, 216, 0.15);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 16px;
-  padding: 10px 14px 10px 14px;
+  width: 275px;
+  background: rgba(11, 19, 43, 0.96);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(2, 132, 199, 0.28);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 18px;
+  padding: 12px 14px;
   display: flex;
   align-items: flex-start;
   gap: 8px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: lumiPopIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: lumiPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, lumiGreetingNudge 7s ease-in-out infinite 3s;
   z-index: 9999;
 }
 .lumi-greeting-bubble:hover {
-  transform: translateY(-2px);
-  border-color: #00B4D8;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 180, 216, 0.25);
+  transform: translateY(-3px) scale(1.02);
+  border-color: #38BDF8;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 35px rgba(56, 189, 248, 0.4);
 }
 .lumi-greeting-bubble::after {
   content: '';
@@ -47,14 +47,14 @@
   right: 32px;
   width: 12px;
   height: 12px;
-  background: #0D1629;
-  border-right: 1px solid rgba(0, 180, 216, 0.35);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.35);
+  background: #0B132B;
+  border-right: 1px solid rgba(0, 180, 216, 0.4);
+  border-bottom: 1px solid rgba(0, 180, 216, 0.4);
   transform: rotate(45deg);
 }
 .lumi-greeting-text {
   font-size: 0.82rem;
-  line-height: 1.35;
+  line-height: 1.4;
   color: #FFFFFF;
   margin: 0;
   flex: 1;
@@ -78,11 +78,11 @@
   color: #F87171;
 }
 
-/* 3D Mattress & Character Launcher Button */
+/* 3D Luxury Bed & Mascot Launcher Button */
 .lumi-launcher-btn {
   position: relative;
-  width: 74px;
-  height: 74px;
+  width: 78px;
+  height: 78px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -91,66 +91,68 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
 }
 .lumi-launcher-btn:hover {
-  transform: translateY(-3px) scale(1.04);
+  transform: translateY(-4px) scale(1.06);
 }
 .lumi-launcher-btn:active {
-  transform: translateY(0) scale(0.97);
+  transform: translateY(0) scale(0.96);
 }
 
-/* Ambient Soft Shadow */
+/* Ambient Soft Floor Contact Shadow */
 .lumi-mattress-shadow {
   position: absolute;
   bottom: 4px;
-  width: 58px;
-  height: 16px;
-  background: radial-gradient(ellipse at center, rgba(0, 180, 216, 0.3) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 80%);
+  width: 68px;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45) 0%, transparent 72%);
   border-radius: 50%;
-  animation: lumiShadowPulse 3.5s ease-in-out infinite alternate;
+  animation: lumiShadowPulse 3.8s ease-in-out infinite alternate;
 }
 
-/* 3D Mattress Stage */
+/* 3D Bed Stage */
 .lumi-mattress-stage {
   position: absolute;
-  bottom: 8px;
-  width: 64px;
-  height: 48px;
+  bottom: 6px;
+  width: 76px;
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: lumiMattressFloat 3.5s ease-in-out infinite alternate;
+  z-index: 1;
+  animation: lumiBedFloat 3.8s ease-in-out infinite alternate;
 }
 
-/* Isometric 3D Miniature Mattress Vector */
+/* Luxury Miniature Bed Vector */
 .lumi-mattress-svg {
-  width: 64px;
-  height: 48px;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+  width: 76px;
+  height: 62px;
   overflow: visible;
 }
 
-/* Lumi Sprite (The cute ghost sleep character) */
+/* Lumi Sprite (The cute sleep character) */
 .lumi-character-sprite {
   position: absolute;
-  bottom: 22px;
+  bottom: 26px;
   width: 38px;
-  height: 46px;
+  height: 44px;
   z-index: 2;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform-origin: bottom center;
-  animation: lumiHoverGhost 3.5s ease-in-out infinite alternate;
+  animation: lumiGhostFloat 3.8s ease-in-out infinite alternate;
   pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
 }
 .lumi-launcher-btn:hover .lumi-character-sprite {
-  transform: translateY(-7px) scale(1.08);
+  transform: translateY(-7px) scale(1.08) rotate(3deg);
 }
 .lumi-widget-container.is-active .lumi-character-sprite {
-  transform: translateY(-12px) scale(1.15);
+  transform: translateY(-9px) scale(1.1);
 }
 
-/* Status Indicator Dot */
+/* Calm Status Indicator Dot */
 .lumi-status-badge {
   position: absolute;
   top: 6px;
@@ -158,9 +160,10 @@
   width: 10px;
   height: 10px;
   background: #10B981;
-  border: 2px solid #0D1629;
+  border: 2px solid #0A0F1D;
   border-radius: 50%;
-  box-shadow: 0 0 6px #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.45);
+  z-index: 4;
 }
 
 /* =========================================================
@@ -168,23 +171,23 @@
    ========================================================= */
 .lumi-chat-panel {
   position: absolute;
-  bottom: 86px;
+  bottom: 88px;
   right: 0;
-  width: 380px;
-  height: 560px;
+  width: 390px;
+  height: 580px;
   max-height: calc(100vh - 120px);
-  background: #0B132B;
-  border: 1px solid rgba(0, 180, 216, 0.3);
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 180, 216, 0.15);
+  background: linear-gradient(175deg, #0D1629 0%, #080E1C 100%);
+  border: 1px solid rgba(0, 180, 216, 0.35);
+  border-radius: 22px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 180, 216, 0.16);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(16px) scale(0.96);
+  transform: translateY(22px) scale(0.93);
   transform-origin: bottom right;
-  transition: opacity 0.25s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.28s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 10000;
 }
 .lumi-widget-container.is-active .lumi-chat-panel {
@@ -195,13 +198,13 @@
 
 /* Header */
 .lumi-chat-header {
-  background: linear-gradient(180deg, #111C38 0%, #0D1629 100%);
+  background: linear-gradient(180deg, #121F3D 0%, #0D1629 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 12px 16px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 .lumi-header-info {
   display: flex;
@@ -247,8 +250,8 @@
   font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
-  background: rgba(0, 180, 216, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(0, 180, 216, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.4);
   color: #38BDF8;
   padding: 1px 6px;
   border-radius: 9999px;
@@ -262,30 +265,79 @@
   align-items: center;
   gap: 5px;
 }
-.lumi-chat-close-btn {
-  background: rgba(255, 255, 255, 0.08);
+
+/* Header Actions */
+.lumi-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lumi-lang-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2px;
+}
+.lumi-lang-btn {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.lumi-lang-btn.active {
+  background: #0284C7;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.lumi-chat-reset-btn {
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #94A3B8;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+.lumi-chat-reset-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38BDF8;
+  border-color: #38BDF8;
+}
+.lumi-chat-close-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
   transition: all 0.15s ease;
 }
 .lumi-chat-close-btn:hover {
-  background: rgba(239, 68, 68, 0.18);
+  background: rgba(239, 68, 68, 0.2);
   border-color: #EF4444;
   color: #FCA5A5;
 }
 
-/* Page Context Chip (Recognises mattress being viewed) */
+/* Page Context Strip */
 .lumi-context-strip {
-  background: rgba(2, 132, 199, 0.1);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(2, 132, 199, 0.08);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
   padding: 6px 14px;
   font-size: 0.72rem;
   color: #BAE6FD;
@@ -329,21 +381,21 @@
   display: flex;
   gap: 8px;
   align-items: flex-end;
-  animation: lumiMsgFade 0.2s ease-out;
+  animation: lumiMsgFade 0.22s ease-out;
 }
 .lumi-msg-row.user {
   justify-content: flex-end;
 }
 .lumi-msg-bubble {
-  max-width: 82%;
-  padding: 10px 13px;
+  max-width: 86%;
+  padding: 11px 14px;
   font-size: 0.84rem;
-  line-height: 1.4;
-  border-radius: 14px;
+  line-height: 1.45;
+  border-radius: 16px;
   word-break: break-word;
 }
 .lumi-msg-row.assistant .lumi-msg-bubble {
-  background: rgba(19, 31, 56, 0.95);
+  background: rgba(17, 28, 52, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #F1F5F9;
   border-bottom-left-radius: 4px;
@@ -356,13 +408,84 @@
   box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
 }
 
+/* Interactive Product Card Embed */
+.lumi-product-card-embed {
+  margin-top: 10px;
+  background: rgba(8, 14, 28, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.lumi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.68rem;
+}
+.lumi-card-tag {
+  color: #38BDF8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.lumi-card-warranty {
+  color: #34D399;
+  font-weight: 600;
+}
+.lumi-card-title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+.lumi-card-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 2px 0;
+}
+.lumi-spec-pill {
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: #CBD5E1;
+}
+.lumi-spec-pill strong {
+  color: #38BDF8;
+}
+.lumi-spec-price strong {
+  color: #34D399;
+}
+.lumi-card-btn {
+  background: linear-gradient(135deg, #0284C7 0%, #00B4D8 100%);
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.lumi-card-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
 /* Typing Indicator */
 .lumi-typing-indicator {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 10px 14px;
-  background: rgba(19, 31, 56, 0.95);
+  background: rgba(17, 28, 52, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   border-bottom-left-radius: 4px;
@@ -402,55 +525,6 @@
   background: rgba(2, 132, 199, 0.28);
   border-color: #38BDF8;
   transform: translateY(-1px);
-}
-
-/* Lead Collection Form Box */
-.lumi-lead-form-box {
-  background: rgba(16, 25, 46, 0.95);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.lumi-lead-form-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #38BDF8;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.lumi-lead-input {
-  background: rgba(8, 12, 22, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  color: #FFFFFF;
-  padding: 8px 10px;
-  font-size: 0.82rem;
-  font-family: inherit;
-  outline: none;
-  box-sizing: border-box;
-}
-.lumi-lead-input:focus {
-  border-color: #00B4D8;
-  box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.2);
-}
-.lumi-lead-submit-btn {
-  background: linear-gradient(135deg, #0284C7 0%, #0077B6 100%);
-  border: none;
-  color: #FFFFFF;
-  font-size: 0.78rem;
-  font-weight: 700;
-  padding: 7px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: opacity 0.15s ease;
-}
-.lumi-lead-submit-btn:hover {
-  opacity: 0.92;
 }
 
 /* Chat Input Bar */
@@ -501,11 +575,6 @@
 .lumi-send-btn:hover {
   transform: scale(1.05);
 }
-.lumi-send-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
-}
 
 /* Error Retry Bar */
 .lumi-retry-bar {
@@ -533,22 +602,33 @@
 
 /* Animations */
 @keyframes lumiPopIn {
-  0% { opacity: 0; transform: translateY(10px) scale(0.9); }
+  0% { opacity: 0; transform: translateY(18px) scale(0.88); }
+  60% { opacity: 1; transform: translateY(-4px) scale(1.02); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-@keyframes lumiMattressFloat {
-  0% { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-3px) rotate(0.4deg); }
+
+@keyframes lumiGreetingNudge {
+  0%, 88%, 100% { transform: translateY(0) scale(1); }
+  90% { transform: translateY(-6px) scale(1.03); }
+  93% { transform: translateY(0) scale(0.99); }
+  96% { transform: translateY(-3px) scale(1.01); }
 }
+
+@keyframes lumiBedFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+@keyframes lumiGhostFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-7px) scale(1.02); }
+}
+
 @keyframes lumiShadowPulse {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(0.9); opacity: 0.45; }
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(0.9); opacity: 0.35; }
 }
-@keyframes lumiHoverGhost {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-4px) rotate(1.2deg); }
-  100% { transform: translateY(-1px) rotate(-1deg); }
-}
+
 @keyframes lumiMsgFade {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
@@ -562,14 +642,13 @@
    MOBILE RESPONSIVENESS & STICKY BUY NOW CLEARANCE
    ========================================================= */
 @media (max-width: 768px) {
-  /* On mobile with sticky Buy Now bar (height ~70-75px), position Lumi safely above */
   .lumi-widget-container {
     bottom: 92px !important;
     right: 14px !important;
   }
   
   .lumi-greeting-bubble {
-    width: 230px;
+    width: 240px;
     bottom: 80px;
     right: 0;
     padding: 8px 12px;
@@ -595,13 +674,13 @@
   }
 
   .lumi-chat-header {
-    padding: 14px 16px;
+    padding: 12px 14px;
   }
 
   .lumi-chat-close-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
   }
 
   .lumi-input-field {
@@ -610,12 +689,12 @@
   }
 
   .lumi-send-btn {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
   }
 
   .lumi-quick-pill {
-    padding: 7px 13px;
-    font-size: 0.8rem;
+    padding: 6px 12px;
+    font-size: 0.78rem;
   }
 }

@@ -1,0 +1,7 @@
+.DS_Store
+*.bmp
+*.log
+node_modules/
+.env
+.env.*
+.env.local

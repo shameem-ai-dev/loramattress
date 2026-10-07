@@ -642,6 +642,49 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // Handle Lumi AI Sleep Assistant API (Version 2.5)
+  if (pathname === '/api/lumi-chat') {
+    const apiPath = path.join(ROOT_DIR, 'api', 'lumi-chat.js');
+    const enginePath = path.join(ROOT_DIR, 'api', 'lumi-conversational-engine.js');
+    try {
+      delete require.cache[require.resolve(apiPath)];
+      delete require.cache[require.resolve(enginePath)];
+    } catch(e) {}
+    const lumiHandler = require(apiPath);
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const mockReq = {
+          method: req.method,
+          headers: req.headers,
+          body: body ? JSON.parse(body) : {}
+        };
+        const mockRes = {
+          setHeader: (k, v) => res.setHeader(k, v),
+          status: (code) => {
+            res.statusCode = code;
+            return {
+              json: (data) => {
+                res.writeHead(code, {
+                  'Content-Type': 'application/json; charset=UTF-8',
+                  'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify(data));
+              },
+              end: () => res.end()
+            };
+          }
+        };
+        await lumiHandler(mockReq, mockRes);
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ success: false, message: err.message }));
+      }
+    });
+    return;
+  }
+
   // Handle Customer Store Locator Leads API
   if (pathname === '/api/store-leads' || pathname.startsWith('/api/store-leads/')) {
     const leadsFilePath = path.join(CONFIG_DIR, 'store_leads.json');
