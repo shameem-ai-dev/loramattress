@@ -2477,33 +2477,22 @@
       }
     };
 
+    function sanitizeProductImageUrl(url, fallback) {
+      if (!url || typeof url !== 'string') return fallback || 'assets/comfort-plush.jpg';
+      const trimmed = url.trim();
+      if (!trimmed) return fallback || 'assets/comfort-plush.jpg';
+      if (trimmed.startsWith('/') || trimmed.startsWith('assets/') || trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:image/')) {
+        return trimmed;
+      }
+      return fallback || 'assets/comfort-plush.jpg';
+    }
+
     // Load from localStorage if edited in Merchant Studio
     try {
       const stored = localStorage.getItem('lora_product_catalog_v3') || localStorage.getItem('lora_mattress_catalog_v2');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (
-          !parsed ||
-          !parsed['01'] ||
-          parsed['01'].name.includes('(Updated)') ||
-          parsed['01'].warranty !== '3 Years Warranty' ||
-          parsed['02']?.warranty !== '5 Years Warranty' ||
-          parsed['05']?.warranty !== '12 Years Warranty' ||
-          parsed['07']?.warranty !== '10 Years Warranty' ||
-          !parsed['01'].core
-        ) {
-          localStorage.removeItem('lora_product_catalog_v3');
-          localStorage.removeItem('lora_mattress_catalog_v2');
-        } else {
-          Object.keys(parsed).forEach(k => {
-            if (parsed[k]) {
-              ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
-                if (parsed[k][prop] && (parsed[k][prop].length >= 500000 || !parsed[k][prop].startsWith('assets/'))) {
-                  delete parsed[k][prop];
-                }
-              });
-            }
-          });
+        if (parsed && typeof parsed === 'object' && parsed['01']) {
           Object.assign(PRODUCTS_DATA, parsed);
         }
       }
@@ -2516,16 +2505,7 @@
       try {
         const res = await fetch('/api/catalog');
         const data = await res.json();
-        if (data && data.success && data.catalog) {
-          Object.keys(data.catalog).forEach(k => {
-            if (data.catalog[k]) {
-              ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
-                if (data.catalog[k][prop] && (data.catalog[k][prop].length >= 500000 || !data.catalog[k][prop].startsWith('assets/'))) {
-                  delete data.catalog[k][prop];
-                }
-              });
-            }
-          });
+        if (data && data.success && data.catalog && typeof data.catalog === 'object') {
           Object.assign(PRODUCTS_DATA, data.catalog);
           const initialModel = parseModelFromUrl();
           renderProduct(initialModel);
@@ -2533,6 +2513,27 @@
       } catch (e) {}
     }
     syncServerCatalogPdp();
+
+    // Cross-tab and live catalog update listeners
+    window.addEventListener('lora:catalog_updated', function (e) {
+      if (e.detail && typeof e.detail === 'object') {
+        Object.assign(PRODUCTS_DATA, e.detail);
+        const currentModel = parseModelFromUrl();
+        renderProduct(currentModel);
+      }
+    });
+    window.addEventListener('storage', function (e) {
+      if (e.key === 'lora_product_catalog_v3' || e.key === 'lora_mattress_catalog_v2') {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (parsed && typeof parsed === 'object') {
+            Object.assign(PRODUCTS_DATA, parsed);
+            const currentModel = parseModelFromUrl();
+            renderProduct(currentModel);
+          }
+        } catch (err) {}
+      }
+    });
 
     // Common-Man Dimension Definitions
     const INCH_SPECS = {
@@ -2787,31 +2788,51 @@
       });
 
       // Update Gallery
+      const heroUrl = sanitizeProductImageUrl(data.heroImg, 'assets/comfort-plush.jpg');
+      const explodedUrl = sanitizeProductImageUrl(data.explodedImg, 'assets/hero-stage-2-exploded.jpg');
+      const spineUrl = sanitizeProductImageUrl(data.spineImg, 'assets/hero-stage-3-spine.jpg');
+      const roomUrl = sanitizeProductImageUrl(data.roomImg, 'assets/lifestyle-editorial.jpg');
+
       const mainImg = document.querySelector('#pdp-active-img');
-      if (mainImg) mainImg.src = data.heroImg;
+      if (mainImg) {
+        mainImg.onerror = () => { mainImg.onerror = null; mainImg.src = 'assets/comfort-plush.jpg'; };
+        mainImg.src = heroUrl;
+      }
       const thumb1 = document.querySelector('#thumb-1');
       if (thumb1) {
-        thumb1.setAttribute('data-img', data.heroImg);
+        thumb1.setAttribute('data-img', heroUrl);
         const t1 = thumb1.querySelector('img');
-        if (t1) t1.src = data.heroImg;
+        if (t1) {
+          t1.onerror = () => { t1.onerror = null; t1.src = 'assets/comfort-plush.jpg'; };
+          t1.src = heroUrl;
+        }
       }
       const thumb2 = document.querySelector('#thumb-2');
-      if (thumb2 && data.explodedImg) {
-        thumb2.setAttribute('data-img', data.explodedImg);
+      if (thumb2) {
+        thumb2.setAttribute('data-img', explodedUrl);
         const t2 = thumb2.querySelector('img');
-        if (t2) t2.src = data.explodedImg;
+        if (t2) {
+          t2.onerror = () => { t2.onerror = null; t2.src = 'assets/hero-stage-2-exploded.jpg'; };
+          t2.src = explodedUrl;
+        }
       }
       const thumb3 = document.querySelector('#thumb-3');
-      if (thumb3 && data.spineImg) {
-        thumb3.setAttribute('data-img', data.spineImg);
+      if (thumb3) {
+        thumb3.setAttribute('data-img', spineUrl);
         const t3 = thumb3.querySelector('img');
-        if (t3) t3.src = data.spineImg;
+        if (t3) {
+          t3.onerror = () => { t3.onerror = null; t3.src = 'assets/hero-stage-3-spine.jpg'; };
+          t3.src = spineUrl;
+        }
       }
       const thumb4 = document.querySelector('#thumb-4');
-      if (thumb4 && data.roomImg) {
-        thumb4.setAttribute('data-img', data.roomImg);
+      if (thumb4) {
+        thumb4.setAttribute('data-img', roomUrl);
         const t4 = thumb4.querySelector('img');
-        if (t4) t4.src = data.roomImg;
+        if (t4) {
+          t4.onerror = () => { t4.onerror = null; t4.src = 'assets/lifestyle-editorial.jpg'; };
+          t4.src = roomUrl;
+        }
       }
 
       // Update Header & Tags

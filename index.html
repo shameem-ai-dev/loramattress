@@ -6666,20 +6666,7 @@
           const stored = localStorage.getItem('lora_product_catalog_v3') || localStorage.getItem('lora_mattress_catalog_v2');
           if (stored) {
             const parsed = JSON.parse(stored);
-            // Invalidate stale caches if model names or warranties are incorrect or contain outdated "(Updated)"
-            if (
-              !parsed ||
-              !parsed['01'] ||
-              parsed['01'].name.includes('(Updated)') ||
-              parsed['01'].warranty !== '3 Years Warranty' ||
-              parsed['02']?.warranty !== '5 Years Warranty' ||
-              parsed['05']?.warranty !== '12 Years Warranty' ||
-              parsed['07']?.warranty !== '10 Years Warranty' ||
-              !parsed['01'].core
-            ) {
-              localStorage.removeItem('lora_product_catalog_v3');
-              localStorage.removeItem('lora_mattress_catalog_v2');
-            } else {
+            if (parsed && typeof parsed === 'object' && parsed['01']) {
               catalog = Object.assign({}, DEFAULT_PRODUCTS, parsed);
               return;
             }
@@ -7687,6 +7674,7 @@
             if (nameEl) nameEl.innerHTML = `${item.name} <span class="tab-indicator-icon">↗</span>`;
             const heroImg = card.querySelector('.card-hero-img');
             if (heroImg && item.heroImg) {
+              heroImg.onerror = () => { heroImg.onerror = null; heroImg.src = 'assets/comfort-plush.jpg'; };
               heroImg.src = item.heroImg;
             }
             if (typeof updateCardPrice === 'function') updateCardPrice(card);
@@ -7716,31 +7704,46 @@
           // 5. Update Inner PDP Visuals if this model is active
           if (activeInnerModelKey === mKey) {
             const mainImg = document.querySelector('#inner-active-img');
-            if (mainImg && item.heroImg) mainImg.src = item.heroImg;
+            if (mainImg && item.heroImg) {
+              mainImg.onerror = () => { mainImg.onerror = null; mainImg.src = 'assets/comfort-plush.jpg'; };
+              mainImg.src = item.heroImg;
+            }
 
             const t1 = document.querySelector('#inner-thumb-1');
             if (t1 && item.heroImg) {
               t1.setAttribute('data-img', item.heroImg);
               const img = t1.querySelector('img');
-              if (img) img.src = item.heroImg;
+              if (img) {
+                img.onerror = () => { img.onerror = null; img.src = 'assets/comfort-plush.jpg'; };
+                img.src = item.heroImg;
+              }
             }
             const t2 = document.querySelector('#inner-thumb-2');
             if (t2 && item.explodedImg) {
               t2.setAttribute('data-img', item.explodedImg);
               const img = t2.querySelector('img');
-              if (img) img.src = item.explodedImg;
+              if (img) {
+                img.onerror = () => { img.onerror = null; img.src = 'assets/hero-stage-2-exploded.jpg'; };
+                img.src = item.explodedImg;
+              }
             }
             const t3 = document.querySelector('#inner-thumb-3');
             if (t3 && item.spineImg) {
               t3.setAttribute('data-img', item.spineImg);
               const img = t3.querySelector('img');
-              if (img) img.src = item.spineImg;
+              if (img) {
+                img.onerror = () => { img.onerror = null; img.src = 'assets/hero-stage-3-spine.jpg'; };
+                img.src = item.spineImg;
+              }
             }
             const t4 = document.querySelector('#inner-thumb-4');
             if (t4 && item.roomImg) {
               t4.setAttribute('data-img', item.roomImg);
               const img = t4.querySelector('img');
-              if (img) img.src = item.roomImg;
+              if (img) {
+                img.onerror = () => { img.onerror = null; img.src = 'assets/lifestyle-editorial.jpg'; };
+                img.src = item.roomImg;
+              }
             }
           }
 

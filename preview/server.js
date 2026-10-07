@@ -611,6 +611,69 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // Handle File / Image Upload API (Persistent Local & Server Storage)
+  if (pathname === '/api/upload') {
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const parsed = JSON.parse(body);
+          const rawImage = parsed.image || parsed.data;
+          const modelKey = (parsed.model || 'general').replace(/[^a-zA-Z0-9_-]/g, '');
+          const slotName = (parsed.slot || 'slot').replace(/[^a-zA-Z0-9_-]/g, '');
+
+          if (!rawImage) {
+            res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({ success: false, message: 'No image data provided' }));
+            return;
+          }
+
+          let buffer;
+          let ext = '.jpg';
+
+          if (rawImage.startsWith('data:')) {
+            const matches = rawImage.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+            if (matches) {
+              ext = matches[1] === 'jpeg' ? '.jpg' : `.${matches[1]}`;
+              buffer = Buffer.from(matches[2], 'base64');
+            } else {
+              res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+              res.end(JSON.stringify({ success: false, message: 'Invalid base64 image data' }));
+              return;
+            }
+          } else {
+            buffer = Buffer.from(rawImage, 'base64');
+          }
+
+          const uploadsDir = path.join(ASSETS_DIR, 'uploads');
+          if (!fs.existsSync(uploadsDir)) {
+            fs.mkdirSync(uploadsDir, { recursive: true });
+          }
+
+          const safeFileName = `prod_${modelKey}_${slotName}_${Date.now()}${ext}`;
+          const targetFilePath = path.join(uploadsDir, safeFileName);
+          fs.writeFileSync(targetFilePath, buffer);
+
+          const publicUrl = `/assets/uploads/${safeFileName}`;
+          console.log(`[UPLOAD API] Successfully saved persistent asset: ${publicUrl} (${buffer.length} bytes)`);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            success: true,
+            url: publicUrl,
+            filename: safeFileName,
+            size: buffer.length,
+            message: 'Image uploaded and stored persistently'
+          }));
+        } catch (e) {
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ success: false, message: 'Upload failed: ' + e.message }));
+        }
+      });
+      return;
+    }
+  }
+
   // Handle Studios API (Store Locations & Manual Pincodes)
   if (pathname === '/api/studios') {
     const studiosFilePath = path.join(CONFIG_DIR, 'studios_data.json');
@@ -897,12 +960,14 @@ const server = http.createServer((req, res) => {
     }
   }
 
-  // Handle static assets
-  if (pathname.startsWith('/assets/')) {
-    const filename = path.basename(pathname);
-    const assetPath = path.join(ASSETS_DIR, filename);
+  // Handle static assets (including uploads and subfolders)
+  if (pathname.startsWith('/assets/') || pathname.startsWith('/admin/assets/')) {
+    const cleanPath = pathname.replace(/^\/admin/, '');
+    const relAssetPath = cleanPath.replace(/^\/assets\//, '');
+    const safePath = path.normalize(relAssetPath).replace(/^(\.\.[\/\\])+/, '');
+    const assetPath = path.join(ASSETS_DIR, safePath);
 
-    if (fs.existsSync(assetPath)) {
+    if (fs.existsSync(assetPath) && fs.statSync(assetPath).isFile()) {
       const ext = path.extname(assetPath).toLowerCase();
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
       const fileData = fs.readFileSync(assetPath);

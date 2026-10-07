@@ -448,6 +448,36 @@
       animation: fadeIn 200ms ease;
     }
 
+    .save-feedback-badge.error {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: #EF4444;
+      color: #FCA5A5;
+    }
+
+    .save-feedback-badge.loading {
+      background: rgba(0, 180, 216, 0.18);
+      border-color: #00B4D8;
+      color: #7DD3FC;
+    }
+
+    .btn-clear-slot {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 0 0.55rem;
+      height: 32px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 150ms ease;
+    }
+
+    .btn-clear-slot:hover {
+      background: rgba(0, 180, 216, 0.2);
+      border-color: var(--brand-cyan);
+      color: #FFFFFF;
+    }
+
     /* Tab Panes */
     .tab-pane {
       display: none;
@@ -2710,52 +2740,64 @@
               <div class="photo-slot-card">
                 <strong style="font-size: 0.82rem; color: #FFFFFF;">1. Primary Hero Studio</strong>
                 <div class="photo-preview-wrap">
-                  <img src="assets/comfort-plush.jpg" alt="Hero Preview" id="p-prev-hero" class="photo-preview-img">
+                  <img src="/assets/comfort-plush.jpg" alt="Hero Preview" id="p-prev-hero" class="photo-preview-img" onerror="this.onerror=null; this.src='/assets/comfort-plush.jpg';">
                 </div>
                 <label class="btn-file-upload">
                   📁 Browse Local File
                   <input type="file" accept="image/*" style="display: none;" id="p-file-hero">
                 </label>
-                <input type="text" class="photo-url-input" id="p-url-hero" placeholder="Or paste Image URL">
+                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                  <input type="text" class="photo-url-input" id="p-url-hero" placeholder="Or paste Image URL" style="flex: 1;">
+                  <button type="button" class="btn-clear-slot" title="Reset to Factory Default" onclick="window.resetSlotImage('hero')">↺</button>
+                </div>
               </div>
 
               <!-- Slot 2: Exploded Layers -->
               <div class="photo-slot-card">
                 <strong style="font-size: 0.82rem; color: #FFFFFF;">2. 4-Tier Exploded Core</strong>
                 <div class="photo-preview-wrap">
-                  <img src="assets/hero-stage-2-exploded.jpg" alt="Exploded Preview" id="p-prev-layer" class="photo-preview-img">
+                  <img src="/assets/hero-stage-2-exploded.jpg" alt="Exploded Preview" id="p-prev-layer" class="photo-preview-img" onerror="this.onerror=null; this.src='/assets/hero-stage-2-exploded.jpg';">
                 </div>
                 <label class="btn-file-upload">
                   📁 Browse Local File
                   <input type="file" accept="image/*" style="display: none;" id="p-file-layer">
                 </label>
-                <input type="text" class="photo-url-input" id="p-url-layer" placeholder="Or paste Image URL">
+                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                  <input type="text" class="photo-url-input" id="p-url-layer" placeholder="Or paste Image URL" style="flex: 1;">
+                  <button type="button" class="btn-clear-slot" title="Reset to Factory Default" onclick="window.resetSlotImage('layer')">↺</button>
+                </div>
               </div>
 
               <!-- Slot 3: Spine Mapping -->
               <div class="photo-slot-card">
                 <strong style="font-size: 0.82rem; color: #FFFFFF;">3. Spine Alignment Ergonomics</strong>
                 <div class="photo-preview-wrap">
-                  <img src="assets/hero-stage-3-spine.jpg" alt="Spine Preview" id="p-prev-spine" class="photo-preview-img">
+                  <img src="/assets/hero-stage-3-spine.jpg" alt="Spine Preview" id="p-prev-spine" class="photo-preview-img" onerror="this.onerror=null; this.src='/assets/hero-stage-3-spine.jpg';">
                 </div>
                 <label class="btn-file-upload">
                   📁 Browse Local File
                   <input type="file" accept="image/*" style="display: none;" id="p-file-spine">
                 </label>
-                <input type="text" class="photo-url-input" id="p-url-spine" placeholder="Or paste Image URL">
+                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                  <input type="text" class="photo-url-input" id="p-url-spine" placeholder="Or paste Image URL" style="flex: 1;">
+                  <button type="button" class="btn-clear-slot" title="Reset to Factory Default" onclick="window.resetSlotImage('spine')">↺</button>
+                </div>
               </div>
 
               <!-- Slot 4: Master Bedroom -->
               <div class="photo-slot-card">
                 <strong style="font-size: 0.82rem; color: #FFFFFF;">4. Architectural Master Bedroom</strong>
                 <div class="photo-preview-wrap">
-                  <img src="assets/lifestyle-editorial.jpg" alt="Room Preview" id="p-prev-room" class="photo-preview-img">
+                  <img src="/assets/lifestyle-editorial.jpg" alt="Room Preview" id="p-prev-room" class="photo-preview-img" onerror="this.onerror=null; this.src='/assets/lifestyle-editorial.jpg';">
                 </div>
                 <label class="btn-file-upload">
                   📁 Browse Local File
                   <input type="file" accept="image/*" style="display: none;" id="p-file-room">
                 </label>
-                <input type="text" class="photo-url-input" id="p-url-room" placeholder="Or paste Image URL">
+                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                  <input type="text" class="photo-url-input" id="p-url-room" placeholder="Or paste Image URL" style="flex: 1;">
+                  <button type="button" class="btn-clear-slot" title="Reset to Factory Default" onclick="window.resetSlotImage('room')">↺</button>
+                </div>
               </div>
             </div>
           </div>
@@ -5018,18 +5060,25 @@ Order Notes: [Customer Instructions]</pre>
         document.querySelector('#toolbar-model-title').textContent = `${mKey}. ${(data.name || '').replace(/^([0-9]+\.\s*)/, '')}`;
         updateStudioToolbar(mKey);
 
-        // Photos
-        document.querySelector('#p-prev-hero').src = data.heroImg || 'assets/comfort-plush.jpg';
-        document.querySelector('#p-url-hero').value = data.heroImg || '';
+        // Photos with Fallback Error Handlers
+        function setPreviewWithFallback(prevId, urlId, targetSrc, defaultSrc) {
+          const prevEl = document.querySelector(prevId);
+          const urlEl = document.querySelector(urlId);
+          const cleanSrc = (targetSrc || '').trim() || defaultSrc;
+          if (urlEl) urlEl.value = targetSrc || '';
+          if (prevEl) {
+            prevEl.onerror = function () {
+              this.onerror = null;
+              this.src = defaultSrc;
+            };
+            prevEl.src = cleanSrc;
+          }
+        }
 
-        document.querySelector('#p-prev-layer').src = data.explodedImg || 'assets/hero-stage-2-exploded.jpg';
-        document.querySelector('#p-url-layer').value = data.explodedImg || '';
-
-        document.querySelector('#p-prev-spine').src = data.spineImg || 'assets/hero-stage-3-spine.jpg';
-        document.querySelector('#p-url-spine').value = data.spineImg || '';
-
-        document.querySelector('#p-prev-room').src = data.roomImg || 'assets/lifestyle-editorial.jpg';
-        document.querySelector('#p-url-room').value = data.roomImg || '';
+        setPreviewWithFallback('#p-prev-hero', '#p-url-hero', data.heroImg, '/assets/comfort-plush.jpg');
+        setPreviewWithFallback('#p-prev-layer', '#p-url-layer', data.explodedImg, '/assets/hero-stage-2-exploded.jpg');
+        setPreviewWithFallback('#p-prev-spine', '#p-url-spine', data.spineImg, '/assets/hero-stage-3-spine.jpg');
+        setPreviewWithFallback('#p-prev-room', '#p-url-room', data.roomImg, '/assets/lifestyle-editorial.jpg');
 
         // Text
         document.querySelector('#p-name').value = data.name || '';
@@ -5061,6 +5110,31 @@ Order Notes: [Customer Instructions]</pre>
 
         renderMatrixTable(data);
       }
+
+      // Slot Reset Helper
+      window.resetSlotImage = function (slot) {
+        const defaults = {
+          hero: '/assets/comfort-plush.jpg',
+          layer: '/assets/hero-stage-2-exploded.jpg',
+          spine: '/assets/hero-stage-3-spine.jpg',
+          room: '/assets/lifestyle-editorial.jpg'
+        };
+        const def = defaults[slot] || '/assets/hero-stage-2-exploded.jpg';
+        const inp = document.querySelector(`#p-url-${slot}`);
+        const prev = document.querySelector(`#p-prev-${slot}`);
+        if (inp) {
+          inp.value = def;
+          inp.dispatchEvent(new Event('input'));
+        }
+        if (prev) {
+          prev.onerror = function () {
+            this.onerror = null;
+            this.src = def;
+          };
+          prev.src = def;
+        }
+        showToast(`✓ Slot "${slot}" restored to factory default.`);
+      };
 
       // Render Combination Matrix Table
       function renderMatrixTable(data) {
@@ -5146,8 +5220,8 @@ Order Notes: [Customer Instructions]</pre>
         });
       }
 
-      // File upload reader
-      function hookFileUpload(fileId, prevId, urlId) {
+      // File upload reader with automatic persistent server storage upload
+      function hookFileUpload(fileId, prevId, urlId, slotName) {
         const fInput = document.getElementById(fileId);
         const prev = document.getElementById(prevId);
         const uInput = document.getElementById(urlId);
@@ -5157,18 +5231,58 @@ Order Notes: [Customer Instructions]</pre>
             const file = e.target.files[0];
             if (file) {
               try {
-                const compressedDataUrl = await compressImage(file, 1200, 0.82);
-                if (prev) prev.src = compressedDataUrl;
+                showToast(`⏳ Processing image "${file.name}"...`);
+                const compressedDataUrl = await compressImage(file, 1600, 0.85);
+                if (prev) {
+                  prev.onerror = function () {
+                    this.onerror = null;
+                    this.src = '/assets/comfort-plush.jpg';
+                  };
+                  prev.src = compressedDataUrl;
+                }
                 if (uInput) {
                   uInput.value = compressedDataUrl;
                   uInput.dispatchEvent(new Event('input'));
                 }
+
+                // Upload to persistent server storage
+                try {
+                  const uploadRes = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      image: compressedDataUrl,
+                      model: activeModel,
+                      slot: slotName || 'slot'
+                    })
+                  });
+                  const uploadData = await uploadRes.json();
+                  if (uploadRes.ok && uploadData && uploadData.success && uploadData.url) {
+                    if (uInput) {
+                      uInput.value = uploadData.url;
+                      uInput.dispatchEvent(new Event('input'));
+                    }
+                    if (prev) {
+                      prev.src = uploadData.url;
+                    }
+                    showToast(`✓ Image uploaded & saved to persistent storage. Ready to publish.`);
+                  } else {
+                    console.warn('Persistent upload notice:', uploadData);
+                    showToast(`ℹ Image loaded. Click "Save & Publish" to complete publishing.`);
+                  }
+                } catch (uploadNetErr) {
+                  console.warn('Direct upload offline, using local image data:', uploadNetErr);
+                }
+
               } catch (err) {
-                console.warn('Image compression fallback:', err);
+                console.warn('Image processing fallback:', err);
                 const reader = new FileReader();
                 reader.onload = function (evt) {
                   if (prev) prev.src = evt.target.result;
-                  if (uInput) uInput.value = evt.target.result;
+                  if (uInput) {
+                    uInput.value = evt.target.result;
+                    uInput.dispatchEvent(new Event('input'));
+                  }
                 };
                 reader.readAsDataURL(file);
               }
@@ -5178,20 +5292,23 @@ Order Notes: [Customer Instructions]</pre>
 
         if (uInput) {
           uInput.addEventListener('input', function () {
-            if (prev) prev.src = this.value;
+            if (prev) {
+              const val = this.value.trim();
+              if (val) prev.src = val;
+            }
           });
         }
       }
 
-      hookFileUpload('p-file-hero', 'p-prev-hero', 'p-url-hero');
-      hookFileUpload('p-file-layer', 'p-prev-layer', 'p-url-layer');
-      hookFileUpload('p-file-spine', 'p-prev-spine', 'p-url-spine');
-      hookFileUpload('p-file-room', 'p-prev-room', 'p-url-room');
+      hookFileUpload('p-file-hero', 'p-prev-hero', 'p-url-hero', 'hero');
+      hookFileUpload('p-file-layer', 'p-prev-layer', 'p-url-layer', 'layer');
+      hookFileUpload('p-file-spine', 'p-prev-spine', 'p-url-spine', 'spine');
+      hookFileUpload('p-file-room', 'p-prev-room', 'p-url-room', 'room');
 
-      hookFileUpload('add-prod-hero-file', null, 'add-prod-hero-url');
-      hookFileUpload('add-prod-layer-file', null, 'add-prod-layer-url');
-      hookFileUpload('add-prod-spine-file', null, 'add-prod-spine-url');
-      hookFileUpload('add-prod-room-file', null, 'add-prod-room-url');
+      hookFileUpload('add-prod-hero-file', null, 'add-prod-hero-url', 'hero');
+      hookFileUpload('add-prod-layer-file', null, 'add-prod-layer-url', 'layer');
+      hookFileUpload('add-prod-spine-file', null, 'add-prod-spine-url', 'spine');
+      hookFileUpload('add-prod-room-file', null, 'add-prod-room-url', 'room');
 
       // Save Changes
       const saveBtn = document.querySelector('#btn-save-changes');
@@ -5199,8 +5316,51 @@ Order Notes: [Customer Instructions]</pre>
 
       if (saveBtn) {
         saveBtn.addEventListener('click', async function () {
+          saveBtn.disabled = true;
+          const origText = saveBtn.textContent;
+          saveBtn.textContent = '⏳ Publishing...';
+
+          if (saveFeedback) {
+            saveFeedback.className = 'save-feedback-badge loading';
+            saveFeedback.textContent = '⏳ Saving & Synchronizing...';
+            saveFeedback.style.display = 'inline-flex';
+          }
+
           if (!catalog[activeModel]) catalog[activeModel] = {};
           const d = catalog[activeModel];
+
+          // 1. If any photo slot still has a local data URL, attempt to persist it first
+          const photoSlots = [
+            { id: '#p-url-hero', prev: '#p-prev-hero', slot: 'hero' },
+            { id: '#p-url-layer', prev: '#p-prev-layer', slot: 'layer' },
+            { id: '#p-url-spine', prev: '#p-prev-spine', slot: 'spine' },
+            { id: '#p-url-room', prev: '#p-prev-room', slot: 'room' }
+          ];
+
+          for (const ps of photoSlots) {
+            const inp = document.querySelector(ps.id);
+            if (inp && inp.value.startsWith('data:image/')) {
+              try {
+                const upRes = await fetch('/api/upload', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    image: inp.value,
+                    model: activeModel,
+                    slot: ps.slot
+                  })
+                });
+                const upData = await upRes.json();
+                if (upRes.ok && upData && upData.success && upData.url) {
+                  inp.value = upData.url;
+                  const prevEl = document.querySelector(ps.prev);
+                  if (prevEl) prevEl.src = upData.url;
+                }
+              } catch (upErr) {
+                console.warn('Auto upload error for ' + ps.slot, upErr);
+              }
+            }
+          }
 
           d.name = document.querySelector('#p-name').value.trim();
           d.tagline = document.querySelector('#p-tagline').value.trim();
@@ -5257,24 +5417,34 @@ Order Notes: [Customer Instructions]</pre>
             d.combinationStock[comb] = sel.value;
           });
 
-          // Save to LocalStorage across all active and legacy keys
+          // Save to LocalStorage across active and legacy keys
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog));
             localStorage.setItem(LEGACY_STORAGE_KEY, JSON.stringify(catalog));
             localStorage.setItem('lora_product_catalog_v3', JSON.stringify(catalog));
           } catch (err) {
-            console.error('LocalStorage Save Warning:', err);
+            console.error('LocalStorage Save Warning (storage quota):', err);
           }
 
           // Persist to server API for instant cross-tab / cross-device storefront sync
+          let serverSuccess = false;
+          let serverErrorMsg = '';
+
           try {
-            await fetch('/api/catalog', {
+            const apiRes = await fetch('/api/catalog', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ catalog })
             });
+            const apiData = await apiRes.json();
+            if (apiRes.ok && apiData && apiData.success) {
+              serverSuccess = true;
+            } else {
+              serverErrorMsg = apiData?.message || `HTTP ${apiRes.status}`;
+            }
           } catch (apiErr) {
             console.warn('API Catalog sync offline:', apiErr);
+            serverErrorMsg = apiErr.message || 'Network offline';
           }
 
           // Broadcast real-time update event and refresh nav states
@@ -5291,11 +5461,28 @@ Order Notes: [Customer Instructions]</pre>
           };
           localStorage.setItem(PIXEL_KEY, JSON.stringify(pixelConfig));
 
+          saveBtn.disabled = false;
+          saveBtn.textContent = origText;
+
           if (saveFeedback) {
-            saveFeedback.style.display = 'inline-flex';
-            setTimeout(() => {
-              saveFeedback.style.display = 'none';
-            }, 3000);
+            if (serverSuccess) {
+              saveFeedback.className = 'save-feedback-badge';
+              saveFeedback.textContent = '✓ Changes Saved & Storefront Synchronized';
+              saveFeedback.style.display = 'inline-flex';
+              showToast(`✓ Model "${catalog[activeModel].name}" saved and published live to server.`);
+              setTimeout(() => {
+                saveFeedback.style.display = 'none';
+              }, 4000);
+            } else {
+              saveFeedback.className = 'save-feedback-badge error';
+              saveFeedback.textContent = `⚠️ Server Sync Failed: ${serverErrorMsg}`;
+              saveFeedback.style.display = 'inline-flex';
+              showToast(`⚠️ Server save failed (${serverErrorMsg}). Changes were saved in local browser only.`);
+              setTimeout(() => {
+                saveFeedback.style.display = 'none';
+                saveFeedback.classList.remove('error');
+              }, 6000);
+            }
           }
         });
       }
