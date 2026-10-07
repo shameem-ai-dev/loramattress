@@ -117,7 +117,13 @@ function renderSection(sectionName, sectionSettings = {}) {
 
 function buildIndexPage() {
   const themeLayout = readTemplateFile(path.join(LAYOUT_DIR, 'theme.liquid'));
-  const indexJson = JSON.parse(readTemplateFile(path.join(TEMPLATES_DIR, 'index.json')));
+  let indexJson = { order: [], sections: {} };
+  try {
+    const raw = readTemplateFile(path.join(TEMPLATES_DIR, 'index.json'));
+    if (raw) indexJson = JSON.parse(raw);
+  } catch (e) {
+    console.warn('Could not parse index.json', e.message);
+  }
 
   let sectionsHtml = '';
   for (const sectionId of indexJson.order) {
