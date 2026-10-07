@@ -1,0 +1,11 @@
+# Local development and preview server
+preview/
+
+# Theme zip archive and dev assets
+lora-mattress-shopify-theme.zip
+scratch_mat.bmp
+*.bmp
+*.log
+
+# System files
+.DS_Store
