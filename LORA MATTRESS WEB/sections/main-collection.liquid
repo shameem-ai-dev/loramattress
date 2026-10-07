@@ -1,0 +1,97 @@
+<section class="collection-template" style="padding: 5rem 0 7rem;">
+  <div class="container">
+    <div class="section-header text-center" style="margin-bottom: 3.5rem;">
+      <span class="eyebrow">The Complete Collection</span>
+      <h1 class="font-serif" style="font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 0.75rem;">
+        {{ collection.title | default: 'Restful Sleep Mattresses' }}
+      </h1>
+      <p style="max-width: 620px; margin: 0 auto;">
+        {{ collection.description | default: 'Explore handcrafted luxury hybrid, natural latex, and orthopaedic mattresses designed for deep restorative recovery in Indian bedrooms.' }}
+      </p>
+    </div>
+
+    <!-- Active Filters & Sorting Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-espresso);">Filter By:</span>
+        <button type="button" class="swatch-pill selected" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">All Comforts</button>
+        <button type="button" class="swatch-pill" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">Plush (4/10)</button>
+        <button type="button" class="swatch-pill" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">Balanced (6.5/10)</button>
+        <button type="button" class="swatch-pill" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">Firm (8.5/10)</button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Showing 3 handcrafted models</span>
+      </div>
+    </div>
+
+    <!-- Collection Products Grid -->
+    <div class="products-grid">
+      {% for product in collection.products %}
+        {% render 'product-card', product: product %}
+      {% else %}
+        <!-- Model 1: The Balanced Flagship -->
+        {% render 'product-card' %}
+
+        <!-- Model 2: The Serene Cloud Plush -->
+        <div class="product-card" data-product-id="lora-002">
+          <div class="product-media-wrapper">
+            <div class="product-badges">
+              <span class="badge-tag badge-olive">Plush Cloud (4 / 10)</span>
+              <span class="badge-tag badge-sand">Factory Direct</span>
+            </div>
+            <a href="#product-overview" class="product-media-link">
+              <img src="{{ 'comfort-plush.jpg' | asset_url }}" alt="The LORA Serene Cloud Hybrid" class="product-img" loading="lazy" width="800" height="600">
+            </a>
+            <div class="product-quick-actions">
+              <button type="button" class="btn btn-primary btn-sm" style="flex: 1;" data-action="quick-view" data-title="The LORA Serene Cloud Hybrid" data-comfort="Plush Cloud (4 / 10)" data-price="₹42,999" data-desc="Deep cradling cloud feel with European tufting." data-img="{{ 'comfort-plush.jpg' | asset_url }}">Quick View</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-action="add-compare" data-id="lora-002" data-title="The LORA Serene Cloud" data-comfort="Plush 4/10" data-price="₹42,999" data-origin="Factory Direct" data-warranty="10 Years" data-layers="Pillowtop + Micro-coils" data-img="{{ 'comfort-plush.jpg' | asset_url }}">+ Compare</button>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <h3 class="product-title"><a href="#product-overview">The LORA Serene Cloud Hybrid</a></h3>
+            <p class="product-subtitle">European Tufted Pillowtop with Cashmere Quilt</p>
+            <div class="product-price-row">
+              <span class="price-current">₹42,999</span>
+              <span class="price-compare">₹49,999</span>
+              <span class="price-savings">Save ₹7,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model 3: The Ortho Restore Firm -->
+        <div class="product-card" data-product-id="lora-003">
+          <div class="product-media-wrapper">
+            <div class="product-badges">
+              <span class="badge-tag badge-olive">Orthopaedic Firm (8.5 / 10)</span>
+              <span class="badge-tag badge-sand">Factory Direct</span>
+            </div>
+            <a href="#product-overview" class="product-media-link">
+              <img src="{{ 'comfort-firm.jpg' | asset_url }}" alt="The LORA Ortho Restore Firm" class="product-img" loading="lazy" width="800" height="600">
+            </a>
+            <div class="product-quick-actions">
+              <button type="button" class="btn btn-primary btn-sm" style="flex: 1;" data-action="quick-view" data-title="The LORA Ortho Restore Firm" data-comfort="Orthopaedic Firm (8.5 / 10)" data-price="₹34,999" data-desc="Structured spinal support with high-density bonded eco-core." data-img="{{ 'comfort-firm.jpg' | asset_url }}">Quick View</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-action="add-compare" data-id="lora-003" data-title="The LORA Ortho Restore" data-comfort="Firm 8.5/10" data-price="₹34,999" data-origin="Factory Direct" data-warranty="10 Years" data-layers="Bonded Core + Latex" data-img="{{ 'comfort-firm.jpg' | asset_url }}">+ Compare</button>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <h3 class="product-title"><a href="#product-overview">The LORA Ortho Restore Firm</a></h3>
+            <p class="product-subtitle">Ergonomic Spinal Support & High-Density Core</p>
+            <div class="product-price-row">
+              <span class="price-current">₹34,999</span>
+              <span class="price-compare">₹39,999</span>
+              <span class="price-savings">Save ₹5,000</span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Collection",
+  "settings": []
+}
+{% endschema %}

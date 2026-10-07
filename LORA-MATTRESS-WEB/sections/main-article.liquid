@@ -1,0 +1,42 @@
+<article class="article-template" style="padding: 5rem 0 7rem;">
+  <div class="container container-narrow">
+    <div class="section-header text-center" style="margin-bottom: 3.5rem;">
+      <span class="eyebrow">{{ article.tags | first | default: 'Sleep Science' }}</span>
+      <h1 class="font-serif" style="font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 1rem;">
+        {{ article.title | default: 'The Architecture of Morning Light' }}
+      </h1>
+      <div style="font-size: 0.85rem; color: var(--text-muted);">
+        <span>By LORA Sleep Studio</span> • <span>5 Min Read</span>
+      </div>
+    </div>
+
+    <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: 4px; margin-bottom: 3rem; border: 1px solid var(--border-light);">
+      <img src="{{ 'hero-bedroom-morning.jpg' | asset_url }}" alt="Morning light in master suite" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+
+    <div class="page-content" style="font-size: 1.1rem; line-height: 1.85; color: var(--text-secondary);">
+      <p style="margin-bottom: 1.75rem;">
+        Light is our body’s primary zeitgeber—the external cue that synchronizes our internal 24-hour biological clock. When dawn light penetrates the bedroom through linen curtains, retinal ganglion cells signal the suprachiasmatic nucleus to halt melatonin production and gently elevate morning cortisol.
+      </p>
+      <p style="margin-bottom: 1.75rem;">
+        However, if the body spent the preceding hours tossing to relieve pressure points on a heat-trapping synthetic mattress, this natural hormonal wakefulness is compromised. True restorative waking requires both uninterrupted REM/deep sleep architecture and an unhurried morning transition.
+      </p>
+      <p style="margin-bottom: 2rem;">
+        At LORA, our mattresses are designed to eliminate the physical friction that disturbs sleep stages, ensuring that when the dawn light filters through your drapes, your body awakens restored and calm.
+      </p>
+
+      <div style="margin-top: 3.5rem; padding: 2.5rem; background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: 4px; text-align: center;">
+        <h3 class="font-serif" style="font-size: 1.85rem; margin-bottom: 0.5rem;">Experience Better Mornings</h3>
+        <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">Experience handcrafted precision sleep engineering with free white-glove setup.</p>
+        <a href="#featured-mattresses" class="btn btn-primary">Explore Mattresses</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Main Article",
+  "settings": []
+}
+{% endschema %}

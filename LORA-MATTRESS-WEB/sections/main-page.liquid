@@ -1,0 +1,34 @@
+<section class="page-template" style="padding: 5rem 0 7rem;">
+  <div class="container container-narrow">
+    <div class="section-header text-center" style="margin-bottom: 3.5rem;">
+      <h1 class="font-serif" style="font-size: clamp(2.25rem, 4vw, 3.25rem); margin-bottom: 0.75rem;">
+        {{ page.title | default: 'About LORA Mattress' }}
+      </h1>
+      <span class="eyebrow" style="color: var(--color-olive);">Restful Standards</span>
+    </div>
+
+    <div class="page-content" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: 4px; padding: 3rem; font-size: 1.05rem; line-height: 1.8; color: var(--text-secondary);">
+      {% if page.content != blank %}
+        {{ page.content }}
+      {% else %}
+        <p style="margin-bottom: 1.5rem;">
+          At LORA, we believe the quality of your waking life begins with the stillness of your night. Born from a desire to strip away artificial foams, confusing buzzwords, and rushed manufacturing, LORA crafts sleep sanctuaries tailored specifically for homes across India.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          By pairing breathable organic Belgian linen with open-cell botanical Dunlop latex and individually encased titanium pocket springs, we have built a mattress that naturally regulates body temperature in tropical climates while providing precise, zoned spinal ergonomics.
+        </p>
+        <h3 class="font-serif" style="color: var(--color-espresso); font-size: 1.75rem; margin: 2rem 0 1rem;">Direct Factory Craftsmanship</h3>
+        <p>
+          We deliver authentic luxury directly from our advanced robotics manufacturing facility. Every mattress is crafted with certified sustainable materials, rigorous quality controls, and backed by up to 15 years warranty with free white-glove setup.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Page",
+  "settings": []
+}
+{% endschema %}

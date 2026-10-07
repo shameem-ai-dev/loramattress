@@ -1,0 +1,107 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-night-morning",
+      "settings": {
+        "headline": "Better nights. Better mornings.",
+        "supporting_copy": "Leave the day behind. Wake up to what’s next.",
+        "primary_cta_label": "Explore Mattresses",
+        "primary_cta_link": "#featured-mattresses",
+        "secondary_cta_label": "Find Your Comfort",
+        "secondary_cta_link": "#find-your-comfort"
+      }
+    },
+    "brand_statement": {
+      "type": "brand-statement",
+      "settings": {
+        "eyebrow": "The Philosophy of Rest",
+        "heading": "Make room for better rest.",
+        "subtext": "Crafted without haste using uncompromised natural Dunlop latex, European pocket coils, and Belgian linen. Designed to quiet the mind and align the body from the moment you lie down."
+      }
+    },
+    "shop_by_comfort": {
+      "type": "shop-by-comfort",
+      "settings": {
+        "eyebrow": "Tailored Firmness",
+        "title": "Shop by Comfort",
+        "subtitle": "Whether you prefer cloud-like cradling or structured orthopaedic pushback, each feel is engineered with zoned ergonomic support."
+      }
+    },
+    "featured_mattresses": {
+      "type": "featured-mattresses",
+      "settings": {
+        "eyebrow": "The Sleep Collection",
+        "title": "Featured Mattresses",
+        "subtitle": "Handcrafted with organic materials, precision pocket coils, and tailored for restorative rest in Indian homes."
+      }
+    },
+    "find_your_comfort": {
+      "type": "find-your-comfort",
+      "settings": {
+        "eyebrow": "Personalized Sleep Match",
+        "title": "Find Your Comfort",
+        "subtitle": "Answer 5 thoughtful questions to receive your tailored mattress recommendation based on your posture, body, and sleep habits."
+      }
+    },
+    "inside_comfort": {
+      "type": "inside-comfort",
+      "settings": {
+        "title": "Inside the Comfort",
+        "subtitle": "Every millimeter is intentional. We select pure, certified materials that breathe naturally in Indian climates and provide enduring spinal alignment."
+      }
+    },
+    "lifestyle_editorial": {
+      "type": "lifestyle-editorial",
+      "settings": {
+        "heading": "Some nights need nothing more.",
+        "subtext": "Designed to disappear beneath you, leaving only pure, undisturbed stillness. When your body is completely supported, waking up feels effortless.",
+        "cta_label": "Discover the Collection",
+        "cta_link": "#featured-mattresses"
+      }
+    },
+    "reasons_to_choose": {
+      "type": "reasons-to-choose",
+      "settings": {
+        "eyebrow": "The LORA Guarantee",
+        "title": "Reasons to Choose LORA",
+        "subtitle": "We remove every barrier to experiencing truly restorative sleep with honest warranties, direct factory pricing, and white-glove service."
+      }
+    },
+    "customer_reviews": {
+      "type": "reviews-section",
+      "settings": {
+        "title": "Customer Experiences",
+        "subtitle": "Verified feedback from homeowners across India sleeping better every single night."
+      }
+    },
+    "showrooms": {
+      "type": "showrooms-assistance",
+      "settings": {
+        "eyebrow": "In-Person Sanctuary",
+        "title": "Experience LORA in Person",
+        "subtitle": "Visit our quiet sleep studios for an unhurried, private 30-minute rest consultation with our certified sleep guides."
+      }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "settings": {
+        "eyebrow": "Clarity & Confidence",
+        "title": "Frequently Asked Questions",
+        "subtitle": "Everything you need to know about our materials, warranty, and white-glove setup."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "brand_statement",
+    "shop_by_comfort",
+    "featured_mattresses",
+    "find_your_comfort",
+    "inside_comfort",
+    "lifestyle_editorial",
+    "reasons_to_choose",
+    "customer_reviews",
+    "showrooms",
+    "faq"
+  ]
+}

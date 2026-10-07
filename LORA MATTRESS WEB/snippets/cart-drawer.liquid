@@ -1,0 +1,44 @@
+<div class="cart-drawer-overlay" aria-hidden="true"></div>
+
+<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
+  <div class="cart-drawer-header">
+    <h2 id="CartDrawerTitle" class="cart-drawer-title font-serif">Your Sleep Sanctuary Order</h2>
+    <button type="button" class="header-action-btn" data-action="close-cart" aria-label="Close cart">
+      {% render 'icon-close' %}
+    </button>
+  </div>
+
+  <div class="cart-free-tier">
+    <div class="free-tier-text">Add <strong>₹5,000</strong> to unlock Free White-Glove In-Home Delivery</div>
+    <div class="free-tier-bar">
+      <div class="free-tier-fill" style="width: 85%;"></div>
+    </div>
+  </div>
+
+  <div class="cart-drawer-items">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <div class="cart-drawer-footer">
+    <div class="cart-subtotal-row">
+      <span class="subtotal-label">Subtotal</span>
+      <span class="subtotal-val">₹38,999</span>
+    </div>
+    <p class="cart-tax-notice">Taxes and customs included. White-glove in-room setup calculated at checkout.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <a href="/checkout" class="btn btn-primary" style="width: 100%;">
+        Proceed to Secure Checkout →
+      </a>
+      <button type="button" class="btn btn-secondary btn-sm" data-action="close-cart">
+        Continue Exploring
+      </button>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.25rem; font-size: 0.75rem; color: var(--text-muted);">
+      <span>🔒 256-Bit Encrypted</span>
+      <span>🏭 Factory Direct Luxury</span>
+      <span>✨ 10-Year Warranty</span>
+    </div>
+  </div>
+</aside>

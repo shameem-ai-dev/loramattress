@@ -1,0 +1,105 @@
+{
+  "general": {
+    "search": {
+      "search": "Search mattresses, comfort levels, materials...",
+      "placeholder": "Search LORA...",
+      "no_results": "No results found for \"{{ terms }}\". Explore our collection below.",
+      "results_with_count": {
+        "one": "{{ count }} result for \"{{ terms }}\"",
+        "other": "{{ count }} results for \"{{ terms }}\""
+      }
+    },
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "star_reviews_info": "{{ rating }} out of 5 stars"
+    },
+    "currency": {
+      "inr_symbol": "₹"
+    }
+  },
+  "sections": {
+    "header": {
+      "menu": "Menu",
+      "cart": "Cart",
+      "account": "Account",
+      "search": "Search",
+      "announcement_dismiss": "Dismiss announcement"
+    },
+    "hero": {
+      "headline": "Better nights. Better mornings.",
+      "supporting_copy": "Leave the day behind. Wake up to what’s next.",
+      "primary_cta": "Explore Mattresses",
+      "secondary_cta": "Find Your Comfort",
+      "scroll_hint": "Scroll to transition from night to morning",
+      "skip_hero": "Skip directly to products"
+    },
+    "brand_statement": {
+      "heading": "Make room for better rest.",
+      "subtext": "Crafted with unhurried care, pure natural latex, and Belgian linen to restore your body and calm your senses."
+    },
+    "shop_by_comfort": {
+      "title": "Shop by Comfort",
+      "subtitle": "Every sleep profile is unique. Discover your ideal firmness engineered for pressure relief and spinal alignment."
+    },
+    "featured_mattresses": {
+      "title": "The LORA Collection",
+      "subtitle": "Masterfully engineered mattresses tailored for restorative sleep in Indian homes."
+    },
+    "mattress_finder": {
+      "title": "Find Your Comfort",
+      "subtitle": "Answer 5 intuitive questions to receive your tailored mattress recommendation."
+    },
+    "inside_comfort": {
+      "title": "Inside the Comfort",
+      "subtitle": "Every layer chosen with intention. Touch to explore our honest, uncompromised material architecture."
+    },
+    "lifestyle": {
+      "heading": "Some nights need nothing more.",
+      "subtext": "Designed to disappear beneath you, leaving only pure, undisturbed sleep."
+    },
+    "reasons_to_choose": {
+      "title": "Why Choose LORA",
+      "subtitle": "Uncompromising standards from our workshop directly to your bedroom."
+    },
+    "showrooms": {
+      "title": "Experience LORA in Person",
+      "subtitle": "Visit our peaceful sleep sanctuaries in Mumbai, Delhi, and Bengaluru for a private 30-minute rest consultation."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about our warranty, delivery, and craftsmanship."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "size": "Select Size",
+      "thickness": "Mattress Height",
+      "quantity": "Quantity",
+      "compare": "Compare",
+      "quick_view": "Quick View",
+      "added_to_cart": "Added to your sleep order",
+      "free_shipping": "Free White-Glove In-Home Setup",
+      "quality_guarantee": "Factory Direct Quality Guarantee",
+      "warranty": "10-Year Warranty Coverage",
+      "size_guide": "Size Guide",
+      "firmness_scale": "Firmness Scale"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Sleep Sanctuary Order",
+      "empty": "Your cart is currently empty.",
+      "continue_shopping": "Explore Mattresses",
+      "subtotal": "Subtotal",
+      "taxes_included_shipping_at_checkout": "Taxes included. Free delivery calculated at checkout.",
+      "checkout": "Proceed to Checkout",
+      "note": "Special delivery instructions (e.g. floor number, lift availability)",
+      "free_white_glove_qualified": "You've qualified for Free White-Glove In-Home Delivery & Unpacking!",
+      "free_white_glove_remaining": "Add {{ amount }} more to unlock Free White-Glove In-Home Delivery"
+    }
+  }
+}

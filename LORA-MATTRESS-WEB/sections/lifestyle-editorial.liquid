@@ -1,0 +1,66 @@
+<section class="lifestyle-section" id="lifestyle-editorial">
+  <img src="{{ section.settings.image | default: 'lifestyle-editorial.jpg' | asset_url }}" 
+       alt="LORA serene master bedroom sanctuary" 
+       class="lifestyle-bg-img" 
+       loading="lazy" 
+       width="1920" 
+       height="1080">
+
+  <div class="container">
+    <div class="lifestyle-content">
+      <span class="eyebrow" style="color: var(--color-sand);">The Art of Unwinding</span>
+      <h2 class="font-serif">{{ section.settings.heading | default: 'Some nights need nothing more.' }}</h2>
+      <p>{{ section.settings.subtext | default: 'Designed to disappear beneath you, leaving only pure, undisturbed stillness. When your body is completely supported, waking up feels effortless.' }}</p>
+
+      <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
+        <a href="{{ section.settings.cta_link | default: '#featured-mattresses' }}" class="btn btn-brass">
+          {{ section.settings.cta_label | default: 'Discover the Collection' }} →
+        </a>
+        <a href="#showrooms" class="btn btn-outline-white">
+          Visit a Sleep Studio
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lifestyle Editorial",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Some nights need nothing more."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Designed to disappear beneath you, leaving only pure, undisturbed stillness. When your body is completely supported, waking up feels effortless."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Label",
+      "default": "Discover the Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Destination"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lifestyle Editorial"
+    }
+  ]
+}
+{% endschema %}

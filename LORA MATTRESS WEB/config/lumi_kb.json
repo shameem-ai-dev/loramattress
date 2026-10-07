@@ -1,0 +1,284 @@
+{
+  "version": "2.0",
+  "expandedDate": "2026-10-06",
+  "source": "LORA_Mattress_Complete_Carousel_Content.pdf (9 pages, owner-approved baseline)",
+  "brand": {
+    "name": "LORA",
+    "customerClaim": "5,00,000+ satisfied customers",
+    "supplyRoute": "Factory-direct supply",
+    "warrantyClaim": "Model-dependent warranty up to 15 years",
+    "customerExperience": "Google-rated customer experiences",
+    "emiPartner": "Bajaj Finserv easy EMI options",
+    "channels": "Online shopping & Lora showrooms",
+    "supportPhone": "+91 95676 84770",
+    "supportEmail": "sleep@loramattress.com"
+  },
+  "knowledgeRules": {
+    "sourcePriority": "Supplied PDF is baseline. Live store system for variant prices, stock, offers, pincode delivery eligibility. Marketing content is not a price list. Do not create numerical firmness ratings from decorative dots.",
+    "boundaries": "Separate facts explicitly in source, explanations/tentative recommendations, and unknown details requiring confirmation. Never promise medical cures or spinal treatment.",
+    "layerPlaceholder": "All 8 pages contain exact-layer placeholders. Exact internal layer sequence, density, and thickness need team confirmation.",
+    "measuringSequence": "Inside length of bed × inside width of bed × required mattress height. 1 foot = 12 inches; 1 inch = 2.54 cm."
+  },
+  "legacyAliases": {
+    "eurotop 7": "01",
+    "eurotop 7 inch": "01",
+    "eurotop 9": "02",
+    "eurotop 9 inch": "02",
+    "excel pillow top": "03",
+    "ortho hybrid": "04",
+    "ortho ema latex": "05",
+    "classic pillow top": "06",
+    "platinum pillow top": "07",
+    "hybrid elite fusion": "08"
+  },
+  "products": [
+    {
+      "id": "01",
+      "slug": "cloud-7",
+      "name": "LORA CLOUD 7™",
+      "legacyName": "Eurotop 7 Inch",
+      "pdfPage": 1,
+      "type": "Eurotop comfort",
+      "statedHeight": "7 inches",
+      "comfort": "Medium-Soft",
+      "statedWarranty": "3 years",
+      "benefits": [
+        "Plush Eurotop feel",
+        "Balanced body support",
+        "Comfortable pressure distribution",
+        "Cushioned sleeping surface",
+        "Everyday comfort"
+      ],
+      "audience": "Sleepers who prefer a softer, cushioned feel",
+      "customerExplanation": "A starting point for someone who wants a softer surface with balanced support. Its stated 7-inch profile is useful when checking the overall height of the bed.",
+      "namedMaterials": ["Eurotop comfort construction"],
+      "unknowns": ["Exact materials/layers", "Spring presence", "Density", "Weight limit", "Current variant prices"],
+      "restrictions": "Do not infer that '7' means seven zones. Do not call it 8-inch, 10-year warranty, or certified spinal treatment."
+    },
+    {
+      "id": "02",
+      "slug": "cloud-ortho",
+      "name": "LORA CLOUD ORTHO™",
+      "legacyName": "Eurotop 9 Inch",
+      "pdfPage": 2,
+      "type": "Eurotop comfort",
+      "statedHeight": "9 inches",
+      "comfort": "Medium",
+      "statedWarranty": "5 years",
+      "benefits": [
+        "Enhanced cushioning",
+        "Plush top comfort",
+        "Balanced body support",
+        "Support-focused construction",
+        "Generous 9-inch profile"
+      ],
+      "audience": "Sleepers wanting cushioning with balanced support (preferring Medium feel over Cloud 7's Medium-Soft)",
+      "customerExplanation": "Consider this when you want cushioning but prefer the medium comfort category rather than Cloud 7's medium-soft category.",
+      "namedMaterials": ["Eurotop cushioning"],
+      "unknowns": ["Exact layers", "Materials", "Spring system", "Alternative thicknesses", "Weight capacity"],
+      "restrictions": "Do not infer pain treatment or clinical approval from 'Ortho'. Do not assume it is an extra-hard mattress."
+    },
+    {
+      "id": "03",
+      "slug": "plush",
+      "name": "LORA PLUSH™",
+      "legacyName": "Excel Pillow Top",
+      "pdfPage": 3,
+      "type": "Pillow top",
+      "statedHeight": "Unconfirmed in PDF",
+      "comfort": "Plush / Soft",
+      "statedWarranty": "5 years",
+      "benefits": [
+        "Gentle pressure relief",
+        "Soft cushioned feel",
+        "Pillow-top comfort",
+        "Premium surface finish",
+        "Relaxed sleeping feel"
+      ],
+      "audience": "People who love a softer, cosier mattress feel",
+      "customerExplanation": "A useful first option when softness is the main preference. Compare with Cloud 7 if the shopper wants plush/soft versus medium-soft.",
+      "namedMaterials": ["Pillow-top comfort construction"],
+      "unknowns": ["Height", "Layer materials", "Latex presence", "Quantified pressure-relief data"],
+      "restrictions": "Do not invent organic latex, cashmere fabric, or unconfirmed materials."
+    },
+    {
+      "id": "04",
+      "slug": "ortho-hybrid",
+      "name": "LORA ORTHO HYBRID™",
+      "legacyName": "Ortho Hybrid",
+      "pdfPage": 4,
+      "type": "Hybrid, ortho-support positioning",
+      "statedHeight": "Unconfirmed in PDF",
+      "comfort": "Medium-Firm",
+      "statedWarranty": "10 years",
+      "benefits": [
+        "Responsive comfort",
+        "Balanced body support",
+        "Enhanced stability",
+        "Support-focused design"
+      ],
+      "audience": "Sleepers looking for stronger support with responsive comfort",
+      "customerExplanation": "Shortlist for a customer who prefers a medium-firm feel rather than a plush surface. The exact hybrid components are not listed in this reference.",
+      "namedMaterials": ["Hybrid ortho-support system"],
+      "unknowns": ["Specific hybrid materials", "Spring presence or spring count", "Layer order", "Height"],
+      "restrictions": "Do not infer that 'hybrid' necessarily confirms pocket springs in this model."
+    },
+    {
+      "id": "05",
+      "slug": "ortho-latex",
+      "name": "LORA ORTHO LATEX™",
+      "legacyName": "Ortho EMA Latex",
+      "pdfPage": 5,
+      "type": "Latex comfort with ortho-support positioning",
+      "statedHeight": "Unconfirmed in PDF",
+      "comfort": "Medium-Firm",
+      "statedWarranty": "12 years",
+      "benefits": [
+        "Responsive cushioning",
+        "Breathable comfort",
+        "Balanced sleep feel",
+        "Support-focused construction"
+      ],
+      "audience": "Sleepers who prefer responsive latex comfort with stronger support",
+      "customerExplanation": "Shortlist when the customer specifically prefers latex comfort and a medium-firm feel.",
+      "namedMaterials": ["Latex comfort layer"],
+      "unknowns": ["Latex percentage", "Natural vs blended composition", "Dunlop/Talalay process", "Organic certification", "Full layers", "Allergy suitability"],
+      "restrictions": "Do not translate marketing phrase 'natural comfort' into '100% organic natural latex'."
+    },
+    {
+      "id": "06",
+      "slug": "comfort-core",
+      "name": "LORA COMFORT CORE™",
+      "legacyName": "Classic Pillow Top",
+      "pdfPage": 6,
+      "type": "Pillow top, balanced comfort",
+      "statedHeight": "Unconfirmed in PDF",
+      "comfort": "Medium",
+      "statedWarranty": "10 years",
+      "benefits": [
+        "Cushioned top feel",
+        "Balanced support",
+        "Comfortable surface",
+        "Everyday durability"
+      ],
+      "audience": "Sleepers looking for dependable everyday comfort",
+      "customerExplanation": "A medium-feel pillow-top option for someone seeking balanced everyday comfort. 'Everyday' does not establish it as lowest-priced.",
+      "namedMaterials": ["Pillow-top comfort construction"],
+      "unknowns": ["Thickness", "Layers", "Foam chemistry", "Reversibility"],
+      "restrictions": "Do not describe as reversible, dual-sided, or medium-soft on one side without approval."
+    },
+    {
+      "id": "07",
+      "slug": "pocket-luxe",
+      "name": "LORA POCKET LUXE™",
+      "legacyName": "Platinum Pillow Top",
+      "pdfPage": 7,
+      "type": "Pocket support technology with premium pillow-top comfort",
+      "statedHeight": "Unconfirmed in PDF",
+      "comfort": "Medium",
+      "statedWarranty": "10 years",
+      "benefits": [
+        "Independent support",
+        "Reduced motion transfer",
+        "Reduced partner disturbance",
+        "Premium cushioning",
+        "Balanced body support"
+      ],
+      "audience": "Couples and people seeking premium independent support with reduced motion transfer",
+      "customerExplanation": "The clearest source-backed starting point when partner movement is the main concern.",
+      "namedMaterials": ["Pocket support technology", "Pillow-top comfort"],
+      "unknowns": ["Exact spring count", "Construction details", "Height"],
+      "restrictions": "Never promise zero disturbance or claim a 1,200-spring count from this source."
+    },
+    {
+      "id": "08",
+      "slug": "hybrid-fusion",
+      "name": "LORA HYBRID FUSION™",
+      "legacyName": "Hybrid Elite Fusion",
+      "pdfPage": 8,
+      "type": "Hybrid, premium multi-layer support",
+      "statedHeight": "Unconfirmed in PDF",
+      "comfort": "Medium-Firm",
+      "statedWarranty": "15 years",
+      "benefits": [
+        "Latex comfort",
+        "Memory foam cushioning",
+        "Orthopedic-support positioning",
+        "Multi-layer comfort system",
+        "Balanced support"
+      ],
+      "audience": "Sleepers wanting advanced multi-layer comfort and stronger support",
+      "customerExplanation": "Shortlist when the shopper wants a medium-firm model combining the three listed foam materials. It has the longest stated warranty (15 years).",
+      "namedMaterials": [
+        "Natural Latex Foam",
+        "Memory Foam",
+        "Orthopedic Foam"
+      ],
+      "unknowns": ["Material proportions", "Densities", "Layer sequence", "Spring presence", "Exact height"],
+      "restrictions": "Do not infer seven-zone pocket springs, cooling PCM fabric, or an all-latex construction."
+    }
+  ],
+  "routingGuidelines": {
+    "softFeel": ["03 (Lora Plush)", "01 (Lora Cloud 7)"],
+    "mediumFeel": ["02 (Lora Cloud Ortho)", "06 (Lora Comfort Core)", "07 (Lora Pocket Luxe - if partner movement matters)"],
+    "mediumFirmFeel": ["04 (Lora Ortho Hybrid)", "05 (Lora Ortho Latex)", "08 (Lora Hybrid Fusion)"],
+    "latexPreference": ["05 (Lora Ortho Latex)", "08 (Lora Hybrid Fusion)"],
+    "partnerDisturbance": ["07 (Lora Pocket Luxe)"],
+    "longestWarranty": ["08 (Lora Hybrid Fusion - 15 years)"],
+    "confirmedHeights": {
+      "01": "7 inches",
+      "02": "9 inches",
+      "others": "Exact profile unconfirmed in baseline PDF"
+    }
+  },
+  "warranties": {
+    "01": "3 years",
+    "02": "5 years",
+    "03": "5 years",
+    "04": "10 years",
+    "05": "12 years",
+    "06": "10 years",
+    "07": "10 years",
+    "08": "15 years"
+  },
+  "comparisonRules": [
+    {
+      "pair": ["01", "02"],
+      "summary": "Both have Eurotop positioning. Cloud 7 is Medium-Soft, 7-inch profile, 3-year warranty. Cloud Ortho is Medium, 9-inch profile, 5-year warranty."
+    },
+    {
+      "pair": ["01", "03"],
+      "summary": "Cloud 7 is Medium-Soft Eurotop (7-inch, 3-year warranty). Lora Plush is Plush/Soft Pillow-Top (5-year warranty, height unconfirmed)."
+    },
+    {
+      "pair": ["02", "06"],
+      "summary": "Both are Medium feel. Cloud Ortho is 9-inch Eurotop with 5-year warranty. Comfort Core is Pillow-Top with 10-year warranty (height unconfirmed)."
+    },
+    {
+      "pair": ["03", "06"],
+      "summary": "Both are Pillow-Top models. Plush is Plush/Soft with 5-year warranty; Comfort Core is Medium feel with 10-year warranty."
+    },
+    {
+      "pair": ["04", "05"],
+      "summary": "Both are Medium-Firm. Ortho Hybrid has responsive hybrid positioning and a 10-year warranty; Ortho Latex explicitly features latex comfort and a 12-year warranty."
+    },
+    {
+      "pair": ["05", "08"],
+      "summary": "Both are Medium-Firm. Ortho Latex highlights latex comfort with 12-year warranty. Hybrid Fusion explicitly combines Natural Latex Foam, Memory Foam, and Orthopedic Foam with a 15-year warranty."
+    },
+    {
+      "pair": ["06", "07"],
+      "summary": "Both are Medium feel and carry 10-year warranties. Pocket Luxe specifically highlights independent pocket support and reduced partner disturbance; Comfort Core highlights balanced everyday pillow-top comfort."
+    },
+    {
+      "pair": ["04", "08"],
+      "summary": "Both are Medium-Firm. Ortho Hybrid carries a 10-year warranty and unspecified hybrid composition. Hybrid Fusion carries a 15-year warranty and 3 named foam materials."
+    }
+  ],
+  "standardSizes": {
+    "Single": "72\" × 36\", 75\" × 36\", 78\" × 36\"",
+    "Double": "72\" × 48\", 75\" × 48\", 78\" × 48\"",
+    "Queen": "72\" × 60\", 75\" × 60\", 78\" × 60\", 78\" × 66\"",
+    "King": "72\" × 72\", 75\" × 72\", 78\" × 72\", 84\" × 72\""
+  }
+}

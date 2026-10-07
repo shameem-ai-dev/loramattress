@@ -1,0 +1,144 @@
+<section class="comfort-section" id="comfort-levels">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow">{{ section.settings.eyebrow | default: 'Tailored Firmness' }}</span>
+      <h2 class="font-serif">{{ section.settings.title | default: 'Shop by Comfort' }}</h2>
+      <p>{{ section.settings.subtitle | default: 'Whether you prefer cloud-like cradling or structured orthopaedic pushback, each feel is engineered with zoned ergonomic support.' }}</p>
+    </div>
+
+    <div class="comfort-grid">
+      <!-- Plush -->
+      <div class="comfort-card">
+        <div class="comfort-card-media">
+          <img src="{{ 'comfort-plush.jpg' | asset_url }}" 
+               alt="Plush mattress comfort" 
+               class="comfort-card-img" 
+               loading="lazy" 
+               width="600" 
+               height="450">
+        </div>
+        <div class="comfort-card-body">
+          <span class="eyebrow" style="color: var(--color-olive);">Gentle Cradling</span>
+          <h3 class="font-serif">Plush Comfort</h3>
+          <p style="font-size: 0.9rem; margin-top: 0.4rem;">
+            Deep European tufted pillowtop for weightless shoulder and hip pressure relief. Ideal for side sleepers.
+          </p>
+
+          <div class="comfort-scale-bar">
+            <div class="scale-meta">
+              <span>Soft</span>
+              <span>4 / 10</span>
+              <span>Firm</span>
+            </div>
+            <div class="scale-track">
+              <div class="scale-fill" style="width: 40%;"></div>
+            </div>
+          </div>
+
+          <a href="#featured-mattresses" class="btn btn-secondary btn-sm" style="margin-top: auto;">
+            Explore Plush →
+          </a>
+        </div>
+      </div>
+
+      <!-- Balanced -->
+      <div class="comfort-card">
+        <div class="comfort-card-media">
+          <img src="{{ 'comfort-balanced.jpg' | asset_url }}" 
+               alt="Balanced medium-firm mattress comfort" 
+               class="comfort-card-img" 
+               loading="lazy" 
+               width="600" 
+               height="450">
+        </div>
+        <div class="comfort-card-body">
+          <span class="eyebrow" style="color: var(--color-olive);">Most Versatile</span>
+          <h3 class="font-serif">Balanced Medium-Firm</h3>
+          <p style="font-size: 0.9rem; margin-top: 0.4rem;">
+            The perfect harmony of pressure-relieving natural latex and buoyant spinal support. Favored by couples and combination sleepers.
+          </p>
+
+          <div class="comfort-scale-bar">
+            <div class="scale-meta">
+              <span>Soft</span>
+              <span>6.5 / 10</span>
+              <span>Firm</span>
+            </div>
+            <div class="scale-track">
+              <div class="scale-fill" style="width: 65%;"></div>
+            </div>
+          </div>
+
+          <a href="#featured-mattresses" class="btn btn-primary btn-sm" style="margin-top: auto;">
+            Explore Balanced →
+          </a>
+        </div>
+      </div>
+
+      <!-- Firm -->
+      <div class="comfort-card">
+        <div class="comfort-card-media">
+          <img src="{{ 'comfort-firm.jpg' | asset_url }}" 
+               alt="Orthopaedic firm mattress comfort" 
+               class="comfort-card-img" 
+               loading="lazy" 
+               width="600" 
+               height="450">
+        </div>
+        <div class="comfort-card-body">
+          <span class="eyebrow" style="color: var(--color-olive);">Ergonomic Support</span>
+          <h3 class="font-serif">Orthopaedic Firm</h3>
+          <p style="font-size: 0.9rem; margin-top: 0.4rem;">
+            Enhanced lumbar reinforcement and zero-sag bonded foundation. Promotes healthy posture for stomach and back sleepers.
+          </p>
+
+          <div class="comfort-scale-bar">
+            <div class="scale-meta">
+              <span>Soft</span>
+              <span>8.5 / 10</span>
+              <span>Firm</span>
+            </div>
+            <div class="scale-track">
+              <div class="scale-fill" style="width: 85%;"></div>
+            </div>
+          </div>
+
+          <a href="#featured-mattresses" class="btn btn-secondary btn-sm" style="margin-top: auto;">
+            Explore Firm →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by Comfort",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Tailored Firmness"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop by Comfort"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Whether you prefer cloud-like cradling or structured orthopaedic pushback, each feel is engineered with zoned ergonomic support."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by Comfort"
+    }
+  ]
+}
+{% endschema %}

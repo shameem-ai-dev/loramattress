@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {}
+    },
+    "reasons_to_choose": {
+      "type": "reasons-to-choose",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "reasons_to_choose"
+  ]
+}

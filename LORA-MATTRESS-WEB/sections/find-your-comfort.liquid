@@ -1,0 +1,77 @@
+<section class="finder-section" id="find-your-comfort">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="eyebrow">{{ section.settings.eyebrow | default: 'Personalized Sleep Match' }}</span>
+      <h2 class="font-serif">{{ section.settings.title | default: 'Find Your Comfort' }}</h2>
+      <p>{{ section.settings.subtitle | default: 'Answer 5 thoughtful questions to receive your tailored mattress recommendation based on your posture, body, and sleep habits.' }}</p>
+    </div>
+
+    <div class="finder-card">
+      <div class="quiz-active-form">
+        <div class="finder-progress-bar">
+          <div class="finder-steps-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);">Step By Step Concierge</span>
+        </div>
+
+        <h3 class="quiz-question font-serif" style="font-size: 1.8rem; margin-bottom: 0.5rem;">
+          What is your primary sleeping position?
+        </h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Select the position you find most natural when falling asleep.</p>
+
+        <div class="finder-options-grid">
+          <!-- Populated by mattress-finder.js -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light);">
+          <button type="button" class="btn btn-secondary btn-sm quiz-prev-btn" style="visibility: hidden;">
+            ← Previous
+          </button>
+          <button type="button" class="btn btn-primary quiz-next-btn" disabled>
+            Next Step →
+          </button>
+        </div>
+      </div>
+
+      <div class="quiz-result-box" style="display: none;">
+        <!-- Populated on quiz completion -->
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Find Your Comfort Quiz",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Personalized Sleep Match"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Find Your Comfort"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Answer 5 thoughtful questions to receive your tailored mattress recommendation based on your posture, body, and sleep habits."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Find Your Comfort Quiz"
+    }
+  ]
+}
+{% endschema %}
