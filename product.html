@@ -12,13 +12,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/base.css?v=20260917v5">
+  <link rel="stylesheet" href="assets/lumi.css?v=20261006v2">
   <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <style>
     /* Dedicated Product Detail Page Styles */
     body {
-      background-color: #060913;
+      background-color: #0A0F1D;
       color: #FFFFFF;
     }
 
@@ -26,40 +27,271 @@
       position: sticky;
       top: 0;
       z-index: 999;
-      background: rgba(10, 15, 29, 0.88);
+      background: rgba(10, 15, 29, 0.95);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0, 180, 216, 0.2);
-      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.65rem 0;
     }
 
     .pdp-nav-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .pdp-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .pdp-back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #E2E8F0;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: all var(--duration-fast) ease;
+      white-space: nowrap;
+      height: 36px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .pdp-back-btn:hover {
+      background: rgba(0, 180, 216, 0.15);
+      border-color: #38BDF8;
+      color: #FFFFFF;
+    }
+
+    .pdp-header-nav-links {
+      display: flex;
+      align-items: center;
       gap: 1.5rem;
     }
 
-    .pdp-back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: #CBD5E1;
+    .pdp-header-nav-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
       transition: color var(--duration-fast) ease;
     }
 
-    .pdp-back-link:hover {
+    .pdp-header-nav-links a:hover {
+      color: #FFFFFF;
+    }
+
+    .pdp-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .header-auth-wrapper {
+      position: relative;
+    }
+
+    .header-auth-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #FFFFFF;
+      padding: 0 0.85rem;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--duration-fast) ease;
+      font-family: inherit;
+    }
+
+    .header-auth-btn:hover {
+      background: rgba(0, 180, 216, 0.15);
+      border-color: #38BDF8;
+    }
+
+    .header-auth-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284C7, #0369A1);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Account Dropdown */
+    .header-account-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 220px;
+      background: rgba(10, 15, 29, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      border-radius: 12px;
+      padding: 0.75rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      display: none;
+      flex-direction: column;
+      gap: 0.35rem;
+      z-index: 1000;
+    }
+
+    .header-account-dropdown.show {
+      display: flex;
+    }
+
+    .dropdown-user-header {
+      padding: 0.35rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dropdown-user-header strong {
+      font-size: 0.88rem;
+      color: #FFFFFF;
+    }
+
+    .dropdown-user-header span {
+      font-size: 0.74rem;
+      color: #94A3B8;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 0.25rem 0;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.65rem;
+      border-radius: 8px;
+      color: #CBD5E1;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+      font-family: inherit;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.06);
       color: #38BDF8;
     }
-    .pdp-back-text-mobile {
-      display: none;
+
+    .dropdown-logout-btn {
+      color: #F87171 !important;
     }
-    @media (max-width: 600px) {
-      .pdp-back-text-full { display: none !important; }
-      .pdp-back-text-mobile { display: inline !important; }
-      .brand-logo-img { height: 28px !important; }
+
+    .dropdown-logout-btn:hover {
+      background: rgba(239, 68, 68, 0.12) !important;
+      color: #EF4444 !important;
+    }
+
+    .header-action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all var(--duration-fast) ease;
+      flex-shrink: 0;
+    }
+
+    .header-action-btn:hover {
+      background: rgba(0, 180, 216, 0.15);
+      border-color: #38BDF8;
+    }
+
+    .mobile-menu-toggle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--duration-fast) ease;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-toggle:hover {
+      background: rgba(0, 180, 216, 0.15);
+      border-color: #38BDF8;
+    }
+
+    .mobile-nav-drawer {
+      display: none;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: rgba(8, 12, 24, 0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(0, 180, 216, 0.25);
+      padding: 1.25rem 1.5rem;
+      flex-direction: column;
+      gap: 0.75rem;
+      z-index: 9999;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    }
+
+    .mobile-nav-drawer.open {
+      display: flex;
+    }
+
+    .mobile-nav-link {
+      color: #E2E8F0;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-nav-link:hover {
+      color: #38BDF8;
     }
 
     /* Model Quick-Switch Bar */
@@ -265,8 +497,8 @@
     }
 
     .pdp-emi-card {
-      background: rgba(10, 15, 29, 0.7);
-      border: 1px solid rgba(0, 180, 216, 0.25);
+      background: rgba(17, 28, 51, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--radius-md);
       padding: 0.85rem 1.25rem;
       display: flex;
@@ -279,8 +511,8 @@
        EASY COMMON-MAN HORIZONTAL PILL CONFIGURATOR (LIKE OUTSIDE CARD)
        ======================================================== */
     .pdp-quick-selector-card {
-      background: rgba(13, 20, 38, 0.85);
-      border: 1px solid rgba(0, 180, 216, 0.25);
+      background: rgba(17, 28, 51, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
       padding: 1.25rem;
       margin-bottom: 1.5rem;
@@ -330,102 +562,69 @@
       padding: 0.2rem 0.55rem;
       border-radius: 6px;
       transition: all 180ms ease;
+      cursor: pointer;
+      font-family: inherit;
+      line-height: 1.2;
     }
-    .pdp-measure-guide-link:hover {
+    .pdp-measure-guide-link:hover,
+    .pdp-measure-guide-link.active {
       color: #38BDF8;
       border-color: #38BDF8;
-      background: rgba(0, 180, 216, 0.1);
+      background: rgba(0, 180, 216, 0.14);
     }
 
     .pdp-pills-wrap {
       display: flex;
-      gap: 0.45rem;
+      gap: 0.75rem;
       flex-wrap: wrap;
       align-items: center;
     }
 
     .pdp-pill-btn {
       background: rgba(255, 255, 255, 0.05) !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
-      color: #CBD5E1 !important;
-      border-radius: 9999px !important;
-      padding: 0.5rem 0.95rem !important;
-      font-size: 0.84rem !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+      color: #E2E8F0 !important;
+      border-radius: 12px !important;
+      padding: 0.85rem 1.4rem !important;
+      font-size: 1.02rem !important;
       font-weight: 700 !important;
       font-family: inherit !important;
       cursor: pointer !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 0.35rem !important;
+      gap: 0.5rem !important;
       transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
       white-space: nowrap !important;
       outline: none !important;
-      min-height: 40px !important;
+      min-height: 52px !important;
       box-sizing: border-box !important;
     }
 
     .pdp-pill-btn:hover {
-      background: rgba(0, 180, 216, 0.1) !important;
-      border-color: rgba(0, 180, 216, 0.4) !important;
+      background: rgba(2, 132, 199, 0.18) !important;
+      border-color: #38BDF8 !important;
       color: #FFFFFF !important;
+      transform: translateY(-2px);
     }
 
     .pdp-pill-btn.active {
-      background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
-      border-color: #00B4D8 !important;
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+      border-color: #38BDF8 !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 14px rgba(0, 180, 216, 0.35) !important;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4) !important;
     }
 
     .pdp-pill-sub {
-      font-size: 0.72rem;
-      color: #94A3B8;
-      font-weight: 600;
-      margin-left: 0.25rem;
-    }
-
-    .pdp-pill-btn.active .pdp-pill-sub {
-      color: #BAE6FD;
+      display: none !important;
     }
 
     .pdp-pill-tag {
-      font-size: 0.62rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #38BDF8;
-      font-weight: 700;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.28);
-      padding: 0.12rem 0.42rem;
-      border-radius: 4px;
-      margin-left: 0.35rem;
-      display: inline-block;
-      line-height: 1.2;
-    }
-
-    .pdp-pill-btn.active .pdp-pill-tag {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.4);
-      color: #FFFFFF;
+      display: none !important;
     }
 
     .pdp-dim-helper-line {
-      margin-top: 0.5rem;
-      font-size: 0.76rem;
-      color: #94A3B8;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 0.4rem 0.75rem;
-      border-radius: 8px;
-      border-left: 2.5px solid #00B4D8;
-    }
-
-    .pdp-helper-dot {
-      color: #10B981;
-      font-weight: 800;
+      display: none !important;
     }
 
     /* Compact Custom Builder */
@@ -545,7 +744,7 @@
       margin-top: 1.25rem;
     }
     .btn-pdp-buy-now {
-      background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%) !important;
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 60%, #1D4ED8 100%) !important;
       color: #FFFFFF !important;
       font-weight: 800 !important;
       font-size: 1.02rem !important;
@@ -553,7 +752,7 @@
       border: none !important;
       padding: 1.05rem !important;
       cursor: pointer !important;
-      box-shadow: 0 4px 18px rgba(0, 180, 216, 0.4) !important;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.35) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -563,11 +762,11 @@
     }
     .btn-pdp-buy-now:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(0, 180, 216, 0.5) !important;
+      box-shadow: 0 6px 24px rgba(2, 132, 199, 0.45) !important;
     }
     .btn-pdp-add-bag {
-      background: rgba(255, 255, 255, 0.08) !important;
-      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.16) !important;
       color: #FFFFFF !important;
       font-weight: 700 !important;
       font-size: 0.98rem !important;
@@ -581,9 +780,9 @@
       transition: all 180ms ease !important;
     }
     .btn-pdp-add-bag:hover {
-      background: rgba(255, 255, 255, 0.14) !important;
-      border-color: #38BDF8 !important;
-      color: #38BDF8 !important;
+      background: rgba(2, 132, 199, 0.12) !important;
+      border-color: #0284C7 !important;
+      color: #FFFFFF !important;
     }
 
     /* Fallback global rule ensuring size-pill-btn is NEVER white on any device */
@@ -594,9 +793,10 @@
       border-radius: 10px !important;
     }
     .size-pill-btn.active {
-      border-color: #00B4D8 !important;
-      background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.45) 100%) !important;
+      border-color: #0284C7 !important;
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
       color: #FFFFFF !important;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;
     }
     .pdp-actions-stack {
       display: flex;
@@ -757,9 +957,39 @@
         padding: 0 0.85rem !important;
         gap: 0.5rem !important;
       }
-      .pdp-back-link {
-        font-size: 0.76rem !important;
-        white-space: nowrap !important;
+      .pdp-header-nav-links {
+        display: none !important;
+      }
+      .pdp-back-text {
+        display: none !important;
+      }
+      .pdp-back-btn {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+      }
+      .brand-logo-img {
+        height: 28px !important;
+      }
+      #pdp-header-auth-label {
+        display: none !important;
+      }
+      .header-auth-btn {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+      }
+      .header-auth-btn svg {
+        margin: 0 !important;
+      }
+      .mobile-menu-toggle {
+        display: inline-flex !important;
+      }
+      .header-logout-btn, #pdp-top-whatsapp {
+        display: none !important;
       }
       .model-switcher-strip {
         padding: 0.4rem 0 !important;
@@ -962,6 +1192,15 @@
         font-size: 0.92rem !important;
         font-weight: 800 !important;
       }
+      .pdp-pills-wrap {
+        gap: 0.65rem !important;
+      }
+      .pdp-pill-btn {
+        min-height: 48px !important;
+        padding: 0.72rem 1.15rem !important;
+        font-size: 0.95rem !important;
+        border-radius: 10px !important;
+      }
       .header-auth-btn {
         height: 34px !important;
         padding: 0 0.65rem !important;
@@ -1084,42 +1323,64 @@
   <!-- =========================================================
        1. PDP TOP BAR & DIRECTORY NAVIGATION
        ========================================================= -->
+  <!-- =========================================================
+       1. PDP TOP BAR & DIRECTORY NAVIGATION
+       ========================================================= -->
   <header class="pdp-header-nav" role="banner">
     <div class="container pdp-nav-container">
-      <div style="display: flex; align-items: center; gap: 2rem;">
-        <a href="index.html" class="pdp-back-link">
-          <span class="pdp-back-text-full">← Back to All Mattresses</span>
-          <span class="pdp-back-text-mobile">← Mattresses</span>
+      <!-- Left: Back Button & Logo -->
+      <div class="pdp-header-left">
+        <a href="index.html" class="pdp-back-btn" title="Back to All Mattresses" aria-label="Back to All Mattresses">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          <span class="pdp-back-text">All Mattresses</span>
         </a>
-        <a href="index.html" class="brand-logo-link">
-          <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="brand-logo-img" style="height: 38px;">
+        <a href="index.html" class="brand-logo-link" aria-label="LORA Home">
+          <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="brand-logo-img" style="height: 34px;">
         </a>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <a id="pdp-top-whatsapp" href="https://wa.me/919876543210?text=Hello%20LORA,%20I'd%20like%20guidance%20on%20selecting%20a%20mattress." 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn btn-whatsapp btn-sm"
-           style="border-radius: var(--radius-pill); font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.45rem;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFFFFF">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
-          </svg>
-          <span>WhatsApp</span>
-        </a>
-        <button type="button" class="header-auth-btn" id="pdp-btn-header-auth" onclick="window.location.href='index.html?login=1'" aria-label="Customer Account">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span id="pdp-header-auth-label">Login</span>
-        </button>
-        <button type="button" class="header-logout-btn" id="pdp-btn-header-logout" onclick="pdpHandleCustomerLogout()" style="display: none;" title="Logout of customer account">
-          <span>Logout</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-        </button>
+      <!-- Center: Desktop Navigation Links (Clean breathing room on desktop) -->
+      <nav class="pdp-header-nav-links" aria-label="Quick Navigation">
+        <a href="index.html#the-collection">The 8 Mattresses</a>
+        <a href="index.html#spine-simulator">SpineAlign™ Science</a>
+        <a href="index.html#factory-direct">Direct from Factory</a>
+        <a href="index.html#sleep-quiz">Sleep Match AI</a>
+        <a href="index.html#studios">Store Locator</a>
+      </nav>
+
+      <!-- Right: Unified Account, Cart, Menu -->
+      <div class="pdp-header-right">
+        <!-- Unified Account / Login Button with Dropdown -->
+        <div class="header-auth-wrapper" id="pdp-auth-wrapper">
+          <button type="button" class="header-auth-btn" id="pdp-btn-header-auth" onclick="window.handlePdpAuthClick(event)" aria-label="Customer Account">
+            <span class="header-auth-avatar" id="pdp-auth-avatar" style="display: none;">U</span>
+            <svg id="pdp-auth-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span id="pdp-header-auth-label">Login</span>
+          </button>
+
+          <!-- Account Dropdown (Shown when logged in and clicked) -->
+          <div class="header-account-dropdown" id="pdp-account-dropdown">
+            <div class="dropdown-user-header">
+              <strong id="pdp-dropdown-user-name">Customer</strong>
+              <span id="pdp-dropdown-user-phone">Verified Sleeper</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="index.html#the-collection" class="dropdown-item">Browse The 8 Mattresses</a>
+            <button type="button" class="dropdown-item dropdown-logout-btn" onclick="pdpHandleCustomerLogout(event)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sleep Bag Cart Button -->
         <button type="button" class="header-action-btn" data-action="open-cart" aria-label="View Sleep Bag">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -1141,11 +1402,16 @@
 
   <!-- Mobile Navigation Drawer -->
   <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-    <a href="index.html#the-collection" class="mobile-nav-link" onclick="window.closeMobileNav()">The 8 Mattresses <span>→</span></a>
-    <a href="index.html#spine-simulator" class="mobile-nav-link" onclick="window.closeMobileNav()">SpineAlign™ Science <span>→</span></a>
-    <a href="index.html#factory-direct" class="mobile-nav-link" onclick="window.closeMobileNav()">Direct from Factory <span>→</span></a>
-    <a href="index.html#sleep-quiz" class="mobile-nav-link" onclick="window.closeMobileNav()">Sleep Match AI <span>→</span></a>
-    <a href="index.html#studios" class="mobile-nav-link" onclick="window.closeMobileNav()">Store Locator <span>→</span></a>
+    <div class="mobile-drawer-account" id="mobile-drawer-account">
+      <!-- Injected via syncPdpAuthUI -->
+    </div>
+    <div class="mobile-drawer-links">
+      <a href="index.html#the-collection" class="mobile-nav-link" onclick="window.closeMobileNav()">The 8 Mattresses <span>→</span></a>
+      <a href="index.html#spine-simulator" class="mobile-nav-link" onclick="window.closeMobileNav()">SpineAlign™ Science <span>→</span></a>
+      <a href="index.html#factory-direct" class="mobile-nav-link" onclick="window.closeMobileNav()">Direct from Factory <span>→</span></a>
+      <a href="index.html#sleep-quiz" class="mobile-nav-link" onclick="window.closeMobileNav()">Sleep Match AI <span>→</span></a>
+      <a href="index.html#studios" class="mobile-nav-link" onclick="window.closeMobileNav()">Store Locator <span>→</span></a>
+    </div>
   </div>
 
   <!-- =========================================================
@@ -1200,46 +1466,38 @@
         </div>
 
         <!-- Right Configuration Panel -->
+        <!-- Right Configuration Panel -->
         <div class="pdp-config-panel">
-          <span class="pdp-model-tag" id="pdp-tag">01 / CLOUD SERIES</span>
-          <h1 class="pdp-title" id="pdp-title">01. LORA CLOUD 7™</h1>
-          <p class="pdp-tagline" id="pdp-tagline">Super Soft 7-Zone Dual Comfort</p>
-
-          <div class="pdp-trust-rating-strip">
-            <span style="color: #F59E0B; font-weight: 800; display: inline-flex; align-items: center; gap: 0.25rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 4.9</span>
-            <span>(5,00,000+ Sleepers)</span>
-            <span>•</span>
-            <span style="color: #10B981; font-weight: 700;">Direct from Factory</span>
-            <span>•</span>
-            <span style="color: #38BDF8; font-weight: 700;">In Stock</span>
-          </div>
-
-          <div class="pdp-price-row">
-            <span class="pdp-price-val" id="pdp-price">₹21,999</span>
-            <span class="pdp-mrp-val" id="pdp-mrp">₹36,999</span>
-            <span class="pdp-save-badge" id="pdp-save">SAVE ₹15,000 (DIRECT)</span>
-          </div>
-
-          <!-- Bajaj Finserv EMI Card -->
-          <div class="pdp-emi-card">
-            <div>
-              <strong style="font-size: 0.95rem; color: #38BDF8; display: block;" id="pdp-emi-text">
-                0% EMI from ₹1,833 / month with Bajaj Finserv
-              </strong>
-              <span style="font-size: 0.78rem; color: #94A3B8;">Zero down payment • 12 easy monthly installments</span>
+          <!-- 1. Name & Price (Photos → Name and Price) -->
+          <div class="pdp-identity-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span class="pdp-model-tag" id="pdp-tag">01 / CLOUD SERIES</span>
+              <div class="pdp-trust-rating-strip" style="margin: 0;">
+                <span style="color: #F59E0B; font-weight: 800; display: inline-flex; align-items: center; gap: 0.25rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 4.9</span>
+                <span>(5,00,000+ Sleepers)</span>
+                <span>•</span>
+                <span style="color: #10B981; font-weight: 700;">Direct from Factory</span>
+              </div>
             </div>
-            <span style="font-size: 0.75rem; font-weight: 800; background: rgba(0, 180, 216, 0.15); border: 1px solid rgba(0, 180, 216, 0.35); padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); color: #38BDF8; white-space: nowrap;">
-              0% NO COST
-            </span>
+
+            <h1 class="pdp-title" id="pdp-title" style="margin-bottom: 0.2rem;">01. LORA CLOUD 7™</h1>
+            <p class="pdp-tagline" id="pdp-tagline" style="margin-bottom: 0.85rem;">Super Soft 7-Zone Dual Comfort</p>
+
+            <!-- Final Price Display immediately under Name -->
+            <div class="pdp-price-row" style="padding: 0.85rem 0; margin-bottom: 1.25rem;">
+              <span class="pdp-price-val" id="pdp-price">₹21,999</span>
+              <span class="pdp-mrp-val" id="pdp-mrp">₹36,999</span>
+              <span class="pdp-save-badge" id="pdp-save">SAVE ₹15,000 (DIRECT)</span>
+            </div>
           </div>
 
-          <!-- QUICK COMMON-MAN VARIANT SELECTOR CARD -->
+          <!-- 2. Type, Size and Thickness (Compact selector card) -->
           <div class="pdp-quick-selector-card">
             <!-- 1. Cot Size Row -->
             <div class="pdp-pill-row">
               <div class="pdp-pill-header">
                 <span class="pdp-pill-label">1. Select Cot Size:</span>
-                <span class="pdp-pill-val-tag" id="pdp-selected-cot-label">Queen (5.0 ft)</span>
+                <span class="pdp-pill-val-tag" id="pdp-selected-cot-label">Queen</span>
               </div>
               <div class="pdp-pills-wrap pdp-bed-pills-wrap">
                 <button type="button" class="pdp-pill-btn active" data-type="queen">Queen</button>
@@ -1253,19 +1511,70 @@
             <!-- 2. Inch Size Row -->
             <div class="pdp-pill-row" id="pdp-inch-row-wrap">
               <div class="pdp-pill-header">
-                <span class="pdp-pill-label">2. Select Inch Size:</span>
+                <span class="pdp-pill-label">2. Select Dimensions:</span>
                 <div style="display:flex; align-items:center; gap:0.5rem;">
                   <span class="pdp-pill-val-tag" id="pdp-selected-inch-label">78" × 60"</span>
-                  <a href="#how-to-measure" class="pdp-measure-guide-link">Size Guide ↗</a>
+                  <button type="button" class="pdp-measure-guide-link" id="pdp-size-guide-toggle" onclick="togglePdpSizeGuide(event)" aria-expanded="false" aria-controls="pdp-inline-size-guide">
+                    📐 Size Guide ▾
+                  </button>
                 </div>
               </div>
               <div class="pdp-pills-wrap pdp-inch-pills-wrap" id="pdp-inch-container">
                 <!-- Dynamically populated based on active Bed Type -->
               </div>
-              <!-- Compact Dimension Callout -->
-              <div class="pdp-dim-helper-line" id="pdp-dim-helper-line">
-                <span class="pdp-helper-dot">✓</span>
-                <span id="pdp-dim-helper-text">6.5 × 5.0 ft (198 × 152 cm) • Standard Master Bed Choice</span>
+
+              <!-- Inline Size Guide Card (Opens directly beside/under size selector) -->
+              <div class="pdp-inline-size-guide" id="pdp-inline-size-guide" style="display: none;">
+                <div class="pdp-inline-sg-header">
+                  <div class="pdp-inline-sg-title">
+                    <span style="color: #38BDF8;">📐</span>
+                    <span>Standard Bed & Cot Sizing (Inches)</span>
+                  </div>
+                  <button type="button" class="pdp-inline-sg-close" onclick="togglePdpSizeGuide(event)" aria-label="Close size guide">✕</button>
+                </div>
+
+                <div class="pdp-inline-sg-grid">
+                  <div class="pdp-inline-sg-card" onclick="selectCotFromGuide('queen')" role="button" tabindex="0" title="Click to choose Queen size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">Queen (5.0 ft)</strong>
+                      <span class="pdp-inline-sg-badge">Popular</span>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 60" &bull; 75" × 60" &bull; 72" × 60"</div>
+                    <div class="pdp-inline-sg-desc">Standard master bedroom, fits 2 adults comfortably</div>
+                  </div>
+
+                  <div class="pdp-inline-sg-card" onclick="selectCotFromGuide('king')" role="button" tabindex="0" title="Click to choose King size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">King (6.0 ft)</strong>
+                      <span class="pdp-inline-sg-badge">Luxury</span>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 72" &bull; 75" × 72" &bull; 72" × 72"</div>
+                    <div class="pdp-inline-sg-desc">Spacious master suite, 2 adults + 1 child</div>
+                  </div>
+
+                  <div class="pdp-inline-sg-card" onclick="selectCotFromGuide('double')" role="button" tabindex="0" title="Click to choose Double size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">Double (4.0 ft)</strong>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 48" &bull; 75" × 48" &bull; 72" × 48"</div>
+                    <div class="pdp-inline-sg-desc">Guest rooms or single sleeper needing extra width</div>
+                  </div>
+
+                  <div class="pdp-inline-sg-card" onclick="selectCotFromGuide('single')" role="button" tabindex="0" title="Click to choose Single size">
+                    <div class="pdp-inline-sg-top">
+                      <strong class="pdp-inline-sg-name">Single (3.0 ft)</strong>
+                    </div>
+                    <div class="pdp-inline-sg-dims">78" × 36" &bull; 75" × 36" &bull; 72" × 36"</div>
+                    <div class="pdp-inline-sg-desc">Individual sleepers, kids rooms, or diwan beds</div>
+                  </div>
+                </div>
+
+                <div class="pdp-inline-sg-tip">
+                  <div class="pdp-inline-sg-tip-icon">💡</div>
+                  <div>
+                    <strong>How to Measure:</strong> Measure inside frame edges of your cot (where mattress drops in). Need custom sizes? Choose <strong>"Custom Size"</strong> with 0% extra fee!
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1304,7 +1613,7 @@
                 </div>
               </div>
               <div class="pdp-custom-compact-feedback" id="pdp-custom-summary-text">
-                Custom Size: <strong>78" × 60"</strong> (6.50 × 5.00 ft • 198 × 152 cm) • Direct factory custom build
+                Custom Size: <strong>78" × 60"</strong> • Direct factory custom build
               </div>
             </div>
 
@@ -1312,972 +1621,423 @@
             <div class="pdp-pill-row">
               <div class="pdp-pill-header">
                 <span class="pdp-pill-label">3. Select Mattress Thickness:</span>
-                <span class="pdp-pill-val-tag" id="pdp-selected-thick-label">8-Inch (20 cm) [Standard]</span>
+                <span class="pdp-pill-val-tag" id="pdp-selected-thick-label">8 Inch</span>
               </div>
               <div class="pdp-pills-wrap pdp-thick-pills-wrap">
-                <button type="button" class="pdp-pill-btn" data-thick="6">
-                  6" (15 cm) <span class="pdp-pill-sub">-₹2.5k</span>
-                </button>
-                <button type="button" class="pdp-pill-btn active" data-thick="8">
-                  8" (20 cm) <span class="pdp-pill-tag">Popular</span>
-                </button>
-                <button type="button" class="pdp-pill-btn" data-thick="10">
-                  10" (25 cm) <span class="pdp-pill-sub">Eurotop</span>
-                </button>
-                <button type="button" class="pdp-pill-btn" data-thick="12">
-                  12" (30 cm) <span class="pdp-pill-sub">Grand Luxe</span>
-                </button>
+                <button type="button" class="pdp-pill-btn" data-thick="6">6 Inch</button>
+                <button type="button" class="pdp-pill-btn active" data-thick="8">8 Inch</button>
+                <button type="button" class="pdp-pill-btn" data-thick="10">10 Inch</button>
+                <button type="button" class="pdp-pill-btn" data-thick="12">12 Inch</button>
               </div>
             </div>
           </div>
 
-          <!-- Firmness Dial -->
-          <div class="pdp-opt-group">
-            <label class="pdp-opt-label-main" style="margin-bottom: 0.65rem; display: flex; justify-content: space-between;">
-              <span style="display: flex; align-items: center; gap: 0.45rem;">
-                <span class="pdp-step-badge" style="background: rgba(255, 255, 255, 0.15);">4</span>
-                <span>Ergonomic Firmness Index</span>
-              </span>
-              <span style="color: #38BDF8; font-weight: 700;" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
-            </label>
-            <div style="padding: 1.25rem; background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <div class="meter-labels" style="margin-bottom: 0.5rem; font-size: 0.74rem;">
-                <span>Plush Soft</span>
-                <span style="color: #38BDF8;" id="pdp-feel-label">Gentle Cloud Cushioning</span>
-                <span>Orthopedic Firm</span>
+          <!-- ==========================================
+               COMPLIMENTARY LUXURY SLEEP BUNDLE (100% FREE GIFT)
+               ========================================== -->
+          <div class="pdp-free-gift-showcase" id="pdp-free-gift-showcase" aria-label="Complimentary Luxury Sleep Kit">
+            <div class="pdp-free-gift-header">
+              <div class="pdp-free-gift-badge">
+                <span class="pdp-gift-pulse-dot"></span>
+                <span>🎁 INCLUDED FREE WITH THIS MATTRESS</span>
               </div>
-              <div class="meter-track-graphic" style="margin: 0;">
-                <div class="meter-bar-fill"><div class="meter-bar-progress" id="pdp-meter-fill" style="width: 40%;"></div></div>
+              <div class="pdp-free-gift-pricing">
+                <span class="pdp-gift-strike-price">Bundle Value: ₹4,497</span>
+                <span class="pdp-gift-free-badge">COST: ₹0 (FREE)</span>
               </div>
-              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.75rem;" id="pdp-posture-rec">
-                <strong>Recommended for:</strong> Side sleepers and sleepers suffering from shoulder or hip stiffness.
-              </p>
+            </div>
+
+            <div class="pdp-free-gift-body">
+              <div class="pdp-free-gift-img-wrap">
+                <img src="assets/complimentary-sleep-kit.jpg" alt="Complimentary Luxury Sleep Kit - 2 Cloud Pillows, Fitted Bedsheet, 2 Pillow Covers" class="pdp-free-gift-img" loading="lazy">
+                <span class="pdp-gift-ribbon-tag">5-PC SET • ₹0</span>
+              </div>
+
+              <div class="pdp-free-gift-details">
+                <div class="pdp-free-gift-title">
+                  Complimentary 5-Piece Master Bedding Kit
+                </div>
+                <div class="pdp-free-gift-subtitle">
+                  Precision-tailored to your mattress size. Dispatched inside your white-glove delivery at zero cost.
+                </div>
+
+                <div class="pdp-free-gift-items-grid">
+                  <div class="pdp-gift-item-pill">
+                    <div class="pdp-gift-item-icon">☁️</div>
+                    <div class="pdp-gift-item-info">
+                      <span class="pdp-gift-item-name">2× Premium Cloud Pillows</span>
+                      <span class="pdp-gift-item-val"><s class="strike-val">₹1,999</s> <strong class="zero-val">₹0 (FREE)</strong></span>
+                    </div>
+                  </div>
+
+                  <div class="pdp-gift-item-pill">
+                    <div class="pdp-gift-item-icon">🛏️</div>
+                    <div class="pdp-gift-item-info">
+                      <span class="pdp-gift-item-name">1× Pure Cotton Fitted Bedsheet</span>
+                      <span class="pdp-gift-item-val"><s class="strike-val">₹1,499</s> <strong class="zero-val">₹0 (FREE)</strong></span>
+                    </div>
+                  </div>
+
+                  <div class="pdp-gift-item-pill">
+                    <div class="pdp-gift-item-icon">✉️</div>
+                    <div class="pdp-gift-item-info">
+                      <span class="pdp-gift-item-name">2× Luxury Satin Pillow Covers</span>
+                      <span class="pdp-gift-item-val"><s class="strike-val">₹999</s> <strong class="zero-val">₹0 (FREE)</strong></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pdp-gift-assurance-row">
+                  <span class="pdp-gift-check">✓ Added to Cart & Checkout at ₹0</span>
+                  <span class="pdp-gift-dot">•</span>
+                  <span class="pdp-gift-check">✓ 100% Free Gift Guarantee</span>
+                  <span class="pdp-gift-dot">•</span>
+                  <span class="pdp-gift-check">✓ Zero Hidden Charges</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Primary Actions (Dual Direct Purchase Row) -->
-          <div class="pdp-actions-stack">
+          <!-- 3. Buy Now Button (Strongest Primary CTA) & Add to Bag -->
+          <div class="pdp-actions-stack" style="margin-top: 1.25rem;">
             <div class="pdp-dual-actions-row">
-              <button type="button" class="btn-pdp-add-bag" id="pdp-add-bag-btn">
-                Add to Bag
-              </button>
               <button type="button" class="btn-pdp-buy-now" id="pdp-buy-now-btn">
-                Buy Now →
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <span>Buy Now — Express Delivery →</span>
+              </button>
+              <button type="button" class="btn-pdp-add-bag" id="pdp-add-bag-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Add to Bag</span>
               </button>
             </div>
-
-            <a id="pdp-action-whatsapp" href="#" target="_blank" class="btn btn-whatsapp" style="padding: 0.95rem; font-size: 0.95rem; margin-top: 0.5rem;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
-              </svg>
-              <span>Order Directly via WhatsApp Concierge</span>
-            </a>
           </div>
 
-          <!-- Official Guarantees Strip -->
-          <div class="pdp-guarantee-strip">
-            <div class="pdp-guarantee-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <div>
-                <strong style="display: block; color: var(--text-primary);" id="pdp-guarantee-warr">Up to 15 Years Warranty</strong>
-                <span style="font-size: 0.75rem;">100% Direct Factory Replacement</span>
+          <!-- Compact Reassurance Micro-Strip -->
+          <div class="pdp-reassurance-micro">
+            <span>✓ <strong id="pdp-guarantee-warr">10-Yr Sag-Free Warranty</strong></span>
+            <span>•</span>
+            <span>✓ <strong>Free Flat Uncompressed Delivery</strong></span>
+            <span>•</span>
+            <span>✓ <strong>100-Night Sleep Trial</strong></span>
+          </div>
+
+          <!-- ==========================================
+               BELOW BUYING BUTTONS: LARGE EMI BOX & DETAILED FIRMNESS EXPLANATION
+               ========================================== -->
+          <div class="pdp-below-buy-section">
+            <!-- Large EMI Financing Box -->
+            <div class="pdp-large-emi-box" id="pdp-large-emi-box">
+              <div class="pdp-large-emi-top">
+                <div class="pdp-large-emi-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                </div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+                    <strong class="pdp-large-emi-title" id="pdp-emi-text">0% EMI from ₹1,833 / month with Bajaj Finserv</strong>
+                    <span class="badge-verified" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; border-color: rgba(56, 189, 248, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">NO COST EMI</span>
+                  </div>
+                  <p class="pdp-large-emi-desc">
+                    Zero down payment • Instant digital paperless approval • Up to 12 flexible installments
+                  </p>
+                  <div class="pdp-emi-tenure-pills">
+                    <span class="pdp-emi-tenure-chip">✦ 3 Mo: ₹6,233/mo</span>
+                    <span class="pdp-emi-tenure-chip">✦ 6 Mo: ₹3,116/mo</span>
+                    <span class="pdp-emi-tenure-chip">✦ 12 Mo: ₹1,558/mo</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="pdp-guarantee-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M2 12h20M2 12a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5M2 12a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5"/></svg>
-              <div>
-                <strong style="display: block; color: var(--text-primary);">Zero Motion Transfer</strong>
-                <span style="font-size: 0.75rem;">Undisturbed peaceful sleep</span>
+
+            <!-- Detailed Firmness Explanation Box -->
+            <div class="pdp-detailed-firmness-box" id="pdp-detailed-firmness-box">
+              <div class="pdp-firmness-box-header">
+                <div class="pdp-firmness-box-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 19 7"/></svg>
+                  <span>Ergonomic Firmness Index & Posture Guide</span>
+                </div>
+                <span class="pdp-firmness-val-badge" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
               </div>
-            </div>
-            <div class="pdp-guarantee-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-              <div>
-                <strong style="display: block; color: var(--text-primary);">Free Pan-India Delivery</strong>
-                <span style="font-size: 0.75rem;">Full-size flat delivery in protective casing</span>
-              </div>
-            </div>
-            <div class="pdp-guarantee-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <div>
-                <strong style="display: block; color: var(--text-primary);">Factory Direct Pricing</strong>
-                <span style="font-size: 0.75rem;">Zero 40% showroom markup</span>
+              <div class="pdp-firmness-meter-wrapper">
+                <div class="meter-labels" style="display:flex; justify-content:space-between; font-size:0.75rem; color:#94A3B8; margin-bottom:0.45rem;">
+                  <span>Plush Soft (1.0)</span>
+                  <span style="color: #38BDF8; font-weight: 700;" id="pdp-feel-label">Gentle Cloud Cushioning</span>
+                  <span>Orthopedic Firm (5.0)</span>
+                </div>
+                <div class="meter-track-graphic" style="margin: 0; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden;">
+                  <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="pdp-meter-fill" style="width: 40%; height: 100%; background: linear-gradient(90deg, #38BDF8, #0284C7); border-radius: 9999px;"></div></div>
+                </div>
+                <p class="pdp-firmness-posture-text" id="pdp-posture-rec">
+                  <strong>Recommended for:</strong> Side sleepers and sleepers seeking zero shoulder pinch and cloud-like joint cradling.
+                </p>
               </div>
             </div>
           </div>
-
-        </div>
+        </div>        </div>
 
       </div>
     </div>
   </main>
 
   <!-- =========================================================
-       4. DEEP TECHNICAL ANATOMY & 4-TIER CROSS-SECTION
+       4. EXPANDABLE TECHNICAL ARCHITECTURE & SECONDARY SPECIFICATIONS
        ========================================================= -->
-  <section class="pdp-deep-dive">
-    <div class="container">
-      <div class="deep-dive-grid">
-        <div>
-          <span class="eyebrow eyebrow-pill">Architectural Cross-Section</span>
-          <h2 style="font-size: clamp(2rem, 3.5vw, 2.8rem); margin-bottom: 1.25rem;">
-            What’s Inside Your Mattress
-          </h2>
-          <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
-            Most commercial mattresses use cheap polyurethane fillers that collapse within 2 years. Every LORA mattress is constructed with certified ergonomic layers, engineered in our robotic manufacturing facility in India.
-          </p>
-
-          <div class="anatomy-layers-stack" id="pdp-layers-container">
-            <!-- Dynamic Layers Injected via JS -->
-          </div>
-        </div>
-
-        <div>
-          <div style="background: rgba(16, 25, 46, 0.75); border-radius: var(--radius-xl); border: 1px solid rgba(255, 255, 255, 0.08); padding: 2.5rem; text-align: center; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);">
-            <img loading="lazy" src="assets/hero-stage-2-exploded.jpg" alt="Exploded layer architecture" style="border-radius: var(--radius-lg); width: 100%; margin-bottom: 1.5rem; box-shadow: var(--shadow-card);">
-            <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: #FFFFFF;">SpineAlign™ 7-Zone Support Geometry</h3>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
-              Individually calibrated zones distribute body weight evenly across cervical, thoracic, and lumbar nodes, preventing spinal shear force and joint pressure pins.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Complete Technical Specification Table -->
-      <div class="specs-table-card">
-        <div style="padding: 1.75rem 2rem; background: var(--brand-midnight); color: #FFFFFF; display: flex; justify-content: space-between; align-items: center;">
-          <h3 style="color: #FFFFFF; font-size: 1.25rem;">Complete Technical Specifications</h3>
-          <span class="badge-verified">ISO 9001:2015 CERTIFIED</span>
-        </div>
-
-        <table class="specs-table">
-          <tbody>
-            <tr>
-              <th>Model Classification</th>
-              <td id="table-model-name">01. LORA CLOUD 7™</td>
-            </tr>
-            <tr>
-              <th>Comfort Category</th>
-              <td id="table-category">Super Soft 7-Zone Dual Comfort</td>
-            </tr>
-            <tr>
-              <th>Core Construction</th>
-              <td id="table-core">7-Zone Adaptive Cloud Foam + Aerodynamic Transition Core</td>
-            </tr>
-            <tr>
-              <th>Surface Cover Fabric</th>
-              <td id="table-cover">Micro-Quilted Cloud Knitted Fabric with PCM Cooling Technology</td>
-            </tr>
-            <tr>
-              <th>Firmness Index</th>
-              <td id="table-firmness">2.0 / 5.0 (Plush Cloud Feel)</td>
-            </tr>
-            <tr>
-              <th>Available Heights</th>
-              <td id="table-heights">6-Inch (15 cm), 8-Inch (20 cm), 10-Inch (25 cm)</td>
-            </tr>
-            <tr>
-              <th>Motion Transfer Rating</th>
-              <td id="table-motion">Zero Motion Disturbance (Independent Absorption)</td>
-            </tr>
-            <tr>
-              <th>Warranty Coverage</th>
-              <td id="table-warranty">10 Years Factory Replacement Warranty</td>
-            </tr>
-            <tr>
-              <th>Motion Isolation</th>
-              <td>Zero Disturbance (Independent Pocket Spring Technology)</td>
-            </tr>
-            <tr>
-              <th>Manufacturing Origin</th>
-              <td>Direct from LORA Advanced Robotics Facility, India</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       5. THE LORA USP: FLAT DELIVERY & FACTORY DIRECT (NO MIDDLEMEN)
-       ========================================================= -->
-  <section class="factory-direct-section" id="factory-direct">
-    <div class="usp-container">
-      <!-- Header -->
-      <div class="usp-header-block">
-        <h2 class="usp-main-headline">
-          A Mattress Is Made to Sleep Flat.<br>
-          <span class="text-highlight">So Why Roll It?</span>
+  <section class="pdp-secondary-suite-section" style="padding: 1.75rem 0 2.25rem 0;">
+    <div class="container" style="max-width: 1040px;">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span class="eyebrow eyebrow-pill" style="font-size: 0.72rem; letter-spacing: 0.1em;">ENGINEERING & SPECIFICATIONS</span>
+        <h2 style="font-size: clamp(1.4rem, 2.4vw, 1.85rem); margin-top: 0.4rem; color: #FFFFFF; font-weight: 800; letter-spacing: -0.02em;">
+          Mattress Specifications & Engineering Details
         </h2>
-        <p class="usp-supporting-line">
-          LORA delivers your mattress full-size and flat &mdash; straight from our factory to your doorstep.
+        <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 580px; margin: 0.35rem auto 0 auto;">
+          Expand any section below to inspect internal layers, ISO laboratory specifications, factory-flat delivery standards, and frame measurement guide.
         </p>
       </div>
 
-      <!-- Two-Side Split Arena -->
-      <div class="usp-two-sides-grid">
-        <!-- Left: Rolled/compressed mattress -->
-        <div class="usp-side-card usp-side-left">
-          <div class="usp-side-image-wrap">
-            <img src="assets/rolled-box-compromise.jpg" alt="Rolled and compressed mattress in a box" loading="lazy">
+      <div class="lora-accordion-suite">
+        <!-- Accordion 1: Layer Architecture & Sleep Materials -->
+        <details class="lora-accordion">
+          <summary class="lora-accordion-summary">
+            <div class="lora-accordion-title-wrap">
+              <span class="lora-accordion-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </span>
+              <div>
+                <span class="lora-accordion-title">Layer Architecture & Sleep Materials</span>
+                <span class="lora-accordion-subtitle">4-tier certified internal ergonomics • Zero toxic chemical fillers</span>
+              </div>
+            </div>
+            <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="lora-accordion-body">
+            <div class="deep-dive-grid" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: start;">
+              <div>
+                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                  Every LORA mattress is constructed with individually certified ergonomic layers, engineered in our robotic manufacturing facility in India to prevent spinal sagging and joint pinch points.
+                </p>
+                <div class="anatomy-layers-stack" id="pdp-layers-container">
+                  <!-- Dynamic Layers Injected via JS -->
+                </div>
+              </div>
+              <div style="background: rgba(10, 15, 29, 0.75); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem; text-align: center;">
+                <img loading="lazy" src="assets/hero-stage-2-exploded.jpg" alt="Exploded layer architecture" style="border-radius: var(--radius-md); width: 100%; margin-bottom: 1rem; box-shadow: var(--shadow-card);">
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.35rem; color: #FFFFFF;">SpineAlign™ 7-Zone Support Geometry</h4>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55;">
+                  Calibrated contour nodes distribute body mass evenly across cervical, thoracic, and lumbar zones.
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="usp-side-content">
-            <span class="usp-side-label label-left">The Industry Shortcut</span>
-            <h3 class="usp-side-title">Rolled / Compressed Mattress</h3>
-            <p class="usp-side-desc">Crushed under high mechanical rollers and boxed for shipping container convenience.</p>
+        </details>
+
+        <!-- Accordion 2: Certified Laboratory Technical Specifications -->
+        <details class="lora-accordion">
+          <summary class="lora-accordion-summary">
+            <div class="lora-accordion-title-wrap">
+              <span class="lora-accordion-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </span>
+              <div>
+                <span class="lora-accordion-title">Certified Laboratory Technical Specifications</span>
+                <span class="lora-accordion-subtitle">ISO 9001:2015 tested • Motion isolation & material metrics</span>
+              </div>
+            </div>
+            <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="lora-accordion-body">
+            <div class="specs-table-card" style="margin-top: 0; border: none; background: transparent; box-shadow: none;">
+              <table class="specs-table">
+                <tbody>
+                  <tr><th>Model Classification</th><td id="table-model-name">01. LORA CLOUD 7™</td></tr>
+                  <tr><th>Comfort Category</th><td id="table-category">Eurotop Comfort Series</td></tr>
+                  <tr><th>Core Construction</th><td id="table-core">Plush Eurotop comfort construction with balanced body support</td></tr>
+                  <tr><th>Surface Cover Fabric</th><td id="table-cover">Cushioned sleeping surface with comfortable pressure distribution</td></tr>
+                  <tr><th>Firmness Index</th><td id="table-firmness">SOFT ●●○○○ FIRM</td></tr>
+                  <tr><th>Profile & Heights</th><td id="table-heights">Stated 7-Inch profile (6", 8", 10", 12" selectable)</td></tr>
+                  <tr><th>Motion Transfer Rating</th><td id="table-motion">Balanced pressure distribution & everyday durability</td></tr>
+                  <tr><th>Warranty Coverage</th><td id="table-warranty">3 Years Warranty</td></tr>
+                  <tr><th>Delivery Format</th><td>Delivered Full-Size & Flat (Never rolled or crushed)</td></tr>
+                  <tr><th>Manufacturing Origin</th><td>Direct from LORA Factory, India</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </details>
 
-        <!-- Right: LORA mattress delivered full-size and flat to the customer's doorstep -->
-        <div class="usp-side-card usp-side-right">
-          <div class="usp-side-image-wrap">
-            <img src="assets/lora-flat-luxury.jpg" alt="LORA mattress delivered full-size and flat to customer doorstep" loading="lazy">
+        <!-- =========================================================
+             PERMANENTLY VISIBLE FEATURE: FULL-SIZE FLAT vs ROLLED BOX
+             INTERACTIVE ANIMATED COMPARISON — SINGLE-VIEW MOBILE OPTIMIZED
+             ========================================================= -->
+        <div class="lora-delivery-showcase" id="flat-vs-rolled-delivery">
+          <div class="delivery-showcase-header">
+            <span class="delivery-eyebrow-pill">The LORA Delivery Philosophy</span>
+            <h3 class="delivery-showcase-title">YOU SLEEP FLAT.<br>WHY SHOULD YOUR COMFORT COME ROLLED?</h3>
+            <p class="delivery-showcase-subtitle">
+              At Lora, we don’t roll your comfort. <strong class="delivery-accent-text">We deliver it flat.</strong>
+            </p>
           </div>
-          <div class="usp-side-content">
-            <span class="usp-side-label label-right">The LORA Standard</span>
-            <h3 class="usp-side-title">LORA Mattress Delivered Full-Size &amp; Flat</h3>
-            <p class="usp-side-desc">Delivered straight to your doorstep in its natural uncompressed form &mdash; zero retail middlemen.</p>
+
+          <!-- Clean 2-choice mobile switcher (50/50 split, zero wrapping or clipping) -->
+          <div class="delivery-mode-switcher" role="tablist" aria-label="Delivery comparison">
+            <button type="button" class="delivery-mode-btn is-active" data-delivery-view="flat" role="tab" aria-selected="true" onclick="switchDeliveryMode(this, 'flat')">
+              <span class="mode-icon">✓</span>
+              <span class="mode-text">LORA Flat</span>
+            </button>
+            <button type="button" class="delivery-mode-btn" data-delivery-view="rolled" role="tab" aria-selected="false" onclick="switchDeliveryMode(this, 'rolled')">
+              <span class="mode-icon">✕</span>
+              <span class="mode-text">Rolled Box</span>
+            </button>
           </div>
-        </div>
-      </div>
 
-      <!-- 3 Small Points -->
-      <div class="usp-points-row">
-        <div class="usp-point-card">
-          <span class="usp-point-icon">✦</span>
-          <div class="usp-point-body">
-            <div class="usp-point-title">Delivered Flat</div>
-            <div class="usp-point-desc">No extreme rolling or compression</div>
+          <!-- Visual Cards Stage -->
+          <div class="delivery-visual-stage" data-active-view="flat" id="delivery-visual-stage">
+            
+            <!-- Flat Delivery Card (LORA Standard) -->
+            <div class="delivery-clean-card card-flat" id="delivery-card-flat">
+              <div class="clean-photo-frame">
+                <img src="assets/delivery-full-flat.jpg" alt="LORA Full-Size Flat Mattress Delivery Uncompressed" loading="lazy" width="600" height="340">
+                <span class="clean-photo-tag tag-lora">✓ 100% Full-Size Flat</span>
+              </div>
+
+              <div class="clean-card-content">
+                <div class="clean-card-header">
+                  <span class="clean-card-badge badge-lora">THE LORA STANDARD</span>
+                  <span class="clean-card-lead">Ready for Sleep Tonight</span>
+                </div>
+
+                <ul class="clean-card-features">
+                  <li>
+                    <span class="feature-dot dot-lora">✓</span>
+                    <div>
+                      <strong>Zero Mechanical Strain:</strong> Pocket springs, natural latex, and foam layers arrive with 100% natural elasticity intact.
+                    </div>
+                  </li>
+                  <li>
+                    <span class="feature-dot dot-lora">✓</span>
+                    <div>
+                      <strong>Solid Reinforced Edges:</strong> Perimeter walls are never crushed, preventing edge collapse and roll-off.
+                    </div>
+                  </li>
+                  <li>
+                    <span class="feature-dot dot-lora">✓</span>
+                    <div>
+                      <strong>Zero Decompression Lag:</strong> Sleep on your mattress the moment it arrives—no 72-hour waiting lag or trapped chemical odors.
+                    </div>
+                  </li>
+                </ul>
+
+                <div class="clean-card-outcome outcome-lora">
+                  <span class="outcome-icon">🛡️</span>
+                  <span><strong>Result:</strong> Factory-fresh spinal support and authentic 15-year durability.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rolled Box Shortcut Card -->
+            <div class="delivery-clean-card card-rolled" id="delivery-card-rolled">
+              <div class="clean-photo-frame">
+                <img src="assets/delivery-rolled-box.jpg" alt="Compressed Rolled Bed in a Box Mattress" loading="lazy" width="600" height="340">
+                <span class="clean-photo-tag tag-rolled">✕ 50-Ton Compression</span>
+              </div>
+
+              <div class="clean-card-content">
+                <div class="clean-card-header">
+                  <span class="clean-card-badge badge-rolled">THE INDUSTRY SHORTCUT</span>
+                  <span class="clean-card-lead">Compressed for Courier Warehousing</span>
+                </div>
+
+                <ul class="clean-card-features">
+                  <li>
+                    <span class="feature-dot dot-rolled">✕</span>
+                    <div>
+                      <strong>Crushed Internal Core:</strong> 50-ton hydraulic compression bends pocket coils and fatigues adhesive foam bonds.
+                    </div>
+                  </li>
+                  <li>
+                    <span class="feature-dot dot-rolled">✕</span>
+                    <div>
+                      <strong>Weakened Perimeter Walls:</strong> Heavy flattening damages edge foam, creating permanent edge slope and roll-off.
+                    </div>
+                  </li>
+                  <li>
+                    <span class="feature-dot dot-rolled">✕</span>
+                    <div>
+                      <strong>48–72h Decompression Lag:</strong> Cannot be used immediately; requires days to expand while releasing trapped chemical odors.
+                    </div>
+                  </li>
+                </ul>
+
+                <div class="clean-card-outcome outcome-rolled">
+                  <span class="outcome-icon">⚠️</span>
+                  <span><strong>Risk:</strong> Premature sagging, collapsed edge walls, and delayed first sleep.</span>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
 
-        <div class="usp-point-card">
-          <span class="usp-point-icon">✦</span>
-          <div class="usp-point-body">
-            <div class="usp-point-title">Factory Direct</div>
-            <div class="usp-point-desc">Straight from LORA to your home</div>
-          </div>
-        </div>
-
-        <div class="usp-point-card">
-          <span class="usp-point-icon">✦</span>
-          <div class="usp-point-body">
-            <div class="usp-point-title">No Unnecessary Middlemen</div>
-            <div class="usp-point-desc">Better value through a simpler route</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Closing Line -->
-      <div class="usp-closing-box">
-        <p class="usp-closing-line">We Don’t Roll Your Comfort.</p>
-        <a href="index.html#the-collection" class="btn-usp-cta">
-          Experience Flat-Delivered Luxury &rarr;
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       5.5 HOW TO MEASURE YOUR MATTRESS (CLEAN, ANIMATED SIZING GUIDE)
-       ========================================================= -->
-  <style>
-    .measure-guide-section {
-      padding: 3.75rem 0 !important;
-      background: radial-gradient(circle at 50% 20%, #091224 0%, #050A14 60%, #020408 100%) !important;
-      color: #FFFFFF !important;
-      border-top: 1px solid rgba(0, 180, 216, 0.15) !important;
-      border-bottom: 1px solid rgba(0, 180, 216, 0.15) !important;
-      position: relative !important;
-      overflow: hidden !important;
-      box-sizing: border-box !important;
-    }
-
-    .measure-container {
-      max-width: 860px !important;
-      margin: 0 auto !important;
-      padding: 0 1.25rem !important;
-      text-align: center !important;
-      position: relative !important;
-      z-index: 1 !important;
-      box-sizing: border-box !important;
-    }
-
-    .measure-header {
-      margin-bottom: 1.5rem !important;
-      text-align: center !important;
-    }
-
-    .measure-tag {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 0.4rem !important;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.74rem !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.08em !important;
-      text-transform: uppercase !important;
-      color: #38BDF8 !important;
-      background: rgba(0, 180, 216, 0.1) !important;
-      border: 1px solid rgba(0, 180, 216, 0.3) !important;
-      padding: 0.3rem 0.9rem !important;
-      border-radius: 9999px !important;
-      margin-bottom: 0.6rem !important;
-    }
-
-    .measure-title {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: clamp(1.85rem, 3.4vw, 2.5rem) !important;
-      font-weight: 800 !important;
-      color: #FFFFFF !important;
-      letter-spacing: -0.025em !important;
-      margin: 0 0 0.4rem 0 !important;
-      line-height: 1.2 !important;
-      text-align: center !important;
-    }
-
-    .measure-subtitle {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.96rem !important;
-      color: #94A3B8 !important;
-      line-height: 1.55 !important;
-      margin: 0 auto !important;
-      max-width: 580px !important;
-      text-align: center !important;
-    }
-
-    .measure-tabs-wrapper {
-      display: flex !important;
-      justify-content: center !important;
-      margin-bottom: 1.5rem !important;
-    }
-
-    .measure-step-tabs {
-      display: inline-flex !important;
-      background: rgba(15, 23, 42, 0.85) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      padding: 4px !important;
-      border-radius: 9999px !important;
-      gap: 4px !important;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
-    }
-
-    .measure-tab-btn {
-      background: transparent !important;
-      border: none !important;
-      color: #94A3B8 !important;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.82rem !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.02em !important;
-      padding: 0.5rem 1.2rem !important;
-      border-radius: 9999px !important;
-      cursor: pointer !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 0.45rem !important;
-      transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-      white-space: nowrap !important;
-    }
-
-    .measure-tab-btn:hover {
-      color: #FFFFFF !important;
-    }
-
-    .measure-tab-btn.active {
-      background: #00B4D8 !important;
-      color: #FFFFFF !important;
-      box-shadow: 0 0 16px rgba(0, 180, 216, 0.45) !important;
-    }
-
-    .measure-tab-btn .tab-badge {
-      font-size: 0.72rem !important;
-      font-weight: 700 !important;
-      opacity: 0.9 !important;
-    }
-
-    .measure-stage-card {
-      background: radial-gradient(circle at 50% 35%, #0E1A33 0%, #080E1C 65%, #040812 100%) !important;
-      border: 1px solid rgba(0, 180, 216, 0.25) !important;
-      border-radius: 20px !important;
-      padding: 1.25rem !important;
-      margin-bottom: 1.5rem !important;
-      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 180, 216, 0.08) !important;
-      position: relative !important;
-      overflow: hidden !important;
-      box-sizing: border-box !important;
-    }
-
-    .measure-svg-canvas {
-      width: 100% !important;
-      max-height: 380px !important;
-      display: block !important;
-      margin: 0 auto !important;
-    }
-
-    .tape-group {
-      opacity: 0.12;
-      transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .tape-group.active {
-      opacity: 1 !important;
-    }
-
-    .tape-ribbon,
-    .tape-ticks {
-      stroke-dasharray: 450;
-      stroke-dashoffset: 450;
-      transition: stroke-dashoffset 850ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .tape-group.active .tape-ribbon,
-    .tape-group.active .tape-ticks {
-      stroke-dashoffset: 0 !important;
-    }
-
-    .tape-badge {
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 350ms ease 250ms, transform 350ms ease 250ms;
-    }
-
-    .tape-group.active .tape-badge {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
-    }
-
-    .measure-explanations-grid {
-      display: grid !important;
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 1rem !important;
-      margin-bottom: 1.5rem !important;
-      text-align: center !important;
-      box-sizing: border-box !important;
-    }
-
-    .measure-exp-card {
-      background: rgba(14, 23, 44, 0.6) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 16px !important;
-      padding: 1.35rem 1.2rem !important;
-      backdrop-filter: blur(10px) !important;
-      -webkit-backdrop-filter: blur(10px) !important;
-      cursor: pointer !important;
-      transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-      position: relative !important;
-      text-align: center !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: flex-start !important;
-      box-sizing: border-box !important;
-    }
-
-    .measure-exp-card:hover {
-      border-color: rgba(0, 180, 216, 0.4) !important;
-      background: rgba(18, 30, 58, 0.75) !important;
-      transform: translateY(-2px) !important;
-    }
-
-    .measure-exp-card.active {
-      border-color: #00B4D8 !important;
-      background: rgba(16, 31, 62, 0.92) !important;
-      box-shadow: 0 8px 24px -4px rgba(0, 180, 216, 0.3) !important;
-      transform: translateY(-3px) !important;
-    }
-
-    .exp-card-top {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 0.45rem !important;
-      margin-bottom: 0.5rem !important;
-    }
-
-    .exp-step-num {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.74rem !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.08em !important;
-      text-transform: uppercase !important;
-      color: #38BDF8 !important;
-    }
-
-    .exp-card-dot {
-      width: 6px !important;
-      height: 6px !important;
-      border-radius: 50% !important;
-      background: rgba(255, 255, 255, 0.25) !important;
-      transition: all 200ms ease !important;
-    }
-
-    .measure-exp-card.active .exp-card-dot {
-      background: #38BDF8 !important;
-      box-shadow: 0 0 8px #38BDF8 !important;
-    }
-
-    .exp-card-title {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 1.18rem !important;
-      font-weight: 700 !important;
-      color: #FFFFFF !important;
-      letter-spacing: -0.015em !important;
-      margin: 0 0 0.4rem 0 !important;
-    }
-
-    .exp-card-formula {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.82rem !important;
-      font-weight: 600 !important;
-      color: #38BDF8 !important;
-      background: rgba(0, 180, 216, 0.1) !important;
-      border: 1px solid rgba(0, 180, 216, 0.22) !important;
-      padding: 0.22rem 0.7rem !important;
-      border-radius: 9999px !important;
-      margin-bottom: 0.6rem !important;
-      display: inline-block !important;
-      letter-spacing: 0.01em !important;
-    }
-
-    .exp-card-desc {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.84rem !important;
-      color: #94A3B8 !important;
-      line-height: 1.5 !important;
-      margin: 0 !important;
-      max-width: 230px !important;
-    }
-
-    .measure-footer-bar {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      text-align: center !important;
-      background: rgba(11, 19, 36, 0.7) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 16px !important;
-      padding: 1.15rem 1.5rem !important;
-      gap: 0.85rem !important;
-      box-sizing: border-box !important;
-    }
-
-    .measure-example-box {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 0.65rem !important;
-      flex-wrap: wrap !important;
-    }
-
-    .example-box-label {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.76rem !important;
-      font-weight: 700 !important;
-      text-transform: uppercase !important;
-      color: #94A3B8 !important;
-      letter-spacing: 0.06em !important;
-    }
-
-    .example-box-val {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.95rem !important;
-      font-weight: 700 !important;
-      color: #FFFFFF !important;
-      background: rgba(0, 180, 216, 0.14) !important;
-      border: 1px solid rgba(0, 180, 216, 0.35) !important;
-      padding: 0.25rem 0.75rem !important;
-      border-radius: 9999px !important;
-      letter-spacing: 0.02em !important;
-    }
-
-    .preset-chip-list {
-      display: inline-flex !important;
-      gap: 0.4rem !important;
-      align-items: center !important;
-      justify-content: center !important;
-      flex-wrap: wrap !important;
-    }
-
-    .preset-chip {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #94A3B8 !important;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.75rem !important;
-      font-weight: 600 !important;
-      padding: 0.22rem 0.65rem !important;
-      border-radius: 9999px !important;
-      cursor: pointer !important;
-      transition: all 180ms ease !important;
-    }
-
-    .preset-chip:hover {
-      background: rgba(255, 255, 255, 0.12) !important;
-      color: #FFFFFF !important;
-    }
-
-    .preset-chip.active {
-      background: rgba(0, 180, 216, 0.2) !important;
-      border-color: #00B4D8 !important;
-      color: #38BDF8 !important;
-    }
-
-    .measure-advice-pill {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 0.45rem !important;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
-      font-size: 0.85rem !important;
-      color: #CBD5E1 !important;
-    }
-
-    .measure-advice-pill svg {
-      color: #38BDF8 !important;
-      flex-shrink: 0 !important;
-    }
-
-    @media (max-width: 768px) {
-      .measure-guide-section {
-        padding: 2.75rem 0 !important;
-      }
-      .measure-stage-card {
-        padding: 0.75rem !important;
-        border-radius: 16px !important;
-      }
-      .measure-explanations-grid {
-        grid-template-columns: 1fr !important;
-        gap: 0.75rem !important;
-      }
-      .measure-footer-bar {
-        padding: 1rem !important;
-      }
-    }
-  </style>
-
-  <section class="measure-guide-section" id="how-to-measure">
-    <div class="measure-container">
-      <!-- Section Header -->
-      <div class="measure-header">
-        <span class="measure-tag">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 6H3"/><path d="M7 12H3"/><path d="M17 18H3"/></svg>
-          Sizing Guide
-        </span>
-        <h2 class="measure-title">How to Measure Your Mattress</h2>
-        <p class="measure-subtitle">Follow these 3 simple steps to find the exact dimensions for your cot or bed frame.</p>
-      </div>
-
-      <!-- Step Navigation Tabs -->
-      <div class="measure-tabs-wrapper">
-        <div class="measure-step-tabs" role="tablist">
-          <button type="button" class="measure-tab-btn active" data-tab="1" onclick="selectMeasureStep(1)">
-            <span class="tab-badge">01</span> Length
-          </button>
-          <button type="button" class="measure-tab-btn" data-tab="2" onclick="selectMeasureStep(2)">
-            <span class="tab-badge">02</span> Width
-          </button>
-          <button type="button" class="measure-tab-btn" data-tab="3" onclick="selectMeasureStep(3)">
-            <span class="tab-badge">03</span> Thickness
-          </button>
-          <button type="button" class="measure-tab-btn" data-tab="all" onclick="selectMeasureStep('all')">
-            <span class="tab-badge">✦</span> All Dimensions
-          </button>
-        </div>
-      </div>
-
-      <!-- Center Stage: Unified 3D Isometric Luxury Mattress & Animated Measuring Tapes -->
-      <div class="measure-stage-card">
-        <svg class="measure-svg-canvas" viewBox="0 0 860 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <!-- Drop Shadow for Mattress -->
-            <filter id="mat-shadow-prod" x="-10%" y="-10%" width="120%" height="130%">
-              <feDropShadow dx="0" dy="25" stdDeviation="22" flood-color="#000000" flood-opacity="0.65"/>
-            </filter>
-
-            <!-- Drop Shadow for Measuring Tapes & Badges -->
-            <filter id="tape-glow-prod" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.45"/>
-            </filter>
-
-            <!-- Gradients for Mattress 3D Lighting -->
-            <linearGradient id="quiltSurfaceGradProd" x1="440" y1="65" x2="420" y2="270" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#FFFFFF"/>
-              <stop offset="60%" stop-color="#F1F5F9"/>
-              <stop offset="100%" stop-color="#E2E8F0"/>
-            </linearGradient>
-
-            <linearGradient id="sideWidthGradProd" x1="190" y1="205" x2="420" y2="300" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#1E293B"/>
-              <stop offset="100%" stop-color="#0F172A"/>
-            </linearGradient>
-
-            <linearGradient id="sideLengthGradProd" x1="420" y1="300" x2="670" y2="190" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#0F172A"/>
-              <stop offset="100%" stop-color="#1E293B"/>
-            </linearGradient>
-
-            <linearGradient id="tapeYellowGradProd" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FDE047"/>
-              <stop offset="100%" stop-color="#EAB308"/>
-            </linearGradient>
-
-            <!-- Pattern for Quilted Diamond Mattress Surface -->
-            <pattern id="quiltDiamondsProd" width="32" height="32" patternTransform="rotate(25 0 0)" patternUnits="userSpaceOnUse">
-              <path d="M 16 0 L 32 16 L 16 32 L 0 16 Z" fill="none" stroke="rgba(148, 163, 184, 0.28)" stroke-width="1"/>
-              <circle cx="16" cy="16" r="1.5" fill="rgba(100, 116, 139, 0.4)"/>
-            </pattern>
-          </defs>
-
-          <!-- 1. Ambient Floor Shadow -->
-          <ellipse cx="430" cy="340" rx="270" ry="55" fill="black" opacity="0.45" filter="blur(16px)" />
-
-          <!-- 2. The 3D Isometric Luxury Mattress -->
-          <g filter="url(#mat-shadow-prod)">
-            <!-- Front-Left Wall: Width Face -->
-            <path d="M 190 175 L 420 270 L 420 330 L 190 235 Z" fill="url(#sideWidthGradProd)" />
-            <!-- Velvet Vertical Fluting / Stitch Ribs on Front-Left Wall -->
-            <path d="M 230 191 L 230 251 M 270 207 L 270 267 M 310 223 L 310 283 M 350 239 L 350 299 M 390 255 L 390 315" stroke="rgba(255, 255, 255, 0.07)" stroke-width="1.5" />
-
-            <!-- Front-Right Wall: Length Face -->
-            <path d="M 420 270 L 670 160 L 670 220 L 420 330 Z" fill="url(#sideLengthGradProd)" />
-            <!-- Velvet Vertical Fluting / Stitch Ribs on Front-Right Wall -->
-            <path d="M 460 252 L 460 312 M 500 234 L 500 294 M 540 216 L 540 276 M 580 198 L 580 258 M 620 180 L 620 240" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" />
-
-            <!-- Bottom Base Tape-Edge Cord -->
-            <path d="M 190 235 L 420 330 L 670 220" stroke="#334155" stroke-width="3" fill="none" stroke-linejoin="round" />
-
-            <!-- Top Quilted Sleeping Cushion Base -->
-            <path d="M 440 65 L 670 160 L 420 270 L 190 175 Z" fill="url(#quiltSurfaceGradProd)" />
-            <!-- Diamond Quilted Pattern Overlay -->
-            <path d="M 440 65 L 670 160 L 420 270 L 190 175 Z" fill="url(#quiltDiamondsProd)" />
-
-            <!-- Top Perimeter Luxury Piped Edge Cord -->
-            <path d="M 440 65 L 670 160 L 420 270 L 190 175 Z" stroke="#CBD5E1" stroke-width="3.5" fill="none" stroke-linejoin="round" />
-
-            <!-- Pillowtop Seam Accent -->
-            <path d="M 190 193 L 420 288 L 670 178" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" fill="none" />
-
-            <!-- LORA Luxury Woven Label at Foot Corner -->
-            <g transform="translate(390, 260) rotate(22)">
-              <rect x="-16" y="-8" width="32" height="16" rx="2" fill="#0284C7" stroke="#38BDF8" stroke-width="0.8"/>
-              <text x="0" y="3.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="7" font-weight="900" fill="#FFFFFF" letter-spacing="1">LORA</text>
-            </g>
-          </g>
-
-          <!-- ==========================================
-               STEP 1: LENGTH MEASURING TAPE (Head to Foot)
-               ========================================== -->
-          <g id="tape-step-1" class="tape-group active">
-            <!-- Extension Guide Projections -->
-            <line x1="440" y1="65" x2="425" y2="48" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="190" y1="175" x2="175" y2="158" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-
-            <!-- Measuring Tape Yellow Ribbon -->
-            <path class="tape-ribbon" d="M 425 48 L 175 158" stroke="url(#tapeYellowGradProd)" stroke-width="14" stroke-linecap="square" filter="url(#tape-glow-prod)"/>
-            <!-- Measuring Tape Inch Tick Marks -->
-            <path class="tape-ticks" d="M 425 48 L 175 158" stroke="#0F172A" stroke-width="7" stroke-dasharray="2 6" stroke-linecap="butt"/>
-            <!-- End Hook Metallic Brackets -->
-            <line x1="421" y1="40" x2="429" y2="56" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-            <line x1="171" y1="150" x2="179" y2="166" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-
-            <!-- Floating Measurement Badge -->
-            <g class="tape-badge" transform="translate(300, 78)">
-              <rect x="-85" y="-18" width="170" height="36" rx="18" fill="rgba(11, 19, 36, 0.95)" stroke="#FACC15" stroke-width="1.5" filter="url(#tape-glow-prod)"/>
-              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#FFFFFF">
-                Length : <tspan fill="#FACC15" id="svg-len-val">72"</tspan>
-              </text>
-              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1">
-                HEAD TO FOOT
-              </text>
-            </g>
-          </g>
-
-          <!-- ==========================================
-               STEP 2: WIDTH MEASURING TAPE (Side to Side)
-               ========================================== -->
-          <g id="tape-step-2" class="tape-group">
-            <!-- Extension Guide Projections -->
-            <line x1="190" y1="175" x2="165" y2="205" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="420" y1="270" x2="395" y2="300" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-
-            <!-- Measuring Tape Yellow Ribbon -->
-            <path class="tape-ribbon" d="M 165 205 L 395 300" stroke="url(#tapeYellowGradProd)" stroke-width="14" stroke-linecap="square" filter="url(#tape-glow-prod)"/>
-            <!-- Measuring Tape Inch Tick Marks -->
-            <path class="tape-ticks" d="M 165 205 L 395 300" stroke="#0F172A" stroke-width="7" stroke-dasharray="2 6" stroke-linecap="butt"/>
-            <!-- End Hook Metallic Brackets -->
-            <line x1="159" y1="198" x2="171" y2="212" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-            <line x1="389" y1="293" x2="401" y2="307" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-
-            <!-- Floating Measurement Badge -->
-            <g class="tape-badge" transform="translate(280, 335)">
-              <rect x="-80" y="-18" width="160" height="36" rx="18" fill="rgba(11, 19, 36, 0.95)" stroke="#FACC15" stroke-width="1.5" filter="url(#tape-glow-prod)"/>
-              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#FFFFFF">
-                Width : <tspan fill="#FACC15" id="svg-wid-val">60"</tspan>
-              </text>
-              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1">
-                SIDE TO SIDE
-              </text>
-            </g>
-          </g>
-
-          <!-- ==========================================
-               STEP 3: THICKNESS MEASURING TAPE (Mattress Height)
-               ========================================== -->
-          <g id="tape-step-3" class="tape-group">
-            <!-- Extension Guide Projections -->
-            <line x1="420" y1="270" x2="450" y2="270" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="420" y1="330" x2="450" y2="330" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-
-            <!-- Measuring Tape Yellow Ribbon -->
-            <path class="tape-ribbon" d="M 450 270 L 450 330" stroke="url(#tapeYellowGradProd)" stroke-width="14" stroke-linecap="square" filter="url(#tape-glow-prod)"/>
-            <!-- Measuring Tape Inch Tick Marks -->
-            <path class="tape-ticks" d="M 450 270 L 450 330" stroke="#0F172A" stroke-width="7" stroke-dasharray="2 6" stroke-linecap="butt"/>
-            <!-- End Hook Metallic Brackets -->
-            <line x1="442" y1="270" x2="458" y2="270" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-            <line x1="442" y1="330" x2="458" y2="330" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-
-            <!-- Floating Measurement Badge -->
-            <g class="tape-badge" transform="translate(565, 300)">
-              <rect x="-85" y="-18" width="170" height="36" rx="18" fill="rgba(11, 19, 36, 0.95)" stroke="#FACC15" stroke-width="1.5" filter="url(#tape-glow-prod)"/>
-              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#FFFFFF">
-                Thickness : <tspan fill="#FACC15" id="svg-thk-val">6"</tspan>
-              </text>
-              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1">
-                MATTRESS HEIGHT
-              </text>
-            </g>
-          </g>
-        </svg>
-      </div>
-
-      <!-- Explanations Directly Under Visual -->
-      <div class="measure-explanations-grid">
-        <!-- Step 1 Card -->
-        <div class="measure-exp-card active" data-exp="1" onclick="selectMeasureStep(1)">
-          <div class="exp-card-top">
-            <span class="exp-step-num">STEP 01</span>
-            <span class="exp-card-dot"></span>
-          </div>
-          <h3 class="exp-card-title">Length</h3>
-          <span class="exp-card-formula">Length = top to bottom</span>
-          <p class="exp-card-desc">Measure along the long edge from head to foot of the mattress.</p>
-        </div>
-
-        <!-- Step 2 Card -->
-        <div class="measure-exp-card" data-exp="2" onclick="selectMeasureStep(2)">
-          <div class="exp-card-top">
-            <span class="exp-step-num">STEP 02</span>
-            <span class="exp-card-dot"></span>
-          </div>
-          <h3 class="exp-card-title">Width</h3>
-          <span class="exp-card-formula">Width = side to side</span>
-          <p class="exp-card-desc">Measure horizontally across the bed from one outer side to the other.</p>
-        </div>
-
-        <!-- Step 3 Card -->
-        <div class="measure-exp-card" data-exp="3" onclick="selectMeasureStep(3)">
-          <div class="exp-card-top">
-            <span class="exp-step-num">STEP 03</span>
-            <span class="exp-card-dot"></span>
-          </div>
-          <h3 class="exp-card-title">Thickness</h3>
-          <span class="exp-card-formula">Thickness = height of the mattress</span>
-          <p class="exp-card-desc">Measure vertically from the bottom base tape-edge to the top sleeping crest.</p>
-        </div>
-      </div>
-
-      <!-- Example Size & Advice Footer Bar -->
-      <div class="measure-footer-bar">
-        <div class="measure-example-box">
-          <span class="example-box-label">Example Size:</span>
-          <span class="example-box-val" id="measure-example-display">72 × 60 × 6 inches</span>
-
-          <div class="preset-chip-list">
-            <button type="button" class="preset-chip" onclick="applyPresetSize(72, 36, 6, this)">Single (72×36)</button>
-            <button type="button" class="preset-chip" onclick="applyPresetSize(72, 48, 6, this)">Double (72×48)</button>
-            <button type="button" class="preset-chip active" onclick="applyPresetSize(72, 60, 6, this)">Queen (72×60)</button>
-            <button type="button" class="preset-chip" onclick="applyPresetSize(72, 72, 6, this)">King (72×72)</button>
+          <!-- Single Authoritative Bottom Bar -->
+          <div class="delivery-guarantee-bar">
+            <div class="guarantee-icon">🚚</div>
+            <div class="guarantee-text">
+              <strong>The LORA Flat-Delivery Promise:</strong> Handcrafted to order, sealed in 3-ply heavy-duty casing, and delivered flat into your home. Never rolled. Never crushed.
+            </div>
           </div>
         </div>
+        <script>
+          function switchDeliveryMode(btn, mode) {
+            const showcase = btn.closest('.lora-delivery-showcase');
+            if (!showcase) return;
+            const buttons = showcase.querySelectorAll('.delivery-mode-btn');
+            const stage = showcase.querySelector('.delivery-visual-stage');
+            buttons.forEach(b => {
+              const isActive = b === btn;
+              b.classList.toggle('is-active', isActive);
+              b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            if (stage) stage.setAttribute('data-active-view', mode);
+          }
+        </script>
 
-        <div class="measure-advice-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span>Measure your current bed or mattress before choosing a size.</span>
-        </div>
+        <!-- Accordion 5: Bed Measurement & Cot Sizing Guide -->
+        <details class="lora-accordion" id="how-to-measure">
+          <summary class="lora-accordion-summary">
+            <div class="lora-accordion-title-wrap">
+              <span class="lora-accordion-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0L1.7 15.7a1 1 0 0 1 0-1.4L14.3 1.7a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6" y2="12"/><line x1="10.5" y1="7.5" x2="9" y2="9"/><line x1="13.5" y1="4.5" x2="12" y2="6"/></svg>
+              </span>
+              <div>
+                <span class="lora-accordion-title">Bed Measurement & Cot Sizing Guide</span>
+                <span class="lora-accordion-subtitle">Measure inside frame edges in inches for a perfect drop-in fit</span>
+              </div>
+            </div>
+            <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="lora-accordion-body">
+            <div style="background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem;">
+              <h4 style="color: #FFFFFF; font-size: 1.05rem; margin-bottom: 0.75rem;">Standard Indian Bed Frame Sizing Chart</h4>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+                <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                  <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">Queen Size (5.0 ft)</strong>
+                  <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 60" or 75" × 60"<br>Standard Master Bedroom</span>
+                </div>
+                <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                  <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">King Size (6.0 ft)</strong>
+                  <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 72" or 75" × 72"<br>Spacious Luxury Master</span>
+                </div>
+                <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                  <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">Double / Single</strong>
+                  <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 48" (Double)<br>78" × 36" (Single / Diwan)</span>
+                </div>
+              </div>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+                💡 <strong>Measurement Tip:</strong> Always measure the inside edge of your bed frame (where the mattress sits), not the outer headboard or side railing. Need an unconventional length or width? Choose <strong>"Custom Size"</strong> in the selector above with 0% extra customization charge!
+              </p>
+            </div>
+          </div>
+        </details>
       </div>
     </div>
   </section>
-
-  <!-- Interactive Measure Animation Script -->
-  <script>
-    (function() {
-      let currentStep = 1;
-      let cycleTimer = null;
-      const totalSteps = 3;
-
-      window.selectMeasureStep = function(step) {
-        if (cycleTimer) {
-          clearInterval(cycleTimer);
-          cycleTimer = null;
-        }
-        renderMeasureStep(step);
-      };
-
-      window.applyPresetSize = function(l, w, t, btn) {
-        const svgL = document.getElementById('svg-len-val');
-        const svgW = document.getElementById('svg-wid-val');
-        const svgT = document.getElementById('svg-thk-val');
-        const display = document.getElementById('measure-example-display');
-
-        if (svgL) svgL.textContent = l + '"';
-        if (svgW) svgW.textContent = w + '"';
-        if (svgT) svgT.textContent = t + '"';
-        if (display) display.textContent = l + ' × ' + w + ' × ' + t + ' inches';
-
-        document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-      };
-
-      function renderMeasureStep(step) {
-        const groups = {
-          1: document.getElementById('tape-step-1'),
-          2: document.getElementById('tape-step-2'),
-          3: document.getElementById('tape-step-3')
-        };
-
-        const tabs = document.querySelectorAll('.measure-tab-btn');
-        const cards = document.querySelectorAll('.measure-exp-card');
-
-        tabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') == step));
-        cards.forEach(c => c.classList.toggle('active', c.getAttribute('data-exp') == step));
-
-        if (step === 'all') {
-          Object.values(groups).forEach(g => { if (g) g.classList.add('active'); });
-        } else {
-          Object.keys(groups).forEach(k => {
-            if (groups[k]) groups[k].classList.toggle('active', k == step);
-          });
-        }
-      }
-
-      function startAutoCycle() {
-        if (cycleTimer) clearInterval(cycleTimer);
-        cycleTimer = setInterval(() => {
-          currentStep = (currentStep % totalSteps) + 1;
-          renderMeasureStep(currentStep);
-        }, 3600);
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startAutoCycle);
-      } else {
-        startAutoCycle();
-      }
-    })();
-  </script>
 
   <!-- =========================================================
        6. FOOTER
@@ -2292,9 +2052,6 @@
           <p class="footer-subtext">
             Precision sleep engineering delivered direct from our robotics manufacturing plant. Up to 15 years warranty, zero middleman markups, certified materials.
           </p>
-          <a href="https://wa.me/919876543210" class="btn btn-whatsapp btn-sm" target="_blank">
-            WhatsApp Sleep Concierge
-          </a>
         </div>
 
         <div>
@@ -2351,25 +2108,25 @@
       "01": {
         id: "01",
         name: "01. LORA CLOUD 7™",
-        tag: "01 / CLOUD SERIES",
-        tagline: "Super Soft 7-Zone Dual Comfort",
-        category: "Cloud Soft Plush Series",
-        basePrice: 21999,
+        tag: "01 / EUROTOP COMFORT",
+        tagline: "Plush Eurotop Feel & Balanced Everyday Support (7-Inch)",
+        category: "Eurotop Comfort Series",
+        basePrice: 22999,
         mrp: 36999,
-        warranty: "10 Years Warranty",
-        firmnessVal: "SOFT ●●○○○ FIRM (2.0/5)",
-        feelLabel: "Gentle Cloud Cushioning",
+        warranty: "3 Years Warranty",
+        firmnessVal: "SOFT ●●○○○ FIRM",
+        feelLabel: "Medium-Soft (7\" Profile)",
         meterPercent: "38%",
-        postureRec: "Recommended for side sleepers and sleepers seeking deep joint pressure relief with zero shoulder pinch.",
+        postureRec: "Sleepers who prefer a softer, cushioned feel with balanced everyday body support.",
         heroImg: "assets/comfort-plush.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
-        roomImg: "assets/lifestyle-editorial.jpg",
-        core: "7-Zone Adaptive Cloud Foam + Aerodynamic Transition Core",
-        cover: "Micro-Quilted Cloud Knitted Fabric with PCM Cooling Technology",
-        motion: "Zero Motion Disturbance (Independent Absorption)",
+        roomImg: "assets/hero-bedroom-dawn.jpg",
+        core: "Plush Eurotop comfort construction with balanced body support",
+        cover: "Cushioned sleeping surface with comfortable pressure distribution",
+        motion: "Balanced pressure distribution & everyday durability",
         defaultStock: "in-stock",
-        dispatchLoc: "Bengaluru / Mumbai Direct Hub",
+        dispatchLoc: "Bengaluru Direct Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
         thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
         inchAddons: {
@@ -2382,40 +2139,39 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "LIMITED FESTIVE OFFER: FLAT 15% OFF + FREE SLEEP BUNDLE",
-          desc: "Includes 2 Ergonomic Memory Pillows + 1 Waterproof Mattress Protector (Worth ₹4,999) complimentary today.",
+          title: "FACTORY DIRECT SAVINGS: FLAT 15% OFF",
+          desc: "Shipped 100% full-size and flat in protective multi-layer packaging.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Micro-Quilted Cloud Knitted Cover with Active Cooling PCM", desc: "Phase-change material woven directly into high-GSM circular knit fabric to absorb body heat and maintain thermal equilibrium." },
-          { num: 2, title: "7-Zone Pressure-Relief Adaptive Cloud Foam", desc: "Segmented into 7 anatomical relief zones that soften under broad shoulders and hips while supporting the lumbar spine." },
-          { num: 3, title: "Breathable Aerodynamic Transition Foam", desc: "Open-cell structure facilitates continuous airflow and cushions the transition to the high-density foundation." },
-          { num: 4, title: "High-Density Anti-Sag Support Foundation", desc: "Engineered with 32D high-density core to prevent sagging, dipping, or indentation over 10+ years of sleep." }
+          { num: 1, title: "Plush Eurotop Surface Quilting", desc: "Soft, comfortable cushioned quilt for everyday sleeping ease." },
+          { num: 2, title: "Adaptive Dual Comfort Cushioning Layer", desc: "Contoured comfort layer delivering balanced pressure relief." },
+          { num: 3, title: "High-Density Support Core (7-Inch Stated Profile)", desc: "Reliable base foundation designed for lasting durability with a 3-year warranty." }
         ]
       },
       "02": {
         id: "02",
         name: "02. LORA CLOUD ORTHO™",
-        tag: "02 / CLINICAL ORTHOPEDIC",
-        tagline: "Medium-Firm SpineAlign™ High Density Core",
-        category: "Clinical Orthopedic Series",
+        tag: "02 / EUROTOP COMFORT",
+        tagline: "Support-Focused Eurotop Comfort (9-Inch Profile)",
+        category: "Eurotop Comfort Series",
         basePrice: 23499,
         mrp: 38999,
-        warranty: "12 Years Warranty",
-        firmnessVal: "SOFT ●●●●○ FIRM (4.0/5)",
-        feelLabel: "Targeted Lumbar Support",
-        meterPercent: "78%",
-        postureRec: "Recommended for back sleepers, individuals with lower back stiffness, and those needing spine doctor recommended support.",
+        warranty: "5 Years Warranty",
+        firmnessVal: "SOFT ●●●○○ FIRM",
+        feelLabel: "Balanced Medium (9\" Profile)",
+        meterPercent: "55%",
+        postureRec: "Sleepers wanting cushioning with balanced support, preferring a Medium feel over Cloud 7.",
         heroImg: "assets/comfort-firm.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "High-Density Orthopedic Pressure Relief Foam + SpineSupport Bonded Core",
-        cover: "Antibacterial Bamboo Air-Mesh Fabric with Anti-Allergenic Guard",
-        motion: "High Structural Motion Resistance",
+        core: "Support-focused Eurotop construction with generous 9-inch profile",
+        cover: "Enhanced cushioning plush top comfort",
+        motion: "Balanced body support & cushioned stability",
         defaultStock: "in-stock",
         dispatchLoc: "Hyderabad / Bengaluru Direct Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2430,40 +2186,38 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "ORTHOPEDIC SPINE CARE SALE: FLAT 15% OFF",
-          desc: "Includes 2 Contoured Cervical Memory Foam Pillows (Worth ₹3,499) complimentary today.",
+          title: "EUROTOP COMFORT SPECIAL: FLAT 15% OFF",
+          desc: "Generous 9-inch depth with balanced full-body spinal alignment.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Antibacterial Bamboo Fabric with Airflow Quilting", desc: "Naturally hypoallergenic bamboo fibers woven with micro-ventilation channels to stay dust-mite free and fresh." },
-          { num: 2, title: "High-Density Orthopedic Pressure Relief Foam", desc: "Firm, resilient foam that contours to the lumbar curve without allowing the spine to sink into unnatural lordosis." },
-          { num: 3, title: "SpineSupport Reinforced Bonded Core", desc: "High-compression rebonded substrate providing medical-grade orthopedic firmness tested to support up to 250 kg." },
-          { num: 4, title: "Heavy-Duty Anti-Sag Perimeter Encasing", desc: "Reinforces mattress boundaries so you can sit or sleep on the edge without roll-off sensation." }
+          { num: 1, title: "Generous 9-Inch Eurotop Comfort Layer", desc: "Expanded comfort profile offering extra cushioning depth." },
+          { num: 2, title: "Orthopedic High-Density Support Core", desc: "Structured support core designed for spine alignment with a 5-year warranty." }
         ]
       },
       "03": {
         id: "03",
         name: "03. LORA PLUSH™",
-        tag: "03 / LUXURY PLUSH",
-        tagline: "Ultra-Plush 100% Natural Latex Pillow-Top",
-        category: "Natural Latex & Eurotop",
+        tag: "03 / PILLOW TOP",
+        tagline: "Gentle Pressure Relief & Relaxed Sleeping Feel",
+        category: "Pillow Top Series",
         basePrice: 27999,
         mrp: 44999,
-        warranty: "12 Years Warranty",
-        firmnessVal: "SOFT ●●○○○ FIRM (2.5/5)",
-        feelLabel: "5-Star Hotel Decadence",
-        meterPercent: "32%",
-        postureRec: "Recommended for side and combination sleepers who crave the floating buoyancy of 100% natural organic latex.",
+        warranty: "5 Years Warranty",
+        firmnessVal: "SOFT ●○○○○ FIRM",
+        feelLabel: "Plush / Soft Pillow Top",
+        meterPercent: "25%",
+        postureRec: "People who love a softer, cosier, cushioned mattress surface with gentle pressure relief.",
         heroImg: "assets/comfort-plush.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "100% Organic Dunlop Latex Sheet + High Resilience Aerating Foundation",
-        cover: "Cashmere-Infused Belgium Knitted Eurotop with Silk Piping",
-        motion: "Zero Vibration Lateral Isolation",
+        core: "Gentle pressure relief pillow-top comfort construction",
+        cover: "Premium surface finish for a relaxed sleeping feel",
+        motion: "Soft cushioned contouring",
         defaultStock: "in-stock",
         dispatchLoc: "Mumbai Direct Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2478,40 +2232,38 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "5-STAR LUXURY UPGRADE: 15% OFF + HOTEL BEDDING KIT",
-          desc: "Complimentary 400 TC Egyptian Cotton Fitted Sheet + 2 Down Alternative Pillows.",
+          title: "PLUSH LUXURY COMFORT: FLAT 15% OFF",
+          desc: "Pillow-top surface cradling joints with gentle pressure relief.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Cashmere-Infused Belgium Knitted Eurotop", desc: "Ultra-soft, hand-tufted European pillowtop layer that offers immediate luxurious sinking comfort." },
-          { num: 2, title: "100% Organic Dunlop Latex Comfort Sheet", desc: "Harvested from Kerala rubber trees. Naturally buoyant, antimicrobial, and ventilated with thousands of pin-core air channels." },
-          { num: 3, title: "High-Resilience Aerating Foam Transition", desc: "Dynamic shock-absorbing layer that redistributes movement seamlessly across the mattress." },
-          { num: 4, title: "Structural Zero-Vibration Foundation", desc: "Durable reinforced base foam engineered to maintain height and stability indefinitely." }
+          { num: 1, title: "Plush Pillow-Top Cushioning", desc: "Gentle surface cushioning delivering a relaxed, cosy sleeping sensation." },
+          { num: 2, title: "High-Resilience Supportive Substrate", desc: "Supple base support providing 5 years of dependable comfort." }
         ]
       },
       "04": {
         id: "04",
         name: "04. LORA ORTHO HYBRID™",
         tag: "04 / ORTHO HYBRID",
-        tagline: "Pocket Spring + High Resilience Orthopedic Hybrid",
-        category: "Orthopedic Pocket Hybrid",
+        tagline: "Responsive Comfort & Enhanced Structural Stability",
+        category: "Hybrid Ortho-Support Series",
         basePrice: 29499,
         mrp: 48999,
-        warranty: "12 Years Warranty",
-        firmnessVal: "SOFT ●●●◐○ FIRM (3.5/5)",
-        feelLabel: "Balanced Contour & Bounce",
-        meterPercent: "65%",
-        postureRec: "Ideal for couples with different weights, back and stomach sleepers, and anyone who hates motion disturbance.",
+        warranty: "10 Years Warranty",
+        firmnessVal: "SOFT ●●●●○ FIRM",
+        feelLabel: "Medium-Firm Responsive",
+        meterPercent: "75%",
+        postureRec: "Sleepers looking for stronger support with responsive comfort without choosing a plush surface.",
         heroImg: "assets/comfort-balanced.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "Individually Encased 5-Zone Pocket Springs + High Resilience Foam",
-        cover: "Thermoregulating Knitted Top Fabric with Breathable Mesh Borders",
-        motion: "Absolute Zero Partner Disturbance",
+        core: "Support-focused hybrid ortho construction",
+        cover: "Responsive comfort quilted surface",
+        motion: "Enhanced stability & balanced body support",
         defaultStock: "in-stock",
         dispatchLoc: "Bengaluru Factory",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2526,40 +2278,38 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "ZERO MOTION HYBRID DEAL: 15% OFF + 2 FREE PILLOWS",
-          desc: "Zero disturbance guaranteed: Direct factory manufacturing with free home delivery.",
+          title: "ORTHO HYBRID STABILITY: 15% OFF",
+          desc: "Dynamic responsive comfort backed by a 10-year warranty.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Thermoregulating Knitted Top Fabric", desc: "Active cooling fabric that releases heat build-up throughout the night." },
-          { num: 2, title: "High Resilience Adaptive Foam Cushioning", desc: "Ergonomic comfort layer that cushions joint pressure while preserving responsiveness." },
-          { num: 3, title: "Individually Encased 5-Zone Pocket Springs", desc: "1,000+ heat-treated carbon titanium coils wrapped in breathable fabric pockets to eliminate motion transfer entirely." },
-          { num: 4, title: "Perimeter Foam Encasement", desc: "High-density foam border surrounds the coil core, delivering edge-to-edge sleeping stability." }
+          { num: 1, title: "Responsive Hybrid Comfort Top", desc: "Contoured cushioning that adapts dynamically to your posture." },
+          { num: 2, title: "Engineered Ortho-Support Hybrid Core", desc: "High-stability core engineered for durable spine support with a 10-year warranty." }
         ]
       },
       "05": {
         id: "05",
         name: "05. LORA ORTHO LATEX™",
-        tag: "05 / 100% ORGANIC LATEX",
-        tagline: "100% Pure Organic Dunlop Latex + Ortho Core",
-        category: "Eco-Organic Latex",
+        tag: "05 / ORTHO LATEX",
+        tagline: "Responsive Latex Cushioning & Breathable Comfort",
+        category: "Latex Comfort Series",
         basePrice: 34999,
         mrp: 58999,
-        warranty: "15 Years Warranty",
-        firmnessVal: "SOFT ●●●●○ FIRM (4.0/5)",
-        feelLabel: "Resilient Organic Pushback",
-        meterPercent: "75%",
-        postureRec: "Best for eco-conscious sleepers, hot sleepers, and those who need firm pushback without synthetic chemical off-gassing.",
+        warranty: "12 Years Warranty",
+        firmnessVal: "SOFT ●●●●○ FIRM",
+        feelLabel: "Medium-Firm Latex Comfort",
+        meterPercent: "72%",
+        postureRec: "Sleepers who specifically prefer responsive latex comfort with stronger medium-firm support.",
         heroImg: "assets/material-natural-latex.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "100% Pure Natural Dunlop Latex + High-Density Orthopedic Substrate",
-        cover: "GOTS Certified Organic Cotton Jacquard Quilted Cover",
-        motion: "Natural Organic Pin-Core Absorption",
+        core: "Support-focused construction with responsive latex comfort layer",
+        cover: "Breathable comfort cover for balanced sleep feel",
+        motion: "Responsive cushioning pushback",
         defaultStock: "in-stock",
         dispatchLoc: "Kerala / Bengaluru Direct Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2574,40 +2324,38 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "ORGANIC SLEEP HARVEST: FLAT ₹5,000 OFF",
-          desc: "100% Natural GOLS/GOTS certified latex. Free organic cotton protector included.",
-          type: "flat",
-          value: 5000,
+          title: "LATEX COMFORT SERIES: FLAT 15% OFF",
+          desc: "Naturally buoyant latex cushioning with a 12-year warranty.",
+          type: "percent",
+          value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "GOTS Certified Organic Cotton Jacquard Quilted Cover", desc: "100% pure organic cotton free from synthetic bleaches, pesticides, or chemical dyes. Silky and cool." },
-          { num: 2, title: "100% Pure Natural Dunlop Latex (Kerala Sourced)", desc: "Zero synthetic blends. Provides instant buoyant pushback to keep spine straight and releases body heat naturally." },
-          { num: 3, title: "High-Density Orthopedic Natural Base", desc: "Dense organic substrate providing lifelong spine alignment support with zero sagging." },
-          { num: 4, title: "Anti-Skid Organic Bottom Fabric", desc: "Prevents mattress slippage on cot slats or box frames." }
+          { num: 1, title: "Breathable Natural Latex Comfort Layer", desc: "Resilient latex cushioning that offers responsive pushback and thermal airflow." },
+          { num: 2, title: "Reinforced Orthopedic Foundation", desc: "Dense orthopedic foundation engineered for 12 years of factory-warranted durability." }
         ]
       },
       "06": {
         id: "06",
         name: "06. LORA COMFORT CORE™",
-        tag: "06 / DUAL ADAPTIVE",
-        tagline: "Dual-Sided Adaptive High-Resilience Foam",
-        category: "Dual Comfort Reversible",
+        tag: "06 / PILLOW TOP",
+        tagline: "Cushioned Top Feel & Dependable Everyday Durability",
+        category: "Pillow Top Balanced Series",
         basePrice: 19499,
         mrp: 32999,
         warranty: "10 Years Warranty",
-        firmnessVal: "SOFT ●●●○○ FIRM (3.0/5)",
-        feelLabel: "Reversible Medium Soft / Medium Firm",
-        meterPercent: "50%",
-        postureRec: "Universal comfort for master suites, guest rooms, and sleepers whose preferences shift between soft and medium-firm.",
+        firmnessVal: "SOFT ●●●○○ FIRM",
+        feelLabel: "Balanced Medium Pillow Top",
+        meterPercent: "52%",
+        postureRec: "Sleepers looking for dependable everyday comfort with a balanced medium pillow-top feel.",
         heroImg: "assets/comfort-balanced.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "Dual-Sided Adaptive High-Resilience Ergonomic Core",
-        cover: "Breathable Air-Mesh Quilted Top with Reversible Zip",
-        motion: "Dual-Layer Dampening",
+        core: "Balanced support pillow-top everyday core",
+        cover: "Cushioned top surface with comfortable finish",
+        motion: "Balanced body support",
         defaultStock: "in-stock",
         dispatchLoc: "Delhi NCR Direct Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2622,39 +2370,38 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "VERSATILE DUAL COMFORT SALE: 15% OFF",
-          desc: "2 Firmnesses in 1 mattress. Includes 2 reversible microfiber pillows.",
+          title: "BALANCED COMFORT DEAL: 15% OFF",
+          desc: "Pillow-top comfort with dependable long-term shape retention.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Breathable Air-Mesh Quilted Top Cover", desc: "Lightweight, breathable stretch-knit fabric with 3D ventilation mesh along the borders." },
-          { num: 2, title: "Dual-Sided Adaptive High-Resilience Core", desc: "Side A is medium-soft contouring; flip to Side B for medium-firm orthopedic resilience." },
-          { num: 3, title: "High-Density Anti-Sag Foundation Base", desc: "Internal stabilizer layer guaranteeing shape retention and preventing premature softness." }
+          { num: 1, title: "Cushioned Top Surface Layer", desc: "Soft, welcoming pillow-top layer engineered for balanced everyday ease." },
+          { num: 2, title: "High-Durability Core Foundation", desc: "Dependable core substrate backing 10 years of consistent sleep comfort." }
         ]
       },
       "07": {
         id: "07",
         name: "07. LORA POCKET LUXE™",
-        tag: "07 / INDEPENDENT POCKET COILS",
-        tagline: "1,200+ Independent Pocket Coils for Zero Motion",
-        category: "Pocket Spring Luxury",
+        tag: "07 / POCKET SUPPORT",
+        tagline: "Independent Pocket Support & Reduced Partner Disturbance",
+        category: "Pocket Support Technology",
         basePrice: 28999,
         mrp: 47999,
-        warranty: "12 Years Warranty",
-        firmnessVal: "SOFT ●●●◐○ FIRM (3.5/5)",
-        feelLabel: "Zero Partner Disturbance",
-        meterPercent: "60%",
-        postureRec: "Engineered specifically for light sleepers whose partners toss and turn, get in/out of bed, or have different sleep hours.",
+        warranty: "10 Years Warranty",
+        firmnessVal: "SOFT ●●●○○ FIRM",
+        feelLabel: "Medium Independent Support",
+        meterPercent: "50%",
+        postureRec: "Couples and sleepers seeking independent pocket support and reduced partner disturbance.",
         heroImg: "assets/material-pocket-springs.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "1,200+ Individually Calibrated Pocket Springs + EdgeGuard Wall",
-        cover: "Silk-Touch Quilted Pillowtop Fabric with Acoustic Dampening",
-        motion: "100% Isolated Motion Transfer (Water Glass Tested)",
+        core: "Independent pocket support technology with premium cushioning",
+        cover: "Premium pillow-top comfort surface",
+        motion: "Reduced motion transfer & minimal partner disturbance",
         defaultStock: "in-stock",
         dispatchLoc: "Bengaluru Factory Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2669,40 +2416,38 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "POCKET LUXE SPECIAL: 15% OFF + SLEEP TECH BUNDLE",
-          desc: "Guaranteed undisturbed sleep. Includes 2 ergonomic pocket coil pillows.",
+          title: "POCKET LUXE SPECIAL: 15% OFF",
+          desc: "Pocket spring technology reducing motion transfer across the bed.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Silk-Touch Quilted Pillowtop Fabric", desc: "Decadent microfiber quilting providing an acoustic buffer and plush surface touch." },
-          { num: 2, title: "High-Density Cushioning Transition Layer", desc: "Buffers your body from direct spring contact while letting coils respond to pressure dynamically." },
-          { num: 3, title: "1,200+ Individually Calibrated Pocket Springs", desc: "Each coil operates in its own non-woven pocket. Pressing down on one does not disturb neighboring coils." },
-          { num: 4, title: "EdgeGuard Reinforced Boundary Support", desc: "Encased foam perimeter eliminates rolling off the bed when sleeping near the edge." }
+          { num: 1, title: "Individually Encased Pocket Support Coils", desc: "Independent coil mechanics that absorb motion and minimize partner disturbance." },
+          { num: 2, title: "Edge-to-Edge Encased Perimeter Support", desc: "Reinforced border wall providing stable edge support backed by a 10-year warranty." }
         ]
       },
       "08": {
         id: "08",
         name: "08. LORA HYBRID FUSION™",
-        tag: "08 / MULTI-TIER HYBRID",
-        tagline: "Multi-Tier Organic Latex + Titanium Pocket Coils",
-        category: "Flagship Multi-Tier Hybrid",
+        tag: "08 / HYBRID MULTI-LAYER",
+        tagline: "Natural Latex Foam + Memory Foam + Orthopedic Foam (15-Yr Warranty)",
+        category: "Multi-Layer Comfort System",
         basePrice: 36999,
         mrp: 62999,
         warranty: "15 Years Warranty",
-        firmnessVal: "SOFT ●●●●○ FIRM (4.0/5)",
-        feelLabel: "The Masterpiece Flagship",
-        meterPercent: "70%",
-        postureRec: "For sleepers who demand the absolute best of both worlds: pure organic Dunlop latex buoyancy combined with titanium pocket coil spine care.",
+        firmnessVal: "SOFT ●●●●○ FIRM",
+        feelLabel: "Medium-Firm Multi-Layer",
+        meterPercent: "75%",
+        postureRec: "Sleepers wanting advanced multi-layer comfort combining latex, memory foam, and orthopedic foam with 15-year warranty.",
         heroImg: "assets/lifestyle-editorial.jpg",
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
-        core: "Organic Dunlop Latex + 7-Zone Titanium Encased Coils + High Density Core",
-        cover: "Phase-Change Cooling Surface Fabric with Tailored Midnight Navy Borders",
-        motion: "Dual Acoustic & Mechanical Motion Dissipation",
+        core: "Natural Latex Foam, Memory Foam & Orthopedic Foam multi-layer system",
+        cover: "Advanced orthopedic-support contour cover",
+        motion: "Balanced multi-layer absorption",
         defaultStock: "in-stock",
         dispatchLoc: "Bengaluru Master Craftsman Hub",
         multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82, custom: 1.05 },
@@ -2717,38 +2462,50 @@
         combinationStock: {},
         offer: {
           active: true,
-          title: "FLAGSHIP LAUNCH CELEBRATION: FLAT 15% OFF + ROYAL SANCTUARY SUITE",
-          desc: "Includes 2 Organic Latex Pillows + 1 All-Season Duvet + 1 Mattress Protector (Worth ₹8,999) FREE.",
+          title: "FLAGSHIP HYBRID LAUNCH: 15% OFF",
+          desc: "Natural Latex Foam + Memory Foam + Orthopedic Foam with 15-year warranty.",
           type: "percent",
           value: 15,
           couponCode: "LORA10",
           couponPct: 10
         },
         layers: [
-          { num: 1, title: "Phase-Change Cooling Surface Fabric", desc: "State-of-the-art micro-encapsulated cooling fabric that absorbs excess heat and stays cool to the touch all night." },
-          { num: 2, title: "100% Organic Dunlop Latex Comfort Layer", desc: "Delivers resilient buoyant support and prevents partner depression zones from forming." },
-          { num: 3, title: "7-Zone Titanium Encased Pocket Coils", desc: "Zoned coil diameters provide firmer resistance at the hips and lumbar while softening at shoulders." },
-          { num: 4, title: "Reinforced High-Density Foundation Core", desc: "Heavy-duty base engineered to support up to 300 kg with zero loss of structural integrity over 15 years." }
+          { num: 1, title: "Natural Latex Foam Comfort Layer", desc: "Buoyant, naturally breathable latex contouring." },
+          { num: 2, title: "Ergonomic Memory Foam Adaptation", desc: "Pressure-absorbing memory foam layer for deep joint relief." },
+          { num: 3, title: "High-Density Orthopedic Foam Foundation", desc: "Masterpiece heavy-duty support core backed by an industry-leading 15-year warranty." }
         ]
       }
     };
 
     // Load from localStorage if edited in Merchant Studio
     try {
-      const stored = localStorage.getItem('lora_product_catalog_v3');
+      const stored = localStorage.getItem('lora_product_catalog_v3') || localStorage.getItem('lora_mattress_catalog_v2');
       if (stored) {
         const parsed = JSON.parse(stored);
-        Object.keys(parsed).forEach(k => {
-          if (parsed[k]) {
-            ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
-              if (parsed[k][prop] && (parsed[k][prop].length >= 500000 || !parsed[k][prop].startsWith('assets/'))) {
-                // Keep default clean asset path instead of corrupt data URL
-                delete parsed[k][prop];
-              }
-            });
-          }
-        });
-        Object.assign(PRODUCTS_DATA, parsed);
+        if (
+          !parsed ||
+          !parsed['01'] ||
+          parsed['01'].name.includes('(Updated)') ||
+          parsed['01'].warranty !== '3 Years Warranty' ||
+          parsed['02']?.warranty !== '5 Years Warranty' ||
+          parsed['05']?.warranty !== '12 Years Warranty' ||
+          parsed['07']?.warranty !== '10 Years Warranty' ||
+          !parsed['01'].core
+        ) {
+          localStorage.removeItem('lora_product_catalog_v3');
+          localStorage.removeItem('lora_mattress_catalog_v2');
+        } else {
+          Object.keys(parsed).forEach(k => {
+            if (parsed[k]) {
+              ['heroImg', 'explodedImg', 'spineImg', 'roomImg'].forEach(prop => {
+                if (parsed[k][prop] && (parsed[k][prop].length >= 500000 || !parsed[k][prop].startsWith('assets/'))) {
+                  delete parsed[k][prop];
+                }
+              });
+            }
+          });
+          Object.assign(PRODUCTS_DATA, parsed);
+        }
       }
     } catch (e) {
       console.warn('Could not read custom catalog in product.html', e);
@@ -2780,27 +2537,27 @@
     // Common-Man Dimension Definitions
     const INCH_SPECS = {
       queen: [
-        { id: "78x60", title: "78\" × 60\"", feet: "6.5 × 5.0 ft", cm: "198 × 152 cm", label: "Standard Master Bed Choice", popular: true },
-        { id: "75x60", title: "75\" × 60\"", feet: "6.25 × 5.0 ft", cm: "190 × 152 cm", label: "Apartment Master Frame" },
-        { id: "72x60", title: "72\" × 60\"", feet: "6.0 × 5.0 ft", cm: "183 × 152 cm", label: "Compact Bedroom Fit" },
-        { id: "78x66", title: "78\" × 66\"", feet: "6.5 × 5.5 ft", cm: "198 × 168 cm", label: "Olympic Extra Width" }
+        { id: "78x60", title: "78\" × 60\"" },
+        { id: "75x60", title: "75\" × 60\"" },
+        { id: "72x60", title: "72\" × 60\"" },
+        { id: "78x66", title: "78\" × 66\"" }
       ],
       king: [
-        { id: "78x72", title: "78\" × 72\"", feet: "6.5 × 6.0 ft", cm: "198 × 183 cm", label: "Master King Bed Choice", popular: true },
-        { id: "75x72", title: "75\" × 72\"", feet: "6.25 × 6.0 ft", cm: "190 × 183 cm", label: "Contemporary King Frame" },
-        { id: "72x72", title: "72\" × 72\"", feet: "6.0 × 6.0 ft", cm: "183 × 183 cm", label: "Square Classic Fit" },
-        { id: "84x72", title: "84\" × 72\"", feet: "7.0 × 6.0 ft", cm: "213 × 183 cm", label: "Extra Tall Grand King" }
+        { id: "78x72", title: "78\" × 72\"" },
+        { id: "75x72", title: "75\" × 72\"" },
+        { id: "72x72", title: "72\" × 72\"" },
+        { id: "84x72", title: "84\" × 72\"" }
       ],
       double: [
-        { id: "75x48", title: "75\" × 48\"", feet: "6.25 × 4.0 ft", cm: "190 × 122 cm", label: "Standard Double Bed", popular: true },
-        { id: "72x48", title: "72\" × 48\"", feet: "6.0 × 4.0 ft", cm: "183 × 122 cm", label: "Compact Double Cot" },
-        { id: "78x48", title: "78\" × 48\"", feet: "6.5 × 4.0 ft", cm: "198 × 122 cm", label: "Extended Double Cot" }
+        { id: "75x48", title: "75\" × 48\"" },
+        { id: "72x48", title: "72\" × 48\"" },
+        { id: "78x48", title: "78\" × 48\"" }
       ],
       single: [
-        { id: "75x36", title: "75\" × 36\"", feet: "6.25 × 3.0 ft", cm: "190 × 91 cm", label: "Standard Single / Diwan", popular: true },
-        { id: "72x36", title: "72\" × 36\"", feet: "6.0 × 3.0 ft", cm: "183 × 91 cm", label: "Compact Single Cot" },
-        { id: "78x36", title: "78\" × 36\"", feet: "6.5 × 3.0 ft", cm: "198 × 91 cm", label: "Tall Single Cot" },
-        { id: "75x42", title: "75\" × 42\"", feet: "6.25 × 3.5 ft", cm: "190 × 107 cm", label: "Maxi Single / Teen Bed" }
+        { id: "75x36", title: "75\" × 36\"" },
+        { id: "72x36", title: "72\" × 36\"" },
+        { id: "78x36", title: "78\" × 36\"" },
+        { id: "75x42", title: "75\" × 42\"" }
       ]
     };
 
@@ -2902,15 +2659,14 @@
       const inchRowWrap = document.querySelector('#pdp-inch-row-wrap');
       const inchLabel = document.querySelector('#pdp-selected-inch-label');
       const cotLabel = document.querySelector('#pdp-selected-cot-label');
-      const helperText = document.querySelector('#pdp-dim-helper-text');
 
       if (cotLabel) {
         const cotNames = {
-          queen: 'Queen (5.0 ft)',
-          king: 'King (6.0 ft)',
-          double: 'Double (4.0 ft)',
-          single: 'Single (3.0 ft)',
-          custom: 'Custom Dimension'
+          queen: 'Queen',
+          king: 'King',
+          double: 'Double',
+          single: 'Single',
+          custom: 'Custom'
         };
         cotLabel.textContent = cotNames[activeCotType] || activeCotType.toUpperCase();
       }
@@ -2934,16 +2690,13 @@
 
       container.innerHTML = specs.map(s => `
         <button type="button" class="pdp-pill-btn ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
-          ${s.title} ${s.popular ? '<span class="pdp-pill-tag">Popular</span>' : ''}
+          ${s.title}
         </button>
       `).join('');
 
       const activeSpec = specs.find(s => s.id === activeInchId) || specs[0];
       if (inchLabel && activeSpec) {
-        inchLabel.textContent = `${activeSpec.title} (${activeSpec.feet})`;
-      }
-      if (helperText && activeSpec) {
-        helperText.textContent = `${activeSpec.feet} (${activeSpec.cm}) • ${activeSpec.label}`;
+        inchLabel.textContent = activeSpec.title;
       }
     }
 
@@ -2982,6 +2735,40 @@
         inchLabel.textContent = `Custom (${customLenInches}" × ${customWidInches}")`;
       }
     }
+
+    window.togglePdpSizeGuide = function(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const sg = document.getElementById('pdp-inline-size-guide');
+      const btn = document.getElementById('pdp-size-guide-toggle');
+      if (!sg) return;
+      const isVisible = sg.style.display === 'block';
+      if (!isVisible) {
+        sg.style.display = 'block';
+        if (btn) {
+          btn.innerHTML = '📐 Close Guide ▴';
+          btn.classList.add('active');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      } else {
+        sg.style.display = 'none';
+        if (btn) {
+          btn.innerHTML = '📐 Size Guide ▾';
+          btn.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    };
+
+    window.selectCotFromGuide = function(type) {
+      const typeBtn = document.querySelector(`.pdp-bed-pills-wrap .pdp-pill-btn[data-type="${type}"]`);
+      if (typeBtn) {
+        typeBtn.click();
+      }
+      window.togglePdpSizeGuide();
+    };
 
     function renderProduct(modelKey) {
       const data = PRODUCTS_DATA[modelKey];
@@ -3075,6 +2862,11 @@
       if (tCover) tCover.textContent = data.cover;
       const tFirm = document.querySelector('#table-firmness');
       if (tFirm) tFirm.textContent = data.firmnessVal;
+      const tHeight = document.querySelector('#table-heights');
+      if (tHeight) {
+        const statedH = modelKey === '01' ? '7 inches (Stated Profile)' : (modelKey === '02' ? '9 inches (Stated Profile)' : `${activeThickness} inches (Selected Profile)`);
+        tHeight.textContent = statedH;
+      }
       const tMotion = document.querySelector('#table-motion');
       if (tMotion) tMotion.textContent = data.motion;
       const tWarr = document.querySelector('#table-warranty');
@@ -3091,13 +2883,7 @@
       });
       const thickLabel = document.querySelector('#pdp-selected-thick-label');
       if (thickLabel) {
-        const names = {
-          6: '6-Inch (15 cm)',
-          8: '8-Inch (20 cm) [Standard]',
-          10: '10-Inch (25 cm) [Eurotop]',
-          12: '12-Inch (30 cm) [Grand Luxe]'
-        };
-        thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+        thickLabel.textContent = `${activeThickness} Inch`;
       }
 
       renderInchOptions();
@@ -3157,26 +2943,26 @@
       if (data.defaultStock === 'out-of-stock') {
         if (buyBtn) {
           buyBtn.disabled = true;
-          buyBtn.textContent = 'Out of Stock';
+          buyBtn.innerHTML = '<span>Out of Stock</span>';
           buyBtn.style.opacity = '0.55';
           buyBtn.style.cursor = 'not-allowed';
         }
         if (buyNowBtn) {
           buyNowBtn.disabled = true;
-          buyNowBtn.textContent = 'Unavailable';
+          buyNowBtn.innerHTML = '<span>Unavailable</span>';
           buyNowBtn.style.opacity = '0.55';
           buyNowBtn.style.cursor = 'not-allowed';
         }
       } else {
         if (buyBtn) {
           buyBtn.disabled = false;
-          buyBtn.textContent = 'Add to Bag';
+          buyBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Add to Bag</span>`;
           buyBtn.style.opacity = '1';
           buyBtn.style.cursor = 'pointer';
         }
         if (buyNowBtn) {
           buyNowBtn.disabled = false;
-          buyNowBtn.textContent = `Buy Now (₹${finalPrice.toLocaleString('en-IN')}) →`;
+          buyNowBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span>Buy Now (₹${finalPrice.toLocaleString('en-IN')}) →</span>`;
           buyNowBtn.style.opacity = '1';
           buyNowBtn.style.cursor = 'pointer';
         }
@@ -3211,6 +2997,10 @@
     document.addEventListener('DOMContentLoaded', function () {
       const initialModel = parseModelFromUrl();
       renderProduct(initialModel);
+
+      if (new URLSearchParams(window.location.search).get('guide') === 'open') {
+        window.togglePdpSizeGuide();
+      }
 
       // Thumbnail Click Handlers
       document.querySelectorAll('.pdp-thumb-btn').forEach(btn => {
@@ -3251,12 +3041,8 @@
           const specs = INCH_SPECS[activeCotType] || [];
           const activeSpec = specs.find(s => s.id === activeInchId) || specs[0];
           const inchLabel = document.querySelector('#pdp-selected-inch-label');
-          const helperText = document.querySelector('#pdp-dim-helper-text');
           if (inchLabel && activeSpec) {
-            inchLabel.textContent = `${activeSpec.title} (${activeSpec.feet})`;
-          }
-          if (helperText && activeSpec) {
-            helperText.textContent = `${activeSpec.feet} (${activeSpec.cm}) • ${activeSpec.label}`;
+            inchLabel.textContent = activeSpec.title;
           }
           updatePriceDisplay();
           return;
@@ -3271,13 +3057,7 @@
           activeThickness = parseInt(thickPill.getAttribute('data-thick') || '8', 10);
           const thickLabel = document.querySelector('#pdp-selected-thick-label');
           if (thickLabel) {
-            const names = {
-              6: '6-Inch (15 cm)',
-              8: '8-Inch (20 cm) [Standard]',
-              10: '10-Inch (25 cm) [Eurotop]',
-              12: '12-Inch (30 cm) [Grand Luxe]'
-            };
-            thickLabel.textContent = names[activeThickness] || `${activeThickness}-Inch`;
+            thickLabel.textContent = `${activeThickness} Inch`;
           }
           updatePriceDisplay();
           return;
@@ -3314,6 +3094,18 @@
           updatePriceDisplay();
         });
       }
+
+      // Smooth Open & Scroll to Measurement Guide Accordion
+      document.querySelectorAll('a[href="#how-to-measure"]').forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const acc = document.querySelector('#how-to-measure');
+          if (acc) {
+            acc.open = true;
+            acc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      });
 
       // Buy Now Button -> Directly triggers Instant Checkout Pipeline
       const buyNowBtn = document.querySelector('#pdp-buy-now-btn');
@@ -3366,20 +3158,72 @@
         try {
           const sessionRaw = localStorage.getItem('lora_customer_session_v1');
           const label = document.getElementById('pdp-header-auth-label');
-          const btnLogout = document.getElementById('pdp-btn-header-logout');
+          const avatar = document.getElementById('pdp-auth-avatar');
+          const authIcon = document.getElementById('pdp-auth-icon');
+          const dropUser = document.getElementById('pdp-dropdown-user-name');
+          const dropPhone = document.getElementById('pdp-dropdown-user-phone');
+          const drawerAccount = document.getElementById('mobile-drawer-account');
+
           if (sessionRaw) {
             const customer = JSON.parse(sessionRaw);
-            if (label && customer && customer.name) {
-              label.textContent = customer.name.split(' ')[0];
+            const firstName = customer && customer.name ? customer.name.split(' ')[0] : 'Account';
+            const initial = firstName.charAt(0).toUpperCase();
+
+            if (label) label.textContent = firstName;
+            if (avatar) {
+              avatar.textContent = initial;
+              avatar.style.display = 'inline-flex';
             }
-            if (btnLogout) btnLogout.style.display = 'inline-flex';
+            if (authIcon) authIcon.style.display = 'none';
+            if (dropUser) dropUser.textContent = customer.name || 'Valued Sleeper';
+            if (dropPhone) dropPhone.textContent = customer.phone || 'Verified Customer';
+
+            if (drawerAccount) {
+              drawerAccount.innerHTML = `
+                <div class="drawer-account-card">
+                  <div class="drawer-user-info">
+                    <span class="drawer-avatar">${initial}</span>
+                    <div>
+                      <strong>${customer.name || 'Valued Sleeper'}</strong>
+                      <small>${customer.phone || 'Verified Customer'}</small>
+                    </div>
+                  </div>
+                  <button type="button" class="drawer-logout-btn" onclick="pdpHandleCustomerLogout(event)">Log Out</button>
+                </div>
+              `;
+            }
           } else {
             if (label) label.textContent = 'Login';
-            if (btnLogout) btnLogout.style.display = 'none';
+            if (avatar) avatar.style.display = 'none';
+            if (authIcon) authIcon.style.display = 'inline-block';
+            if (dropUser) dropUser.textContent = 'Guest';
+            if (dropPhone) dropPhone.textContent = 'Not logged in';
+
+            if (drawerAccount) {
+              drawerAccount.innerHTML = `
+                <a href="index.html?login=1" class="drawer-login-btn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span>Customer Login / Register</span>
+                </a>
+              `;
+            }
           }
         } catch (e) {}
       }
       window.syncPdpAuthUI = syncPdpAuthUI;
+
+      window.handlePdpAuthClick = function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        const sessionRaw = localStorage.getItem('lora_customer_session_v1');
+        if (!sessionRaw) {
+          window.location.href = 'index.html?login=1';
+          return;
+        }
+        const dropdown = document.getElementById('pdp-account-dropdown');
+        if (dropdown) {
+          dropdown.classList.toggle('show');
+        }
+      };
 
       window.pdpHandleCustomerLogout = function (e) {
         if (e && e.preventDefault) e.preventDefault();
@@ -3388,17 +3232,18 @@
           sessionStorage.removeItem('lora_customer_session_v1');
         } catch (err) {}
         syncPdpAuthUI();
+        const dropdown = document.getElementById('pdp-account-dropdown');
+        if (dropdown) dropdown.classList.remove('show');
         setTimeout(function () {
           window.location.reload();
         }, 60);
       };
 
       document.addEventListener('click', function (e) {
-        const btn = e.target.closest('#pdp-btn-header-logout, .header-logout-btn');
-        if (btn) {
-          e.preventDefault();
-          e.stopPropagation();
-          window.pdpHandleCustomerLogout(e);
+        const wrapper = document.getElementById('pdp-auth-wrapper');
+        const dropdown = document.getElementById('pdp-account-dropdown');
+        if (wrapper && dropdown && !wrapper.contains(e.target)) {
+          dropdown.classList.remove('show');
         }
       });
       syncPdpAuthUI();
@@ -3451,7 +3296,7 @@
         if (footerEl) footerEl.style.display = 'block';
 
         let subtotal = 0;
-        container.innerHTML = items.map((item, idx) => {
+        const itemsHtml = items.map((item, idx) => {
           subtotal += (item.price || 0);
           return `
             <div class="cart-item-card" data-item-id="${item.id || idx}">
@@ -3467,6 +3312,25 @@
             </div>
           `;
         }).join('');
+
+        // Complimentary Luxury Sleep Kit Line Card (Always auto-included at ₹0)
+        const giftHtml = `
+          <div class="cart-free-gift-card">
+            <span class="cart-free-gift-badge-tag">🎁 100% Free Gift Included</span>
+            <img loading="lazy" src="assets/complimentary-sleep-kit.jpg" alt="Complimentary Luxury Sleep Kit" class="cart-free-gift-thumb">
+            <div style="flex: 1; min-width: 0;">
+              <strong class="cart-free-gift-title">Complimentary Luxury Sleep Kit</strong>
+              <span class="cart-free-gift-sub">2× Cloud Pillows • 1× Fitted Bedsheet • 2× Pillow Covers</span>
+              <span class="cart-free-gift-note">✓ Auto-included with your mattress</span>
+            </div>
+            <div class="cart-free-gift-price-col">
+              <span class="cart-free-gift-orig">₹4,497</span>
+              <strong class="cart-free-gift-zero">₹0 (FREE)</strong>
+            </div>
+          </div>
+        `;
+
+        container.innerHTML = itemsHtml + giftHtml;
 
         if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
       }
@@ -3602,6 +3466,10 @@
         <span>Subtotal</span>
         <strong style="font-size: 1.15rem;" id="pdp-cart-subtotal-val">₹0</strong>
       </div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.82rem; color: #34D399; font-weight: 600;">
+        <span>Free Sleep Kit Savings (Pillows + Sheet + Covers)</span>
+        <span>-₹4,497 (100% FREE)</span>
+      </div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.82rem; color: #059669;">
         <span>Insured Pan-India Express Delivery</span>
         <strong>FREE</strong>
@@ -3630,5 +3498,8 @@
       </button>
     </div>
   </aside>
+
+  <!-- Lumi — Lora's AI Sleep Assistant (KB 2.0) -->
+  <script src="assets/lumi.js?v=20261006v2"></script>
 </body>
 </html>
