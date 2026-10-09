@@ -6003,12 +6003,12 @@ body {
    COMPLIMENTARY LUXURY SLEEP BUNDLE (FREE GIFT SYSTEM)
    ========================================================================== */
 .pdp-free-gift-showcase {
-  background: linear-gradient(135deg, rgba(6, 78, 59, 0.24) 0%, rgba(13, 20, 38, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(6, 78, 59, 0.28) 0%, rgba(13, 20, 38, 0.95) 100%);
   border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg, 16px);
-  padding: 1.1rem 1.25rem;
-  margin: 1.25rem 0 1rem 0;
-  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
 }
@@ -6016,11 +6016,11 @@ body {
 .pdp-free-gift-showcase::before {
   content: '';
   position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.2) 0%, transparent 70%);
+  top: -30px;
+  right: -30px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.18) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -6029,22 +6029,22 @@ body {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  padding-bottom: 0.75rem;
+  gap: 0.45rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(52, 211, 153, 0.2);
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.65rem;
 }
 
 .pdp-free-gift-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   background: rgba(5, 150, 105, 0.25);
   border: 1px solid rgba(52, 211, 153, 0.45);
-  padding: 0.25rem 0.7rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
   color: #34D399;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -6067,11 +6067,11 @@ body {
 .pdp-free-gift-pricing {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .pdp-gift-strike-price {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: #94A3B8;
   text-decoration: line-through;
 }
@@ -6079,9 +6079,9 @@ body {
 .pdp-gift-free-badge {
   background: #059669;
   color: #FFFFFF;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 900;
-  padding: 0.25rem 0.65rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 6px;
   letter-spacing: 0.03em;
   box-shadow: 0 2px 8px rgba(5, 150, 105, 0.4);
@@ -6089,19 +6089,19 @@ body {
 
 .pdp-free-gift-body {
   display: flex;
-  gap: 1.1rem;
+  gap: 0.85rem;
   align-items: center;
 }
 
 .pdp-free-gift-img-wrap {
   position: relative;
   flex-shrink: 0;
-  width: 105px;
-  height: 105px;
-  border-radius: 12px;
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
   overflow: hidden;
   border: 1.5px solid rgba(52, 211, 153, 0.35);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .pdp-free-gift-img {
@@ -6113,7 +6113,7 @@ body {
 }
 
 .pdp-free-gift-showcase:hover .pdp-free-gift-img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .pdp-gift-ribbon-tag {
@@ -6121,79 +6121,90 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(5, 150, 105, 0.92);
+  background: rgba(5, 150, 105, 0.95);
   color: #FFFFFF;
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   font-weight: 800;
   text-align: center;
-  padding: 2px 0;
+  padding: 1px 0;
   letter-spacing: 0.04em;
 }
 
 .pdp-free-gift-details {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .pdp-free-gift-title {
-  font-size: 0.96rem;
+  font-size: 0.88rem;
   font-weight: 800;
   color: #FFFFFF;
-  margin-bottom: 0.2rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.pdp-free-gift-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.1rem 0;
+}
+
+.pdp-gift-mini-chip {
+  background: rgba(10, 15, 29, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.18rem 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #E2E8F0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.pdp-gift-assurance-row {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  font-size: 0.7rem;
+  color: #34D399;
+  font-weight: 600;
+  margin: 0;
 }
 
-.pdp-free-gift-subtitle {
-  font-size: 0.78rem;
-  color: #94A3B8;
-  margin-bottom: 0.65rem;
-  line-height: 1.4;
-}
-
+/* Fallback for legacy pill markup */
 .pdp-free-gift-items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.5rem;
-  margin-bottom: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.1rem 0;
 }
 
 .pdp-gift-item-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   background: rgba(10, 15, 29, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 0.4rem 0.6rem;
-}
-
-.pdp-gift-item-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.pdp-gift-item-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+  border-radius: 6px;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.7rem;
 }
 
 .pdp-gift-item-name {
-  font-size: 0.76rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #F1F5F9;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .pdp-gift-item-val {
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+  font-size: 0.68rem;
 }
 
 .pdp-gift-item-val .strike-val {
@@ -6206,31 +6217,20 @@ body {
   font-weight: 800;
 }
 
-.pdp-gift-assurance-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  font-size: 0.72rem;
-  color: #34D399;
-  font-weight: 600;
-}
-
-.pdp-gift-dot {
-  color: rgba(255, 255, 255, 0.2);
-}
-
-@media (max-width: 640px) {
-  .pdp-free-gift-body {
-    flex-direction: column;
-    align-items: flex-start;
+@media (max-width: 480px) {
+  .pdp-free-gift-showcase {
+    padding: 0.75rem 0.85rem;
   }
   .pdp-free-gift-img-wrap {
-    width: 100%;
-    height: 120px;
+    width: 62px;
+    height: 62px;
   }
-  .pdp-free-gift-items-grid {
-    grid-template-columns: 1fr;
+  .pdp-free-gift-title {
+    font-size: 0.84rem;
+  }
+  .pdp-gift-mini-chip {
+    font-size: 0.67rem;
+    padding: 0.15rem 0.35rem;
   }
 }
 
