@@ -4399,12 +4399,13 @@ body {
 
   /* Zero-Crop Product Detail Gallery & Badges */
   .inner-main-stage, .pdp-main-stage {
-    aspect-ratio: 16 / 10 !important;
-    height: 220px !important;
-    max-height: 220px !important;
-    background: radial-gradient(circle at 50% 50%, #152238 0%, #060913 90%) !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    min-height: 280px !important;
+    max-height: 420px !important;
+    background: radial-gradient(circle at 50% 50%, #0F172A 0%, #060913 100%) !important;
     border: 1px solid rgba(0, 180, 216, 0.25) !important;
-    border-radius: 14px !important;
+    border-radius: 16px !important;
     position: relative !important;
     display: flex !important;
     align-items: center !important;
@@ -4434,31 +4435,40 @@ body {
     padding: 0.25rem 0.55rem !important;
   }
   .inner-thumb-strip, .pdp-thumb-strip {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 0.5rem !important;
+    display: flex !important;
+    gap: 0.55rem !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
     margin-top: 0.5rem !important;
+    padding: 2px 2px 6px 2px !important;
   }
   .inner-thumb-btn, .pdp-thumb-btn {
-    height: 48px !important;
-    aspect-ratio: unset !important;
-    border-radius: 8px !important;
+    flex: 0 0 72px !important;
+    width: 72px !important;
+    height: 72px !important;
+    aspect-ratio: 1 / 1 !important;
+    scroll-snap-align: start !important;
+    border-radius: 10px !important;
     background: #0B132B !important;
     border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
     overflow: hidden !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 2px !important;
+    padding: 3px !important;
+    box-sizing: border-box !important;
   }
   .inner-thumb-btn.active, .pdp-thumb-btn.active {
-    border-color: #0284C7 !important;
-    box-shadow: 0 0 8px rgba(2, 132, 199, 0.4) !important;
+    border-color: #38BDF8 !important;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
   }
   .inner-thumb-btn img, .pdp-thumb-btn img {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
+    object-position: center !important;
+    border-radius: 6px !important;
   }
 
   /* Eliminate Mobile Section Gaps across entire site */

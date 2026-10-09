@@ -641,15 +641,46 @@
 /* =========================================================
    MOBILE RESPONSIVENESS & STICKY BUY NOW CLEARANCE
    ========================================================= */
+body.lightbox-open .lumi-widget-container {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
   .lumi-widget-container {
-    bottom: 92px !important;
-    right: 14px !important;
+    bottom: 82px !important;
+    right: 12px !important;
+    z-index: 9990 !important;
+  }
+
+  .lumi-launcher-btn {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .lumi-mattress-stage {
+    width: 60px !important;
+    height: 48px !important;
+  }
+
+  .lumi-mattress-svg {
+    width: 60px !important;
+    height: auto !important;
+  }
+
+  .lumi-character-sprite {
+    width: 38px !important;
+    height: 38px !important;
+    top: -6px !important;
+  }
+
+  .lumi-mattress-shadow {
+    width: 52px !important;
+    height: 10px !important;
   }
   
   .lumi-greeting-bubble {
-    width: 240px;
-    bottom: 80px;
+    width: 220px;
+    bottom: 70px;
     right: 0;
     padding: 8px 12px;
   }
