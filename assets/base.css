@@ -3420,8 +3420,8 @@ body {
     padding: 2.75rem 0 !important;
   }
   .container, .measure-container, .usp-container, .header-container {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
@@ -3506,21 +3506,25 @@ body {
     color: var(--brand-cyan) !important;
   }
   .card-visual-stage {
-    aspect-ratio: 4 / 3 !important;
-    min-height: 180px !important;
-    max-height: 230px !important;
+    aspect-ratio: 1 / 1 !important;
+    min-height: unset !important;
+    max-height: 200px !important;
     height: auto !important;
     width: 100% !important;
     position: relative !important;
     overflow: hidden !important;
-    background: #080D1A !important;
+    background: radial-gradient(circle at 50% 50%, #0F172A 0%, #060913 100%) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
   .card-hero-link {
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 100% !important;
     height: 100% !important;
     padding: 0 !important;
@@ -3528,7 +3532,9 @@ body {
   .card-hero-img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
     object-position: center !important;
     display: block !important;
     transition: transform 0.25s ease !important;
@@ -3542,7 +3548,7 @@ body {
     gap: 0.25rem !important;
   }
   .mattress-name {
-    font-size: 0.74rem !important;
+    font-size: 0.76rem !important;
     line-height: 1.25 !important;
     font-weight: 700 !important;
     margin: 0 !important;
@@ -3597,8 +3603,8 @@ body {
   .card-action-btns [data-action="view-inner-pdp"],
   .card-action-btns .btn-view-model {
     width: 100% !important;
-    min-height: 32px !important;
-    height: 32px !important;
+    min-height: 34px !important;
+    height: 34px !important;
     padding: 0 0.4rem !important;
     font-size: 0.72rem !important;
     font-weight: 800 !important;
@@ -3729,79 +3735,113 @@ body {
   /* Two-Sides USP & Side-by-Side Split Grids (Clean Stacking) */
   .usp-two-sides-grid {
     grid-template-columns: 1fr !important;
-    gap: 1.25rem !important;
+    gap: 1.15rem !important;
+  }
+  .usp-side-image-wrap {
+    height: 185px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    background: #080D1A !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+  .usp-side-image-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  .usp-side-content {
+    padding: 1.1rem 1.25rem !important;
+  }
+  .usp-side-title {
+    font-size: 1.15rem !important;
   }
   .usp-points-row {
     grid-template-columns: 1fr !important;
-    gap: 0.75rem !important;
+    gap: 0.65rem !important;
   }
+
+  /* 2x2 Balanced Proof Strip (Zero Cutoffs or Awkward Half-Cards) */
   .proof-strip {
-    padding: 0.75rem 0 !important;
+    padding: 0.85rem 0 !important;
     background: #080D1A !important;
     border-top: 1px solid rgba(0, 180, 216, 0.16) !important;
     border-bottom: 1px solid rgba(0, 180, 216, 0.16) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
   }
   .proof-grid {
-    display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    gap: 0.6rem !important;
-    padding: 0.15rem 1rem !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-  }
-  .proof-grid::-webkit-scrollbar {
-    display: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+    padding: 0 0.25rem !important;
+    overflow-x: visible !important;
   }
   .proof-item {
-    flex: 0 0 calc(52% - 0.3rem) !important;
-    min-width: 160px !important;
-    scroll-snap-align: start !important;
-    background: rgba(13, 20, 38, 0.8) !important;
-    border: 1px solid rgba(0, 180, 216, 0.2) !important;
+    flex: unset !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    background: rgba(13, 20, 38, 0.85) !important;
+    border: 1px solid rgba(0, 180, 216, 0.22) !important;
     border-radius: 10px !important;
-    padding: 0.55rem 0.65rem !important;
-    gap: 0.55rem !important;
+    padding: 0.55rem 0.6rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
   }
   .proof-icon-box {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 1rem !important;
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.95rem !important;
     border-radius: 8px !important;
     background: rgba(0, 180, 216, 0.12) !important;
     border: 1px solid rgba(0, 180, 216, 0.25) !important;
     flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   .proof-title {
-    font-size: 0.76rem !important;
+    font-size: 0.72rem !important;
     font-weight: 700 !important;
     line-height: 1.15 !important;
     color: #FFFFFF !important;
   }
   .proof-subtext {
-    font-size: 0.63rem !important;
+    font-size: 0.6rem !important;
     line-height: 1.2 !important;
     color: #94A3B8 !important;
     margin-top: 0.1rem !important;
   }
+
+  /* Spine Simulator & Posture Tabs */
   .simulator-container {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
+  }
+  .spine-canvas-box {
+    height: 180px !important;
   }
   .cost-comparison-card {
     grid-template-columns: 1fr !important;
     gap: 1rem !important;
   }
   .posture-selector-tabs {
-    display: flex !important;
-    gap: 0.5rem !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
   }
   .posture-btn {
-    flex: 1 !important;
+    width: 100% !important;
     min-height: 44px !important;
-    padding: 0.5rem 0.25rem !important;
-    font-size: 0.76rem !important;
+    padding: 0.5rem 0.2rem !important;
+    font-size: 0.72rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
   .quiz-stepper-pills {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -3810,6 +3850,15 @@ body {
   .locator-grid {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
+  }
+  .locator-input {
+    font-size: 16px !important; /* Prevents iOS Safari auto-zoom */
+    min-height: 48px !important;
+  }
+  .btn-locator-submit {
+    min-height: 48px !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
   .footer-top-grid {
     grid-template-columns: 1fr !important;
