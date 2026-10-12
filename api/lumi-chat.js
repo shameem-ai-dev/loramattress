@@ -753,8 +753,8 @@ module.exports = async function handler(req, res) {
     const kb = getKnowledgeBase();
     const catalog = getCatalog();
 
-    // Generate local verified response based on 2.0 Knowledge Base
-    const response = generateLocalResponse(message, context, history, kb, catalog);
+    // Generate response using Master Conversational Intelligence Engine
+    const response = processConversationalQuery(message, context, history);
 
     return res.status(200).json({
       success: true,
@@ -762,6 +762,8 @@ module.exports = async function handler(req, res) {
       card: response.card || null,
       quickOptions: response.quickOptions || ['Help me choose', 'Find my size', 'Compare mattresses'],
       suggestLead: response.suggestLead || false,
+      leadRegistered: response.leadRegistered || false,
+      lead: response.lead || null,
       contextUsed: context
     });
   } catch (err) {

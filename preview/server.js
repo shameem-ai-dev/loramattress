@@ -784,17 +784,23 @@ const server = http.createServer((req, res) => {
           const newLeadData = JSON.parse(body);
           const leads = getLeads();
           const lead = {
-            id: 'lead-' + Date.now(),
-            name: (newLeadData.name || '').trim(),
+            id: newLeadData.id || ('lead-' + Date.now()),
+            name: (newLeadData.name || 'Storefront Customer').trim(),
             phone: (newLeadData.phone || '').trim(),
             pincode: (newLeadData.pincode || '').trim(),
-            resultType: newLeadData.resultType || 'matched',
+            place: (newLeadData.place || '').trim(),
+            preferredMattress: newLeadData.preferredMattress || null,
+            preferredSize: newLeadData.preferredSize || null,
+            preferredThickness: newLeadData.preferredThickness || null,
+            summary: newLeadData.summary || newLeadData.notes || 'Inquiry via Lumi AI',
+            source: newLeadData.source || 'Lumi AI Sleep Assistant',
+            resultType: newLeadData.resultType || 'lumi_consultation',
             studioId: newLeadData.studioId || null,
             studioName: newLeadData.studioName || '',
             distanceKm: typeof newLeadData.distanceKm === 'number' ? newLeadData.distanceKm : null,
             status: newLeadData.status || 'New',
-            createdAt: new Date().toISOString(),
-            notes: newLeadData.notes || ''
+            createdAt: newLeadData.createdAt || new Date().toISOString(),
+            notes: newLeadData.notes || newLeadData.summary || ''
           };
           leads.unshift(lead);
           fs.writeFileSync(leadsFilePath, JSON.stringify(leads, null, 2), 'utf8');

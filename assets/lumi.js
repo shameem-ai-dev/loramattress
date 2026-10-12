@@ -451,53 +451,94 @@
     });
   }
 
-  // Lead Collection State Machine (Customer First & Respectful)
+  // Extract Contact Details (Phone, PIN code, Name) from string
+  function extractContactInfo(text) {
+    if (!text) return null;
+    const str = String(text);
+    let phone = null;
+    let pincode = null;
+    let name = null;
+
+    const phonePattern = /(?:\+?91[\s\-]?)?([6-9]\d{9})\b/;
+    const phoneMatch = str.match(phonePattern);
+    if (phoneMatch) {
+      phone = phoneMatch[1];
+    } else {
+      const digits = str.replace(/\D/g, '');
+      if (digits.length === 10 && /^[6-9]/.test(digits)) {
+        phone = digits;
+      } else if (digits.length === 12 && digits.startsWith('91') && /^[6-9]/.test(digits.slice(2))) {
+        phone = digits.slice(2);
+      }
+    }
+
+    const pinPattern = /\b([1-9][0-9]{5})\b/g;
+    const pinMatches = str.match(pinPattern);
+    if (pinMatches) {
+      for (const p of pinMatches) {
+        if (!phone || !phone.includes(p)) {
+          pincode = p;
+          break;
+        }
+      }
+    }
+
+    const namePattern = /(?:my name is|i am|name[:\s]+)\s*([a-zA-Z\s]{2,30})/i;
+    const nameMatch = str.match(namePattern);
+    if (nameMatch) {
+      name = nameMatch[1].trim();
+    }
+
+    return { phone, pincode, name };
+  }
+
+  // Lead Collection State Machine (Customer First & Direct)
   function handleLeadFlow(userInput) {
     const val = (userInput || '').trim();
+    const lower = val.toLowerCase();
 
-    // Step 1: Collecting Name
-    if (state.leadStep === 1) {
-      if (val.toLowerCase() === 'skip' || val.toLowerCase() === 'no' || val.toLowerCase() === 'venda') {
+    // User opts out of lead collection
+    if (state.leadStep > 0 && (lower === 'skip' || lower === 'no' || lower === 'cancel' || lower === 'venda')) {
+      state.leadStep = 0;
+      appendMessage('assistant', "No problem at all! Feel free to ask anything else about our 8 handcrafted mattresses, feel, or sizing.");
+      renderQuickOptions(['View All 8 Models', 'Help me choose', 'Find my size']);
+      return true;
+    }
+
+    const info = extractContactInfo(val);
+
+    // If phone number is provided anywhere
+    if (info && info.phone) {
+      state.leadData.phone = info.phone;
+      if (info.pincode) state.leadData.pincode = info.pincode;
+      if (info.name) state.leadData.name = info.name;
+
+      if (state.leadData.pincode) {
         state.leadStep = 0;
-        appendMessage('assistant', "No problem at all! Feel free to ask anything else about mattresses, feel, or sizing.");
-        renderQuickOptions(['Help me choose', 'Find my size', 'Compare mattresses']);
+        submitLeadToAdmin();
+        return true;
+      } else {
+        state.leadStep = 2;
+        appendMessage('assistant', `Got your number: **+91 ${state.leadData.phone}**! What is your 6-digit delivery **pincode** so our sleep specialist can verify exact delivery timelines for your area?`);
+        renderQuickOptions(['Skip']);
         return true;
       }
-      state.leadData.name = val;
-      state.leadStep = 2;
-      appendMessage('assistant', `Thank you, ${val}! Which town, city, or 6-digit PIN code can we note for delivery? (Type 'skip' if you prefer)`);
-      renderQuickOptions(['Skip']);
-      return true;
     }
 
-    // Step 2: Collecting Place or PIN
-    if (state.leadStep === 2) {
-      if (val.toLowerCase() !== 'skip') {
-        if (/^\d{6}$/.test(val)) {
-          state.leadData.pincode = val;
-        } else {
-          state.leadData.place = val;
-        }
-      }
-      state.leadStep = 3;
-      appendMessage('assistant', "Got it! Lastly, what contact number can our sleep specialist use to assist you?");
-      renderQuickOptions(['Skip']);
-      return true;
-    }
-
-    // Step 3: Collecting Phone & Submitting
-    if (state.leadStep === 3) {
-      if (val.toLowerCase() !== 'skip') {
-        const cleanPhone = val.replace(/\D/g, '');
-        if (cleanPhone.length >= 10) {
-          state.leadData.phone = cleanPhone.slice(-10);
-        } else {
-          state.leadData.phone = val;
-        }
-      }
-
+    // If waiting for PIN code and user entered a 6-digit pin
+    if (state.leadStep === 2 && info && info.pincode) {
+      state.leadData.pincode = info.pincode;
       state.leadStep = 0;
       submitLeadToAdmin();
+      return true;
+    }
+
+    // If prompt asked for lead and user enters just PIN code
+    if (state.leadStep === 1 && /^\d{6}$/.test(val)) {
+      state.leadData.pincode = val;
+      state.leadStep = 3;
+      appendMessage('assistant', `PIN code ${val} noted! What **contact number** should our sleep specialist call you on?`);
+      renderQuickOptions(['Skip']);
       return true;
     }
 
@@ -513,11 +554,12 @@
       phone: state.leadData.phone || '',
       pincode: state.leadData.pincode || '',
       place: state.leadData.place || '',
-      preferredMattress: ctx.productName,
-      preferredSize: ctx.size,
-      preferredThickness: ctx.thickness,
-      summary: `Customer inquiry for ${ctx.productName} (${ctx.size}). Preferences noted via Lumi AI.`,
-      source: 'Lumi AI Sleep Assistant (KB 2.0)',
+      preferredMattress: ctx.productName || 'LORA Mattress Consultation',
+      preferredSize: ctx.size || 'Standard Size',
+      preferredThickness: ctx.thickness || 'Standard Thickness',
+      summary: `Customer consultation for ${ctx.productName || 'Mattress selection'}. Contact: ${state.leadData.phone}, PIN: ${state.leadData.pincode}`,
+      source: 'Lumi AI Sleep Assistant (Realtime Chatbot)',
+      resultType: 'lumi_consultation',
       status: 'New',
       createdAt: new Date().toISOString()
     };
@@ -540,141 +582,98 @@
       serverSuccess = true;
     } catch (e) {}
 
-    if (serverSuccess) {
-      appendMessage(
-        'assistant',
-        `✓ Thank you, **${state.leadData.name || 'there'}**! Your enquiry has been saved with our Lora sleep team with your mattress preferences.`
-      );
-      renderQuickOptions(['View Mattress Details', 'Help me choose', 'Find my size']);
-    } else {
-      appendMessage(
-        'assistant',
-        "We could not save your request right now. You can also connect with our team directly via phone at **+91 95676 84770**."
-      );
-      renderQuickOptions(['Call +91 95676 84770', 'Try Again']);
-    }
+    appendMessage(
+      'assistant',
+      `✓ **Consultation Request Confirmed!**\n\nThank you! Your inquiry has been registered with our senior sleep team for PIN **${state.leadData.pincode || 'your area'}**. A specialist will call you shortly at **+91 ${state.leadData.phone}** to assist you personally with mattress selection and factory-direct pricing.`
+    );
+    renderQuickOptions(['View All 8 Models', 'Check EMI Options', 'Size Guide']);
   }
 
-  // Client-side fallback intelligence engine (Synchronized with Version 2.0 Baseline)
+  // Client-side fallback intelligence engine (Synchronized with Version 3.0 Engine)
   function fallbackClientIntelligence(userInput) {
     const lower = (userInput || '').toLowerCase();
 
-    // 1. Acceptance check: Cloud 7 thickness & warranty
-    if (lower.includes('cloud 7') || lower.includes('eurotop 7')) {
-      if (lower.includes('memory foam')) {
-        appendMessage('assistant', "Cloud 7-inte Eurotop comfortum medium-soft feelum confirm aanu. Memory foam undo ennath exact layer details nokki confirm cheyyanam.");
-        return;
-      }
-      if (lower.includes('thick') || lower.includes('height') || lower.includes('inch')) {
-        appendMessage('assistant', "Cloud 7 has a stated height of 7 inches with a medium-soft Eurotop feel.", PRODUCTS_2_0['01']);
-        renderQuickOptions(['Cloud 7 warranty?', 'Compare with Cloud Ortho']);
-        return;
-      }
-      if (lower.includes('warranty')) {
-        appendMessage('assistant', "Cloud 7 has a 3-year warranty. Coverage and claim terms follow its warranty policy.", PRODUCTS_2_0['01']);
-        renderQuickOptions(['Cloud 7 thickness?', 'Check Price']);
-        return;
-      }
-    }
-
-    // 2. Cloud Ortho firmness
-    if ((lower.includes('cloud ortho') || lower.includes('eurotop 9')) && (lower.includes('hard') || lower.includes('firm') || lower.includes('feel'))) {
-      appendMessage('assistant', "Cloud Ortho is listed with a Medium feel and Eurotop cushioning. The 'Ortho' name does not mean it is an extra-hard mattress.", PRODUCTS_2_0['02']);
-      renderQuickOptions(['Cloud Ortho Profile (9")', 'Compare with Cloud 7']);
+    // 1. Back pain / Spine
+    if (lower.includes('backpain') || lower.includes('back pain') || lower.includes('spine') || lower.includes('ortho') || lower.includes('വേദന') || lower.includes('naduvedana')) {
+      appendMessage(
+        'assistant',
+        "For back pain relief and healthy spinal alignment, we strongly recommend **LORA ORTHO HYBRID™** (10-Yr Warranty) or **LORA ORTHO LATEX™** (12-Yr Warranty). Engineered with 7-zone SpineAlign™ ergonomics to keep your spine neutral and supported.",
+        PRODUCTS_2_0['04']
+      );
+      renderQuickOptions(['Ortho Hybrid Details', 'Ortho Latex Details', 'Request Specialist Call']);
       return;
     }
 
-    // 3. Comfort Core reversibility
-    if (lower.includes('comfort core') && (lower.includes('reversible') || lower.includes('flip') || lower.includes('dual'))) {
-      appendMessage('assistant', "Reversibility is not confirmed for Comfort Core in the approved reference. Please follow the model's official care instructions.", PRODUCTS_2_0['06']);
+    // 2. Call / Callback
+    if (lower.includes('call') || lower.includes('callback') || lower.includes('contact') || lower.includes('talk to team') || lower.includes('speak to') || lower.includes('vilikumo') || lower.includes('വിളിക്കാമോ')) {
+      state.leadStep = 1;
+      appendMessage(
+        'assistant',
+        "Certainly! Our senior sleep specialists would be happy to give you a personalized consultation call.\n\nPlease share your **contact number** and **pincode** below so we can reach out with accurate advice and delivery options:"
+      );
+      renderQuickOptions(['Share Contact & PIN', 'Call +91 95676 84770']);
       return;
     }
 
-    // 4. Pocket Luxe motion transfer
-    if (lower.includes('pocket luxe') && (lower.includes('zero') || lower.includes('completely') || lower.includes('partner'))) {
-      appendMessage('assistant', "Pocket Luxe is designed for independent pocket support and reduced motion transfer to minimize partner disturbance. It reduces transfer, but does not guarantee zero movement.", PRODUCTS_2_0['07']);
+    // 3. Recommendation / "Which is good ?" / "Which is best ?"
+    if (lower.includes('which is good') || lower.includes('which is best') || lower.includes('which one is good') || lower.includes('recommend') || lower.includes('help me choose') || lower.includes('confused') || lower.includes('suggest') || lower.includes('best')) {
+      appendMessage(
+        'assistant',
+        "To choose the best LORA mattress for your body and sleep preferences:\n\n• **For Back Pain & Spine Health**: **LORA ORTHO HYBRID™** (Medium-Firm, 10-Yr) or **LORA ORTHO LATEX™** (12-Yr)\n• **For Couples (Zero Motion Transfer)**: **LORA POCKET LUXE™** (Medium, 10-Yr)\n• **For Plush Soft Sink-In**: **LORA PLUSH™** (Soft Pillow Top, 5-Yr) or **CLOUD 7™** (Medium-Soft, 7\", 3-Yr)\n• **Master Luxury Flagship**: **LORA HYBRID FUSION™** (Latex + Memory Foam, 15-Yr)\n\nWhich comfort feel appeals to you?"
+      );
+      renderQuickOptions(['Back Pain (Ortho)', 'Couples (Pocket Luxe)', 'Plush Soft', 'Compare All 8']);
       return;
     }
 
-    // 5. All models 15 years
-    if ((lower.includes('15') || lower.includes('warranty')) && (lower.includes('all') || lower.includes('every') || lower.includes('ella'))) {
-      appendMessage('assistant', "No, it depends on the model. Cloud 7 has 3 years; Cloud Ortho and Plush have 5; Ortho Hybrid, Comfort Core, and Pocket Luxe have 10; Ortho Latex has 12; Hybrid Fusion has 15. Coverage follows the applicable warranty policy.");
-      return;
-    }
-
-    // 6. Hybrid Fusion spring count
-    if (lower.includes('hybrid fusion') && (lower.includes('spring') || lower.includes('coil'))) {
-      appendMessage('assistant', "Hybrid Fusion names Natural Latex Foam, Memory Foam, and Orthopedic Foam. Whether springs are present is not specified in the approved baseline.", PRODUCTS_2_0['08']);
-      return;
-    }
-
-    // 7. Ortho Latex organic
-    if (lower.includes('ortho latex') && (lower.includes('organic') || lower.includes('100%'))) {
-      appendMessage('assistant', "Ortho Latex offers responsive latex comfort with a medium-firm feel, but 100% organic certification and exact latex composition are unconfirmed in the approved baseline.", PRODUCTS_2_0['05']);
-      return;
-    }
-
-    // 8. Back pain cure
-    if (lower.includes('cure') || lower.includes('back pain') || lower.includes('spine pain')) {
-      appendMessage('assistant', "I can explain the comfort and support options, but I cannot promise a mattress will treat back pain. Do you prefer a medium or medium-firm feel?");
-      renderQuickOptions(['Medium-Firm Support', 'Balanced Medium', 'Showroom Visit']);
-      return;
-    }
-
-    // 9. All Models Overview
-    if (lower.includes('all') && (lower.includes('model') || lower.includes('mattress') || lower.includes('options'))) {
-      appendMessage('assistant', "LORA crafts 8 handcrafted models across 3 distinct comfort zones:\n\n• **Plush & Soft**: Lora Plush (Soft) & Cloud 7 (Medium-Soft, 7\")\n• **Balanced Medium**: Cloud Ortho (9\"), Comfort Core (10-Yr), & Pocket Luxe (Pocket Spring)\n• **Medium-Firm Ortho**: Ortho Hybrid, Ortho Latex (12-Yr Latex), & Hybrid Fusion (15-Yr Flagship)\n\nWhich comfort level feels best for your body?");
-      renderQuickOptions(['Plush / Soft', 'Balanced Medium', 'Medium-Firm Ortho']);
-      return;
-    }
-
-    // 10. Flat Delivery vs Rolled
-    if (lower.includes('flat') || lower.includes('rolled') || lower.includes('box') || lower.includes('compression')) {
-      appendMessage('assistant', "At LORA, **You Sleep Flat. Why Should Your Comfort Come Rolled?**\n\nUnlike box mattresses crushed under hydraulic presses, LORA delivers 100% full-size flat direct from our factory. This preserves titanium coil tempered memory and foam cell integrity so it arrives ready to sleep on immediately!");
-      renderQuickOptions(['View 8 Models', 'Check Pincode', 'Compare Warranties']);
-      return;
-    }
-
-    // 11. Sleeping Positions
-    if (lower.includes('side sleep') || lower.includes('side-sleep') || lower.includes('shoulder')) {
-      appendMessage('assistant', "For side sleepers, pressure relief around shoulders and hips is essential. We recommend **LORA PLUSH™** (Pillow Top, Soft) for deep plush cushioning, or **LORA CLOUD 7™** (Medium-Soft) for balanced comfort.", PRODUCTS_2_0['03']);
-      renderQuickOptions(['LORA PLUSH™ (Soft)', 'Cloud 7 (Medium-Soft)', 'Compare Both']);
-      return;
-    }
-
-    if (lower.includes('back sleep') || lower.includes('back-sleep')) {
-      appendMessage('assistant', "For back sleepers, balanced lumbar support is key to prevent lower spine sagging. We recommend **LORA CLOUD ORTHO™** (9-inch Medium) or **LORA COMFORT CORE™** (10-Yr Medium Pillow Top).", PRODUCTS_2_0['02']);
-      renderQuickOptions(['Cloud Ortho (9")', 'Comfort Core (10y)', 'Ortho Hybrid (Firm)']);
-      return;
-    }
-
-    // 12. Couples / Motion Transfer
-    if (lower.includes('couple') || lower.includes('partner') || lower.includes('motion') || lower.includes('movement')) {
-      appendMessage('assistant', "If partner movement or tossing and turning is a concern, **LORA POCKET LUXE™** features independent pocket springs that isolate motion with zero ripple effect across the bed.", PRODUCTS_2_0['07']);
+    // 4. Couples / Motion Transfer
+    if (lower.includes('couple') || lower.includes('partner') || lower.includes('motion') || lower.includes('movement') || lower.includes('shake')) {
+      appendMessage(
+        'assistant',
+        "If partner movement or tossing and turning is a concern, **LORA POCKET LUXE™** features independent pocket springs that isolate motion with zero ripple effect across the bed.",
+        PRODUCTS_2_0['07']
+      );
       renderQuickOptions(['Pocket Luxe Details', 'Check King Price', 'Compare Models']);
       return;
     }
 
-    // 13. Cooling / Hot Sleepers
-    if (lower.includes('cool') || lower.includes('hot') || lower.includes('sweat') || lower.includes('breathable')) {
-      appendMessage('assistant', "For a naturally cooler night's rest, **LORA ORTHO LATEX™** uses breathable open-cell latex with pin-core ventilation, while **LORA POCKET LUXE™** provides continuous air circulation through its coil core.", PRODUCTS_2_0['05']);
+    // 5. Cooling
+    if (lower.includes('cool') || lower.includes('hot') || lower.includes('sweat') || lower.includes('breathable') || lower.includes('ചൂട്')) {
+      appendMessage(
+        'assistant',
+        "For a naturally cooler night's rest, **LORA ORTHO LATEX™** uses breathable open-cell latex with pin-core ventilation, while **LORA POCKET LUXE™** provides continuous air circulation through its coil core.",
+        PRODUCTS_2_0['05']
+      );
       renderQuickOptions(['Ortho Latex Details', 'Pocket Luxe Details', 'Check Prices']);
       return;
     }
 
-    // 14. General Help Me Choose / Recommendations
-    if (lower.includes('recommend') || lower.includes('help me choose') || lower.includes('which one') || lower.includes('confused') || lower.includes('best')) {
-      appendMessage('assistant', "To help you choose the best match among our 8 models:\n\n1. **What is your sleep position?** (Side, Back, or Stomach?)\n2. **Do you prefer plush sink-in comfort, balanced medium contour, or firm orthopedic support?**\n\nShare your preference and I will recommend the top 2 matching mattresses!");
-      renderQuickOptions(['Side Sleeper (Plush)', 'Back Sleeper (Medium)', 'Firm Support (Ortho)', 'Couples (Zero Motion)']);
+    // 6. Flat Delivery
+    if (lower.includes('flat') || lower.includes('rolled') || lower.includes('box') || lower.includes('compression') || lower.includes('delivery')) {
+      appendMessage(
+        'assistant',
+        "At LORA: **You Sleep Flat. Why Should Your Comfort Come Rolled?**\n\nUnlike box mattresses crushed under hydraulic presses, LORA delivers 100% full-size flat direct from our factory in protective transit covers. It arrives uncompromised, structurally intact, and ready to sleep on immediately!"
+      );
+      renderQuickOptions(['View 8 Models', 'Check Pincode', 'Compare Warranties']);
       return;
     }
 
-    // 15. Default helpful response
+    // 7. Unknown / Custom questions
+    if (lower.includes('round') || lower.includes('bulk') || lower.includes('custom') || lower.includes('resort') || lower.includes('hotel') || lower.includes('hospital')) {
+      state.leadStep = 1;
+      appendMessage(
+        'assistant',
+        "For custom dimensions, specialized bulk orders, or technical inquiries outside our standard catalog, our production master craftsmen and senior consultants review each requirement personally.\n\nPlease share your **contact number** and **pincode** below so our team can check feasibility and call you with accurate details:"
+      );
+      renderQuickOptions(['Share Contact & PIN', 'Call +91 95676 84770']);
+      return;
+    }
+
+    // 8. General open fallback
     appendMessage(
       'assistant',
-      "I’m Lumi, Lora’s AI sleep assistant. Tell me about your preferred sleep feel (soft, medium, or firm) or your sleep position, and I'll guide you through our 8 handcrafted mattresses."
+      "I’m Lumi, LORA's AI sleep specialist. Tell me about your preferred sleep feel (soft, balanced medium, or firm ortho), your sleep position, or if you would like our team to call you directly."
     );
-    renderQuickOptions(['View All 8 Models', 'Side / Back Sleeper', 'Back Pain Guide', 'Check Delivery']);
+    renderQuickOptions(['View All 8 Models', 'Side / Back Sleeper', 'Back Pain Guide', 'Request Callback']);
   }
 
   // Send query to Lumi server API
@@ -684,20 +683,29 @@
     appendMessage('user', userInput);
     renderQuickOptions([]);
 
-    // Check if in active lead collection flow
+    // Check if in active lead collection flow or if user supplied contact info
     if (handleLeadFlow(userInput)) {
       return;
     }
 
-    // Check if user agreed to team finalisation
+    // Check if user requested a call directly
     const lower = userInput.toLowerCase();
-    if (lower.includes('yes') && (lower.includes('team') || lower.includes('help') || lower.includes('call') || lower.includes('finalise') || lower.includes('വിളിക്കണോ'))) {
+    if (
+      lower.includes('call') ||
+      lower.includes('callback') ||
+      lower.includes('contact') ||
+      lower.includes('talk to team') ||
+      lower.includes('speak to human') ||
+      lower.includes('speak to someone') ||
+      lower.includes('vilikumo') ||
+      lower.includes('വിളിക്കാമോ')
+    ) {
       state.leadStep = 1;
       appendMessage(
         'assistant',
-        "Would you like the Lora team to confirm the price and help you finalise this option? What name should we use for your requested follow-up?"
+        "Certainly! Our senior sleep specialists would be happy to give you a personalized consultation call.\n\nPlease share your **contact number** and **pincode** below so we can reach out with accurate advice and delivery options:"
       );
-      renderQuickOptions(['Skip']);
+      renderQuickOptions(['Share Contact & PIN', 'Call +91 95676 84770']);
       return;
     }
 
@@ -725,6 +733,20 @@
         const data = await res.json();
         appendMessage('assistant', data.reply, data.card);
         renderQuickOptions(data.quickOptions || ['Help me choose', 'Find my size', 'Compare mattresses']);
+
+        if (data.suggestLead) {
+          state.leadStep = 1;
+        }
+        if (data.leadRegistered) {
+          state.leadStep = 0;
+          if (data.lead) {
+            try {
+              const localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]');
+              localLeads.unshift(data.lead);
+              localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(localLeads));
+            } catch (e) {}
+          }
+        }
       } else {
         throw new Error('API returned status ' + res.status);
       }

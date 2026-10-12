@@ -1,18 +1,23 @@
 [
   {
-    "id": "lumi-lead-1791124200000",
-    "name": "Arun Kumar",
+    "id": "lumi-1791826769684",
+    "name": "Storefront Customer",
     "phone": "9847123456",
-    "pincode": "682016",
-    "place": "Kochi",
-    "preferredMattress": "LORA CLOUD 7™",
-    "preferredSize": "King Size (78 x 72 in)",
-    "preferredThickness": "8 Inch",
-    "summary": "Customer needs support for mild back stiffness, requested flat doorstep delivery to Kochi PIN 682016.",
-    "source": "Lumi AI Sleep Assistant",
+    "pincode": "682001",
+    "place": "",
+    "preferredMattress": "LORA Mattress Consultation",
+    "preferredSize": "Standard Size",
+    "preferredThickness": "Standard Thickness",
+    "summary": "Customer inquiry: \"9847123456 pincode 682001\" | Consultation via Lumi AI",
+    "source": "Lumi AI Sleep Assistant (Realtime Chatbot)",
     "resultType": "lumi_consultation",
     "status": "New",
-    "createdAt": "2026-10-04T14:30:00.000Z"
+    "createdAt": "2026-10-12T17:39:29.684Z",
+    "studioId": null,
+    "studioName": "Direct Serviced PIN 682001",
+    "distanceKm": null,
+    "notes": "User asked: \"9847123456 pincode 682001\". Phone: 9847123456, PIN: 682001",
+    "updatedAt": "2026-10-12T17:39:29.685Z"
   },
   {
     "id": "lead-1789662584027",
