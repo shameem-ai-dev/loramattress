@@ -1,5 +1,8 @@
 // Vercel Serverless Function: /api/razorpay/test-connection
+// Admin-only non-destructive credential verification against Razorpay API
+
 const https = require('https');
+const { verifyAdminAuth } = require('../auth.js');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,100 +17,90 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
 
+  // 1. Enforce Server-Side Admin Authorization
+  if (!verifyAdminAuth(req)) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized: Admin authentication token required to test gateway connection.'
+    });
+  }
+
   try {
-    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const keyId = (payload.key_id || process.env.RAZORPAY_KEY_ID || '').trim();
-    const keySecret = (payload.key_secret || process.env.RAZORPAY_KEY_SECRET || '').trim();
+    // 2. Read credentials exclusively from server-side environment variables
+    const keyId = (process.env.RAZORPAY_KEY_ID || '').trim();
+    const keySecret = (process.env.RAZORPAY_KEY_SECRET || '').trim();
 
-    if (!keyId) {
-      return res.status(400).json({
+    if (!keyId || !keySecret) {
+      return res.status(200).json({
         success: false,
-        message: 'Razorpay Key ID is required.'
-      });
-    }
-
-    if (!keyId.startsWith('rzp_test_') && !keyId.startsWith('rzp_live_')) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid Key ID format. Razorpay Key ID must start with "rzp_test_" or "rzp_live_".'
+        configured: false,
+        message: 'Razorpay is unconfigured: RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET is missing from GoDaddy environment variables.'
       });
     }
 
     const isLive = keyId.startsWith('rzp_live_');
     const modeName = isLive ? 'Live Production Mode' : 'Sandbox Test Mode';
+    const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
 
-    // If a secret is provided, test authentication directly with Razorpay API
-    if (keySecret && keySecret !== '••••••••' && keySecret.length >= 8) {
-      const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
+    // 3. Perform read-only API check (fetches 1 past payment record metadata; no charge, no write)
+    const verification = await new Promise((resolve) => {
+      const options = {
+        hostname: 'api.razorpay.com',
+        port: 443,
+        path: '/v1/payments?count=1',
+        method: 'GET',
+        headers: {
+          'Authorization': authHeader,
+          'User-Agent': 'LORA-Mattress-Admin-Verification'
+        },
+        timeout: 7000
+      };
 
-      const verificationResult = await new Promise((resolve) => {
-        const options = {
-          hostname: 'api.razorpay.com',
-          port: 443,
-          path: '/v1/payments?count=1',
-          method: 'GET',
-          headers: {
-            'Authorization': authHeader,
-            'User-Agent': 'LORA-Mattress-Ecommerce'
-          },
-          timeout: 6000
-        };
-
-        const rzpReq = https.request(options, (rzpRes) => {
-          let data = '';
-          rzpRes.on('data', chunk => data += chunk);
-          rzpRes.on('end', () => {
-            if (rzpRes.statusCode === 200) {
-              resolve({
-                verified: true,
-                message: `Connection to Razorpay (${modeName}) authenticated and validated successfully with Razorpay API!`
-              });
-            } else if (rzpRes.statusCode === 401) {
-              resolve({
-                verified: false,
-                message: `Authentication failed: The Key ID and Secret were rejected by Razorpay. Please check your credentials in your Razorpay Dashboard.`
-              });
-            } else {
-              resolve({
-                verified: true,
-                message: `Razorpay Key ID format verified (${modeName}). Key is active and ready.`
-              });
-            }
-          });
+      const rzpReq = https.request(options, (rzpRes) => {
+        let data = '';
+        rzpRes.on('data', chunk => data += chunk);
+        rzpRes.on('end', () => {
+          if (rzpRes.statusCode === 200) {
+            resolve({ success: true, statusCode: 200 });
+          } else {
+            let errorMsg = `HTTP ${rzpRes.statusCode}`;
+            try {
+              const parsed = JSON.parse(data);
+              errorMsg = parsed.error?.description || parsed.error?.reason || errorMsg;
+            } catch (e) {}
+            resolve({ success: false, statusCode: rzpRes.statusCode, error: errorMsg });
+          }
         });
-
-        rzpReq.on('error', (err) => {
-          resolve({
-            verified: true,
-            message: `Razorpay Key ID format verified (${modeName}). Key ID: ${keyId}.`
-          });
-        });
-
-        rzpReq.on('timeout', () => {
-          rzpReq.destroy();
-          resolve({
-            verified: true,
-            message: `Razorpay Key ID format verified (${modeName}). Key ID: ${keyId}.`
-          });
-        });
-
-        rzpReq.end();
       });
 
-      return res.status(verificationResult.verified ? 200 : 401).json({
-        success: verificationResult.verified,
-        message: verificationResult.message
+      rzpReq.on('error', (err) => resolve({ success: false, error: err.message }));
+      rzpReq.on('timeout', () => {
+        rzpReq.destroy();
+        resolve({ success: false, error: 'Connection to api.razorpay.com timed out' });
+      });
+
+      rzpReq.end();
+    });
+
+    if (verification.success) {
+      return res.status(200).json({
+        success: true,
+        configured: true,
+        mode: isLive ? 'live' : 'test',
+        key_id_preview: keyId.slice(0, 8) + '••••' + keyId.slice(-4),
+        message: `Connection to Razorpay (${modeName}) validated successfully with live gateway handshake.`
+      });
+    } else {
+      return res.status(200).json({
+        success: false,
+        configured: true,
+        mode: isLive ? 'live' : 'test',
+        key_id_preview: keyId.slice(0, 8) + '••••' + keyId.slice(-4),
+        message: `Razorpay connection failed (${verification.statusCode || 'Error'}): ${verification.error}. Check RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in GoDaddy.`
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      message: `Connection to Razorpay (${modeName}) format validated successfully! Key ID: ${keyId}`
-    });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: 'Server error testing connection: ' + err.message
-    });
+    return res.status(500).json({ success: false, message: 'Test verification error: ' + err.message });
   }
 };

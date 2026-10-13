@@ -3842,20 +3842,27 @@ fbq('track', 'PageView');
               <span id="settings-rzp-badge" class="status-badge status-delivered">● Razorpay Active (Test Mode)</span>
             </div>
 
-            <div class="field-grid-2">
-              <div class="input-block">
-                <label>Razorpay Key ID *</label>
-                <input type="text" id="cfg-rzp-key-id" class="admin-input" placeholder="rzp_test_... or rzp_live_..." value="rzp_test_51L0RA9876DEMO">
-                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Obtained from your Razorpay Dashboard → Settings → API Keys.</span>
-              </div>
-              <div class="input-block">
-                <label>Razorpay Key Secret</label>
-                <div style="position: relative;">
-                  <input type="password" id="cfg-rzp-key-secret" class="admin-input" placeholder="Enter Razorpay Key Secret" style="padding-right: 3.5rem;">
-                  <button type="button" id="btn-toggle-rzp-secret" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 0.78rem;">Show</button>
+            <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(0, 180, 216, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-size: 0.72rem; font-weight: 700; color: #38BDF8; background: rgba(0, 180, 216, 0.15); padding: 2px 7px; border-radius: 4px;">GODADDY ENVIRONMENT</span>
+                  <span style="font-size: 0.8rem; font-weight: 700; color: #FFFFFF;">Server-Side Credentials Status</span>
                 </div>
-                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Used for server-side HMAC-SHA256 payment signature verification.</span>
+                <span id="rzp-env-overall-status" class="status-badge" style="font-size: 0.72rem;">Checking...</span>
               </div>
+              <div class="field-grid-2" style="margin-bottom: 0;">
+                <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">RAZORPAY_KEY_ID</div>
+                  <div id="cfg-rzp-key-id-display" style="font-size: 0.84rem; font-weight: 700; color: #38BDF8; font-family: monospace;">Loading...</div>
+                </div>
+                <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
+                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">RAZORPAY_KEY_SECRET</div>
+                  <div id="cfg-rzp-secret-status-display" style="font-size: 0.84rem; font-weight: 700; color: #94A3B8;">Loading...</div>
+                </div>
+              </div>
+              <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0.5rem 0 0 0; line-height: 1.4;">
+                🔒 <strong>Single Source of Truth:</strong> Credentials are securely read from GoDaddy server environment variables (<code>RAZORPAY_KEY_ID</code> and <code>RAZORPAY_KEY_SECRET</code>). To update, edit them in GoDaddy <em>Setup Node.js App → Environment Variables</em> and click <strong>Restart Application</strong>.
+              </p>
             </div>
 
             <div class="field-grid-2">

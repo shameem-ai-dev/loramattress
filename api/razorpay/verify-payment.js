@@ -1,4 +1,6 @@
 // Vercel Serverless Function: /api/razorpay/verify-payment
+// Strictly verifies HMAC-SHA256 payment signature using server-side RAZORPAY_KEY_SECRET
+
 const crypto = require('crypto');
 
 module.exports = async function handler(req, res) {
@@ -15,37 +17,56 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const razorpayOrderId = payload.razorpay_order_id || '';
-    const razorpayPaymentId = payload.razorpay_payment_id || '';
-    const razorpaySignature = payload.razorpay_signature || '';
-    const keySecret = (payload.key_secret || process.env.RAZORPAY_KEY_SECRET || '').trim();
+    const keySecret = (process.env.RAZORPAY_KEY_SECRET || '').trim();
 
-    if (!razorpayPaymentId) {
-      return res.status(400).json({ success: false, message: 'Razorpay Payment ID is required.' });
+    if (!keySecret) {
+      return res.status(500).json({
+        success: false,
+        verified: false,
+        message: 'Server error: RAZORPAY_KEY_SECRET is not configured in GoDaddy environment variables. Payment cannot be verified.'
+      });
     }
 
-    let verified = true;
-    if (keySecret && razorpayOrderId && razorpaySignature) {
-      try {
-        const expectedSig = crypto
-          .createHmac('sha256', keySecret)
-          .update(`${razorpayOrderId}|${razorpayPaymentId}`)
-          .digest('hex');
-        verified = (expectedSig === razorpaySignature);
-      } catch (e) {
-        verified = false;
-      }
+    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    const razorpayOrderId = (payload.razorpay_order_id || '').trim();
+    const razorpayPaymentId = (payload.razorpay_payment_id || '').trim();
+    const razorpaySignature = (payload.razorpay_signature || '').trim();
+
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+      return res.status(400).json({
+        success: false,
+        verified: false,
+        message: 'Incomplete verification parameters. Order ID, Payment ID, and Signature are required.'
+      });
+    }
+
+    const expectedSignature = crypto
+      .createHmac('sha256', keySecret)
+      .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+      .digest('hex');
+
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(expectedSignature, 'utf8'),
+      Buffer.from(razorpaySignature, 'utf8')
+    );
+
+    if (!isValid) {
+      return res.status(400).json({
+        success: false,
+        verified: false,
+        message: 'Invalid payment signature. Payment authenticity could not be verified.'
+      });
     }
 
     return res.status(200).json({
-      success: verified,
-      verified: verified,
+      success: true,
+      verified: true,
       payment_id: razorpayPaymentId,
       order_id: razorpayOrderId,
-      message: verified ? 'Payment successfully verified by Razorpay' : 'Signature verification failed'
+      message: 'Payment signature verified successfully.'
     });
+
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    return res.status(500).json({ success: false, verified: false, message: 'Verification processing failed: ' + err.message });
   }
 };

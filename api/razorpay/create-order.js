@@ -1,6 +1,7 @@
 // Vercel Serverless Function: /api/razorpay/create-order
+// Creates official Razorpay order with server-side environment credentials exclusively
+
 const https = require('https');
-const crypto = require('crypto');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,92 +17,100 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const rawAmount = Number(payload.amount) || 21999;
-    const amountInPaise = Math.round(rawAmount < 1000 ? rawAmount * 100 : rawAmount * 100);
-    const currency = (payload.currency || 'INR').toUpperCase();
-    const receipt = payload.receipt || ('rcpt_' + Date.now());
+    const keyId = (process.env.RAZORPAY_KEY_ID || '').trim();
+    const keySecret = (process.env.RAZORPAY_KEY_SECRET || '').trim();
 
-    const keyId = (payload.key_id || process.env.RAZORPAY_KEY_ID || 'rzp_test_51L0RA9876DEMO').trim();
-    const keySecret = (payload.key_secret || process.env.RAZORPAY_KEY_SECRET || '').trim();
-    const themeColor = payload.theme_color || '#00B4D8';
-
-    const isLiveOrRealKey = keySecret && keySecret.length > 5 && !keyId.includes('DEMO');
-
-    if (isLiveOrRealKey) {
-      const postData = JSON.stringify({
-        amount: amountInPaise,
-        currency: currency,
-        receipt: receipt,
-        notes: payload.notes || {}
+    // Enforce server-side environment variables as single source of truth
+    if (!keyId || !keySecret) {
+      return res.status(400).json({
+        success: false,
+        configured: false,
+        message: 'Razorpay payment gateway is not configured on the server. Please configure RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in GoDaddy environment variables.'
       });
-
-      const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
-
-      const rzpOrder = await new Promise((resolve) => {
-        const options = {
-          hostname: 'api.razorpay.com',
-          port: 443,
-          path: '/v1/orders',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postData),
-            'Authorization': authHeader
-          },
-          timeout: 7000
-        };
-
-        const rzpReq = https.request(options, (rzpRes) => {
-          let data = '';
-          rzpRes.on('data', chunk => data += chunk);
-          rzpRes.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.id) {
-                resolve({ success: true, order_id: parsed.id });
-              } else {
-                resolve({ success: false, error: parsed });
-              }
-            } catch (e) {
-              resolve({ success: false, error: data });
-            }
-          });
-        });
-
-        rzpReq.on('error', (err) => resolve({ success: false, error: err.message }));
-        rzpReq.on('timeout', () => {
-          rzpReq.destroy();
-          resolve({ success: false, error: 'timeout' });
-        });
-
-        rzpReq.write(postData);
-        rzpReq.end();
-      });
-
-      if (rzpOrder.success) {
-        return res.status(200).json({
-          success: true,
-          order_id: rzpOrder.order_id,
-          amount: amountInPaise,
-          currency: currency,
-          key_id: keyId,
-          theme_color: themeColor
-        });
-      }
     }
 
-    // Fallback: Generate unique order identifier for client-side standard Razorpay checkout
-    const generatedOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
+    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    const rawAmount = Number(payload.amount);
+    if (!rawAmount || rawAmount <= 0) {
+      return res.status(400).json({ success: false, message: 'Valid payment amount is required.' });
+    }
+
+    const amountInPaise = Math.round(rawAmount * 100);
+    const currency = (payload.currency || 'INR').toUpperCase();
+    const receipt = String(payload.receipt || ('rcpt_' + Date.now())).slice(0, 40);
+
+    const postData = JSON.stringify({
+      amount: amountInPaise,
+      currency: currency,
+      receipt: receipt,
+      notes: payload.notes || {}
+    });
+
+    const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
+
+    const rzpOrder = await new Promise((resolve) => {
+      const options = {
+        hostname: 'api.razorpay.com',
+        port: 443,
+        path: '/v1/orders',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData),
+          'Authorization': authHeader
+        },
+        timeout: 8000
+      };
+
+      const rzpReq = https.request(options, (rzpRes) => {
+        let data = '';
+        rzpRes.on('data', chunk => data += chunk);
+        rzpRes.on('end', () => {
+          try {
+            const parsed = JSON.parse(data);
+            if (rzpRes.statusCode >= 200 && rzpRes.statusCode < 300 && parsed.id) {
+              resolve({ success: true, order: parsed });
+            } else {
+              resolve({
+                success: false,
+                statusCode: rzpRes.statusCode,
+                error: parsed.error?.description || parsed.error?.reason || 'Razorpay order creation rejected by gateway'
+              });
+            }
+          } catch (e) {
+            resolve({ success: false, statusCode: rzpRes.statusCode, error: 'Invalid gateway response' });
+          }
+        });
+      });
+
+      rzpReq.on('error', (err) => resolve({ success: false, error: 'Network error communicating with Razorpay: ' + err.message }));
+      rzpReq.on('timeout', () => {
+        rzpReq.destroy();
+        resolve({ success: false, error: 'Gateway request timed out' });
+      });
+
+      rzpReq.write(postData);
+      rzpReq.end();
+    });
+
+    if (!rzpOrder.success) {
+      return res.status(502).json({
+        success: false,
+        message: rzpOrder.error || 'Failed to create payment order with Razorpay.'
+      });
+    }
+
     return res.status(200).json({
       success: true,
-      order_id: generatedOrderId,
+      configured: true,
+      order_id: rzpOrder.order.id,
       amount: amountInPaise,
       currency: currency,
       key_id: keyId,
-      theme_color: themeColor
+      theme_color: process.env.RAZORPAY_THEME_COLOR || '#00B4D8'
     });
+
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    return res.status(500).json({ success: false, message: 'Server order processing error: ' + err.message });
   }
 };

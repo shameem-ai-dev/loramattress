@@ -9374,8 +9374,6 @@
                 amount: finalOrderPrice,
                 currency: 'INR',
                 receipt: orderId,
-                key_id: rzpKeyId,
-                theme_color: rzpThemeColor,
                 notes: {
                   order_id: orderId,
                   customer_name: name,
@@ -9385,17 +9383,25 @@
                 }
               })
             });
-            if (rzpRes.ok) {
-              const contentType = rzpRes.headers.get('content-type') || '';
-              if (contentType.includes('application/json')) {
-                const rzpData = await rzpRes.json();
-                if (rzpData.order_id) rzpOrderId = rzpData.order_id;
-                if (rzpData.key_id) rzpKeyId = rzpData.key_id;
-                if (rzpData.theme_color) rzpThemeColor = rzpData.theme_color;
-              }
+            const rzpData = await rzpRes.json().catch(() => null);
+            if (!rzpRes.ok || !rzpData || !rzpData.success || !rzpData.order_id) {
+              const errMsg = rzpData && rzpData.message
+                ? rzpData.message
+                : 'Online payment gateway is currently unconfigured. Please select Cash on Delivery (COD) or contact store support.';
+              alert(errMsg);
+              if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+              updateCheckoutPaymentUI();
+              return;
             }
+            rzpOrderId = rzpData.order_id;
+            rzpKeyId = rzpData.key_id;
+            rzpThemeColor = rzpData.theme_color || '#00B4D8';
           } catch (netErr) {
-            console.warn('[CHECKOUT] Backend Razorpay order create notice:', netErr);
+            console.warn('[CHECKOUT] Backend Razorpay order create error:', netErr);
+            alert('Unable to initialize payment gateway. Please select Cash on Delivery (COD) or try again.');
+            if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+            updateCheckoutPaymentUI();
+            return;
           }
 
           const finalizeRazorpayOrder = function (paymentId, verifiedOrderId) {
@@ -9465,23 +9471,44 @@
                   updateCheckoutPaymentUI();
                 }
               },
-              handler: function (response) {
-                const paymentId = response.razorpay_payment_id || ('pay_' + Math.random().toString(36).substring(2, 10));
+              handler: async function (response) {
+                const paymentId = response.razorpay_payment_id;
                 const retOrderId = response.razorpay_order_id || rzpOrderId;
-                const retSignature = response.razorpay_signature || '';
+                const retSignature = response.razorpay_signature;
 
-                // Verify with backend
-                fetch('/api/razorpay/verify-payment', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    razorpay_order_id: retOrderId,
-                    razorpay_payment_id: paymentId,
-                    razorpay_signature: retSignature
-                  })
-                }).catch(() => {});
+                if (!paymentId || !retSignature) {
+                  alert('Payment was not completed. Missing payment verification signature from gateway.');
+                  if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+                  updateCheckoutPaymentUI();
+                  return;
+                }
 
-                finalizeRazorpayOrder(paymentId, retOrderId);
+                // Strictly verify with server HMAC-SHA256 before marking order as paid
+                try {
+                  const verifyRes = await fetch('/api/razorpay/verify-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      razorpay_order_id: retOrderId,
+                      razorpay_payment_id: paymentId,
+                      razorpay_signature: retSignature
+                    })
+                  });
+                  const verifyData = await verifyRes.json().catch(() => null);
+
+                  if (!verifyRes.ok || !verifyData || !verifyData.verified) {
+                    alert('Server-side payment verification failed: ' + (verifyData?.message || 'Invalid gateway signature.'));
+                    if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+                    updateCheckoutPaymentUI();
+                    return;
+                  }
+
+                  finalizeRazorpayOrder(paymentId, retOrderId);
+                } catch (vErr) {
+                  alert('Payment verification connection error: ' + vErr.message);
+                  if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+                  updateCheckoutPaymentUI();
+                }
               }
             };
 
