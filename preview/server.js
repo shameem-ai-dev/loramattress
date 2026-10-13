@@ -928,11 +928,18 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Health check route for GoDaddy container health monitors
+  if (pathname === '/health' || pathname === '/healthz' || pathname === '/api/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ status: 'ok', uptime: process.uptime(), time: new Date().toISOString() }));
+    return;
+  }
+
   // Fallback 404
   res.writeHead(404, { 'Content-Type': 'text/plain' });
   res.end('404 Not Found');
 });
 
-server.listen(PORT, () => {
-  console.log(`LORA Mattress Preview Server running on http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`LORA Mattress Server running on http://0.0.0.0:${PORT}`);
 });
