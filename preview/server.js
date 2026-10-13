@@ -4,8 +4,64 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.PORT || 3456;
 const ROOT_DIR = path.resolve(__dirname, '..');
+
+// Load environment variables from .env or .env.godaddy if present locally
+function loadLocalEnv() {
+  const envCandidates = ['.env', '.env.local', '.env.godaddy'];
+  for (const envFile of envCandidates) {
+    const fullPath = path.join(ROOT_DIR, envFile);
+    if (fs.existsSync(fullPath)) {
+      try {
+        const content = fs.readFileSync(fullPath, 'utf8');
+        content.split('\n').forEach(line => {
+          const trimmed = line.trim();
+          if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+            const idx = trimmed.indexOf('=');
+            const key = trimmed.slice(0, idx).trim();
+            const val = trimmed.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+            if (key && !(key in process.env)) {
+              process.env[key] = val;
+            }
+          }
+        });
+      } catch (e) {}
+    }
+  }
+}
+loadLocalEnv();
+
+// Shared backend API handlers (Single Source of Truth)
+const paymentSettingsHandler = require('../api/payment-settings.js');
+const rzpCreateOrderHandler = require('../api/razorpay/create-order.js');
+const rzpVerifyPaymentHandler = require('../api/razorpay/verify-payment.js');
+const rzpTestConnectionHandler = require('../api/razorpay/test-connection.js');
+const otpSendHandler = require('../api/otp/send.js');
+const otpTestGatewayHandler = require('../api/otp/test-gateway.js');
+
+function callApiHandler(handler, req, res, bodyData) {
+  req.body = bodyData;
+  res.status = function(code) {
+    this.statusCode = code;
+    return this;
+  };
+  res.json = function(data) {
+    if (!this.writableEnded) {
+      this.setHeader('Content-Type', 'application/json; charset=UTF-8');
+      this.end(JSON.stringify(data));
+    }
+    return this;
+  };
+  return Promise.resolve(handler(req, res)).catch(err => {
+    if (!res.writableEnded) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json; charset=UTF-8');
+      res.end(JSON.stringify({ success: false, message: err.message }));
+    }
+  });
+}
+
+const PORT = process.env.PORT || 3456;
 const ASSETS_DIR = path.join(ROOT_DIR, 'assets');
 const SECTIONS_DIR = path.join(ROOT_DIR, 'sections');
 const SNIPPETS_DIR = path.join(ROOT_DIR, 'snippets');
@@ -192,119 +248,56 @@ const server = http.createServer((req, res) => {
 
   // Handle Backend OTP API Routes
   if (pathname.startsWith('/api/otp/')) {
+    if (req.method === 'GET' && pathname === '/api/otp/send') {
+      return callApiHandler(otpSendHandler, req, res, null);
+    }
+
     let body = '';
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       let payload = {};
       try { if (body) payload = JSON.parse(body); } catch (e) {}
 
-      // 1. Send OTP
+      // 1. Send OTP (Strict server process.env execution via api/otp/send.js)
       if (pathname === '/api/otp/send' && req.method === 'POST') {
-        const identifier = (payload.identifier || '').trim();
-        const channel = (payload.channel || 'sms').toLowerCase();
-        const provider = payload.provider || 'default';
-        const clientIp = req.socket.remoteAddress || '127.0.0.1';
-
-        if (!identifier) {
-          return sendJson(400, { success: false, message: 'Mobile number or email is required.' });
-        }
-
-        // Development Preview: Zero-blocking mode (No cooldown or rate-limit lockouts to ensure 100% reliable developer/client testing)
-        const now = Date.now();
-
-        // Generate Secure 6-Digit OTP
-        const plainOtp = Math.floor(100000 + Math.random() * 900000).toString();
-        const hashed = hashOtp(plainOtp);
-        const expiryMinutes = payload.expiryMinutes || 5;
-        const expiresAt = now + expiryMinutes * 60 * 1000;
-
-        otpStore.set(identifier, {
-          hashedOtp: hashed,
-          plainOtp: plainOtp,
-          expiresAt: expiresAt,
-          attempts: 0,
-          maxAttempts: payload.maxAttempts || 5,
-          lastSentAt: now,
-          channel: channel,
-          provider: provider
-        });
-
-        // Audit Log Entry (Strictly without plain OTP value)
-        const maskedIdentifier = identifier.includes('@')
-          ? identifier.replace(/^(.)(.*)(@.*)$/, (_, a, b, c) => a + '•••' + c)
-          : identifier.slice(0, 3) + '••••' + identifier.slice(-3);
-
-        const logEntry = {
-          date: new Date().toISOString(),
-          customer: maskedIdentifier,
-          channel: channel.toUpperCase(),
-          provider: provider,
-          status: 'DISPATCHED'
-        };
-        otpAuditLogs.unshift(logEntry);
-        if (otpAuditLogs.length > 100) otpAuditLogs.pop();
-
-        console.log(`[OTP GATEWAY] Sent to ${maskedIdentifier} via ${channel.toUpperCase()} (${provider}). Dev simulation passcode: ${plainOtp}`);
-
-        // Return clean response (includes devSimulationOtp in development preview for convenient testing)
-        return sendJson(200, {
-          success: true,
-          message: `OTP successfully transmitted via ${channel.toUpperCase()}.`,
-          channel: channel,
-          cooldown: 15,
-          expiresInMinutes: expiryMinutes,
-          devSimulationOtp: plainOtp // Provided for developer preview validation
-        });
+        return callApiHandler(otpSendHandler, req, res, payload);
       }
 
-      // 2. Verify OTP
+      // 2. Verify OTP (Strict token verification without mock bypass)
       if (pathname === '/api/otp/verify' && req.method === 'POST') {
         const identifier = (payload.identifier || '').trim();
         const enteredOtp = (payload.otp || '').trim();
-        const now = Date.now();
 
         if (!identifier || !enteredOtp) {
           return sendJson(400, { success: false, message: 'Identifier and OTP are required.' });
         }
 
-        const record = otpStore.get(identifier);
-        const isUniversalTestOtp = enteredOtp === '123456';
-        const hashedEntered = hashOtp(enteredOtp);
-        const isValid = isUniversalTestOtp || 
-                        (record && (hashedEntered === record.hashedOtp || enteredOtp === record.plainOtp)) ||
-                        (enteredOtp.length === 6 && /^\d{6}$/.test(enteredOtp));
-
-        if (!isValid) {
-          if (record) record.attempts += 1;
-          const remaining = record ? Math.max(0, record.maxAttempts - record.attempts) : 0;
-
-          // Log failure
-          otpAuditLogs.unshift({
-            date: new Date().toISOString(),
-            customer: identifier.includes('@') ? identifier.replace(/^(.)(.*)(@.*)$/, (_, a, b, c) => a + '•••' + c) : identifier.slice(0, 3) + '••••' + identifier.slice(-3),
-            channel: (record && record.channel) ? record.channel.toUpperCase() : 'SMS',
-            provider: (record && record.provider) || 'default',
-            status: 'FAILED_ATTEMPT'
-          });
-
-          return sendJson(400, {
-            success: false,
-            message: `Incorrect OTP. ${remaining} attempt(s) remaining.`
-          });
+        const store = global._loraOtpStore || otpStore;
+        const record = store.get(identifier);
+        if (!record) {
+          return sendJson(400, { success: false, message: 'No active OTP verification session found or code expired.' });
         }
 
-        // Successfully Verified!
-        otpStore.delete(identifier);
+        if (Date.now() > record.expiresAt) {
+          store.delete(identifier);
+          return sendJson(400, { success: false, message: 'OTP has expired. Please request a new verification code.' });
+        }
 
-        // Log success
-        otpAuditLogs.unshift({
-          date: new Date().toISOString(),
-          customer: identifier.includes('@') ? identifier.replace(/^(.)(.*)(@.*)$/, (_, a, b, c) => a + '•••' + c) : identifier.slice(0, 3) + '••••' + identifier.slice(-3),
-          channel: (record && record.channel) ? record.channel.toUpperCase() : 'SMS',
-          provider: (record && record.provider) || 'default',
-          status: 'VERIFIED_SUCCESS'
-        });
+        const hashedEntered = hashOtp(enteredOtp);
+        const isValid = (record.hashedOtp && hashedEntered === record.hashedOtp) || (record.plainOtp && enteredOtp === record.plainOtp);
 
+        if (!isValid) {
+          record.attempts = (record.attempts || 0) + 1;
+          const remaining = Math.max(0, (record.maxAttempts || 3) - record.attempts);
+          if (remaining === 0) {
+            store.delete(identifier);
+            return sendJson(400, { success: false, message: 'Too many failed verification attempts. Please request a new OTP.' });
+          }
+          return sendJson(400, { success: false, message: `Incorrect OTP code. ${remaining} attempt(s) remaining.` });
+        }
+
+        // Successfully Verified
+        store.delete(identifier);
         return sendJson(200, {
           success: true,
           message: 'OTP verified successfully.',
@@ -312,16 +305,9 @@ const server = http.createServer((req, res) => {
         });
       }
 
-      // 3. Test Gateway
+      // 3. Test Gateway (Admin authorized non-destructive check via api/otp/test-gateway.js)
       if (pathname === '/api/otp/test-gateway' && req.method === 'POST') {
-        const channel = payload.channel || 'SMS';
-        const provider = payload.provider || 'Mock Provider';
-        const recipient = payload.recipient || '+919876543210';
-
-        return sendJson(200, {
-          success: true,
-          message: `Test OTP connection to ${provider} (${channel}) passed. Simulated dispatch to ${recipient}.`
-        });
+        return callApiHandler(otpTestGatewayHandler, req, res, payload);
       }
 
       // 4. Retrieve Audit Logs for Admin
@@ -443,42 +429,16 @@ const server = http.createServer((req, res) => {
   // Payment Settings API (GET / POST)
   if (pathname === '/api/payment-settings') {
     if (req.method === 'GET') {
-      const current = getPaymentSettings();
-      // Mask secret for UI security
-      const safe = {
-        ...current,
-        razorpay_key_secret: current.razorpay_key_secret ? '••••••••' : ''
-      };
-      return sendJson(200, { success: true, settings: safe });
+      return callApiHandler(paymentSettingsHandler, req, res, null);
     }
-
-    if (req.method === 'POST') {
-      let body = '';
-      req.on('data', chunk => body += chunk);
-      req.on('end', () => {
-        try {
-          const payload = JSON.parse(body);
-          const current = getPaymentSettings();
-          const updated = {
-            ...current,
-            ...payload
-          };
-          // Don't overwrite secret if placeholder sent
-          if (payload.razorpay_key_secret === '••••••••' || payload.razorpay_key_secret === undefined) {
-            updated.razorpay_key_secret = current.razorpay_key_secret || '';
-          }
-          fs.writeFileSync(paymentSettingsPath, JSON.stringify(updated, null, 2), 'utf8');
-          return sendJson(200, {
-            success: true,
-            message: 'Payment gateway configuration saved successfully.',
-            settings: { ...updated, razorpay_key_secret: updated.razorpay_key_secret ? '••••••••' : '' }
-          });
-        } catch (e) {
-          return sendJson(400, { success: false, message: e.message });
-        }
-      });
-      return;
-    }
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      let payload = {};
+      try { if (body) payload = JSON.parse(body); } catch (e) {}
+      return callApiHandler(paymentSettingsHandler, req, res, payload);
+    });
+    return;
   }
 
   // Razorpay Gateway API Routes
@@ -489,167 +449,19 @@ const server = http.createServer((req, res) => {
       let payload = {};
       try { if (body) payload = JSON.parse(body); } catch (e) {}
 
-      // 1. Create Razorpay Order
+      // 1. Create Razorpay Order (Strict server credentials via api/razorpay/create-order.js)
       if (pathname === '/api/razorpay/create-order' && req.method === 'POST') {
-        const settings = getPaymentSettings();
-        const rawAmount = Number(payload.amount) || 21999;
-        // Razorpay expects amount in paise (1 INR = 100 paise)
-        const amountInPaise = Math.round(rawAmount < 1000 ? rawAmount * 100 : rawAmount * 100);
-        const currency = (payload.currency || 'INR').toUpperCase();
-        const receipt = payload.receipt || ('rcpt_' + Date.now());
-        const keyId = (settings.razorpay_key_id || 'rzp_test_51L0RA9876DEMO').trim();
-        const keySecret = (settings.razorpay_key_secret || '').trim();
-
-        // If real Razorpay credentials provided (not demo placeholder), call official Razorpay API
-        const isLiveOrRealKey = keySecret && keySecret.length > 5 && !keyId.includes('DEMO');
-
-        if (isLiveOrRealKey) {
-          const postData = JSON.stringify({
-            amount: amountInPaise,
-            currency: currency,
-            receipt: receipt,
-            notes: payload.notes || {}
-          });
-
-          const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
-          const options = {
-            hostname: 'api.razorpay.com',
-            port: 443,
-            path: '/v1/orders',
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Content-Length': Buffer.byteLength(postData),
-              'Authorization': authHeader
-            }
-          };
-
-          const rzpReq = https.request(options, (rzpRes) => {
-            let rzpData = '';
-            rzpRes.on('data', d => rzpData += d);
-            rzpRes.on('end', () => {
-              try {
-                const parsed = JSON.parse(rzpData);
-                if (parsed.id) {
-                  return sendJson(200, {
-                    success: true,
-                    order_id: parsed.id,
-                    amount: parsed.amount,
-                    currency: parsed.currency,
-                    key_id: keyId,
-                    theme_color: settings.razorpay_theme_color || '#00B4D8'
-                  });
-                } else {
-                  console.warn('[RAZORPAY API ERROR] Order creation fallback:', parsed);
-                  // Fallback to generated ID
-                  const fallbackOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
-                  return sendJson(200, {
-                    success: true,
-                    order_id: fallbackOrderId,
-                    amount: amountInPaise,
-                    currency: currency,
-                    key_id: keyId,
-                    theme_color: settings.razorpay_theme_color || '#00B4D8',
-                    note: 'Live PG returned error, using verified fallback order'
-                  });
-                }
-              } catch (parseErr) {
-                const fallbackOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
-                return sendJson(200, {
-                  success: true,
-                  order_id: fallbackOrderId,
-                  amount: amountInPaise,
-                  currency: currency,
-                  key_id: keyId,
-                  theme_color: settings.razorpay_theme_color || '#00B4D8'
-                });
-              }
-            });
-          });
-
-          rzpReq.on('error', (err) => {
-            console.warn('[RAZORPAY API] Network error, providing seamless mock order:', err.message);
-            const fallbackOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
-            return sendJson(200, {
-              success: true,
-              order_id: fallbackOrderId,
-              amount: amountInPaise,
-              currency: currency,
-              key_id: keyId,
-              theme_color: settings.razorpay_theme_color || '#00B4D8'
-            });
-          });
-
-          rzpReq.write(postData);
-          rzpReq.end();
-          return;
-        }
-
-        // Test/Sandbox/Dev Mode Instant Order Generation
-        const testOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
-        console.log(`[RAZORPAY GATEWAY] Generated test order ${testOrderId} for ₹${rawAmount} (${amountInPaise} paise)`);
-        return sendJson(200, {
-          success: true,
-          order_id: testOrderId,
-          amount: amountInPaise,
-          currency: currency,
-          key_id: keyId,
-          theme_color: settings.razorpay_theme_color || '#00B4D8',
-          mode: settings.razorpay_mode || 'test'
-        });
+        return callApiHandler(rzpCreateOrderHandler, req, res, payload);
       }
 
-      // 2. Verify Razorpay Payment Signature
+      // 2. Verify Razorpay Payment Signature (Strict HMAC-SHA256 via api/razorpay/verify-payment.js)
       if (pathname === '/api/razorpay/verify-payment' && req.method === 'POST') {
-        const settings = getPaymentSettings();
-        const razorpayOrderId = payload.razorpay_order_id || '';
-        const razorpayPaymentId = payload.razorpay_payment_id || '';
-        const razorpaySignature = payload.razorpay_signature || '';
-        const keySecret = (settings.razorpay_key_secret || '').trim();
-
-        if (!razorpayPaymentId) {
-          return sendJson(400, { success: false, message: 'Razorpay Payment ID is required.' });
-        }
-
-        let verified = true;
-        if (keySecret && razorpayOrderId && razorpaySignature) {
-          try {
-            const expectedSig = crypto
-              .createHmac('sha256', keySecret)
-              .update(`${razorpayOrderId}|${razorpayPaymentId}`)
-              .digest('hex');
-            verified = (expectedSig === razorpaySignature);
-          } catch (e) {
-            verified = false;
-          }
-        }
-
-        console.log(`[RAZORPAY VERIFICATION] Payment ID: ${razorpayPaymentId}, Verified: ${verified}`);
-        return sendJson(200, {
-          success: verified,
-          verified: verified,
-          payment_id: razorpayPaymentId,
-          order_id: razorpayOrderId,
-          message: verified ? 'Payment successfully verified by Razorpay' : 'Signature verification failed'
-        });
+        return callApiHandler(rzpVerifyPaymentHandler, req, res, payload);
       }
 
-      // 3. Test Connection
+      // 3. Test Connection (Admin authorized non-destructive query via api/razorpay/test-connection.js)
       if (pathname === '/api/razorpay/test-connection' && req.method === 'POST') {
-        const testKeyId = (payload.key_id || '').trim();
-        const testSecret = (payload.key_secret || '').trim();
-
-        if (!testKeyId.startsWith('rzp_test_') && !testKeyId.startsWith('rzp_live_')) {
-          return sendJson(400, {
-            success: false,
-            message: 'Invalid Key ID format. Razorpay Key ID must start with "rzp_test_" or "rzp_live_".'
-          });
-        }
-
-        return sendJson(200, {
-          success: true,
-          message: `Connection to Razorpay (${testKeyId.startsWith('rzp_live_') ? 'Live Production Mode' : 'Sandbox Test Mode'}) validated successfully!`
-        });
+        return callApiHandler(rzpTestConnectionHandler, req, res, payload);
       }
 
       return sendJson(404, { success: false, message: 'Razorpay API Endpoint Not Found' });

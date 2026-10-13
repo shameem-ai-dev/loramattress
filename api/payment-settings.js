@@ -34,13 +34,15 @@ module.exports = async function handler(req, res) {
   }
 
   const diskSettings = loadDiskPaymentSettings();
-  const envStatus = getIntegrationStatus().razorpay;
+  const allIntegrations = getIntegrationStatus();
+  const envStatus = allIntegrations.razorpay;
 
   // GET: Return current payment configuration and environment credential status
   if (req.method === 'GET') {
     const safeSettings = {
       razorpay_enabled: typeof diskSettings.razorpay_enabled === 'boolean' ? diskSettings.razorpay_enabled : true,
       razorpay_configured: envStatus.configured,
+      razorpay_key_id: envStatus.key_id_preview || '',
       razorpay_key_id_preview: envStatus.key_id_preview || 'Not configured in GoDaddy',
       razorpay_secret_status: envStatus.secret_configured ? 'Configured in GoDaddy Environment' : 'Not configured in GoDaddy Environment',
       razorpay_mode: envStatus.mode,
@@ -49,7 +51,23 @@ module.exports = async function handler(req, res) {
       cod_max_amount: Number(diskSettings.cod_max_amount) || 50000,
       cod_notice: diskSettings.cod_notice || 'Cash or UPI accepted upon delivery arrival.'
     };
-    return res.status(200).json({ success: true, settings: safeSettings });
+    return res.status(200).json({
+      success: true,
+      settings: safeSettings,
+      status: {
+        configured: envStatus.configured,
+        has_key_id: Boolean(envStatus.key_id_preview),
+        has_key_secret: envStatus.secret_configured
+      },
+      integrations: {
+        payment: { razorpay: envStatus },
+        otp: {
+          sms: { configured: allIntegrations.sms?.configured, has_key: allIntegrations.sms?.configured },
+          whatsapp: { configured: allIntegrations.whatsapp?.configured, has_key: allIntegrations.whatsapp?.configured },
+          email: { configured: allIntegrations.email?.configured, has_key: allIntegrations.email?.configured }
+        }
+      }
+    });
   }
 
   // POST: Update non-secret payment settings (Admin Only)

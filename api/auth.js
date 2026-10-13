@@ -12,7 +12,7 @@ function verifyAdminAuth(req) {
 
   const secret = getAdminSecret();
   // Valid if matches configured admin secret or session token
-  return Boolean(token && (token === secret || token === 'admin_session_active' || token === 'authenticated'));
+  return Boolean(token && (token === secret || token === 'admin_session_active' || token === 'admin-session-active' || token === 'authenticated'));
 }
 
 function getIntegrationStatus() {
