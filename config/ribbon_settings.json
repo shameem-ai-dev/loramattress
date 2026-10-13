@@ -1,0 +1,32 @@
+{
+  "enabled": true,
+  "speedSeconds": 28,
+  "pauseOnHover": true,
+  "messages": [
+    {
+      "id": "ribbon_1",
+      "tag": "FESTIVE SALE",
+      "text": "Get Flat 20% Off + Complimentary Orthopedic Pillow Pair with Code LORA20",
+      "link": "#the-collection"
+    },
+    {
+      "id": "ribbon_2",
+      "tag": "FACTORY DIRECT",
+      "text": "100% Natural Latex Mattresses Direct from Kerala Factory to Your Bedroom",
+      "link": "#factory-direct"
+    },
+    {
+      "id": "ribbon_3",
+      "tag": "NO COST EMI",
+      "text": "Zero Down Payment & 0% Interest EMI starting ₹1,833/month via Bajaj Finserv",
+      "link": "product.html"
+    },
+    {
+      "id": "ribbon_4",
+      "tag": "FREE DELIVERY",
+      "text": "Complimentary Flat Delivery & Unboxing Across Kerala within 24–48 Hours",
+      "link": "#factory-direct"
+    }
+  ],
+  "updatedAt": "2026-10-13T10:35:30.000Z"
+}

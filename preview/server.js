@@ -337,6 +337,89 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Ribbon Settings Helper
+  const ribbonSettingsPath = path.join(CONFIG_DIR, 'ribbon_settings.json');
+  const getRibbonSettings = () => {
+    if (fs.existsSync(ribbonSettingsPath)) {
+      try {
+        return JSON.parse(fs.readFileSync(ribbonSettingsPath, 'utf8'));
+      } catch (e) {}
+    }
+    return {
+      enabled: true,
+      speedSeconds: 28,
+      pauseOnHover: true,
+      messages: [
+        {
+          id: "ribbon_1",
+          tag: "FESTIVE SALE",
+          text: "Get Flat 20% Off + Complimentary Orthopedic Pillow Pair with Code LORA20",
+          link: "#the-collection"
+        },
+        {
+          id: "ribbon_2",
+          tag: "FACTORY DIRECT",
+          text: "100% Natural Latex Mattresses Direct from Kerala Factory to Your Bedroom",
+          link: "#factory-direct"
+        },
+        {
+          id: "ribbon_3",
+          tag: "NO COST EMI",
+          text: "Zero Down Payment & 0% Interest EMI starting ₹1,833/month via Bajaj Finserv",
+          link: "product.html"
+        },
+        {
+          id: "ribbon_4",
+          tag: "FREE DELIVERY",
+          text: "Complimentary Flat Delivery & Unboxing Across Kerala within 24–48 Hours",
+          link: "#factory-direct"
+        }
+      ],
+      updatedAt: new Date().toISOString()
+    };
+  };
+
+  // Offer Ribbon Settings API (GET / POST)
+  if (pathname === '/api/ribbon-settings') {
+    if (req.method === 'GET') {
+      const current = getRibbonSettings();
+      return sendJson(200, { success: true, settings: current });
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => body += chunk);
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(body);
+          const toSave = payload.settings || payload;
+          const cleanSettings = {
+            enabled: typeof toSave.enabled === 'boolean' ? toSave.enabled : true,
+            speedSeconds: Math.max(8, Math.min(120, Number(toSave.speedSeconds) || 28)),
+            pauseOnHover: toSave.pauseOnHover !== false,
+            messages: Array.isArray(toSave.messages) ? toSave.messages.map((m, idx) => ({
+              id: m.id || `ribbon_${idx + 1}`,
+              tag: String(m.tag || '').trim().slice(0, 30),
+              text: String(m.text || '').trim().slice(0, 180),
+              link: String(m.link || '').trim()
+            })).filter(m => m.text.length > 0) : [],
+            updatedAt: new Date().toISOString()
+          };
+          fs.writeFileSync(ribbonSettingsPath, JSON.stringify(cleanSettings, null, 2), 'utf8');
+          return sendJson(200, {
+            success: true,
+            persisted: true,
+            message: 'Offer ribbon settings saved and published permanently to storefront.',
+            settings: cleanSettings
+          });
+        } catch (e) {
+          return sendJson(400, { success: false, message: e.message });
+        }
+      });
+      return;
+    }
+  }
+
   // Payment Settings Helper
   const paymentSettingsPath = path.join(CONFIG_DIR, 'payment_settings.json');
   const getPaymentSettings = () => {

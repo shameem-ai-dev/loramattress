@@ -6376,3 +6376,236 @@ body {
   display: block;
 }
 
+/* ==========================================================================
+   SLIM 3D ROTATING OFFER RIBBON (CONTINUOUS MOVING BELT)
+   ========================================================================== */
+:root {
+  --lora-ribbon-height-desktop: 32px;
+  --lora-ribbon-height-mobile: 28px;
+  --lora-ribbon-speed: 28s;
+}
+
+.lora-offer-ribbon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100vw;
+  height: var(--lora-ribbon-height-desktop);
+  z-index: 1001;
+  background: linear-gradient(180deg, #101c36 0%, #080f20 50%, #040813 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 180, 216, 0.24);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  contain: paint layout;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.lora-offer-ribbon.is-hidden {
+  display: none !important;
+}
+
+/* 3D Cylindrical Belt Vignette Edges (Seamless Drum Horizon Effect) */
+.lora-offer-ribbon::before,
+.lora-offer-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 52px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.lora-offer-ribbon::before {
+  left: 0;
+  background: linear-gradient(90deg, #040813 0%, rgba(4, 8, 19, 0) 100%);
+}
+
+.lora-offer-ribbon::after {
+  right: 0;
+  background: linear-gradient(270deg, #040813 0%, rgba(4, 8, 19, 0) 100%);
+}
+
+/* Continuous Moving Belt Track */
+.lora-ribbon-stage {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.lora-ribbon-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+  animation: loraRibbonScroll var(--lora-ribbon-speed, 28s) linear infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+.lora-offer-ribbon:hover .lora-ribbon-track,
+.lora-offer-ribbon:focus-within .lora-ribbon-track {
+  animation-play-state: paused;
+}
+
+@keyframes loraRibbonScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.lora-ribbon-group {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.lora-ribbon-item {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #E2E8F0;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.2s ease;
+  outline: none;
+}
+
+.lora-ribbon-item:focus-visible {
+  outline: 1px solid #38BDF8;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.lora-ribbon-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 180, 216, 0.14);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  border-radius: 9999px;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  padding: 2px 7px;
+  margin-right: 8px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.lora-ribbon-text {
+  color: #E2E8F0;
+  letter-spacing: 0.015em;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.lora-ribbon-item:hover .lora-ribbon-text {
+  color: #FFFFFF;
+}
+
+.lora-ribbon-item:hover .lora-ribbon-tag {
+  background: rgba(0, 180, 216, 0.24);
+  border-color: rgba(56, 189, 248, 0.6);
+  color: #E0F2FE;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+.lora-ribbon-divider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(56, 189, 248, 0.45);
+  font-size: 0.55rem;
+  margin: 0 1.25rem;
+  user-select: none;
+}
+
+/* Page Layout Offsets when Offer Ribbon is Active */
+body.has-offer-ribbon .site-header {
+  top: calc(var(--lora-ribbon-height-desktop) + 0.65rem);
+}
+
+body.has-offer-ribbon .pdp-header-nav {
+  top: var(--lora-ribbon-height-desktop);
+}
+
+body.has-offer-ribbon.pdp-page {
+  padding-top: var(--lora-ribbon-height-desktop);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .lora-offer-ribbon {
+    height: var(--lora-ribbon-height-mobile);
+  }
+
+  .lora-offer-ribbon::before,
+  .lora-offer-ribbon::after {
+    width: 28px;
+  }
+
+  .lora-ribbon-item {
+    font-size: 0.72rem;
+  }
+
+  .lora-ribbon-tag {
+    font-size: 0.58rem;
+    padding: 1.5px 5px;
+    margin-right: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .lora-ribbon-divider {
+    margin: 0 0.85rem;
+    font-size: 0.5rem;
+  }
+
+  body.has-offer-ribbon .site-header {
+    top: var(--lora-ribbon-height-mobile) !important;
+  }
+
+  body.has-offer-ribbon .hero-scroll-wrapper {
+    padding-top: calc(3.6rem + var(--lora-ribbon-height-mobile) + env(safe-area-inset-top, 0px)) !important;
+  }
+
+  body.has-offer-ribbon .pdp-header-nav {
+    top: var(--lora-ribbon-height-mobile) !important;
+  }
+
+  body.has-offer-ribbon.pdp-page {
+    padding-top: var(--lora-ribbon-height-mobile) !important;
+  }
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .lora-ribbon-track {
+    animation: none !important;
+    transform: none !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .lora-ribbon-group:nth-child(n+2) {
+    display: none !important;
+  }
+}
+
+
