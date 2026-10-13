@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "build": "echo build",
     "dev": "node server.js"
   },
+  "dependencies": {},
   "engines": {
     "node": ">=18.0.0"
   }
