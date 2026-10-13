@@ -928,15 +928,20 @@ const server = http.createServer((req, res) => {
         try {
           const updateData = JSON.parse(body);
           const urlParts = pathname.split('/');
-          const targetId = urlParts.length > 3 ? urlParts[3] : updateData.id;
+          const targetId = (urlParts.length > 3 && urlParts[3]) ? decodeURIComponent(urlParts[3]) : updateData.id;
           const currentOrders = getOrders();
-          const index = currentOrders.findIndex(o => o.id === targetId);
+          const index = currentOrders.findIndex(o => o.id === targetId || o.id === updateData.id);
 
           if (index !== -1) {
             currentOrders[index] = { ...currentOrders[index], ...updateData };
             fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf8');
             res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
             res.end(JSON.stringify({ success: true, order: currentOrders[index], orders: currentOrders }));
+          } else if (updateData && updateData.id) {
+            currentOrders.unshift(updateData);
+            fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf8');
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({ success: true, order: updateData, orders: currentOrders }));
           } else {
             res.writeHead(404, { 'Content-Type': 'application/json; charset=UTF-8' });
             res.end(JSON.stringify({ success: false, message: 'Order not found' }));

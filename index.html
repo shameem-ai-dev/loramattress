@@ -9908,6 +9908,7 @@
         document.body.style.overflow = '';
       }
 
+      let _customerDashSyncInterval = null;
       function openCustomerDashboardModal() {
         if (!currentCustomer) {
           openCustomerAuthModal();
@@ -9920,6 +9921,9 @@
         }
         try {
           populateCustomerDashboard();
+          if (typeof syncCustomerOrdersFromServer === 'function') {
+            syncCustomerOrdersFromServer();
+          }
         } catch (e) {
           console.warn('[AUTH] populateCustomerDashboard error:', e);
         }
@@ -9929,9 +9933,22 @@
           cDash.style.display = 'flex';
           document.body.style.overflow = 'hidden';
         }
+
+        // Live real-time polling while customer account dashboard is open
+        if (!_customerDashSyncInterval) {
+          _customerDashSyncInterval = setInterval(() => {
+            if (typeof syncCustomerOrdersFromServer === 'function' && currentCustomer) {
+              syncCustomerOrdersFromServer();
+            }
+          }, 8000);
+        }
       }
 
       function closeCustomerDashboardModal() {
+        if (_customerDashSyncInterval) {
+          clearInterval(_customerDashSyncInterval);
+          _customerDashSyncInterval = null;
+        }
         const cDash = document.querySelector('#modal-customer-dashboard') || modalCustDash;
         if (cDash) {
           cDash.classList.remove('active');
@@ -10526,24 +10543,103 @@
         if (profEmail) profEmail.value = currentCustomer.email || '';
 
         renderCustomerOrders();
+        syncCustomerOrdersFromServer();
+      }
+
+      // Live Server Synchronization for Customer Orders
+      async function syncCustomerOrdersFromServer() {
+        if (!currentCustomer) return;
+        try {
+          const res = await fetch('/api/orders');
+          if (res.ok) {
+            const data = await res.json();
+            const serverOrders = data.orders || [];
+            if (serverOrders.length > 0) {
+              let localOrders = [];
+              try {
+                const raw = localStorage.getItem('lora_orders_v1');
+                if (raw) localOrders = JSON.parse(raw);
+              } catch (e) {}
+
+              const orderMap = new Map();
+              // Server orders hold authoritative dispatch & delivery status updates
+              serverOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
+              // Merge any un-synced offline local orders
+              localOrders.forEach(o => {
+                if (o && o.id) {
+                  if (orderMap.has(o.id)) {
+                    const serverO = orderMap.get(o.id);
+                    orderMap.set(o.id, { ...o, ...serverO });
+                  } else {
+                    orderMap.set(o.id, o);
+                  }
+                }
+              });
+
+              const merged = Array.from(orderMap.values()).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+              localStorage.setItem('lora_orders_v1', JSON.stringify(merged));
+              renderCustomerOrdersUI(merged);
+            }
+          }
+        } catch (err) {
+          console.warn('[CUSTOMER ORDERS] Backend sync offline, using local cache:', err);
+        }
+      }
+      window.syncCustomerOrdersFromServer = syncCustomerOrdersFromServer;
+
+      function getTimelineStepIndex(status) {
+        if (!status) return 0;
+        const norm = String(status).toLowerCase().trim();
+        if (norm === 'delivered' || (norm.includes('deliver') && !norm.includes('out for'))) return 5;
+        if (norm.includes('out for delivery')) return 4;
+        if (norm.includes('ship') || norm.includes('picked up') || norm.includes('dispatched') || norm.includes('in transit')) return 3;
+        if (norm.includes('ready for dispatch')) return 2;
+        if (norm.includes('pack') || norm.includes('pick')) return 1;
+        return 0; // Order Received
+      }
+
+      function getCustomerStatusBadgeStyle(status) {
+        const norm = String(status || '').toLowerCase().trim();
+        if (norm.includes('deliver') && !norm.includes('out for')) {
+          return 'background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46;';
+        }
+        if (norm.includes('out for delivery')) {
+          return 'background: #EFF6FF; border: 1px solid #93C5FD; color: #1D4ED8;';
+        }
+        if (norm.includes('ship') || norm.includes('picked up') || norm.includes('dispatched') || norm.includes('in transit')) {
+          return 'background: #F0FDF4; border: 1px solid #86EFAC; color: #15803D;';
+        }
+        if (norm.includes('ready for dispatch')) {
+          return 'background: #FEF3C7; border: 1px solid #FDE68A; color: #92400E;';
+        }
+        if (norm.includes('pack')) {
+          return 'background: #F3E8FF; border: 1px solid #D8B4FE; color: #6B21A8;';
+        }
+        if (norm.includes('pick')) {
+          return 'background: #FEF9C3; border: 1px solid #FEF08A; color: #854D0E;';
+        }
+        return 'background: #F1F5F9; border: 1px solid #CBD5E1; color: #334155;';
       }
 
       // Render orders belonging to current customer
       function renderCustomerOrders() {
-        const container = document.querySelector('#cust-orders-list-container');
-        if (!container) return;
-
         let allOrders = [];
         try {
           const raw = localStorage.getItem('lora_orders_v1');
           if (raw) allOrders = JSON.parse(raw);
         } catch (e) {}
+        renderCustomerOrdersUI(allOrders);
+      }
+
+      function renderCustomerOrdersUI(allOrders) {
+        const container = document.querySelector('#cust-orders-list-container');
+        if (!container || !currentCustomer) return;
 
         const cleanCustPhone = String(currentCustomer.phone || '').replace(/[^0-9]/g, '').slice(-10);
         const custEmail = String(currentCustomer.email || '').toLowerCase().trim();
 
         // Match orders
-        const myOrders = allOrders.filter(o => {
+        const myOrders = (allOrders || []).filter(o => {
           const oPhone = String(o.phone || '').replace(/[^0-9]/g, '').slice(-10);
           const oEmail = String(o.email || '').toLowerCase().trim();
           return (cleanCustPhone && oPhone === cleanCustPhone) || (custEmail && oEmail === custEmail);
@@ -10563,13 +10659,20 @@
           return;
         }
 
-        container.innerHTML = myOrders.map(order => {
-          const orderDate = new Date(order.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-          const status = order.status || 'Order Received';
+        const steps = [
+          'Order Received',
+          'Packed & Ready',
+          'Ready for Dispatch',
+          'In Transit / Shipped',
+          'Out for Delivery',
+          'Delivered'
+        ];
 
-          // Determine timeline steps
-          const steps = ['Order Received', 'Picking', 'Packed', 'Ready for Dispatch', 'Shipped', 'Delivered'];
-          const currentStepIdx = steps.indexOf(status) !== -1 ? steps.indexOf(status) : 0;
+        container.innerHTML = myOrders.map(order => {
+          const orderDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Recently Placed';
+          const status = order.status || 'Order Received';
+          const currentStepIdx = getTimelineStepIndex(status);
+          const badgeStyle = getCustomerStatusBadgeStyle(status);
 
           return `
             <div class="order-history-card">
@@ -10580,32 +10683,33 @@
                   <span style="font-size: 0.74rem; color: #94A3B8;">Placed on ${orderDate}</span>
                 </div>
                 <div style="text-align: right;">
-                  <span style="display: inline-block; background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: var(--radius-pill); text-transform: uppercase;">
+                  <span style="display: inline-block; ${badgeStyle} font-size: 0.74rem; font-weight: 800; padding: 0.28rem 0.75rem; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.02em;">
                     ● ${status}
                   </span>
                   <div style="font-size: 1.05rem; font-weight: 900; color: #059669; margin-top: 0.25rem;">
-                    ₹${(order.totalPrice || 21999).toLocaleString('en-IN')}
+                    ₹${(order.totalPrice || order.price || 21999).toLocaleString('en-IN')}
                   </div>
                 </div>
               </div>
 
               <div style="margin-bottom: 1.25rem;">
-                <strong style="color: #0F172A; font-size: 0.95rem;">${order.productName}</strong>
-                <div style="font-size: 0.78rem; color: #64748B; margin-top: 0.2rem;">${order.size} • Qty: ${order.quantity || 1}</div>
-                <div style="font-size: 0.74rem; color: #94A3B8; margin-top: 0.2rem;">Delivery: ${order.address}</div>
+                <strong style="color: #0F172A; font-size: 0.95rem;">${order.productName || 'LORA Luxury Mattress'}</strong>
+                <div style="font-size: 0.78rem; color: #64748B; margin-top: 0.2rem;">${order.size || 'Standard Size'} • Qty: ${order.quantity || 1}</div>
+                <div style="font-size: 0.74rem; color: #94A3B8; margin-top: 0.2rem;">Delivery: ${order.address || 'Standard Address'}</div>
               </div>
 
               <!-- Live Courier Dispatch Tracking Timeline -->
               <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: var(--radius-md); padding: 1rem;">
-                <div style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; color: #0F172A; margin-bottom: 0.75rem;">
-                  Live Factory Dispatch Status:
+                <div style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; color: #0F172A; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>Live Factory Dispatch Status</span>
+                  <span style="font-size: 0.7rem; font-weight: 700; color: #0284C7; background: #E0F2FE; padding: 0.15rem 0.5rem; border-radius: 4px;">Verified Synchronized</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; position: relative; gap: 0.5rem; flex-wrap: wrap;">
                   ${steps.map((st, i) => {
                     const isDone = i <= currentStepIdx;
                     const isCurrent = i === currentStepIdx;
                     return `
-                      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; min-width: 70px;">
+                      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; min-width: 65px;">
                         <div style="width: 24px; height: 24px; border-radius: 50%; background: ${isCurrent ? '#00B4D8' : (isDone ? '#10B981' : '#E2E8F0')}; color: ${isDone ? '#FFF' : '#64748B'}; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 0.35rem; box-shadow: ${isCurrent ? '0 0 10px rgba(0, 180, 216, 0.5)' : 'none'};">
                           ${isDone && !isCurrent ? '✓' : (i + 1)}
                         </div>
@@ -10617,10 +10721,15 @@
                   }).join('')}
                 </div>
 
-                ${order.awb ? `
-                  <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem;">
-                    <span>Courier: <strong>${order.courier || 'Express Freight'}</strong></span>
-                    <span>AWB: <strong style="font-family: monospace;">${order.awb}</strong></span>
+                ${(order.courier || order.awb || order.dispatchDate || order.expectedDelivery || order.dispatchNotes) ? `
+                  <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed #CBD5E1; font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+                      <span>🚚 Logistics Partner: <strong style="color: #0F172A;">${order.courier || 'LORA Factory Direct Express'}</strong></span>
+                      ${order.awb ? `<span>AWB / Docket: <strong style="font-family: monospace; color: #0284C7; background: #E0F2FE; padding: 0.15rem 0.45rem; border-radius: 4px;">${order.awb}</strong></span>` : ''}
+                    </div>
+                    ${order.dispatchDate ? `<div style="color: #475569;">📅 Dispatched on: <strong>${new Date(order.dispatchDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</strong></div>` : ''}
+                    ${order.expectedDelivery ? `<div style="color: #059669; font-weight: 700;">🎯 Expected Delivery: <strong>${new Date(order.expectedDelivery).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</strong></div>` : ''}
+                    ${order.dispatchNotes ? `<div style="background: #F8FAFC; border-left: 3px solid #00B4D8; padding: 0.4rem 0.65rem; border-radius: 0 4px 4px 0; color: #475569; font-size: 0.74rem;"><em>"${order.dispatchNotes}"</em></div>` : ''}
                   </div>
                 ` : ''}
               </div>
@@ -10628,6 +10737,19 @@
           `;
         }).join('');
       }
+
+      // Real-time synchronization listeners
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'lora_orders_v1') {
+          renderCustomerOrders();
+        }
+      });
+      window.addEventListener('lora:orders_updated', function() {
+        renderCustomerOrders();
+      });
+      window.addEventListener('focus', function() {
+        if (currentCustomer) syncCustomerOrdersFromServer();
+      });
 
       // Dashboard Tabs Switching
       document.querySelectorAll('.cust-dash-tab-btn').forEach(btn => {

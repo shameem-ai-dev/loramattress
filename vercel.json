@@ -5,6 +5,7 @@
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/admin/", "destination": "/admin.html" },
     { "source": "/product", "destination": "/product.html" },
-    { "source": "/product/", "destination": "/product.html" }
+    { "source": "/product/", "destination": "/product.html" },
+    { "source": "/api/orders/:id*", "destination": "/api/orders" }
   ]
 }

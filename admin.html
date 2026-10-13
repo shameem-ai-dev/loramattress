@@ -6213,6 +6213,7 @@ Order Notes: [Customer Instructions]</pre>
       function saveOrders(orderToUpdate) {
         try {
           localStorage.setItem(ORDER_KEY, JSON.stringify(orders));
+          window.dispatchEvent(new CustomEvent('lora:orders_updated', { detail: { orders } }));
         } catch (e) {
           console.error('Failed saving orders locally', e);
         }
@@ -6225,6 +6226,12 @@ Order Notes: [Customer Instructions]</pre>
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(orderToUpdate)
             }).catch(e => console.warn('Could not PUT order update to server', e));
+
+            fetch('/api/orders', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ order: orderToUpdate, orders })
+            }).catch(() => {});
           } else {
             fetch('/api/orders', {
               method: 'POST',
@@ -6673,7 +6680,7 @@ Order Notes: [Customer Instructions]</pre>
               notes: `Carrier updated: ${target.courier || 'None'}, AWB: ${target.awb || 'None'}`
             });
 
-            saveOrders();
+            saveOrders(target);
             alert(`Logistics details saved for Order ${orderId}`);
           });
         });
@@ -6717,7 +6724,7 @@ Order Notes: [Customer Instructions]</pre>
           dispatchWhatsAppNotification(order);
         }
 
-        saveOrders();
+        saveOrders(order);
       }
 
       // 8. All Orders Table, Search, Multi-Filter & CSV Exporter
