@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3456;
+const PORT = process.env.PORT || 3456;
 const ROOT_DIR = path.resolve(__dirname, '..');
 const ASSETS_DIR = path.join(ROOT_DIR, 'assets');
 const SECTIONS_DIR = path.join(ROOT_DIR, 'sections');
