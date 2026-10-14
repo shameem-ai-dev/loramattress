@@ -895,7 +895,9 @@ button, input, select {
 .hero-mobile-phase-ctrl,
 .hero-aura-glow,
 .hero-orbital-ring,
-.hero-spec-beacon {
+.hero-spec-beacon,
+.hero-laser-scanner,
+.hero-ambient-nebula {
   display: none;
 }
 
@@ -4360,7 +4362,7 @@ body {
   }
 
   /* ==========================================================================
-     GRAND VISUAL ZERO-G STAGE & AMBIENT AURA (MOBILE)
+     SEAMLESS NON-BOXY ZERO-G SHOWCASE WITH BIOMETRIC LASER SCANNER (MOBILE)
      ========================================================================== */
   .hero-visual-stage {
     order: 4 !important;
@@ -4368,31 +4370,31 @@ body {
     inset: unset !important;
     width: 100% !important;
     max-width: 100% !important;
-    height: clamp(320px, 45vh, 400px) !important;
-    margin: 0.35rem 0 0.95rem !important;
+    height: clamp(330px, 46vh, 410px) !important;
+    margin: 0.25rem 0 0.85rem !important;
     border: none !important;
-    border-radius: 20px !important;
+    border-radius: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     perspective: 1200px !important;
   }
 
-  /* Cosmic Ambient Breathing Aura */
+  /* Cosmic Radial Breathing Aura */
   .hero-aura-glow {
     display: block !important;
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    width: 280px !important;
-    height: 280px !important;
+    width: 300px !important;
+    height: 300px !important;
     transform: translate(-50%, -50%) !important;
     border-radius: 50% !important;
-    background: radial-gradient(circle, rgba(0, 180, 216, 0.45) 0%, rgba(79, 70, 229, 0.3) 45%, rgba(6, 9, 19, 0) 70%) !important;
-    filter: blur(40px) !important;
+    background: radial-gradient(circle, rgba(0, 180, 216, 0.42) 0%, rgba(30, 27, 75, 0.35) 45%, rgba(6, 9, 19, 0) 72%) !important;
+    filter: blur(45px) !important;
     pointer-events: none !important;
     z-index: 0 !important;
     animation: luxuryAuraPulse 5s ease-in-out infinite alternate !important;
@@ -4405,47 +4407,28 @@ body {
       filter: blur(35px);
     }
     100% {
-      transform: translate(-50%, -50%) scale(1.22);
+      transform: translate(-50%, -50%) scale(1.25);
       opacity: 0.9;
       filter: blur(55px);
     }
   }
 
-  /* Orbital Rings */
-  .hero-orbital-ring {
+  /* Soft Atmospheric Nebula */
+  .hero-ambient-nebula {
     display: block !important;
     position: absolute !important;
-    top: 50% !important;
+    top: 55% !important;
     left: 50% !important;
-    border-radius: 50% !important;
+    width: 320px !important;
+    height: 160px !important;
+    transform: translate(-50%, -50%) !important;
+    background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.18) 0%, transparent 70%) !important;
+    filter: blur(30px) !important;
     pointer-events: none !important;
     z-index: 0 !important;
   }
-  .hero-orbital-1 {
-    width: 300px !important;
-    height: 180px !important;
-    border: 1px dashed rgba(56, 189, 248, 0.22) !important;
-    transform: translate(-50%, -50%) rotate(-12deg) !important;
-    animation: ringSpin 24s linear infinite !important;
-  }
-  .hero-orbital-2 {
-    width: 260px !important;
-    height: 150px !important;
-    border: 1px solid rgba(0, 180, 216, 0.15) !important;
-    transform: translate(-50%, -50%) rotate(25deg) !important;
-    animation: ringSpinRev 30s linear infinite !important;
-  }
 
-  @keyframes ringSpin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-  @keyframes ringSpinRev {
-    0% { transform: translate(-50%, -50%) rotate(360deg); }
-    100% { transform: translate(-50%, -50%) rotate(0deg); }
-  }
-
-  /* Floating Mattress Layers with Zero-G Levitation */
+  /* Floating Flagship Mattress Layers with 3D Zero-G Levitation */
   .hero-stage-layer {
     position: absolute !important;
     inset: 0 !important;
@@ -4454,8 +4437,7 @@ body {
     object-fit: contain !important;
     object-position: center !important;
     z-index: 2 !important;
-    border-radius: 16px !important;
-    filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(0, 180, 216, 0.35)) !important;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 35px rgba(0, 180, 216, 0.3)) !important;
     transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms ease !important;
     animation: luxuryZeroGFloat 6s ease-in-out infinite !important;
     will-change: transform, opacity !important;
@@ -4476,133 +4458,101 @@ body {
     }
   }
 
+  /* Attention-Getting Holographic Biometric Laser Scan Beam */
+  .hero-laser-scanner {
+    display: block !important;
+    position: absolute !important;
+    inset: 5% 8% !important;
+    pointer-events: none !important;
+    z-index: 4 !important;
+    overflow: hidden !important;
+  }
+  .laser-beam-line {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent 0%, #38BDF8 25%, #FFFFFF 50%, #38BDF8 75%, transparent 100%) !important;
+    box-shadow: 0 0 12px #38BDF8, 0 0 25px rgba(56, 189, 248, 0.9) !important;
+    animation: scanGlide 5s ease-in-out infinite alternate !important;
+  }
+  .laser-beam-glow {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 45px !important;
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.22) 0%, transparent 100%) !important;
+    transform: translateY(-50%) !important;
+    animation: scanGlideGlow 5s ease-in-out infinite alternate !important;
+  }
+  @keyframes scanGlide {
+    0% { top: 12%; opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { top: 88%; opacity: 0; }
+  }
+  @keyframes scanGlideGlow {
+    0% { top: 12%; opacity: 0; }
+    12% { opacity: 0.55; }
+    88% { opacity: 0.55; }
+    100% { top: 88%; opacity: 0; }
+  }
+
   .hero-vignette-overlay,
   .hero-callout-overlay {
     display: none !important;
   }
 
-  /* Floating Holographic Spec Beacons */
-  .hero-spec-beacon {
-    display: inline-flex !important;
-    position: absolute !important;
-    z-index: 5 !important;
-    align-items: center !important;
-    gap: 0.3rem !important;
-    padding: 0.28rem 0.6rem !important;
-    background: rgba(8, 14, 28, 0.86) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border: 1px solid rgba(56, 189, 248, 0.4) !important;
-    border-radius: 999px !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 180, 216, 0.28) !important;
-    font-size: 0.61rem !important;
-    font-weight: 700 !important;
-    color: #F0F9FF !important;
-    white-space: nowrap !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
-    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease !important;
-    max-width: 46% !important;
-  }
-  .hero-spec-beacon:active {
-    transform: scale(0.93) !important;
-    border-color: #38BDF8 !important;
-  }
-
-  .beacon-pulse-dot {
-    width: 6px !important;
-    height: 6px !important;
-    border-radius: 50% !important;
-    background: #38BDF8 !important;
-    box-shadow: 0 0 8px #38BDF8 !important;
-    animation: beaconPulse 1.8s infinite ease-in-out !important;
-    flex-shrink: 0 !important;
-  }
-
-  @keyframes beaconPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.6); opacity: 0.4; }
-  }
-
-  .beacon-tl {
-    top: 6% !important;
-    left: 8px !important;
-    animation: beaconFloat1 5s ease-in-out infinite alternate !important;
-  }
-  .beacon-tr {
-    top: 6% !important;
-    right: 8px !important;
-    animation: beaconFloat2 5.5s ease-in-out infinite alternate !important;
-  }
-  .beacon-bl {
-    bottom: 6% !important;
-    left: 8px !important;
-    animation: beaconFloat2 6s ease-in-out infinite alternate !important;
-  }
-  .beacon-br {
-    bottom: 6% !important;
-    right: 8px !important;
-    animation: beaconFloat1 5.2s ease-in-out infinite alternate !important;
-  }
-
-  @keyframes beaconFloat1 {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(-7px) rotate(-1.5deg); }
-  }
-  @keyframes beaconFloat2 {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(7px) rotate(1.5deg); }
-  }
-
-  /* Glass Capsule Phase Controller */
+  /* Seamless Organic Phase Switcher (Zero Boxy Containers) */
   .hero-mobile-phase-ctrl {
     order: 5 !important;
     display: block !important;
     width: 100% !important;
-    max-width: 420px !important;
-    margin: 0 auto 1.1rem !important;
+    max-width: 360px !important;
+    margin: 0 auto 1.15rem !important;
   }
   .hero-mobile-phase-ctrl .phase-buttons {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.45rem !important;
     width: 100% !important;
-    background: rgba(10, 16, 32, 0.72) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    padding: 3px !important;
-    border-radius: 999px !important;
-    border: 1px solid rgba(0, 180, 216, 0.32) !important;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
   .hero-mobile-phase-ctrl .phase-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.25rem !important;
-    padding: 0.52rem 0.15rem !important;
-    font-size: 0.69rem !important;
+    gap: 0.35rem !important;
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.72rem !important;
     font-weight: 700 !important;
     text-align: center !important;
     white-space: nowrap !important;
     border-radius: 999px !important;
-    background: transparent !important;
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     color: #94A3B8 !important;
-    border: none !important;
-    transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: all 220ms ease !important;
     cursor: pointer !important;
   }
   .hero-mobile-phase-ctrl .phase-btn.active {
-    background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%) !important;
+    background: rgba(0, 180, 216, 0.22) !important;
+    border-color: #38BDF8 !important;
     color: #FFFFFF !important;
-    box-shadow: 0 2px 14px rgba(0, 180, 216, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 16px rgba(0, 180, 216, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   }
   .phase-dot-indicator {
     width: 5px !important;
     height: 5px !important;
     border-radius: 50% !important;
-    background: currentColor !important;
-    opacity: 0.7 !important;
+    background: #38BDF8 !important;
+    box-shadow: 0 0 6px #38BDF8 !important;
   }
 
   /* Hide Desktop Hero Footer & Floating HUD on Mobile */
@@ -4611,36 +4561,35 @@ body {
     display: none !important;
   }
 
-  /* Hero Action Buttons */
+  /* Streamlined Luxury CTAs (No Heavy Box Stacking) */
   .hero-ctas {
     order: 6 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 0.65rem !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
     width: 100% !important;
-    max-width: 420px !important;
-    margin: 0 auto 1.25rem !important;
+    max-width: 360px !important;
+    margin: 0 auto 1.15rem !important;
   }
-  .hero-ctas .btn {
+  .hero-btn-primary {
     position: relative !important;
     overflow: hidden !important;
     width: 100% !important;
-    justify-content: center !important;
-    min-height: 48px !important;
-    height: 48px !important;
-    padding: 0 1.25rem !important;
-    font-size: 0.94rem !important;
+    min-height: 50px !important;
+    height: 50px !important;
+    padding: 0 1.5rem !important;
+    font-size: 0.98rem !important;
     font-weight: 800 !important;
-    border-radius: 12px !important;
+    border-radius: 999px !important; /* Smooth luxury pill, not a box */
     letter-spacing: 0.01em !important;
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     text-decoration: none !important;
-  }
-  .hero-btn-primary {
     background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%) !important;
     color: #FFFFFF !important;
-    box-shadow: 0 4px 22px rgba(0, 180, 216, 0.45) !important;
+    box-shadow: 0 6px 24px rgba(0, 180, 216, 0.45) !important;
     border: none !important;
   }
   .hero-btn-primary .btn-shimmer-sweep {
@@ -4657,13 +4606,37 @@ body {
     0% { left: -100%; }
     25%, 100% { left: 200%; }
   }
-  .hero-btn-secondary {
-    background: rgba(15, 23, 42, 0.75) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+
+  .hero-secondary-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    color: #94A3B8 !important;
+    text-decoration: none !important;
+    padding: 0.35rem 0.75rem !important;
+    transition: color 200ms ease, gap 200ms ease !important;
+  }
+  .hero-secondary-link:hover,
+  .hero-secondary-link:active {
+    color: #38BDF8 !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Trust Highlights Bar */
+  .hero-trust-bar {
+    order: 7 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+    font-size: 0.74rem !important;
+    color: #CBD5E1 !important;
+    margin: 0 auto !important;
+    flex-wrap: wrap !important;
   }
 
   /* Trust Highlights Bar */

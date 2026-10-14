@@ -9,8 +9,9 @@
     "warranty": "3 Years Warranty",
     "feelLabel": "Medium-Soft (7\" Profile)",
     "postureRec": "Sleepers who prefer a softer, cushioned feel with balanced everyday body support.",
-    "explodedImg": "assets/hero-stage-2-exploded.jpg",
-    "spineImg": "assets/hero-stage-3-spine.jpg",
+    "heroStageImg": "assets/hero-lora-flagship.jpg",
+    "explodedImg": "assets/hero-lora-exploded.jpg",
+    "spineImg": "assets/hero-lora-spine.jpg",
     "roomImg": "assets/hero-bedroom-dawn.jpg",
     "detailImg": "assets/lora-flat-luxury.jpg",
     "multipliers": {
