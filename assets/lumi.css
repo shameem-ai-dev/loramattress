@@ -647,9 +647,15 @@ body.lightbox-open .lumi-widget-container {
 
 @media (max-width: 768px) {
   .lumi-widget-container {
-    bottom: 82px !important;
-    right: 12px !important;
+    bottom: 20px !important;
+    right: 14px !important;
     z-index: 9990 !important;
+    transition: bottom 250ms ease !important;
+  }
+
+  body:has(.mobile-sticky-bar.visible) .lumi-widget-container,
+  body.has-sticky-bar .lumi-widget-container {
+    bottom: 82px !important;
   }
 
   .lumi-launcher-btn {

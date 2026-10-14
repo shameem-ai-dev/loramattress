@@ -57,9 +57,9 @@
     const STAGES = [
       {
         progress: 0.12,
-        label: '01 / ASSEMBLED CORE • ZERO-G SUSPENSION',
-        title: 'Better nights.<br><span class="gradient-text">Better mornings.</span>',
-        copy: 'Leave the day behind. The unified LORA core floats in zero-gravity suspension. Molecular comfort foam meets zoned titanium coils—scroll to deconstruct the engineering.',
+        label: '01 / ARCHITECTURAL ZERO-G SLEEP',
+        title: 'Sculpted for<br><span class="gradient-text hero-shimmer-title">Weightless Sleep.</span>',
+        copy: 'Leave gravity behind. The unified LORA core floats in zero-gravity suspension. 100% natural Dunlop latex meets zoned titanium coils—scroll to deconstruct.',
         tag: 'ZERO-G SUSPENSION',
         m1Label: 'Core Architecture',
         m1Val: 'Multi-Tier Unified',
@@ -68,9 +68,9 @@
       },
       {
         progress: 0.48,
-        label: '02 / DECONSTRUCTED LAYERS • 4-TIER ANATOMY',
-        title: 'Deconstructed.<br><span class="gradient-text">Zero Compromise.</span>',
-        copy: 'Every tier serves an uncompromising biological purpose: 100% natural Dunlop latex for buoyant contouring, 1,200+ titanium pocket springs for motion isolation, and an anti-sag acoustic base.',
+        label: '02 / DECONSTRUCTED 4-TIER ANATOMY',
+        title: 'Deconstructed.<br><span class="gradient-text hero-shimmer-title">Zero Compromise.</span>',
+        copy: 'Every tier serves an uncompromising biological purpose: 100% natural Dunlop latex for buoyant contouring, 1,200+ titanium pocket springs for motion isolation.',
         tag: '4-TIER SPATIAL ANATOMY',
         m1Label: 'Pocket Spring Grid',
         m1Val: '1,200+ Independent Coils',
@@ -79,9 +79,9 @@
       },
       {
         progress: 0.84,
-        label: '03 / SPINEALIGN™ RESONANCE • 7-ZONE BIOMETRICS',
-        title: 'SpineAlign™.<br><span class="gradient-text">Zero Spinal Shear.</span>',
-        copy: 'Inspired by the anatomical wave of our logo. 7 localized support zones contour dynamically to the cervical, thoracic, and lumbar vertebrae, eliminating back strain permanently.',
+        label: '03 / SPINEALIGN™ 7-ZONE BIOMETRICS',
+        title: 'SpineAlign™.<br><span class="gradient-text hero-shimmer-title">Zero Spinal Shear.</span>',
+        copy: 'Dynamic 7 localized support zones contour dynamically to cervical, thoracic, and lumbar vertebrae, eliminating back strain and pressure points permanently.',
         tag: '7-ZONE BIOMETRICS',
         m1Label: 'Lumbar Lordosis Support',
         m1Val: '100% Neutral Fill',
@@ -184,9 +184,14 @@
       currentTiltY += (targetTiltY - currentTiltY) * 0.08;
 
       if (stageContainer) {
-        // Subtle organic zero-gravity breathing levitation
-        const levitation = Math.sin(timestamp * 0.0015) * 6;
-        stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${levitation.toFixed(2)}px)`;
+        if (window.innerWidth > 768) {
+          // Subtle organic zero-gravity breathing levitation on desktop
+          const levitation = Math.sin(timestamp * 0.0015) * 6;
+          stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${levitation.toFixed(2)}px)`;
+        } else if (stageContainer.style.transform) {
+          // On mobile, let pure hardware-accelerated CSS keyframes handle 60fps zero-G levitation
+          stageContainer.style.transform = '';
+        }
       }
 
       // Scroll scrub integration
@@ -232,6 +237,24 @@
           targetProgress = stage.progress;
           loopProgress = stage.progress;
           applyStageProgress(loopProgress);
+        }
+      });
+    });
+
+    // Holographic Spec Beacons Click (Mobile Interactive Showcase)
+    const specBeacons = wrapper.querySelectorAll('.hero-spec-beacon');
+    specBeacons.forEach(beacon => {
+      beacon.addEventListener('click', function () {
+        if (this.dataset.phaseTarget) {
+          const target = parseFloat(this.dataset.phaseTarget);
+          targetProgress = target;
+          loopProgress = target;
+          applyStageProgress(loopProgress);
+        } else if (this.dataset.scrollTarget) {
+          const targetEl = document.querySelector(this.dataset.scrollTarget);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
         }
       });
     });
