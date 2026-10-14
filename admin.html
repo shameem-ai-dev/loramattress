@@ -962,8 +962,8 @@
     /* Photo Upload Grid */
     .photo-studio-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1rem;
       margin-bottom: 1rem;
       align-items: stretch;
     }
@@ -1287,7 +1287,7 @@
         width: auto;
       }
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .photo-studio-grid { grid-template-columns: repeat(2, 1fr); }
+      .photo-studio-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
       .field-grid-4 { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -2732,6 +2732,12 @@
                   <div>• Best Format: <strong>WebP</strong> or <strong>JPG</strong> (85% quality)</div>
                   <div style="color: #94A3B8; font-size: 0.72rem; margin-top: 0.25rem;">Tip: Warm interior lighting with styled room ambiance.</div>
                 </div>
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 0.75rem;">
+                  <strong style="color: var(--brand-cyan); display: block; margin-bottom: 0.25rem;">Slot 5: Detail & Craftsmanship</strong>
+                  <div>• Resolution: <strong>1600 × 1200 px</strong> (4:3) or <strong>1200 × 1200 px</strong> (1:1)</div>
+                  <div>• Best Format: <strong>WebP</strong> or <strong>JPG</strong> (85% quality)</div>
+                  <div style="color: #94A3B8; font-size: 0.72rem; margin-top: 0.25rem;">Tip: Close-up stitching, fabric texture, or unboxing detail.</div>
+                </div>
               </div>
             </div>
 
@@ -2797,6 +2803,22 @@
                 <div style="display: flex; gap: 0.35rem; align-items: center;">
                   <input type="text" class="photo-url-input" id="p-url-room" placeholder="Or paste Image URL" style="flex: 1;">
                   <button type="button" class="btn-clear-slot" title="Reset to Factory Default" onclick="window.resetSlotImage('room')">↺</button>
+                </div>
+              </div>
+
+              <!-- Slot 5: Detail & Craftsmanship -->
+              <div class="photo-slot-card">
+                <strong style="font-size: 0.82rem; color: #FFFFFF;">5. Craftsmanship & Detail</strong>
+                <div class="photo-preview-wrap">
+                  <img src="/assets/lora-flat-luxury.jpg" alt="Detail Preview" id="p-prev-detail" class="photo-preview-img" onerror="this.onerror=null; this.src='/assets/lora-flat-luxury.jpg';">
+                </div>
+                <label class="btn-file-upload">
+                  📁 Browse Local File
+                  <input type="file" accept="image/*" style="display: none;" id="p-file-detail">
+                </label>
+                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                  <input type="text" class="photo-url-input" id="p-url-detail" placeholder="Or paste Image URL" style="flex: 1;">
+                  <button type="button" class="btn-clear-slot" title="Reset to Factory Default" onclick="window.resetSlotImage('detail')">↺</button>
                 </div>
               </div>
             </div>
@@ -4466,10 +4488,10 @@ Order Notes: [Customer Instructions]</pre>
           <textarea id="add-prod-posture" class="admin-textarea" rows="2" style="height: auto;" placeholder="Recommended for all sleep styles seeking balanced spinal decompression.">Engineered for back and side sleepers seeking responsive spinal alignment.</textarea>
         </div>
 
-        <!-- 4 Perspectives Upload / URL in Add Modal -->
+        <!-- 5 Perspectives Upload / URL in Add Modal -->
         <div style="background: rgba(0, 180, 216, 0.06); border: 1px solid rgba(0, 180, 216, 0.2); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
-          <strong style="color: #FFFFFF; font-size: 0.85rem; display: block; margin-bottom: 0.75rem;">📸 4 Visual Studio Perspective Slots (Images)</strong>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <strong style="color: #FFFFFF; font-size: 0.85rem; display: block; margin-bottom: 0.75rem;">📸 5 Visual Studio Perspective Slots (Images)</strong>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem;">
             <div>
               <label style="font-size: 0.72rem; color: var(--brand-cyan);">Slot 1: Hero Studio</label>
               <input type="text" id="add-prod-hero-url" class="admin-input" placeholder="Image URL or browse file" value="assets/comfort-plush.jpg" style="font-size: 0.75rem; height: 34px;">
@@ -4489,6 +4511,11 @@ Order Notes: [Customer Instructions]</pre>
               <label style="font-size: 0.72rem; color: var(--brand-cyan);">Slot 4: Master Bedroom</label>
               <input type="text" id="add-prod-room-url" class="admin-input" placeholder="Image URL or browse file" value="assets/lifestyle-editorial.jpg" style="font-size: 0.75rem; height: 34px;">
               <input type="file" id="add-prod-room-file" accept="image/*" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">
+            </div>
+            <div>
+              <label style="font-size: 0.72rem; color: var(--brand-cyan);">Slot 5: Craftsmanship & Detail</label>
+              <input type="text" id="add-prod-detail-url" class="admin-input" placeholder="Image URL or browse file" value="assets/lora-flat-luxury.jpg" style="font-size: 0.75rem; height: 34px;">
+              <input type="file" id="add-prod-detail-file" accept="image/*" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">
             </div>
           </div>
         </div>
@@ -4645,6 +4672,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/lora-flat-luxury.jpg",
           basePrice: 21999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4670,6 +4698,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/material-natural-latex.jpg",
           basePrice: 23499,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4695,6 +4724,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/material-cashmere-linen.jpg",
           basePrice: 24999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4720,6 +4750,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/material-pocket-springs.jpg",
           basePrice: 26999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4745,6 +4776,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/complimentary-sleep-kit.jpg",
           basePrice: 28999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4770,6 +4802,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/delivery-full-flat.jpg",
           basePrice: 20999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4795,6 +4828,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/lora-flat-luxury.jpg",
           basePrice: 27999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -4820,6 +4854,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: "assets/hero-stage-2-exploded.jpg",
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
+          detailImg: "assets/material-cashmere-linen.jpg",
           basePrice: 32999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -5130,6 +5165,7 @@ Order Notes: [Customer Instructions]</pre>
         const layerUrl = document.getElementById('add-prod-layer-url').value.trim() || 'assets/hero-stage-2-exploded.jpg';
         const spineUrl = document.getElementById('add-prod-spine-url').value.trim() || 'assets/hero-stage-3-spine.jpg';
         const roomUrl = document.getElementById('add-prod-room-url').value.trim() || 'assets/lifestyle-editorial.jpg';
+        const detailUrl = document.getElementById('add-prod-detail-url')?.value.trim() || 'assets/lora-flat-luxury.jpg';
 
         const isActive = document.getElementById('add-prod-is-active').checked;
         const isStock = document.getElementById('add-prod-is-instock').checked;
@@ -5154,6 +5190,7 @@ Order Notes: [Customer Instructions]</pre>
           explodedImg: layerUrl,
           spineImg: spineUrl,
           roomImg: roomUrl,
+          detailImg: detailUrl,
           basePrice: basePrice,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
@@ -5223,6 +5260,7 @@ Order Notes: [Customer Instructions]</pre>
         setPreviewWithFallback('#p-prev-layer', '#p-url-layer', data.explodedImg, '/assets/hero-stage-2-exploded.jpg');
         setPreviewWithFallback('#p-prev-spine', '#p-url-spine', data.spineImg, '/assets/hero-stage-3-spine.jpg');
         setPreviewWithFallback('#p-prev-room', '#p-url-room', data.roomImg, '/assets/lifestyle-editorial.jpg');
+        setPreviewWithFallback('#p-prev-detail', '#p-url-detail', data.detailImg, '/assets/lora-flat-luxury.jpg');
 
         // Text
         document.querySelector('#p-name').value = data.name || '';
@@ -5261,7 +5299,8 @@ Order Notes: [Customer Instructions]</pre>
           hero: '/assets/comfort-plush.jpg',
           layer: '/assets/hero-stage-2-exploded.jpg',
           spine: '/assets/hero-stage-3-spine.jpg',
-          room: '/assets/lifestyle-editorial.jpg'
+          room: '/assets/lifestyle-editorial.jpg',
+          detail: '/assets/lora-flat-luxury.jpg'
         };
         const def = defaults[slot] || '/assets/hero-stage-2-exploded.jpg';
         const inp = document.querySelector(`#p-url-${slot}`);
@@ -5448,11 +5487,13 @@ Order Notes: [Customer Instructions]</pre>
       hookFileUpload('p-file-layer', 'p-prev-layer', 'p-url-layer', 'layer');
       hookFileUpload('p-file-spine', 'p-prev-spine', 'p-url-spine', 'spine');
       hookFileUpload('p-file-room', 'p-prev-room', 'p-url-room', 'room');
+      hookFileUpload('p-file-detail', 'p-prev-detail', 'p-url-detail', 'detail');
 
       hookFileUpload('add-prod-hero-file', null, 'add-prod-hero-url', 'hero');
       hookFileUpload('add-prod-layer-file', null, 'add-prod-layer-url', 'layer');
       hookFileUpload('add-prod-spine-file', null, 'add-prod-spine-url', 'spine');
       hookFileUpload('add-prod-room-file', null, 'add-prod-room-url', 'room');
+      hookFileUpload('add-prod-detail-file', null, 'add-prod-detail-url', 'detail');
 
       // Save Changes
       const saveBtn = document.querySelector('#btn-save-changes');
@@ -5478,7 +5519,8 @@ Order Notes: [Customer Instructions]</pre>
             { id: '#p-url-hero', prev: '#p-prev-hero', slot: 'hero' },
             { id: '#p-url-layer', prev: '#p-prev-layer', slot: 'layer' },
             { id: '#p-url-spine', prev: '#p-prev-spine', slot: 'spine' },
-            { id: '#p-url-room', prev: '#p-prev-room', slot: 'room' }
+            { id: '#p-url-room', prev: '#p-prev-room', slot: 'room' },
+            { id: '#p-url-detail', prev: '#p-prev-detail', slot: 'detail' }
           ];
 
           for (const ps of photoSlots) {
@@ -5517,6 +5559,7 @@ Order Notes: [Customer Instructions]</pre>
           d.explodedImg = document.querySelector('#p-url-layer').value.trim() || d.explodedImg;
           d.spineImg = document.querySelector('#p-url-spine').value.trim() || d.spineImg;
           d.roomImg = document.querySelector('#p-url-room').value.trim() || d.roomImg;
+          d.detailImg = document.querySelector('#p-url-detail').value.trim() || d.detailImg;
 
           d.basePrice = parseInt(document.querySelector('#p-base-price').value, 10) || 21999;
           d.multipliers = {

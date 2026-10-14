@@ -490,7 +490,7 @@
 
     .pdp-thumb-strip {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 0.75rem;
       width: 100%;
       margin-top: 0.5rem;
@@ -1865,6 +1865,9 @@
             <button type="button" class="pdp-thumb-btn" data-img="assets/lifestyle-editorial.jpg" id="thumb-4" data-index="3" role="tab" aria-selected="false" aria-label="Image 4: Master suite">
               <img src="assets/lifestyle-editorial.jpg" alt="Master suite" class="pdp-thumb-img" loading="lazy">
             </button>
+            <button type="button" class="pdp-thumb-btn" data-img="assets/lora-flat-luxury.jpg" id="thumb-5" data-index="4" role="tab" aria-selected="false" aria-label="Image 5: Craftsmanship detail">
+              <img src="assets/lora-flat-luxury.jpg" alt="Craftsmanship detail" class="pdp-thumb-img" loading="lazy">
+            </button>
           </div>
         </div>
 
@@ -2494,6 +2497,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/hero-bedroom-dawn.jpg",
+        detailImg: "assets/lora-flat-luxury.jpg",
         core: "Plush Eurotop comfort construction with balanced body support",
         cover: "Cushioned sleeping surface with comfortable pressure distribution",
         motion: "Balanced pressure distribution & everyday durability",
@@ -2541,6 +2545,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/material-natural-latex.jpg",
         core: "Support-focused Eurotop construction with generous 9-inch profile",
         cover: "Enhanced cushioning plush top comfort",
         motion: "Balanced body support & cushioned stability",
@@ -2587,6 +2592,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/material-cashmere-linen.jpg",
         core: "Gentle pressure relief pillow-top comfort construction",
         cover: "Premium surface finish for a relaxed sleeping feel",
         motion: "Soft cushioned contouring",
@@ -2633,6 +2639,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/material-pocket-springs.jpg",
         core: "Support-focused hybrid ortho construction",
         cover: "Responsive comfort quilted surface",
         motion: "Enhanced stability & balanced body support",
@@ -2679,6 +2686,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/complimentary-sleep-kit.jpg",
         core: "Support-focused construction with responsive latex comfort layer",
         cover: "Breathable comfort cover for balanced sleep feel",
         motion: "Responsive cushioning pushback",
@@ -2725,6 +2733,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/delivery-full-flat.jpg",
         core: "Balanced support pillow-top everyday core",
         cover: "Cushioned top surface with comfortable finish",
         motion: "Balanced body support",
@@ -2771,6 +2780,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/lora-flat-luxury.jpg",
         core: "Independent pocket support technology with premium cushioning",
         cover: "Premium pillow-top comfort surface",
         motion: "Reduced motion transfer & minimal partner disturbance",
@@ -2817,6 +2827,7 @@
         explodedImg: "assets/hero-stage-2-exploded.jpg",
         spineImg: "assets/hero-stage-3-spine.jpg",
         roomImg: "assets/lifestyle-editorial.jpg",
+        detailImg: "assets/material-cashmere-linen.jpg",
         core: "Natural Latex Foam, Memory Foam & Orthopedic Foam multi-layer system",
         cover: "Advanced orthopedic-support contour cover",
         motion: "Balanced multi-layer absorption",
@@ -3164,6 +3175,7 @@
       const explodedUrl = sanitizeProductImageUrl(data.explodedImg, 'assets/hero-stage-2-exploded.jpg');
       const spineUrl = sanitizeProductImageUrl(data.spineImg, 'assets/hero-stage-3-spine.jpg');
       const roomUrl = sanitizeProductImageUrl(data.roomImg, 'assets/lifestyle-editorial.jpg');
+      const detailUrl = sanitizeProductImageUrl(data.detailImg, 'assets/lora-flat-luxury.jpg');
 
       const mainImg = document.querySelector('#pdp-active-img');
       if (mainImg) {
@@ -3204,6 +3216,15 @@
         if (t4) {
           t4.onerror = () => { t4.onerror = null; t4.src = 'assets/lifestyle-editorial.jpg'; };
           t4.src = roomUrl;
+        }
+      }
+      const thumb5 = document.querySelector('#thumb-5');
+      if (thumb5) {
+        thumb5.setAttribute('data-img', detailUrl);
+        const t5 = thumb5.querySelector('img');
+        if (t5) {
+          t5.onerror = () => { t5.onerror = null; t5.src = 'assets/lora-flat-luxury.jpg'; };
+          t5.src = detailUrl;
         }
       }
 
@@ -3418,7 +3439,8 @@
           { src: sanitizeProductImageUrl(data.heroImg, 'assets/comfort-plush.jpg'), title: 'Studio View' },
           { src: sanitizeProductImageUrl(data.explodedImg, 'assets/hero-stage-2-exploded.jpg'), title: 'Layer Anatomy' },
           { src: sanitizeProductImageUrl(data.spineImg, 'assets/hero-stage-3-spine.jpg'), title: 'Spine Biometrics' },
-          { src: sanitizeProductImageUrl(data.roomImg, 'assets/lifestyle-editorial.jpg'), title: 'Master Bedroom Sanctuary' }
+          { src: sanitizeProductImageUrl(data.roomImg, 'assets/lifestyle-editorial.jpg'), title: 'Master Bedroom Sanctuary' },
+          { src: sanitizeProductImageUrl(data.detailImg, 'assets/lora-flat-luxury.jpg'), title: 'Craftsmanship & Texture' }
         ];
       }
 
