@@ -7020,32 +7020,56 @@
         const guarWarr = document.querySelector('#inner-guar-warr');
         if (guarWarr) guarWarr.textContent = `${data.warranty} Direct Factory Coverage`;
 
-        // Update Images
+        // Update Images with robust fallback protection against 404s
+        const defaultHero = DEFAULT_PRODUCTS[modelKey]?.heroImg || 'assets/comfort-plush.jpg';
+        const defaultExploded = DEFAULT_PRODUCTS[modelKey]?.explodedImg || 'assets/hero-stage-2-exploded.jpg';
+        const defaultSpine = DEFAULT_PRODUCTS[modelKey]?.spineImg || 'assets/hero-stage-3-spine.jpg';
+        const defaultRoom = DEFAULT_PRODUCTS[modelKey]?.roomImg || 'assets/lifestyle-editorial.jpg';
+
         const mainImg = document.querySelector('#inner-active-img');
-        if (mainImg) mainImg.src = data.heroImg;
+        if (mainImg) {
+          mainImg.onerror = () => { mainImg.onerror = null; mainImg.src = defaultHero; };
+          mainImg.src = data.heroImg || defaultHero;
+        }
         const thumb1 = document.querySelector('#inner-thumb-1');
         if (thumb1) {
-          thumb1.setAttribute('data-img', data.heroImg);
+          const heroSrc = data.heroImg || defaultHero;
+          thumb1.setAttribute('data-img', heroSrc);
           const t1Img = thumb1.querySelector('img');
-          if (t1Img) t1Img.src = data.heroImg;
+          if (t1Img) {
+            t1Img.onerror = () => { t1Img.onerror = null; t1Img.src = defaultHero; };
+            t1Img.src = heroSrc;
+          }
         }
         const thumb2 = document.querySelector('#inner-thumb-2');
-        if (thumb2 && data.explodedImg) {
-          thumb2.setAttribute('data-img', data.explodedImg);
+        if (thumb2) {
+          const expSrc = data.explodedImg || defaultExploded;
+          thumb2.setAttribute('data-img', expSrc);
           const t2Img = thumb2.querySelector('img');
-          if (t2Img) t2Img.src = data.explodedImg;
+          if (t2Img) {
+            t2Img.onerror = () => { t2Img.onerror = null; t2Img.src = defaultExploded; };
+            t2Img.src = expSrc;
+          }
         }
         const thumb3 = document.querySelector('#inner-thumb-3');
-        if (thumb3 && data.spineImg) {
-          thumb3.setAttribute('data-img', data.spineImg);
+        if (thumb3) {
+          const spineSrc = data.spineImg || defaultSpine;
+          thumb3.setAttribute('data-img', spineSrc);
           const t3Img = thumb3.querySelector('img');
-          if (t3Img) t3Img.src = data.spineImg;
+          if (t3Img) {
+            t3Img.onerror = () => { t3Img.onerror = null; t3Img.src = defaultSpine; };
+            t3Img.src = spineSrc;
+          }
         }
         const thumb4 = document.querySelector('#inner-thumb-4');
-        if (thumb4 && data.roomImg) {
-          thumb4.setAttribute('data-img', data.roomImg);
+        if (thumb4) {
+          const roomSrc = data.roomImg || defaultRoom;
+          thumb4.setAttribute('data-img', roomSrc);
           const t4Img = thumb4.querySelector('img');
-          if (t4Img) t4Img.src = data.roomImg;
+          if (t4Img) {
+            t4Img.onerror = () => { t4Img.onerror = null; t4Img.src = defaultRoom; };
+            t4Img.src = roomSrc;
+          }
         }
 
         // Update Firmness
