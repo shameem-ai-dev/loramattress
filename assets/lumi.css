@@ -685,10 +685,7 @@ body.lightbox-open .lumi-widget-container {
   }
   
   .lumi-greeting-bubble {
-    width: 220px;
-    bottom: 70px;
-    right: 0;
-    padding: 8px 12px;
+    display: none !important;
   }
 
   .lumi-chat-panel {

@@ -99,6 +99,9 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -108,6 +111,8 @@ body {
   line-height: 1.6;
   font-weight: 400;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
   position: relative;
 }
 
@@ -4322,12 +4327,13 @@ body {
   .hero-title {
     order: 2 !important;
     text-align: center !important;
-    font-size: clamp(2.15rem, 8.8vw, 2.75rem) !important;
-    line-height: 1.14 !important;
-    letter-spacing: -0.03em !important;
+    font-size: clamp(1.6rem, 6.8vw, 2.15rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.025em !important;
     margin-bottom: 0.45rem !important;
     color: #FFFFFF !important;
     font-weight: 800 !important;
+    padding: 0 0.5rem !important;
   }
 
   .hero-shimmer-title {
@@ -4361,13 +4367,14 @@ body {
     position: relative !important;
     inset: unset !important;
     width: 100% !important;
-    height: clamp(330px, 46vh, 410px) !important;
-    margin: 0.4rem 0 0.95rem !important;
+    max-width: 100% !important;
+    height: clamp(320px, 45vh, 400px) !important;
+    margin: 0.35rem 0 0.95rem !important;
     border: none !important;
-    border-radius: 0 !important;
+    border-radius: 20px !important;
     background: transparent !important;
     box-shadow: none !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -4380,12 +4387,12 @@ body {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    width: 290px !important;
-    height: 290px !important;
+    width: 280px !important;
+    height: 280px !important;
     transform: translate(-50%, -50%) !important;
     border-radius: 50% !important;
     background: radial-gradient(circle, rgba(0, 180, 216, 0.45) 0%, rgba(79, 70, 229, 0.3) 45%, rgba(6, 9, 19, 0) 70%) !important;
-    filter: blur(42px) !important;
+    filter: blur(40px) !important;
     pointer-events: none !important;
     z-index: 0 !important;
     animation: luxuryAuraPulse 5s ease-in-out infinite alternate !important;
@@ -4415,15 +4422,15 @@ body {
     z-index: 0 !important;
   }
   .hero-orbital-1 {
-    width: 320px !important;
-    height: 190px !important;
+    width: 300px !important;
+    height: 180px !important;
     border: 1px dashed rgba(56, 189, 248, 0.22) !important;
     transform: translate(-50%, -50%) rotate(-12deg) !important;
     animation: ringSpin 24s linear infinite !important;
   }
   .hero-orbital-2 {
-    width: 270px !important;
-    height: 160px !important;
+    width: 260px !important;
+    height: 150px !important;
     border: 1px solid rgba(0, 180, 216, 0.15) !important;
     transform: translate(-50%, -50%) rotate(25deg) !important;
     animation: ringSpinRev 30s linear infinite !important;
@@ -4480,21 +4487,22 @@ body {
     position: absolute !important;
     z-index: 5 !important;
     align-items: center !important;
-    gap: 0.4rem !important;
-    padding: 0.38rem 0.8rem !important;
-    background: rgba(8, 14, 28, 0.8) !important;
+    gap: 0.3rem !important;
+    padding: 0.28rem 0.6rem !important;
+    background: rgba(8, 14, 28, 0.86) !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
-    border: 1px solid rgba(56, 189, 248, 0.38) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
     border-radius: 999px !important;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 180, 216, 0.28) !important;
-    font-size: 0.68rem !important;
+    font-size: 0.61rem !important;
     font-weight: 700 !important;
     color: #F0F9FF !important;
     white-space: nowrap !important;
     pointer-events: auto !important;
     cursor: pointer !important;
     transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease !important;
+    max-width: 46% !important;
   }
   .hero-spec-beacon:active {
     transform: scale(0.93) !important;
@@ -4517,23 +4525,23 @@ body {
   }
 
   .beacon-tl {
-    top: 5% !important;
-    left: 2% !important;
+    top: 6% !important;
+    left: 8px !important;
     animation: beaconFloat1 5s ease-in-out infinite alternate !important;
   }
   .beacon-tr {
-    top: 7% !important;
-    right: 2% !important;
+    top: 6% !important;
+    right: 8px !important;
     animation: beaconFloat2 5.5s ease-in-out infinite alternate !important;
   }
   .beacon-bl {
-    bottom: 7% !important;
-    left: 2% !important;
+    bottom: 6% !important;
+    left: 8px !important;
     animation: beaconFloat2 6s ease-in-out infinite alternate !important;
   }
   .beacon-br {
-    bottom: 5% !important;
-    right: 2% !important;
+    bottom: 6% !important;
+    right: 8px !important;
     animation: beaconFloat1 5.2s ease-in-out infinite alternate !important;
   }
 
@@ -4557,12 +4565,12 @@ body {
   .hero-mobile-phase-ctrl .phase-buttons {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0.35rem !important;
+    gap: 0.25rem !important;
     width: 100% !important;
     background: rgba(10, 16, 32, 0.72) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
-    padding: 4px !important;
+    padding: 3px !important;
     border-radius: 999px !important;
     border: 1px solid rgba(0, 180, 216, 0.32) !important;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
@@ -4571,9 +4579,9 @@ body {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
-    padding: 0.58rem 0.25rem !important;
-    font-size: 0.72rem !important;
+    gap: 0.25rem !important;
+    padding: 0.52rem 0.15rem !important;
+    font-size: 0.69rem !important;
     font-weight: 700 !important;
     text-align: center !important;
     white-space: nowrap !important;
