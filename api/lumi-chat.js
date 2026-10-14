@@ -735,7 +735,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       status: 'active',
       name: 'Lumi',
-      version: '2.0-verified',
+      version: '3.0',
       kbAvailable: !!kb
     });
   }

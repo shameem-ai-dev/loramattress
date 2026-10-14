@@ -86,13 +86,13 @@
       <!-- Speech Greeting Bubble (once per session) -->
       <div class="lumi-greeting-bubble" id="lumi-greeting" style="display: none;">
         <p class="lumi-greeting-text">
-          <strong>Hi, I’m Lumi!</strong> Lora's verified AI sleep assistant. Need help choosing your mattress?
+          <strong>Hi, I’m Lumi!</strong> Need help choosing your perfect mattress?
         </p>
         <button type="button" class="lumi-greeting-close" id="lumi-dismiss-greeting" aria-label="Dismiss greeting">✕</button>
       </div>
 
       <!-- 3D Luxury Bed & Lumi Character Launcher -->
-      <button type="button" class="lumi-launcher-btn" id="lumi-launcher" aria-label="Open Lumi Sleep Assistant">
+      <button type="button" class="lumi-launcher-btn" id="lumi-launcher" aria-label="Open Lumi Sleep Guide">
         <!-- Ambient Floor Contact Shadow -->
         <div class="lumi-mattress-shadow"></div>
 
@@ -195,7 +195,7 @@
           </svg>
         </div>
 
-        <span class="lumi-status-badge" title="Lumi is online with Knowledge Base 2.0"></span>
+        <span class="lumi-status-badge" title="Lumi Sleep Guide is online"></span>
       </button>
 
       <!-- Lumi Chat Panel -->
@@ -215,7 +215,7 @@
             <div>
               <h4 class="lumi-header-title">
                 Lumi
-                <span class="lumi-header-badge">KB 2.0</span>
+                <span class="lumi-header-badge">Sleep Guide</span>
               </h4>
               <p class="lumi-header-sub">
                 <span>Lora Sleep-Tech</span> • <span id="lumi-header-lang-display">EN / മലയാളം / Manglish</span>
@@ -235,13 +235,48 @@
           </div>
         </div>
 
-        <!-- Currently Viewed Mattress Context Strip -->
+        <!-- Currently Viewed Mattress Context Strip with Questions Toggle -->
         <div class="lumi-context-strip" id="lumi-context-strip">
           <span class="lumi-context-label">
             <span>🛏️</span>
             <strong id="lumi-context-product">LORA CLOUD 7™</strong>
           </span>
-          <button type="button" class="lumi-context-action" id="lumi-btn-check-pin">Check Pincode</button>
+          <div style="display: flex; gap: 5px; align-items: center;">
+            <button type="button" class="lumi-questions-toggle-btn" id="lumi-toggle-questions" title="Browse possible questions to ask Lumi">💡 Possible Questions</button>
+            <button type="button" class="lumi-context-action" id="lumi-btn-check-pin">Check Pincode</button>
+          </div>
+        </div>
+
+        <!-- Categorized Possible Questions Drawer -->
+        <div class="lumi-questions-tray" id="lumi-questions-tray" style="display: none;">
+          <div>
+            <div class="lumi-q-category-title">🩺 Sleep Health & Back Support</div>
+            <div class="lumi-q-chip-grid">
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which mattress is best for severe back pain and spine support?')">🩺 Best for back pain?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which mattress has zero partner motion disturbance for couples?')">👫 Zero partner disturbance?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which is the coolest, most breathable mattress for hot sleepers?')">❄️ Coolest & breathable?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('I am a side sleeper, which mattress gives best shoulder pressure relief?')">😴 Side sleeper recommendation?</button>
+            </div>
+          </div>
+          <div>
+            <div class="lumi-q-category-title">👑 8 Models & Comparisons</div>
+            <div class="lumi-q-chip-grid">
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Compare Cloud 7 vs Cloud Ortho')">⚖️ Cloud 7 vs Cloud Ortho</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Compare Ortho Hybrid vs Ortho Latex')">⚖️ Ortho Hybrid vs Ortho Latex</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Tell me about LORA Plush soft comfort')">☁️ LORA Plush feel</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Tell me about Hybrid Fusion 15-Year flagship')">🌟 Hybrid Fusion 15-Yr</button>
+            </div>
+          </div>
+          <div>
+            <div class="lumi-q-category-title">📦 Delivery, Sizing & Guarantees</div>
+            <div class="lumi-q-chip-grid">
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Why is LORA full-size flat delivery better than compressed rolled box?')">🚚 Why flat delivery?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What standard sizes and custom dimensions can you make?')">📏 Sizing & Custom fit</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What is the 100-night trial and warranty coverage?')">🛡️ Trial & Warranty</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What are the Bajaj Finserv No-Cost EMI options?')">💳 EMI Options</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.requestLeadCard()">📞 Request Specialist Call</button>
+            </div>
+          </div>
         </div>
 
         <!-- Messages Area -->
@@ -352,21 +387,21 @@
     if (state.currentLang === 'ml') {
       appendMessage(
         'assistant',
-        `നമസ്കാരം! ഞാൻ ലൂമി, ലോറയുടെ AI സ്ലീപ്പ് അസിസ്റ്റന്റ് ☁️\n\nനിങ്ങൾക്ക് അനുയോജ്യമായ മെത്ത കണ്ടെത്താനും വാറന്റി, അളവുകൾ, ഡെലിവറി എന്നിവ പരിശോധിക്കാനും സഹായിക്കാം. നിങ്ങൾ ഇപ്പോൾ കാണുന്നത് **${ctx.productName}** ആണ്.`
+        `നമസ്കാരം! ഞാൻ ലൂമി, ലോറയുടെ സ്ലീപ്പ് ഗൈഡ് ☁️\n\nനിങ്ങൾക്ക് ഏറ്റവും അനുയോജ്യമായ മെത്ത കണ്ടെത്താനും വാറന്റി, അളവുകൾ, ഡെലിവറി എന്നിവ പരിശോധിക്കാനും സഹായിക്കാം. നിങ്ങൾ ഇപ്പോൾ കാണുന്നത് **${ctx.productName}** ആണ്.`
       );
-      renderQuickOptions(['അനുയോജ്യമായത് കണ്ടെത്തുക', 'സൈസ് ഗൈഡ്', 'മോഡലുകൾ താരതമ്യം ചെയ്യുക', 'പിൻകോഡ് പരിശോധിക്കുക']);
+      renderQuickOptions(['നടുവേദനയ്ക്ക് ഏതാണ് നല്ലത്?', 'കപ്പിൾസ് മെത്ത (Zero Motion)', 'ക്ലൗഡ് 7 vs ക്ലൗഡ് ഓർത്തോ', 'ഫ്ലാറ്റ് ഡെലിവറി എന്തുകൊണ്ട്?', 'സ്പെഷ്യലിസ്റ്റ് കോൾ']);
     } else if (state.currentLang === 'manglish') {
       appendMessage(
         'assistant',
-        `Namaskaram! Njan Lumi, Lora's AI Sleep Assistant ☁️\n\nNingalkku perfect mattress find cheyyaan, warranty, size and delivery check cheyyaan njan help cheyyam. You are currently exploring **${ctx.productName}**.`
+        `Namaskaram! Njan Lumi, Lora's Sleep Guide ☁️\n\nNingalkku perfect mattress find cheyyaan, warranty, size and flat delivery check cheyyaan njan help cheyyam. You are currently exploring **${ctx.productName}**.`
       );
-      renderQuickOptions(['Help me choose', 'Find my size', 'Compare mattresses', 'Check pincode']);
+      renderQuickOptions(['Best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Why flat delivery?', 'Request Specialist Call']);
     } else {
       appendMessage(
         'assistant',
-        `Hello! I’m Lumi, Lora’s AI sleep assistant ☁️\n\nI can help you explore our 8 verified models, compare comfort feels, check stated warranties, and review bed sizing. You're currently exploring **${ctx.productName}**.`
+        `Hello! I’m Lumi, your personal Lora sleep guide ☁️\n\nI can help you explore our 8 handcrafted models, compare firmness feels, check warranties, review bed sizing, or arrange a direct factory consultation. You're currently exploring **${ctx.productName}**.`
       );
-      renderQuickOptions(['Help me choose', 'Find my size', 'Compare mattresses', 'Check Pincode']);
+      renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Why flat delivery?', 'Request Specialist Call']);
     }
   }
 
@@ -406,7 +441,43 @@
       `;
     }
 
-    row.innerHTML = `<div class="lumi-msg-bubble">${formattedText}${cardHtml}</div>`;
+    // 2-Column Structured Lead Capture Card Embed
+    let leadCardHtml = '';
+    if (card && (card.showLeadCard || card.suggestLead)) {
+      const cardId = 'lead-card-' + Math.random().toString(36).substr(2, 7);
+      leadCardHtml = `
+        <div class="lumi-lead-card" id="${cardId}">
+          <div class="lumi-lead-card-header">
+            <span class="lumi-lead-card-icon">📞</span>
+            <div>
+              <h5 class="lumi-lead-card-title">Share Contact & PIN for Direct Callback</h5>
+              <p class="lumi-lead-card-sub">Instant factory pricing, pincode delivery timeline & senior sleep consultation.</p>
+            </div>
+          </div>
+          <div class="lumi-lead-cols">
+            <div class="lumi-lead-col">
+              <label class="lumi-lead-label">📱 Mobile Number</label>
+              <div class="lumi-lead-input-wrap">
+                <span class="lumi-lead-prefix">+91</span>
+                <input type="tel" class="lumi-lead-input" id="${cardId}-phone" placeholder="10-digit mobile" maxlength="10" value="${state.leadData.phone || ''}">
+              </div>
+            </div>
+            <div class="lumi-lead-col">
+              <label class="lumi-lead-label">📍 Delivery PIN Code</label>
+              <div class="lumi-lead-input-wrap">
+                <input type="text" class="lumi-lead-input" id="${cardId}-pin" placeholder="6-digit PIN" maxlength="6" value="${state.leadData.pincode || ''}" style="padding-left: 8px;">
+              </div>
+            </div>
+          </div>
+          <button type="button" class="lumi-lead-btn" onclick="window.LoraLumi.submitLeadCard(this, '${cardId}')">
+            ⚡ Share Details & Request Callback →
+          </button>
+          <div class="lumi-lead-privacy">🔒 Your contact details are strictly private & only used to verify delivery & call you.</div>
+        </div>
+      `;
+    }
+
+    row.innerHTML = `<div class="lumi-msg-bubble">${formattedText}${cardHtml}${leadCardHtml}</div>`;
     messagesEl.appendChild(row);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -501,13 +572,13 @@
     if (state.leadStep > 0 && (lower === 'skip' || lower === 'no' || lower === 'cancel' || lower === 'venda')) {
       state.leadStep = 0;
       appendMessage('assistant', "No problem at all! Feel free to ask anything else about our 8 handcrafted mattresses, feel, or sizing.");
-      renderQuickOptions(['View All 8 Models', 'Help me choose', 'Find my size']);
+      renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Why flat delivery?']);
       return true;
     }
 
     const info = extractContactInfo(val);
 
-    // If phone number is provided anywhere
+    // If phone number is provided anywhere in text
     if (info && info.phone) {
       state.leadData.phone = info.phone;
       if (info.pincode) state.leadData.pincode = info.pincode;
@@ -519,7 +590,11 @@
         return true;
       } else {
         state.leadStep = 2;
-        appendMessage('assistant', `Got your number: **+91 ${state.leadData.phone}**! What is your 6-digit delivery **pincode** so our sleep specialist can verify exact delivery timelines for your area?`);
+        appendMessage(
+          'assistant',
+          `Got your number: **+91 ${state.leadData.phone}**! What is your 6-digit delivery **pincode** so our sleep specialist can verify exact delivery timelines for your area?`,
+          { showLeadCard: true }
+        );
         renderQuickOptions(['Skip']);
         return true;
       }
@@ -537,9 +612,19 @@
     if (state.leadStep === 1 && /^\d{6}$/.test(val)) {
       state.leadData.pincode = val;
       state.leadStep = 3;
-      appendMessage('assistant', `PIN code ${val} noted! What **contact number** should our sleep specialist call you on?`);
+      appendMessage(
+        'assistant',
+        `PIN code ${val} noted! What **contact number** should our sleep specialist call you on?`,
+        { showLeadCard: true }
+      );
       renderQuickOptions(['Skip']);
       return true;
+    }
+
+    // If user asked a new question while leadStep was open, reset leadStep and let question proceed
+    if (state.leadStep > 0 && !info.phone && !info.pincode) {
+      state.leadStep = 0;
+      return false;
     }
 
     return false;
@@ -589,7 +674,7 @@
     renderQuickOptions(['View All 8 Models', 'Check EMI Options', 'Size Guide']);
   }
 
-  // Client-side fallback intelligence engine (Synchronized with Version 3.0 Engine)
+  // Client-side fallback intelligence engine (Synchronized with 8 LORA Mattresses)
   function fallbackClientIntelligence(userInput) {
     const lower = (userInput || '').toLowerCase();
 
@@ -597,21 +682,21 @@
     if (lower.includes('backpain') || lower.includes('back pain') || lower.includes('spine') || lower.includes('ortho') || lower.includes('വേദന') || lower.includes('naduvedana')) {
       appendMessage(
         'assistant',
-        "For back pain relief and healthy spinal alignment, we strongly recommend **LORA ORTHO HYBRID™** (10-Yr Warranty) or **LORA ORTHO LATEX™** (12-Yr Warranty). Engineered with 7-zone SpineAlign™ ergonomics to keep your spine neutral and supported.",
+        "For back pain relief and healthy spinal alignment, we strongly recommend:\n\n• **LORA ORTHO HYBRID™** (10-Yr Warranty): Features 7-zone SpineAlign™ core with targeted lumbar reinforcement to keep your spine neutral and decompress vertebrae.\n• **LORA ORTHO LATEX™** (12-Yr Warranty): 100% natural pin-core Dunlop latex that dynamically pushes back without pressure points.\n\nBoth deliver optimal Medium-Firm support so your lower back doesn't sag.",
         PRODUCTS_2_0['04']
       );
-      renderQuickOptions(['Ortho Hybrid Details', 'Ortho Latex Details', 'Request Specialist Call']);
+      renderQuickOptions(['Compare Ortho Hybrid vs Latex', 'Zero motion for couples?', 'Request Specialist Call']);
       return;
     }
 
-    // 2. Call / Callback
-    if (lower.includes('call') || lower.includes('callback') || lower.includes('contact') || lower.includes('talk to team') || lower.includes('speak to') || lower.includes('vilikumo') || lower.includes('വിളിക്കാമോ')) {
-      state.leadStep = 1;
+    // 2. Call / Callback / Contact / Phone request
+    if (lower.includes('call') || lower.includes('callback') || lower.includes('contact') || lower.includes('talk to team') || lower.includes('speak to') || lower.includes('vilikumo') || lower.includes('വിളിക്കാമോ') || lower.includes('phone') || lower.includes('number')) {
       appendMessage(
         'assistant',
-        "Certainly! Our senior sleep specialists would be happy to give you a personalized consultation call.\n\nPlease share your **contact number** and **pincode** below so we can reach out with accurate advice and delivery options:"
+        "Certainly! Our senior sleep consultants provide one-on-one guidance on mattress thickness, customized sizes, and factory direct savings.\n\nPlease share your **mobile number** and **pincode** in the columns below so we can verify delivery and call you directly:",
+        { showLeadCard: true }
       );
-      renderQuickOptions(['Share Contact & PIN', 'Call +91 95676 84770']);
+      renderQuickOptions(['Which is best for back pain?', 'Why flat delivery?', 'Compare Cloud 7 vs Cloud Ortho']);
       return;
     }
 
@@ -619,61 +704,102 @@
     if (lower.includes('which is good') || lower.includes('which is best') || lower.includes('which one is good') || lower.includes('recommend') || lower.includes('help me choose') || lower.includes('confused') || lower.includes('suggest') || lower.includes('best')) {
       appendMessage(
         'assistant',
-        "To choose the best LORA mattress for your body and sleep preferences:\n\n• **For Back Pain & Spine Health**: **LORA ORTHO HYBRID™** (Medium-Firm, 10-Yr) or **LORA ORTHO LATEX™** (12-Yr)\n• **For Couples (Zero Motion Transfer)**: **LORA POCKET LUXE™** (Medium, 10-Yr)\n• **For Plush Soft Sink-In**: **LORA PLUSH™** (Soft Pillow Top, 5-Yr) or **CLOUD 7™** (Medium-Soft, 7\", 3-Yr)\n• **Master Luxury Flagship**: **LORA HYBRID FUSION™** (Latex + Memory Foam, 15-Yr)\n\nWhich comfort feel appeals to you?"
+        "Here is the verified quick-guide to choosing the ideal LORA mattress for your body:\n\n• **Severe Back Pain / Lumbar Support**: **LORA ORTHO HYBRID™** (Medium-Firm, 10-Yr) or **ORTHO LATEX™** (12-Yr)\n• **Couples & Light Sleepers (Zero Motion)**: **LORA POCKET LUXE™** (Medium, 10-Yr)\n• **Plush Soft Cloud Cushioning**: **LORA PLUSH™** (Soft Pillow-Top, 5-Yr) or **CLOUD 7™** (Medium-Soft 7\", 3-Yr)\n• **Flagship Tri-Hybrid Luxury**: **LORA HYBRID FUSION™** (Latex + Memory Foam + Ortho Core, 15-Yr)\n\nWhich sleeping feel sounds closest to your preference?"
       );
-      renderQuickOptions(['Back Pain (Ortho)', 'Couples (Pocket Luxe)', 'Plush Soft', 'Compare All 8']);
+      renderQuickOptions(['Back Pain (Ortho)', 'Couples (Pocket Luxe)', 'Plush Soft Feel', 'Request Specialist Call']);
       return;
     }
 
     // 4. Couples / Motion Transfer
-    if (lower.includes('couple') || lower.includes('partner') || lower.includes('motion') || lower.includes('movement') || lower.includes('shake')) {
+    if (lower.includes('couple') || lower.includes('partner') || lower.includes('motion') || lower.includes('movement') || lower.includes('shake') || lower.includes('disturbance')) {
       appendMessage(
         'assistant',
-        "If partner movement or tossing and turning is a concern, **LORA POCKET LUXE™** features independent pocket springs that isolate motion with zero ripple effect across the bed.",
+        "If partner tossing and turning disturbs your sleep, **LORA POCKET LUXE™** is the definitive choice. It is crafted with individually encased barrel pocket springs—each spring responds independently so movement on one side never ripples across the bed.",
         PRODUCTS_2_0['07']
       );
-      renderQuickOptions(['Pocket Luxe Details', 'Check King Price', 'Compare Models']);
+      renderQuickOptions(['Pocket Luxe Specs', 'Check King Price', 'Request Specialist Call']);
       return;
     }
 
-    // 5. Cooling
+    // 5. Cloud 7 vs Cloud Ortho comparison
+    if ((lower.includes('cloud 7') || lower.includes('cloud-7')) && (lower.includes('ortho') || lower.includes('compare') || lower.includes('difference'))) {
+      appendMessage(
+        'assistant',
+        "**Cloud 7™ vs Cloud Ortho™ Comparison:**\n\n• **LORA CLOUD 7™**: 7-inch profile, Medium-Soft Eurotop feel, 3-year warranty. Best for sleepers who love a gentle cushioned surface on a sleek profile.\n• **LORA CLOUD ORTHO™**: 9-inch profile, Balanced Medium feel, 5-year warranty. Offers thicker posture cushioning with more structured spinal support.\n\nBoth feature factory-direct pricing and 100% full-size flat delivery.",
+        PRODUCTS_2_0['02']
+      );
+      renderQuickOptions(['Check Cloud 7 Price', 'Check Cloud Ortho Price', 'Request Specialist Call']);
+      return;
+    }
+
+    // 6. Ortho Hybrid vs Ortho Latex comparison
+    if (lower.includes('ortho hybrid') && (lower.includes('latex') || lower.includes('compare'))) {
+      appendMessage(
+        'assistant',
+        "**Ortho Hybrid™ vs Ortho Latex™ Comparison:**\n\n• **LORA ORTHO HYBRID™**: 10-Year Warranty. Engineered with a 7-zone SpineAlign™ core designed for targeted lumbar pushback and vertebral decompression.\n• **LORA ORTHO LATEX™**: 12-Year Warranty. Built with 100% natural pin-core Dunlop latex over an orthopedic core. Naturally antibacterial, hypoallergenic, and extremely breathable for hot sleepers.",
+        PRODUCTS_2_0['05']
+      );
+      renderQuickOptions(['Check Ortho Latex Price', 'Check Ortho Hybrid Price', 'Request Specialist Call']);
+      return;
+    }
+
+    // 7. Cooling & Breathability
     if (lower.includes('cool') || lower.includes('hot') || lower.includes('sweat') || lower.includes('breathable') || lower.includes('ചൂട്')) {
       appendMessage(
         'assistant',
-        "For a naturally cooler night's rest, **LORA ORTHO LATEX™** uses breathable open-cell latex with pin-core ventilation, while **LORA POCKET LUXE™** provides continuous air circulation through its coil core.",
+        "For the coolest and most breathable sleep, **LORA ORTHO LATEX™** is our top recommendation. Natural Dunlop latex contains thousands of open-cell pin-core channels that continuously circulate air and dissipate body heat throughout the night.",
         PRODUCTS_2_0['05']
       );
-      renderQuickOptions(['Ortho Latex Details', 'Pocket Luxe Details', 'Check Prices']);
+      renderQuickOptions(['Ortho Latex Details', 'Check Prices', 'Request Specialist Call']);
       return;
     }
 
-    // 6. Flat Delivery
+    // 8. Flat Delivery vs Rolled Box
     if (lower.includes('flat') || lower.includes('rolled') || lower.includes('box') || lower.includes('compression') || lower.includes('delivery')) {
       appendMessage(
         'assistant',
-        "At LORA: **You Sleep Flat. Why Should Your Comfort Come Rolled?**\n\nUnlike box mattresses crushed under hydraulic presses, LORA delivers 100% full-size flat direct from our factory in protective transit covers. It arrives uncompromised, structurally intact, and ready to sleep on immediately!"
+        "**Why LORA Never Rolls or Compresses Mattresses:**\n\nMost online brands use hydraulic presses to crush mattresses into compact cardboard boxes to save shipping costs. This breaks spring integrity, creates edge sagging, and weakens foam cell structures.\n\nAt LORA: **You sleep flat. Why should your comfort arrive rolled?**\nWe deliver 100% full-size and completely flat in heavy-duty protective transit casing straight to your bedroom.",
+        PRODUCTS_2_0['08']
       );
-      renderQuickOptions(['View 8 Models', 'Check Pincode', 'Compare Warranties']);
+      renderQuickOptions(['View 8 Models', 'Check Pincode Delivery', 'Request Specialist Call']);
       return;
     }
 
-    // 7. Unknown / Custom questions
-    if (lower.includes('round') || lower.includes('bulk') || lower.includes('custom') || lower.includes('resort') || lower.includes('hotel') || lower.includes('hospital')) {
-      state.leadStep = 1;
+    // 9. Pricing & Quotes
+    if (lower.includes('price') || lower.includes('rate') || lower.includes('cost') || lower.includes('ethra') || lower.includes('വില') || lower.includes('എത്ര')) {
       appendMessage(
         'assistant',
-        "For custom dimensions, specialized bulk orders, or technical inquiries outside our standard catalog, our production master craftsmen and senior consultants review each requirement personally.\n\nPlease share your **contact number** and **pincode** below so our team can check feasibility and call you with accurate details:"
+        "**LORA Factory-Direct Pricing Overview:**\n\n• **Cloud 7™**: Starting at ₹22,999 (Queen 78\"×60\")\n• **Cloud Ortho™**: Starting at ₹25,999\n• **Lora Plush™**: Starting at ₹24,999\n• **Ortho Hybrid™**: Starting at ₹27,999\n• **Ortho Latex™**: Starting at ₹29,999\n• **Comfort Core™**: Starting at ₹26,999\n• **Pocket Luxe™**: Starting at ₹28,999\n• **Hybrid Fusion™**: Starting at ₹34,999\n\n*All models include 0% Bajaj Finserv EMI and complimentary premium sleep kit during launch!*",
+        { showLeadCard: true }
       );
-      renderQuickOptions(['Share Contact & PIN', 'Call +91 95676 84770']);
+      renderQuickOptions(['Check EMI Options', 'Measure Bed Dimensions', 'Request Specialist Call']);
       return;
     }
 
-    // 8. General open fallback
+    // 10. Sizing, Dimensions, Custom Size
+    if (lower.includes('size') || lower.includes('dimension') || lower.includes('measure') || lower.includes('custom') || lower.includes('king') || lower.includes('queen') || lower.includes('single') || lower.includes('double')) {
+      appendMessage(
+        'assistant',
+        "**Standard & Custom Sizes Available:**\n\n• **King**: 78\" × 72\" | 75\" × 72\" | 72\" × 72\" | 84\" × 72\"\n• **Queen**: 78\" × 60\" | 75\" × 60\" | 72\" × 60\" | 78\" × 66\"\n• **Double**: 78\" × 48\" | 75\" × 48\" | 72\" × 48\"\n• **Single**: 78\" × 36\" | 75\" × 36\" | 72\" × 36\"\n\n**Custom Frame Dimensions**: Have an antique teak bed or non-standard frame? We custom-craft any length and width down to the exact millimeter at no extra delay!",
+        { showLeadCard: true }
+      );
+      renderQuickOptions(['Which is best for back pain?', 'Check Pincode', 'Request Specialist Call']);
+      return;
+    }
+
+    // 11. Dynamic open fallback (Rotates through informative topics, NEVER repeats identical text)
+    const fallbackVariations = [
+      "I'm here to guide you across LORA's 8 handcrafted mattresses! Are you looking for relief from back pain, zero motion transfer for couples, or a plush soft cloud-like feel?",
+      "To help you find your perfect match, could you share your favorite sleep posture (back, side, or stomach), or would you prefer a direct callback from our senior sleep consultant?",
+      "Every LORA mattress is delivered 100% full-size flat with warranties up to 15 years. Which model or feature can I explain in detail for you?"
+    ];
+    const pickedText = fallbackVariations[state.history.length % fallbackVariations.length];
+
     appendMessage(
       'assistant',
-      "I’m Lumi, LORA's AI sleep specialist. Tell me about your preferred sleep feel (soft, balanced medium, or firm ortho), your sleep position, or if you would like our team to call you directly."
+      pickedText
     );
-    renderQuickOptions(['View All 8 Models', 'Side / Back Sleeper', 'Back Pain Guide', 'Request Callback']);
+    renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Request Specialist Call']);
   }
 
   // Send query to Lumi server API
@@ -830,9 +956,15 @@
       };
     }
 
-    if (checkPinBtn) {
-      checkPinBtn.onclick = () => {
-        handleUserInput('What is the delivery timeline for my pincode?');
+    const toggleQuestionsBtn = document.getElementById('lumi-toggle-questions');
+    const questionsTray = document.getElementById('lumi-questions-tray');
+
+    if (toggleQuestionsBtn && questionsTray) {
+      toggleQuestionsBtn.onclick = (e) => {
+        e.preventDefault();
+        const isOpen = questionsTray.style.display !== 'none';
+        questionsTray.style.display = isOpen ? 'none' : 'flex';
+        toggleQuestionsBtn.classList.toggle('active', !isOpen);
       };
     }
 
@@ -884,7 +1016,92 @@
     reset: resetChat,
     ask: (q) => {
       toggleChat(true);
+      const tray = document.getElementById('lumi-questions-tray');
+      if (tray) tray.style.display = 'none';
       setTimeout(() => handleUserInput(q), 250);
+    },
+    requestLeadCard: () => {
+      toggleChat(true);
+      appendMessage(
+        'assistant',
+        "Certainly! Please share your contact number and delivery pincode below so our senior sleep specialist can check factory availability and call you directly:",
+        { showLeadCard: true }
+      );
+    },
+    submitLeadCard: async function (btn, cardId) {
+      const phoneEl = document.getElementById(`${cardId}-phone`);
+      const pinEl = document.getElementById(`${cardId}-pin`);
+      const phoneVal = (phoneEl ? phoneEl.value : '').replace(/\D/g, '');
+      const pinVal = (pinEl ? pinEl.value : '').replace(/\D/g, '');
+
+      if (!phoneVal || phoneVal.length < 10) {
+        if (phoneEl) {
+          phoneEl.focus();
+          phoneEl.style.borderColor = '#EF4444';
+        }
+        alert('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      if (!pinVal || pinVal.length !== 6) {
+        if (pinEl) {
+          pinEl.focus();
+          pinEl.style.borderColor = '#EF4444';
+        }
+        alert('Please enter a valid 6-digit delivery PIN code.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Registering Request...';
+
+      state.leadData.phone = phoneVal.slice(-10);
+      state.leadData.pincode = pinVal;
+
+      const ctx = getPageContext();
+      const payload = {
+        id: 'lumi-' + Date.now(),
+        name: state.leadData.name || 'Storefront Customer',
+        phone: state.leadData.phone,
+        pincode: state.leadData.pincode,
+        place: '',
+        preferredMattress: ctx.productName || 'LORA Mattress Consultation',
+        preferredSize: ctx.size || 'Standard Size',
+        preferredThickness: ctx.thickness || 'Standard Thickness',
+        summary: `Customer callback request for ${ctx.productName || 'Mattress selection'}. Phone: ${state.leadData.phone}, PIN: ${state.leadData.pincode}`,
+        source: 'Lumi Sleep Guide (Structured 2-Column Lead Card)',
+        resultType: 'lumi_consultation',
+        status: 'New',
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await fetch('/api/store-leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {}
+
+      try {
+        const localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]');
+        localLeads.unshift(payload);
+        localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(localLeads));
+      } catch (e) {}
+
+      const cardContainer = document.getElementById(cardId);
+      if (cardContainer) {
+        cardContainer.outerHTML = `
+          <div class="lumi-lead-confirmed-card">
+            <div class="lumi-confirmed-title">✓ Callback Request Registered!</div>
+            <div class="lumi-confirmed-details">
+              Thank you! Our senior sleep consultant will call you at <strong>+91 ${state.leadData.phone}</strong> for PIN <strong>${state.leadData.pincode}</strong> with verified factory-direct pricing and delivery timings.
+            </div>
+          </div>
+        `;
+      }
+
+      state.leadStep = 0;
+      renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Why flat delivery?']);
     }
   };
 

@@ -3808,8 +3808,8 @@ fbq('track', 'PageView');
                   <thead>
                     <tr>
                       <th>Customer Name</th>
-                      <th>Phone Number</th>
-                      <th>Location / PIN</th>
+                      <th style="min-width: 140px;">Contact Number</th>
+                      <th style="min-width: 100px;">Pincode</th>
                       <th>Preferred Mattress</th>
                       <th>Selected Size</th>
                       <th>Requirements Summary</th>
@@ -8796,8 +8796,8 @@ Order Notes: [Customer Instructions]</pre>
           return `
             <tr>
               <td><strong>${escapeHtml(lead.name || 'Customer')}</strong></td>
-              <td><a href="tel:${escapeHtml(lead.phone)}" style="color: #38BDF8; font-weight: 700;">${escapeHtml(lead.phone || '—')}</a></td>
-              <td>${escapeHtml(lead.pincode || lead.place || '—')}</td>
+              <td><a href="tel:${escapeHtml(lead.phone)}" style="color: #38BDF8; font-weight: 700; text-decoration: none;">📱 +91 ${escapeHtml(lead.phone ? String(lead.phone).replace(/\D/g, '').slice(-10) : '—')}</a></td>
+              <td><span style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">📍 ${escapeHtml(lead.pincode || '—')}</span></td>
               <td><span class="status-badge" style="background: rgba(2, 132, 199, 0.2); color: #38BDF8;">${escapeHtml(lead.preferredMattress || 'LORA CLOUD 7™')}</span></td>
               <td>${escapeHtml(lead.preferredSize || 'King Size')}</td>
               <td style="max-width: 250px; font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(lead.summary || lead.notes || '—')}</td>
