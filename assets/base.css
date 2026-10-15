@@ -1084,6 +1084,7 @@ button, input, select {
   gap: 1rem;
   padding: 0.5rem 1rem;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
 .proof-item:last-child {
@@ -1093,16 +1094,49 @@ button, input, select {
 .proof-icon-box {
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-md);
-  background: rgba(0, 180, 216, 0.12);
-  color: #38BDF8;
-  border: 1px solid rgba(0, 180, 216, 0.28);
+  border-radius: 12px;
+  background: radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.2), rgba(11, 19, 43, 0.95) 80%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 242, 254, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1.25rem;
-  box-shadow: 0 0 14px rgba(0, 180, 216, 0.2);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.proof-item-gold .proof-icon-box {
+  background: radial-gradient(circle at 35% 35%, rgba(245, 158, 11, 0.22), rgba(15, 23, 42, 0.95) 80%);
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 14px rgba(245, 158, 11, 0.25);
+}
+
+.proof-item-cyan .proof-icon-box {
+  background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.22), rgba(11, 19, 43, 0.95) 80%);
+  border-color: rgba(0, 242, 254, 0.4);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 242, 254, 0.25);
+}
+
+.proof-item-emerald .proof-icon-box {
+  background: radial-gradient(circle at 35% 35%, rgba(16, 185, 129, 0.22), rgba(11, 19, 43, 0.95) 80%);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 14px rgba(16, 185, 129, 0.25);
+}
+
+.proof-item-fintech .proof-icon-box {
+  background: radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.22), rgba(11, 19, 43, 0.95) 80%);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 14px rgba(56, 189, 248, 0.25);
+}
+
+.proof-item:hover .proof-icon-box {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.lora-badge-svg {
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 .proof-title {
@@ -1116,6 +1150,57 @@ button, input, select {
   font-size: 0.78rem;
   color: #94A3B8;
   margin-top: 0.15rem;
+}
+
+/* Trust bar & custom Photoshop-grade vector icons */
+.hero-trust-bar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(11, 19, 43, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 0.45rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  margin-top: 1.25rem;
+  font-size: 0.84rem;
+  color: #CBD5E1;
+}
+
+.hero-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.trust-ico {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: -1px;
+}
+
+.trust-ico-star {
+  filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.65));
+}
+
+.trust-ico-shield {
+  filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.55));
+}
+
+.ico-bolt-svg {
+  display: inline-block;
+  vertical-align: -1px;
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.65));
+  flex-shrink: 0;
+}
+
+.quiz-opt-icon-wrap svg {
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
 }
 
 /* ==========================================================================
@@ -3951,25 +4036,27 @@ body {
     min-width: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    background: rgba(13, 20, 38, 0.85) !important;
-    border: 1px solid rgba(0, 180, 216, 0.22) !important;
+    background: linear-gradient(135deg, rgba(13, 20, 38, 0.9) 0%, rgba(10, 16, 32, 0.95) 100%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.22) !important;
     border-radius: 10px !important;
     padding: 0.55rem 0.6rem !important;
     display: flex !important;
     align-items: center !important;
-    gap: 0.5rem !important;
+    gap: 0.55rem !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
   }
   .proof-icon-box {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 0.95rem !important;
-    border-radius: 8px !important;
-    background: rgba(0, 180, 216, 0.12) !important;
-    border: 1px solid rgba(0, 180, 216, 0.25) !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 9px !important;
     flex-shrink: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+  }
+  .proof-icon-box .lora-badge-svg {
+    width: 19px !important;
+    height: 19px !important;
   }
   .proof-title {
     font-size: 0.72rem !important;

@@ -201,7 +201,7 @@
         this.freeTierFill.style.width = (progress * 100) + '%';
 
         if (this.cartData.totalPrice >= this.threshold) {
-          this.freeTierText.innerHTML = '✨ <strong>Free White-Glove In-Home Setup Unlocked!</strong>';
+          this.freeTierText.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ps-gold-grad)" style="vertical-align:-2px; margin-right:4px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg> <strong>Free White-Glove In-Home Setup Unlocked!</strong>';
         } else {
           const remaining = this.threshold - this.cartData.totalPrice;
           this.freeTierText.innerHTML = `Add <strong>₹${remaining.toLocaleString('en-IN')}</strong> to unlock Free White-Glove Delivery`;
@@ -419,8 +419,8 @@
               <span class="eyebrow">${data.comfort}</span>
               <h3 style="font-size: 2rem; margin-bottom: 0.35rem;">${data.title}</h3>
               <p style="font-size: 1.35rem; font-weight: 700; color: var(--color-espresso); margin-bottom: 0.5rem;">${data.price}</p>
-              <span style="display: inline-block; font-size: 0.76rem; font-weight: 700; color: var(--color-olive); background: rgba(98,106,86,0.1); padding: 0.2rem 0.5rem; border-radius: 2px; margin-bottom: 1rem;">
-                🛡️ ${data.warranty} Warranty • Direct Factory Craft
+              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.76rem; font-weight: 700; color: var(--color-olive); background: rgba(98,106,86,0.1); padding: 0.2rem 0.5rem; border-radius: 2px; margin-bottom: 1rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> ${data.warranty} Warranty • Direct Factory Craft
               </span>
               <p style="margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;">${data.desc}</p>
               

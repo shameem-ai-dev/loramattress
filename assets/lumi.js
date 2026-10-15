@@ -238,11 +238,11 @@
         <!-- Currently Viewed Mattress Context Strip with Questions Toggle -->
         <div class="lumi-context-strip" id="lumi-context-strip">
           <span class="lumi-context-label">
-            <span>🛏️</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:3px;"><path d="M2 4v16M22 4v16M2 10h20M2 16h20M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/></svg>
             <strong id="lumi-context-product">LORA CLOUD 7™</strong>
           </span>
           <div style="display: flex; gap: 5px; align-items: center;">
-            <button type="button" class="lumi-questions-toggle-btn" id="lumi-toggle-questions" title="Browse possible questions to ask Lumi">💡 Possible Questions</button>
+            <button type="button" class="lumi-questions-toggle-btn" id="lumi-toggle-questions" title="Browse possible questions to ask Lumi"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-7 7c0 3 2 5 3 6h8c1-1 3-3 3-6a7 7 0 0 0-7-7z"/></svg> Possible Questions</button>
             <button type="button" class="lumi-context-action" id="lumi-btn-check-pin">Check Pincode</button>
           </div>
         </div>
@@ -250,31 +250,31 @@
         <!-- Categorized Possible Questions Drawer -->
         <div class="lumi-questions-tray" id="lumi-questions-tray" style="display: none;">
           <div>
-            <div class="lumi-q-category-title">🩺 Sleep Health & Back Support</div>
+            <div class="lumi-q-category-title">Sleep Health & Back Support</div>
             <div class="lumi-q-chip-grid">
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which mattress is best for severe back pain and spine support?')">🩺 Best for back pain?</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which mattress has zero partner motion disturbance for couples?')">👫 Zero partner disturbance?</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which is the coolest, most breathable mattress for hot sleepers?')">❄️ Coolest & breathable?</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('I am a side sleeper, which mattress gives best shoulder pressure relief?')">😴 Side sleeper recommendation?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which mattress is best for severe back pain and spine support?')">Best for back pain?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which mattress has zero partner motion disturbance for couples?')">Zero partner disturbance?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Which is the coolest, most breathable mattress for hot sleepers?')">Coolest & breathable?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('I am a side sleeper, which mattress gives best shoulder pressure relief?')">Side sleeper recommendation?</button>
             </div>
           </div>
           <div>
-            <div class="lumi-q-category-title">👑 8 Models & Comparisons</div>
+            <div class="lumi-q-category-title">The 8 Models & Comparisons</div>
             <div class="lumi-q-chip-grid">
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Compare Cloud 7 vs Cloud Ortho')">⚖️ Cloud 7 vs Cloud Ortho</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Compare Ortho Hybrid vs Ortho Latex')">⚖️ Ortho Hybrid vs Ortho Latex</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Tell me about LORA Plush soft comfort')">☁️ LORA Plush feel</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Tell me about Hybrid Fusion 15-Year flagship')">🌟 Hybrid Fusion 15-Yr</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Compare Cloud 7 vs Cloud Ortho')">Cloud 7 vs Cloud Ortho</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Compare Ortho Hybrid vs Ortho Latex')">Ortho Hybrid vs Ortho Latex</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Tell me about LORA Plush soft comfort')">LORA Plush feel</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Tell me about Hybrid Fusion 15-Year flagship')">Hybrid Fusion 15-Yr</button>
             </div>
           </div>
           <div>
-            <div class="lumi-q-category-title">📦 Delivery, Sizing & Guarantees</div>
+            <div class="lumi-q-category-title">Delivery, Sizing & Guarantees</div>
             <div class="lumi-q-chip-grid">
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Why is LORA full-size flat delivery better than compressed rolled box?')">🚚 Why flat delivery?</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What standard sizes and custom dimensions can you make?')">📏 Sizing & Custom fit</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What is the 100-night trial and warranty coverage?')">🛡️ Trial & Warranty</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What are the Bajaj Finserv No-Cost EMI options?')">💳 EMI Options</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.requestLeadCard()">📞 Request Specialist Call</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Why is LORA full-size flat delivery better than compressed rolled box?')">Why flat delivery?</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What standard sizes and custom dimensions can you make?')">Sizing & Custom fit</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What is the 100-night trial and warranty coverage?')">Trial & Warranty</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What are the Bajaj Finserv No-Cost EMI options?')">EMI Options</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.requestLeadCard()">Request Specialist Call</button>
             </div>
           </div>
         </div>
@@ -387,19 +387,19 @@
     if (state.currentLang === 'ml') {
       appendMessage(
         'assistant',
-        `നമസ്കാരം! ഞാൻ ലൂമി, ലോറയുടെ സ്ലീപ്പ് ഗൈഡ് ☁️\n\nനിങ്ങൾക്ക് ഏറ്റവും അനുയോജ്യമായ മെത്ത കണ്ടെത്താനും വാറന്റി, അളവുകൾ, ഡെലിവറി എന്നിവ പരിശോധിക്കാനും സഹായിക്കാം. നിങ്ങൾ ഇപ്പോൾ കാണുന്നത് **${ctx.productName}** ആണ്.`
+        `നമസ്കാരം! ഞാൻ ലൂമി, ലോറയുടെ സ്ലീപ്പ് ഗൈഡ് \n\nനിങ്ങൾക്ക് ഏറ്റവും അനുയോജ്യമായ മെത്ത കണ്ടെത്താനും വാറന്റി, അളവുകൾ, ഡെലിവറി എന്നിവ പരിശോധിക്കാനും സഹായിക്കാം. നിങ്ങൾ ഇപ്പോൾ കാണുന്നത് **${ctx.productName}** ആണ്.`
       );
       renderQuickOptions(['നടുവേദനയ്ക്ക് ഏതാണ് നല്ലത്?', 'കപ്പിൾസ് മെത്ത (Zero Motion)', 'ക്ലൗഡ് 7 vs ക്ലൗഡ് ഓർത്തോ', 'ഫ്ലാറ്റ് ഡെലിവറി എന്തുകൊണ്ട്?', 'സ്പെഷ്യലിസ്റ്റ് കോൾ']);
     } else if (state.currentLang === 'manglish') {
       appendMessage(
         'assistant',
-        `Namaskaram! Njan Lumi, Lora's Sleep Guide ☁️\n\nNingalkku perfect mattress find cheyyaan, warranty, size and flat delivery check cheyyaan njan help cheyyam. You are currently exploring **${ctx.productName}**.`
+        `Namaskaram! Njan Lumi, Lora's Sleep Guide \n\nNingalkku perfect mattress find cheyyaan, warranty, size and flat delivery check cheyyaan njan help cheyyam. You are currently exploring **${ctx.productName}**.`
       );
       renderQuickOptions(['Best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Why flat delivery?', 'Request Specialist Call']);
     } else {
       appendMessage(
         'assistant',
-        `Hello! I’m Lumi, your personal Lora sleep guide ☁️\n\nI can help you explore our 8 handcrafted models, compare firmness feels, check warranties, review bed sizing, or arrange a direct factory consultation. You're currently exploring **${ctx.productName}**.`
+        `Hello! I’m Lumi, your personal Lora sleep guide \n\nI can help you explore our 8 handcrafted models, compare firmness feels, check warranties, review bed sizing, or arrange a direct factory consultation. You're currently exploring **${ctx.productName}**.`
       );
       renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Why flat delivery?', 'Request Specialist Call']);
     }
@@ -426,7 +426,7 @@
         <div class="lumi-product-card-embed">
           <div class="lumi-card-header">
             <span class="lumi-card-tag">${card.type || 'Mattress'}</span>
-            ${card.warranty ? `<span class="lumi-card-warranty">🛡️ ${card.warranty} Warranty</span>` : ''}
+            ${card.warranty ? `<span class="lumi-card-warranty"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> ${card.warranty} Warranty</span>` : ''}
           </div>
           <h5 class="lumi-card-title">${card.name}</h5>
           <div class="lumi-card-specs">
@@ -448,7 +448,7 @@
       leadCardHtml = `
         <div class="lumi-lead-card" id="${cardId}">
           <div class="lumi-lead-card-header">
-            <span class="lumi-lead-card-icon">📞</span>
+            <span class="lumi-lead-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
             <div>
               <h5 class="lumi-lead-card-title">Share Contact & PIN for Direct Callback</h5>
               <p class="lumi-lead-card-sub">Instant factory pricing, pincode delivery timeline & senior sleep consultation.</p>
@@ -456,23 +456,23 @@
           </div>
           <div class="lumi-lead-cols">
             <div class="lumi-lead-col">
-              <label class="lumi-lead-label">📱 Mobile Number</label>
+              <label class="lumi-lead-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Mobile Number</label>
               <div class="lumi-lead-input-wrap">
                 <span class="lumi-lead-prefix">+91</span>
                 <input type="tel" class="lumi-lead-input" id="${cardId}-phone" placeholder="10-digit mobile" maxlength="10" value="${state.leadData.phone || ''}">
               </div>
             </div>
             <div class="lumi-lead-col">
-              <label class="lumi-lead-label">📍 Delivery PIN Code</label>
+              <label class="lumi-lead-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Delivery PIN Code</label>
               <div class="lumi-lead-input-wrap">
                 <input type="text" class="lumi-lead-input" id="${cardId}-pin" placeholder="6-digit PIN" maxlength="6" value="${state.leadData.pincode || ''}" style="padding-left: 8px;">
               </div>
             </div>
           </div>
           <button type="button" class="lumi-lead-btn" onclick="window.LoraLumi.submitLeadCard(this, '${cardId}')">
-            ⚡ Share Details & Request Callback →
+            Share Details & Request Callback →
           </button>
-          <div class="lumi-lead-privacy">🔒 Your contact details are strictly private & only used to verify delivery & call you.</div>
+          <div class="lumi-lead-privacy"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your contact details are strictly private & only used to verify delivery & call you.</div>
         </div>
       `;
     }

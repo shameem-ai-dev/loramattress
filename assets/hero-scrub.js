@@ -409,7 +409,7 @@
       playPauseBtn.addEventListener('click', function () {
         isAutoTouring = !isAutoTouring;
         if (isAutoTouring) {
-          this.innerHTML = '<span>⏸ Stop Auto Tour</span>';
+          this.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><rect x="5" y="4" width="4" height="16" rx="1"/><rect x="15" y="4" width="4" height="16" rx="1"/></svg><span>Stop Auto Tour</span>';
           let tourStep = 0;
           autoTourTimer = setInterval(() => {
             tourStep = (tourStep + 1) % STAGES.length;
@@ -418,7 +418,7 @@
             window.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
           }, 3500);
         } else {
-          this.innerHTML = '<span>▶ Resume Auto Tour</span>';
+          this.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Resume Auto Tour</span>';
           clearInterval(autoTourTimer);
         }
       });
