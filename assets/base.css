@@ -610,21 +610,110 @@ button, input, select {
   opacity: 1 !important;
   transform: translateY(0) scale(1) !important;
 }
+.spatial-callout-quilt {
+  top: 14%;
+  right: 28%;
+  left: auto;
+}
 .spatial-callout-latex {
-  top: 24%;
-  left: 12%;
+  top: 32%;
+  right: 26%;
+  left: auto;
 }
 .spatial-callout-coils {
-  bottom: 24%;
-  right: 12%;
+  bottom: 28%;
+  right: 24%;
+}
+.spatial-callout-base {
+  bottom: 12%;
+  right: 22%;
 }
 .spatial-callout-spine {
-  top: 18%;
-  left: 50%;
-  transform: translateX(-50%) translateY(14px) scale(0.92);
+  top: 14%;
+  right: 28%;
+  left: auto;
+  transform: translateY(14px) scale(0.92);
 }
 .spatial-callout-spine.active {
-  transform: translateX(-50%) translateY(0) scale(1) !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+/* High-Precision Biometric Laser Scanner Blade */
+.hero-scanner-beam {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform, top, opacity;
+}
+.hero-scanner-beam.active {
+  opacity: 1;
+}
+.scanner-light-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 242, 254, 0.4) 15%, #00F2FE 40%, #FFFFFF 50%, #00F2FE 60%, rgba(0, 242, 254, 0.4) 85%, transparent 100%);
+  box-shadow: 0 0 14px #00F2FE, 0 0 35px rgba(0, 242, 254, 0.8), 0 0 60px rgba(56, 189, 248, 0.5);
+  transform: translateY(-50%);
+}
+.scanner-sweep-glow {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  width: 84%;
+  height: 48px;
+  transform: translateY(-50%);
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 242, 254, 0.28) 0%, rgba(2, 132, 199, 0.12) 45%, transparent 75%);
+  filter: blur(8px);
+}
+.scanner-hud-badge {
+  position: absolute;
+  right: 8%;
+  top: -24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(6, 11, 25, 0.9);
+  border: 1px solid rgba(0, 242, 254, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 242, 254, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.scanner-hud-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00F2FE;
+  box-shadow: 0 0 8px #00F2FE;
+  animation: pulseDot 1.2s infinite ease-in-out;
+}
+.scanner-hud-text {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #94A3B8;
+  text-transform: uppercase;
+}
+.scanner-hud-depth {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: #00F2FE;
+}
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.4); opacity: 1; }
 }
 .callout-glass-card {
   background: rgba(8, 14, 30, 0.86);
@@ -4570,21 +4659,41 @@ body {
     opacity: 1 !important;
     transform: translateY(0) scale(1) !important;
   }
-  .spatial-callout-latex {
-    top: 5% !important;
+  .spatial-callout-quilt {
+    top: 2% !important;
     left: 2% !important;
+    right: auto !important;
+  }
+  .spatial-callout-latex {
+    top: 20% !important;
+    right: 2% !important;
+    left: auto !important;
   }
   .spatial-callout-coils {
-    bottom: 8% !important;
+    bottom: 20% !important;
+    left: 2% !important;
+    right: auto !important;
+  }
+  .spatial-callout-base {
+    bottom: 2% !important;
     right: 2% !important;
+    left: auto !important;
   }
   .spatial-callout-spine {
-    top: 4% !important;
+    top: 3% !important;
     left: 50% !important;
     transform: translateX(-50%) translateY(12px) scale(0.92) !important;
   }
   .spatial-callout-spine.active {
     transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
+  .hero-scanner-beam {
+    height: 40px !important;
+  }
+  .scanner-hud-badge {
+    right: 4% !important;
+    top: -20px !important;
+    padding: 0.2rem 0.5rem !important;
   }
   .callout-glass-card {
     background: rgba(8, 14, 30, 0.88) !important;
