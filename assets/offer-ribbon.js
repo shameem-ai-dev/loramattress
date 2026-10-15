@@ -27,8 +27,8 @@
       },
       {
         id: "ribbon_3",
-        tag: "NO COST EMI",
-        text: "Zero Down Payment & 0% Interest EMI starting ₹1,833/month via Bajaj Finserv",
+        tag: "BAJAJ FINANCING",
+        text: "Bajaj EMI Assistance Available starting ₹1,833/month • Verification on request",
         link: "product.html"
       },
       {

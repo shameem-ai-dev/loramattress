@@ -1,5 +1,30 @@
 [
   {
+    "id": "LORA-TEST-EMI-001",
+    "createdAt": "2026-10-15T18:55:00.000Z",
+    "customerName": "Naveen Menon",
+    "phone": "+919876543210",
+    "altPhone": "",
+    "email": "naveen.menon@example.com",
+    "address": "Villa 12, Palm Meadows, Whitefield, Bengaluru, Karnataka - 560066",
+    "productName": "01. LORA CLOUD 7™",
+    "size": "King Size • 78\" × 72\" • 8-inch",
+    "quantity": 1,
+    "totalPrice": 21999,
+    "paymentMethod": "Request Bajaj EMI",
+    "paymentStatus": "Payment Pending",
+    "emiStatus": "awaiting_approval",
+    "status": "EMI requested — awaiting approval",
+    "statusHistory": [
+      {
+        "status": "EMI requested — awaiting approval",
+        "timestamp": "2026-10-15T18:55:00.000Z",
+        "staff": "Customer Online Storefront",
+        "notes": "Customer requested Bajaj EMI financing assistance. Our team will contact to check EMI eligibility, explain applicable charges and arrange the next steps. Approval is subject to Bajaj Finance."
+      }
+    ]
+  },
+  {
     "id": "LORA-8842",
     "createdAt": "2026-09-27T16:10:55.165Z",
     "customerName": "Rahul Sharma",

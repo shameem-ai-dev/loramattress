@@ -273,7 +273,7 @@
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Why is LORA full-size flat delivery better than compressed rolled box?')">Why flat delivery?</button>
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What standard sizes and custom dimensions can you make?')">Sizing & Custom fit</button>
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What is the 100-night trial and warranty coverage?')">Trial & Warranty</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What are the Bajaj Finserv No-Cost EMI options?')">EMI Options</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('How does Bajaj EMI assistance work?')">EMI Options</button>
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.requestLeadCard()">Request Specialist Call</button>
             </div>
           </div>
@@ -769,7 +769,7 @@
     if (lower.includes('price') || lower.includes('rate') || lower.includes('cost') || lower.includes('ethra') || lower.includes('വില') || lower.includes('എത്ര')) {
       appendMessage(
         'assistant',
-        "**LORA Factory-Direct Pricing Overview:**\n\n• **Cloud 7™**: Starting at ₹22,999 (Queen 78\"×60\")\n• **Cloud Ortho™**: Starting at ₹25,999\n• **Lora Plush™**: Starting at ₹24,999\n• **Ortho Hybrid™**: Starting at ₹27,999\n• **Ortho Latex™**: Starting at ₹29,999\n• **Comfort Core™**: Starting at ₹26,999\n• **Pocket Luxe™**: Starting at ₹28,999\n• **Hybrid Fusion™**: Starting at ₹34,999\n\n*All models include 0% Bajaj Finserv EMI and complimentary premium sleep kit during launch!*",
+        "**LORA Factory-Direct Pricing Overview:**\n\n• **Cloud 7™**: Starting at ₹22,999 (Queen 78\"×60\")\n• **Cloud Ortho™**: Starting at ₹25,999\n• **Lora Plush™**: Starting at ₹24,999\n• **Ortho Hybrid™**: Starting at ₹27,999\n• **Ortho Latex™**: Starting at ₹29,999\n• **Comfort Core™**: Starting at ₹26,999\n• **Pocket Luxe™**: Starting at ₹28,999\n• **Hybrid Fusion™**: Starting at ₹34,999\n\n*All models eligible for Bajaj EMI assistance and complimentary premium sleep kit during launch!*",
         { showLeadCard: true }
       );
       renderQuickOptions(['Check EMI Options', 'Measure Bed Dimensions', 'Request Specialist Call']);
