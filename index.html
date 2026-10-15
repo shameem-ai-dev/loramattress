@@ -514,11 +514,25 @@
       transition: all 200ms ease;
     }
 
+    .quiz-opt-icon-wrap svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+      flex-shrink: 0;
+      color: #38BDF8;
+      transition: all 200ms ease;
+    }
+
     .quiz-opt-card:hover .quiz-opt-icon-wrap,
     .quiz-opt-card.selected .quiz-opt-icon-wrap {
       background: var(--brand-cyan);
       color: #060B12;
       box-shadow: 0 0 15px var(--brand-cyan);
+    }
+
+    .quiz-opt-card:hover .quiz-opt-icon-wrap svg,
+    .quiz-opt-card.selected .quiz-opt-icon-wrap svg {
+      color: #060B12 !important;
     }
 
     .quiz-opt-content {
@@ -1420,7 +1434,7 @@
   <!-- =========================================================
        GLOBAL LUXURY SLEEP-TECH SVG PALETTE & GRADIENT ENGINE
        ========================================================= -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" id="lora-svg-palette">
+  <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; opacity: 0;" aria-hidden="true" id="lora-svg-palette">
     <defs>
       <!-- Chiseled 24K Gold Metallic Gradient -->
       <linearGradient id="ps-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1607,6 +1621,12 @@
               <div class="callout-stat-detail">100% neutral lordosis fill • Zero pressure spikes</div>
             </div>
           </div>
+        </div>
+
+        <!-- Mobile Dynamic HUD Pill (Single luxury indicator on mobile view) -->
+        <div class="mobile-tier-hud" id="mobile-tier-hud" aria-live="polite">
+          <span class="mobile-tier-beacon"></span>
+          <span class="mobile-tier-content" id="mobile-tier-content">TIER 01–04 • Assembled Core Monolith</span>
         </div>
         
         <div class="hero-vignette-overlay"></div>
@@ -2094,26 +2114,20 @@
             <!-- ==========================================
                  BELOW BUYING BUTTONS: LARGE EMI BOX & DETAILED FIRMNESS EXPLANATION
                  ========================================== -->
-            <div class="pdp-below-buy-section">
-              <!-- Large EMI Financing Box -->
-              <div class="pdp-large-emi-box" id="inner-large-emi-box">
-                <div class="pdp-large-emi-top">
-                  <div class="pdp-large-emi-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <!-- Direct Factory Assurance Guarantee Box -->
+              <div class="pdp-large-emi-box" id="inner-large-emi-box" style="background: rgba(14, 165, 233, 0.08); border-color: rgba(56, 189, 248, 0.28); margin-bottom: 1.25rem;">
+                <div class="pdp-large-emi-top" style="align-items: center;">
+                  <div class="pdp-large-emi-icon" style="color: #38BDF8;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 3.5v5.5c0 4.8-3 9.2-7 10.5-4-1.3-7-5.7-7-10.5V5.5L12 2z"/><path d="M9 12l2 2 4-4"/></svg>
                   </div>
                   <div style="flex: 1; min-width: 0;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-                      <strong class="pdp-large-emi-title" id="inner-emi-text">Bajaj EMI from ₹1,833 / month (Assistance Available)</strong>
-                      <span class="badge-verified" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; border-color: rgba(56, 189, 248, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">NO COST EMI</span>
+                      <strong class="pdp-large-emi-title" style="color: #FFFFFF;">100% Direct Factory Assurance • 15-Year Insured Warranty</strong>
+                      <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">DIRECT CRAFT</span>
                     </div>
-                    <p class="pdp-large-emi-desc">
-                      Zero down payment • Instant digital paperless approval • Up to 12 flexible installments
+                    <p class="pdp-large-emi-desc" style="color: #94A3B8; margin-top: 0.25rem;">
+                      Delivered 100% full-size flat from Kerala factory to your bedroom • Zero compression foam breakdown
                     </p>
-                    <div class="pdp-emi-tenure-pills">
-                      <span class="pdp-emi-tenure-chip">✦ 3 Mo: ₹6,233/mo</span>
-                      <span class="pdp-emi-tenure-chip">✦ 6 Mo: ₹3,116/mo</span>
-                      <span class="pdp-emi-tenure-chip">✦ 12 Mo: ₹1,558/mo</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -2766,7 +2780,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹21,999</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹1,833/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA CLOUD 7™" data-price="21999" data-img="assets/comfort-plush.jpg">
@@ -2888,7 +2902,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹23,499</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹1,958/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA CLOUD ORTHO™" data-price="23499" data-img="assets/comfort-firm.jpg">
@@ -3003,7 +3017,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹27,999</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹2,333/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA PLUSH™" data-price="27999" data-img="assets/comfort-plush.jpg">
@@ -3117,7 +3131,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹29,499</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹2,458/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA ORTHO HYBRID™" data-price="29499" data-img="assets/comfort-balanced.jpg">
@@ -3231,7 +3245,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹34,999</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹2,916/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA ORTHO LATEX™" data-price="34999" data-img="assets/material-natural-latex.jpg">
@@ -3344,7 +3358,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹19,499</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹1,624/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA COMFORT CORE™" data-price="19499" data-img="assets/comfort-balanced.jpg">
@@ -3458,7 +3472,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹28,999</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹2,416/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA POCKET LUXE™" data-price="28999" data-img="assets/material-pocket-springs.jpg">
@@ -3572,7 +3586,7 @@
             <div class="card-action-footer">
               <div class="price-block">
                 <span class="price-current">₹36,999</span>
-                <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹3,083/mo (Bajaj EMI Available)</span>
+                <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
               </div>
               <div class="card-action-btns">
                 <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="LORA HYBRID FUSION™" data-price="36999" data-img="assets/lifestyle-editorial.jpg">
@@ -4745,8 +4759,8 @@
                   <span style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF;" id="dossier-model-price">₹29,999</span>
                 </div>
                 <div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; color: #94A3B8; display: block;">No-Cost EMI</span>
-                  <span style="font-size: 0.9rem; font-weight: 700; color: #6EE7B7;" id="dossier-model-emi"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹2,500/mo (Bajaj EMI Available)</span>
+                  <span style="font-size: 0.72rem; text-transform: uppercase; color: #94A3B8; display: block;">Factory Warranty</span>
+                  <span style="font-size: 0.95rem; font-weight: 700; color: #38BDF8;" id="dossier-model-warranty">15-Yr Full Direct Warranty</span>
                 </div>
                 <div style="margin-left: auto;">
                   <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); background: rgba(0, 180, 216, 0.12); color: var(--brand-cyan); border: 1px solid rgba(0, 180, 216, 0.3);" id="dossier-model-feel">
@@ -6240,7 +6254,7 @@
           const addBtn = card.querySelector('[data-action="add-to-cart"]');
 
           if (priceCurrent) priceCurrent.textContent = `₹${price.toLocaleString('en-IN')}`;
-          if (emiHint) emiHint.innerHTML = `<svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹${emi.toLocaleString('en-IN')}/mo (Bajaj EMI Available)`;
+          if (emiHint) emiHint.innerHTML = `<span style="color: #38BDF8;">✓ Direct Factory Price</span>`;
           if (addBtn) addBtn.setAttribute('data-price', price);
         });
       });
@@ -6590,7 +6604,6 @@
         const priName = priCustom.name || priData.name;
         const priTagline = priCustom.tagline || priData.tagline;
         const priPrice = priCustom.basePrice ? `₹${priCustom.basePrice.toLocaleString('en-IN')}` : `₹${priData.price.toLocaleString('en-IN')}`;
-        const priEmi = priCustom.basePrice ? `<svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹${Math.round(priCustom.basePrice / 12).toLocaleString('en-IN')}/mo (Bajaj EMI Available)` : priData.emi;
         const priImg = priCustom.heroImg || priData.img;
         const priFeel = priCustom.feelLabel ? `${priCustom.feelLabel} • ${priData.feel}` : priData.feel;
 
@@ -6616,8 +6629,8 @@
         const priceEl = document.querySelector('#dossier-model-price');
         if (priceEl) priceEl.textContent = priPrice;
 
-        const emiEl = document.querySelector('#dossier-model-emi');
-        if (emiEl) emiEl.textContent = priEmi;
+        const warrantyEl = document.querySelector('#dossier-model-warranty');
+        if (warrantyEl) warrantyEl.textContent = "15-Yr Full Direct Warranty";
 
         const feelEl = document.querySelector('#dossier-model-feel');
         if (feelEl) feelEl.textContent = priFeel;
@@ -7476,9 +7489,7 @@
         const saveEl = document.querySelector('#inner-save');
         if (saveEl) saveEl.textContent = `SAVE ₹${calc.savings.toLocaleString('en-IN')}`;
 
-        // Bajaj Finserv EMI
-        const emiText = document.querySelector('#inner-emi-text');
-        if (emiText) emiText.innerHTML = `<svg class="ico-bolt-svg" width="12" height="12" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹${calc.emi.toLocaleString('en-IN')} / month with Bajaj Finserv 0% EMI`;
+
 
         // Stock Status Badge
         const stockBadge = document.querySelector('#inner-stock-badge');
@@ -8104,7 +8115,7 @@
                 <div class="card-action-footer">
                   <div class="price-block">
                     <span class="price-current">₹${basePrice.toLocaleString('en-IN')}</span>
-                    <span class="emi-hint"><svg class="ico-bolt-svg" width="11" height="11" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> ₹${emi.toLocaleString('en-IN')}/mo (Bajaj EMI Available)</span>
+                    <span class="emi-hint" style="color: #38BDF8;">✓ Direct Factory Price</span>
                   </div>
                   <div class="card-action-btns">
                     <button type="button" class="btn btn-primary btn-sm" data-action="add-to-cart" data-title="${item.name}" data-price="${basePrice}" data-img="${item.heroImg || 'assets/comfort-plush.jpg'}" ${isOOS ? 'disabled style="opacity:0.5;cursor:not-allowed;background:#475569;"' : ''}>

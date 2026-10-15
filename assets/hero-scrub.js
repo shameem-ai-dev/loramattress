@@ -52,6 +52,7 @@
     const calloutCoils = document.querySelector('#spatial-callout-coils');
     const calloutBase = document.querySelector('#spatial-callout-base');
     const calloutSpine = document.querySelector('#spatial-callout-spine');
+    const mobileTierContent = document.querySelector('#mobile-tier-content');
 
     // Scroll Progress HUD elements
     const scrollHudFill = document.querySelector('#hero-scroll-hud-fill');
@@ -285,6 +286,27 @@
       }
       if (calloutSpine) {
         calloutSpine.classList.toggle('active', p >= 0.68 && p <= 0.86);
+      }
+
+      // ----------------------------------------------------------------------
+      // 3b. Mobile Tier Dynamic HUD Pill (Single Luxury Indicator on Mobile)
+      // ----------------------------------------------------------------------
+      if (mobileTierContent) {
+        let tierText = 'TIER 01–04 • Assembled Core Monolith';
+        if (p >= 0.24 && p < 0.38) {
+          tierText = 'TIER 01 • Cloud-Quilted Organic Cashmere';
+        } else if (p >= 0.38 && p < 0.52) {
+          tierText = 'TIER 02 • 100% Kerala Dunlop Latex';
+        } else if (p >= 0.52 && p < 0.65) {
+          tierText = 'TIER 03 • 1,200+ Titanium Pocket Springs';
+        } else if (p >= 0.65 && p < 0.78) {
+          tierText = 'TIER 04 • High-Density Acoustic Base';
+        } else if (p >= 0.78) {
+          tierText = 'SPINEALIGN™ • Zero-Shear Ergonomic Neutrality';
+        }
+        if (mobileTierContent.textContent !== tierText) {
+          mobileTierContent.textContent = tierText;
+        }
       }
 
       // ----------------------------------------------------------------------

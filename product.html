@@ -2099,26 +2099,20 @@
           <!-- ==========================================
                BELOW BUYING BUTTONS: LARGE EMI BOX & DETAILED FIRMNESS EXPLANATION
                ========================================== -->
-          <div class="pdp-below-buy-section">
-            <!-- Large EMI Financing Box -->
-            <div class="pdp-large-emi-box" id="pdp-large-emi-box">
-              <div class="pdp-large-emi-top">
-                <div class="pdp-large-emi-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <!-- Direct Factory Assurance Guarantee Box -->
+            <div class="pdp-large-emi-box" style="background: rgba(14, 165, 233, 0.08); border-color: rgba(56, 189, 248, 0.28); margin-bottom: 1.25rem;">
+              <div class="pdp-large-emi-top" style="align-items: center;">
+                <div class="pdp-large-emi-icon" style="color: #38BDF8;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 3.5v5.5c0 4.8-3 9.2-7 10.5-4-1.3-7-5.7-7-10.5V5.5L12 2z"/><path d="M9 12l2 2 4-4"/></svg>
                 </div>
                 <div style="flex: 1; min-width: 0;">
                   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-                    <strong class="pdp-large-emi-title" id="pdp-emi-text">Bajaj EMI from ₹1,833 / month (Assistance Available)</strong>
-                    <span class="badge-verified" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; border-color: rgba(56, 189, 248, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">NO COST EMI</span>
+                    <strong class="pdp-large-emi-title" style="color: #FFFFFF;">100% Direct Factory Assurance • 15-Year Insured Warranty</strong>
+                    <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">DIRECT CRAFT</span>
                   </div>
-                  <p class="pdp-large-emi-desc">
-                    Zero down payment • Instant digital paperless approval • Up to 12 flexible installments
+                  <p class="pdp-large-emi-desc" style="color: #94A3B8; margin-top: 0.25rem;">
+                    Delivered 100% full-size flat from Kerala factory to your bedroom • Zero compression foam breakdown
                   </p>
-                  <div class="pdp-emi-tenure-pills">
-                    <span class="pdp-emi-tenure-chip">✦ 3 Mo: ₹6,233/mo</span>
-                    <span class="pdp-emi-tenure-chip">✦ 6 Mo: ₹3,116/mo</span>
-                    <span class="pdp-emi-tenure-chip">✦ 12 Mo: ₹1,558/mo</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -3342,8 +3336,6 @@
       const saveEl = document.querySelector('#pdp-save');
       if (saveEl) saveEl.textContent = `SAVE ₹${savings.toLocaleString('en-IN')} (DIRECT)`;
 
-      const emiText = document.querySelector('#pdp-emi-text');
-      if (emiText) emiText.textContent = `Bajaj EMI from ₹${emiVal.toLocaleString('en-IN')} / month (Assistance Available)`;
 
       const transPrice = document.querySelector('#pdp-trans-price');
       if (transPrice) transPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
@@ -3352,7 +3344,7 @@
       const selectedCot = document.querySelector('#pdp-selected-cot-label')?.textContent || 'Queen';
       const selectedSize = document.querySelector('#pdp-selected-inch-label')?.textContent || '78" × 60"';
       const selectedThick = document.querySelector('#pdp-selected-thick-label')?.textContent || '8-Inch';
-      const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in ${selectedCot} [${selectedSize}, ${selectedThick}] for ₹${finalPrice.toLocaleString('en-IN')}. Please confirm direct factory delivery and Bajaj EMI details.`);
+      const waMsg = encodeURIComponent(`Hello LORA Concierge, I would like to order ${data.name} in ${selectedCot} [${selectedSize}, ${selectedThick}] for ₹${finalPrice.toLocaleString('en-IN')}. Please confirm direct factory delivery and order details.`);
       
       const waAction = document.querySelector('#pdp-action-whatsapp');
       if (waAction) waAction.href = `https://wa.me/919876543210?text=${waMsg}`;
@@ -4090,7 +4082,7 @@
         Proceed to Secure Checkout →
       </button>
       <p style="font-size: 0.75rem; color: #64748B; text-align: center; margin-top: 0.75rem;">
-        Factory Direct Craft • Up to 15 Years Warranty • Bajaj EMI Assistance Available
+        Factory Direct Craft • Up to 15 Years Warranty • 100% Flat Uncompressed Delivery
       </p>
     </div>
   </aside>
