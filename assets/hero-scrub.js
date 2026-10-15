@@ -1,15 +1,18 @@
 /**
- * LORA Mattress — Biometric Zero-G & Kinetic Laser Deconstruction Engine
+ * LORA Mattress — Zero-G Spatial Science & Deconstructed Architecture Engine
  * 
- * Aesthetics:
- * Deep luxury midnight cosmic (#060913 to #0B132B), radiant cyan/electric blue (#00F2FE / #38BDF8),
- * seamless non-boxy visual blending, floating glassmorphic telemetry, and tactile 60fps physics.
+ * New Concept Architecture:
+ * - 3 Photorealistic 8K Studio Render Layers (Assembled Monolith, 4-Tier Deconstructed, SpineAlign Biometrics)
+ * - Seamless background integration (#060913), zero text clashes
+ * - Silky 60fps cross-fading & scale transitions with requestAnimationFrame
+ * - Interactive phase buttons + smooth scrub progress
+ * - Responsive mobile & desktop dual-driver
  */
 
 (function () {
   'use strict';
 
-  function initScrollDeconstructedHero() {
+  function initZeroGHero() {
     const wrapper = document.querySelector('.hero-scroll-wrapper');
     if (!wrapper) return;
 
@@ -18,109 +21,52 @@
     const layerExploded = wrapper.querySelector('.stage-layer-exploded');
     const layerSpine = wrapper.querySelector('.stage-layer-spine');
     const stageContainer = wrapper.querySelector('.hero-visual-stage');
-    const scannerBeam = document.querySelector('#hero-scanner-beam');
-    const scannerDepth = document.querySelector('#scanner-depth-readout');
 
-    // Controls & Navigation
-    const timelineThumb = wrapper.querySelector('.timeline-thumb');
-    const statusLabel = wrapper.querySelector('.scrub-status-label');
-    const playPauseBtn = wrapper.querySelector('.hero-loop-toggle');
+    // Narrative Slides & Stage Controls
+    const storySlides = wrapper.querySelectorAll('.hero-story-slide');
+    const stagePill = document.querySelector('#hero-stage-pill');
     const phaseBtns = wrapper.querySelectorAll('.phase-btn');
-    const timelineWrapper = wrapper.querySelector('.timeline-track-wrapper');
-    const heroTitle = wrapper.querySelector('.hero-title-dynamic');
-    const heroCopy = wrapper.querySelector('.hero-copy-dynamic');
-    const btnActionPrimary = document.querySelector('#hero-action-primary');
-    const btnActionSecondary = document.querySelector('#hero-action-secondary');
 
-    // Live Telemetry HUD elements
-    const hudMetric1Label = document.querySelector('#hud-m1-label');
-    const hudMetric1Val = document.querySelector('#hud-m1-val');
-    const hudMetric2Label = document.querySelector('#hud-m2-label');
-    const hudMetric2Val = document.querySelector('#hud-m2-val');
-    const hudTag = document.querySelector('#hud-status-tag');
-    const spinePath = document.querySelector('#hero-spine-path');
-    const spineDots = [
-      document.querySelector('#spine-dot-1'),
-      document.querySelector('#spine-dot-2'),
-      document.querySelector('#spine-dot-3'),
-      document.querySelector('#spine-dot-4')
-    ].filter(Boolean);
+    // Progress HUD elements
+    const scrubFill = document.querySelector('#hero-scroll-hud-fill');
+    const scrubPct = document.querySelector('#hero-scroll-pct');
+    const scrubPrompt = document.querySelector('#hero-scroll-prompt');
 
-    // Spatial Callouts
+    // Spatial Callouts & Telemetry
     const calloutQuilt = document.querySelector('#spatial-callout-quilt');
     const calloutLatex = document.querySelector('#spatial-callout-latex');
     const calloutCoils = document.querySelector('#spatial-callout-coils');
     const calloutBase = document.querySelector('#spatial-callout-base');
-    const calloutSpine = document.querySelector('#spatial-callout-spine');
+    const telemetryBadge = document.querySelector('#hero-telemetry-badge');
     const mobileTierContent = document.querySelector('#mobile-tier-content');
 
-    // Scroll Progress HUD elements
-    const scrollHudFill = document.querySelector('#hero-scroll-hud-fill');
-    const scrollHudPct = document.querySelector('#hero-scroll-pct');
-    const scrollHudPrompt = document.querySelector('#hero-scroll-prompt');
-
-    const STAGES = [
+    const STAGE_META = [
       {
         index: 0,
-        milestone: 0.05,
+        milestone: 0.08,
         label: '01 / ARCHITECTURAL ZERO-G SLEEP',
-        title: 'Sculpted for<br><span class="gradient-text hero-shimmer-title">Weightless Sleep.</span>',
-        copy: 'Leave gravity behind. 100% natural Kerala Dunlop latex meets zoned titanium coils. Scroll down to activate biometric laser deconstruction.',
-        tag: 'ZERO-G SUSPENSION',
-        m1Label: 'Core Architecture',
-        m1Val: 'Multi-Tier Unified',
-        m2Label: 'Surface Cooling',
-        m2Val: 'Active Micro-Knit',
-        btnPrimaryText: 'Explore The 8 Models ↓',
-        btnPrimaryHref: '#the-collection'
+        hudText: '0% ASSEMBLED'
       },
       {
         index: 1,
-        milestone: 0.45,
-        label: '02 / 4-TIER DECONSTRUCTED ANATOMY',
-        title: 'Deconstructed.<br><span class="gradient-text hero-shimmer-title">Zero Compromise.</span>',
-        copy: 'Biometric laser cross-section reveals 4 precision-engineered tiers: cloud-quilted cooling top, 100% Dunlop latex, 1,200+ pocket springs, and acoustic base.',
-        tag: '4-TIER SPATIAL ANATOMY',
-        m1Label: 'Pocket Spring Grid',
-        m1Val: '1,200+ Titanium Coils',
-        m2Label: 'Latex Matrix',
-        m2Val: '100% Dunlop Pin-Core',
-        btnPrimaryText: 'Inspect Technical Specs ↓',
-        btnPrimaryHref: '#the-collection'
+        milestone: 0.50,
+        label: '02 / 4-TIER ARCHITECTURAL ANATOMY',
+        hudText: '50% DECONSTRUCTED'
       },
       {
         index: 2,
-        milestone: 0.80,
+        milestone: 0.88,
         label: '03 / SPINEALIGN™ 7-ZONE BIOMETRICS',
-        title: 'SpineAlign™.<br><span class="gradient-text hero-shimmer-title">Zero Spinal Shear.</span>',
-        copy: 'Dynamic 7 localized support zones contour dynamically to cervical, thoracic, and lumbar vertebrae, eliminating back strain and pressure points permanently.',
-        tag: '7-ZONE BIOMETRICS',
-        m1Label: 'Lumbar Lordosis Support',
-        m1Val: '100% Neutral Fill',
-        m2Label: 'Vertebral Shear Force',
-        m2Val: '0.0 N (Zero-Shear)',
-        btnPrimaryText: 'Explore The 8 Models ↓',
-        btnPrimaryHref: '#the-collection'
+        hudText: '100% SPINEALIGN'
       }
     ];
 
     let currentTargetProgress = 0;
     let smoothProgress = 0;
     let activeStageIndex = 0;
-    let forceStaticProgress = false;
+    let isUserScrubbing = false;
 
-    // Support instant visual previewing via ?scrollProgress=0.xx
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('scrollProgress')) {
-      const paramP = parseFloat(urlParams.get('scrollProgress'));
-      if (!isNaN(paramP)) {
-        forceStaticProgress = true;
-        currentTargetProgress = Math.max(0, Math.min(1, paramP));
-        smoothProgress = currentTargetProgress;
-      }
-    }
-
-    // Desktop Parallax Tilt state
+    // Desktop mouse parallax tilt
     let targetTiltX = 0;
     let targetTiltY = 0;
     let currentTiltX = 0;
@@ -135,256 +81,179 @@
     }
 
     function onScrollUpdate() {
-      if (forceStaticProgress) return;
+      if (isUserScrubbing) return;
       currentTargetProgress = calculateScrollProgress();
     }
 
     window.addEventListener('scroll', onScrollUpdate, { passive: true });
     window.addEventListener('resize', onScrollUpdate, { passive: true });
-    window.addEventListener('load', onScrollUpdate, { passive: true });
 
-    if (!forceStaticProgress) {
-      currentTargetProgress = calculateScrollProgress();
-      smoothProgress = currentTargetProgress;
-    }
+    // Initial progress sync
+    currentTargetProgress = calculateScrollProgress();
+    smoothProgress = currentTargetProgress;
 
-    // Desktop Pointer Tilt
+    // Desktop Pointer Parallax Tilt
     window.addEventListener('mousemove', function (e) {
-      if (window.innerWidth <= 768) return;
+      if (window.innerWidth <= 991) return;
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      targetTiltX = ((e.clientX - centerX) / centerX) * 5;
-      targetTiltY = -((e.clientY - centerY) / centerY) * 3.5;
+      targetTiltX = ((e.clientX - centerX) / centerX) * 4;
+      targetTiltY = -((e.clientY - centerY) / centerY) * 3;
     }, { passive: true });
 
-    // Dynamic SVG Spine Waveform Generator
-    function updateSpineWaveform(p, timestamp) {
-      if (!spinePath) return;
-
-      // When p approaches Stage 3 (0.65 - 0.85), curve levels out into zero-shear straight ergonomic alignment
-      const alignFactor = Math.max(0, Math.min(1, (p - 0.60) / 0.18));
-      const neutralY = 30;
-
-      // Base undulating frequency & amplitude
-      const t = timestamp * 0.003;
-      const amp = (1 - alignFactor * 0.85) * 8; // Flatten to ~1px in Spine stage
-
-      const y1 = neutralY - Math.sin(t + 0.5) * amp;
-      const y2 = neutralY + Math.cos(t + 1.2) * amp * 0.8;
-      const y3 = neutralY - Math.sin(t + 2.0) * amp * 1.1;
-      const y4 = neutralY + Math.cos(t + 2.8) * amp * 0.7;
-
-      const d = `M 10 30 Q 45 ${y1.toFixed(1)}, 90 ${y2.toFixed(1)} T 160 ${y3.toFixed(1)} T 240 ${y4.toFixed(1)} T 310 30`;
-      spinePath.setAttribute('d', d);
-
-      if (spineDots[0]) spineDots[0].setAttribute('cy', y1.toFixed(1));
-      if (spineDots[1]) spineDots[1].setAttribute('cy', y2.toFixed(1));
-      if (spineDots[2]) spineDots[2].setAttribute('cy', y3.toFixed(1));
-      if (spineDots[3]) spineDots[3].setAttribute('cy', y4.toFixed(1));
-    }
-
+    // Render Engine (Runs at 60fps via rAF)
     function renderEngine(timestamp) {
-      // Liquid lerp interpolation for silky scroll physics
-      if (forceStaticProgress) {
-        smoothProgress = currentTargetProgress;
-      } else {
-        smoothProgress += (currentTargetProgress - smoothProgress) * 0.14;
-      }
-      const p = smoothProgress;
+      // Smooth dampening interpolation
+      smoothProgress += (currentTargetProgress - smoothProgress) * 0.12;
+      const p = Math.max(0, Math.min(1, smoothProgress));
 
       // ----------------------------------------------------------------------
-      // 1. Layer Crossfades & Perspective Scaling
+      // 1. Image Layer Cross-Fade Physics
       // ----------------------------------------------------------------------
-      // Assembled Monolith: Full 0.00-0.20, fades out 0.20-0.34, returns 0.82-0.92, full 0.92-1.00
+      // Stage 1 (Assembled): 1.0 from 0.0 to 0.28, fades out 0.28 to 0.45
       let o1 = 0;
-      if (p <= 0.20) {
+      if (p <= 0.28) {
         o1 = 1;
-      } else if (p < 0.34) {
-        o1 = (0.34 - p) / 0.14;
-      } else if (p >= 0.82 && p < 0.92) {
-        o1 = (p - 0.82) / 0.10;
-      } else if (p >= 0.92) {
-        o1 = 1;
+      } else if (p < 0.45) {
+        o1 = (0.45 - p) / 0.17;
+      } else if (p >= 0.94) {
+        o1 = (p - 0.94) / 0.06;
       }
 
       if (layerAssembled) {
         layerAssembled.style.opacity = Math.max(0, Math.min(1, o1)).toFixed(3);
-        const scale1 = (1 + (Math.sin(p * Math.PI) * 0.04)).toFixed(3);
+        const scale1 = (1 + (Math.sin(p * Math.PI) * 0.02)).toFixed(3);
         layerAssembled.style.transform = `scale(${scale1})`;
       }
 
-      // Exploded Anatomy: Fades in 0.22-0.34, full 0.34-0.62, fades out 0.62-0.72
+      // Stage 2 (4-Tier Deconstructed): Fades in 0.30 to 0.45, solid 0.45 to 0.65, fades out 0.65 to 0.78
       let o2 = 0;
-      if (p >= 0.22 && p < 0.34) {
-        o2 = (p - 0.22) / 0.12;
-      } else if (p >= 0.34 && p <= 0.62) {
+      if (p >= 0.30 && p < 0.45) {
+        o2 = (p - 0.30) / 0.15;
+      } else if (p >= 0.45 && p <= 0.65) {
         o2 = 1;
-      } else if (p > 0.62 && p < 0.72) {
-        o2 = (0.72 - p) / 0.10;
+      } else if (p > 0.65 && p < 0.78) {
+        o2 = (0.78 - p) / 0.13;
       }
 
       if (layerExploded) {
         layerExploded.style.opacity = Math.max(0, Math.min(1, o2)).toFixed(3);
-        const progressInStage2 = Math.max(0, Math.min(1, (p - 0.22) / 0.45));
-        const explosionFactor = Math.sin(progressInStage2 * Math.PI);
-        const scale2 = (0.97 + (explosionFactor * 0.04)).toFixed(3);
-        const y2 = (explosionFactor * -8).toFixed(1);
-        layerExploded.style.transform = `scale(${scale2}) translateY(${y2}px)`;
+        const stage2LocalProgress = Math.max(0, Math.min(1, (p - 0.30) / 0.45));
+        const explosionBounce = Math.sin(stage2LocalProgress * Math.PI);
+        const scale2 = (0.98 + (explosionBounce * 0.03)).toFixed(3);
+        layerExploded.style.transform = `scale(${scale2})`;
       }
 
-      // SpineAlign Biometrics: Fades in 0.64-0.74, full 0.74-0.84, fades out 0.84-0.92
+      // Stage 3 (SpineAlign Biometrics): Fades in 0.68 to 0.78, solid 0.78 to 0.94
       let o3 = 0;
-      if (p >= 0.64 && p < 0.74) {
-        o3 = (p - 0.64) / 0.10;
-      } else if (p >= 0.74 && p <= 0.84) {
+      if (p >= 0.68 && p < 0.78) {
+        o3 = (p - 0.68) / 0.10;
+      } else if (p >= 0.78 && p <= 0.94) {
         o3 = 1;
-      } else if (p > 0.84 && p < 0.92) {
-        o3 = (0.92 - p) / 0.08;
+      } else if (p > 0.94) {
+        o3 = (1.0 - p) / 0.06;
       }
 
       if (layerSpine) {
         layerSpine.style.opacity = Math.max(0, Math.min(1, o3)).toFixed(3);
-        const scale3 = (0.98 + (Math.min(1, (p - 0.64) / 0.25) * 0.02)).toFixed(3);
+        const scale3 = (0.99 + (Math.sin((p - 0.68) * Math.PI) * 0.02)).toFixed(3);
         layerSpine.style.transform = `scale(${scale3})`;
       }
 
       // ----------------------------------------------------------------------
-      // 2. High-Precision Biometric Laser Scanner Beam
+      // 2. Spatial Badges & Telemetry
       // ----------------------------------------------------------------------
-      if (scannerBeam) {
-        // Active during initial deconstruction sweep (0.16 to 0.58)
-        if (p >= 0.16 && p <= 0.58) {
-          scannerBeam.classList.add('active');
-          const scanFraction = (p - 0.16) / 0.42;
-          const beamTopPercent = 20 + (scanFraction * 60); // sweeps from 20% to 80%
-          scannerBeam.style.top = `${beamTopPercent.toFixed(1)}%`;
+      const inDeconstruction = p >= 0.36 && p <= 0.68;
+      if (calloutQuilt) calloutQuilt.classList.toggle('active', inDeconstruction && p >= 0.38 && p <= 0.52);
+      if (calloutLatex) calloutLatex.classList.toggle('active', inDeconstruction && p >= 0.42 && p <= 0.58);
+      if (calloutCoils) calloutCoils.classList.toggle('active', inDeconstruction && p >= 0.46 && p <= 0.64);
+      if (calloutBase) calloutBase.classList.toggle('active', inDeconstruction && p >= 0.50 && p <= 0.68);
 
-          if (scannerDepth) {
-            const currentDepthMM = (scanFraction * 280).toFixed(1);
-            scannerDepth.textContent = `${currentDepthMM} mm`;
-          }
-        } else {
-          scannerBeam.classList.remove('active');
-        }
+      if (telemetryBadge) {
+        telemetryBadge.classList.toggle('active', p >= 0.72 && p <= 0.95);
       }
 
       // ----------------------------------------------------------------------
-      // 3. Sequential Layer Beacons & Spatial Callouts
-      // ----------------------------------------------------------------------
-      const inAnatomyStage = p >= 0.26 && p <= 0.66;
-      if (calloutQuilt) {
-        calloutQuilt.classList.toggle('active', inAnatomyStage && p >= 0.28 && p <= 0.45);
-      }
-      if (calloutLatex) {
-        calloutLatex.classList.toggle('active', inAnatomyStage && p >= 0.33 && p <= 0.52);
-      }
-      if (calloutCoils) {
-        calloutCoils.classList.toggle('active', inAnatomyStage && p >= 0.40 && p <= 0.60);
-      }
-      if (calloutBase) {
-        calloutBase.classList.toggle('active', inAnatomyStage && p >= 0.48 && p <= 0.66);
-      }
-      if (calloutSpine) {
-        calloutSpine.classList.toggle('active', p >= 0.68 && p <= 0.86);
-      }
-
-      // ----------------------------------------------------------------------
-      // 3b. Mobile Tier Dynamic HUD Pill (Single Luxury Indicator on Mobile)
+      // 3. Mobile Tier HUD Indicator
       // ----------------------------------------------------------------------
       if (mobileTierContent) {
-        let tierText = 'TIER 01–04 • Assembled Core Monolith';
-        if (p >= 0.24 && p < 0.38) {
-          tierText = 'TIER 01 • Cloud-Quilted Organic Cashmere';
-        } else if (p >= 0.38 && p < 0.52) {
-          tierText = 'TIER 02 • 100% Kerala Dunlop Latex';
-        } else if (p >= 0.52 && p < 0.65) {
-          tierText = 'TIER 03 • 1,200+ Titanium Pocket Springs';
-        } else if (p >= 0.65 && p < 0.78) {
-          tierText = 'TIER 04 • High-Density Acoustic Base';
-        } else if (p >= 0.78) {
-          tierText = 'SPINEALIGN™ • Zero-Shear Ergonomic Neutrality';
+        let mobileText = 'TIER 01–04 • Assembled Core Monolith';
+        if (p >= 0.32 && p < 0.44) {
+          mobileText = 'TIER 01 • Cloud-Quilted Organic Cashmere';
+        } else if (p >= 0.44 && p < 0.56) {
+          mobileText = 'TIER 02 • 100% Kerala Dunlop Latex';
+        } else if (p >= 0.56 && p < 0.66) {
+          mobileText = 'TIER 03 • 1,200+ Titanium Pocket Springs';
+        } else if (p >= 0.66 && p < 0.76) {
+          mobileText = 'TIER 04 • High-Density Acoustic Base';
+        } else if (p >= 0.76) {
+          mobileText = 'SPINEALIGN™ • Zero-Shear Ergonomic Neutrality';
         }
-        if (mobileTierContent.textContent !== tierText) {
-          mobileTierContent.textContent = tierText;
+        if (mobileTierContent.textContent !== mobileText) {
+          mobileTierContent.textContent = mobileText;
         }
       }
 
       // ----------------------------------------------------------------------
-      // 4. Update Real-Time Progress HUD Strip & Controller Thumb
+      // 4. Scrub Track HUD & Prompts
       // ----------------------------------------------------------------------
-      if (scrollHudFill) {
-        scrollHudFill.style.width = `${(p * 100).toFixed(1)}%`;
+      if (scrubFill) {
+        scrubFill.style.width = `${(p * 100).toFixed(1)}%`;
       }
-      if (scrollHudPct) {
+      if (scrubPct) {
         const pct = Math.round(p * 100);
-        if (pct >= 95) {
-          scrollHudPct.textContent = '100% ASSEMBLED';
+        if (pct >= 90) {
+          scrubPct.textContent = '100% SPINEALIGN';
+        } else if (pct >= 35) {
+          scrubPct.textContent = `${pct}% DECONSTRUCTED`;
         } else {
-          scrollHudPct.textContent = `${pct}% DECONSTRUCTED`;
+          scrubPct.textContent = `${pct}% ASSEMBLED`;
         }
       }
-      if (scrollHudPrompt) {
-        scrollHudPrompt.style.opacity = p > 0.08 ? '0' : '1';
-      }
-      if (timelineThumb) {
-        timelineThumb.style.width = `${(p * 100).toFixed(1)}%`;
+      if (scrubPrompt) {
+        scrubPrompt.style.opacity = p > 0.08 ? '0.35' : '1';
       }
 
       // ----------------------------------------------------------------------
-      // 5. Active Stage Milestone Determination
+      // 5. Active Stage Milestone & Narrative Deck
       // ----------------------------------------------------------------------
       let stageIdx = 0;
-      if (p >= 0.28 && p < 0.65) {
+      if (p >= 0.35 && p < 0.70) {
         stageIdx = 1;
-      } else if (p >= 0.65) {
+      } else if (p >= 0.70) {
         stageIdx = 2;
       }
 
       if (stageIdx !== activeStageIndex) {
         activeStageIndex = stageIdx;
-        const stage = STAGES[stageIdx];
+        const currentMeta = STAGE_META[stageIdx];
 
-        if (statusLabel) statusLabel.textContent = stage.label;
-        if (heroTitle) {
-          heroTitle.dataset.index = String(stageIdx);
-          heroTitle.innerHTML = stage.title;
-        }
-        if (heroCopy) heroCopy.innerHTML = stage.copy;
-        if (hudTag) hudTag.textContent = stage.tag;
-        if (hudMetric1Label) hudMetric1Label.textContent = stage.m1Label;
-        if (hudMetric1Val) hudMetric1Val.textContent = stage.m1Val;
-        if (hudMetric2Label) hudMetric2Label.textContent = stage.m2Label;
-        if (hudMetric2Val) hudMetric2Val.textContent = stage.m2Val;
-
-        if (btnActionPrimary && stage.btnPrimaryText) {
-          btnActionPrimary.textContent = stage.btnPrimaryText;
-          btnActionPrimary.setAttribute('href', stage.btnPrimaryHref);
+        if (stagePill) {
+          stagePill.textContent = currentMeta.label;
         }
 
-        // Highlight active phase pill
+        // Toggle story slides with smooth CSS transitions
+        storySlides.forEach((slide) => {
+          const slideStage = parseInt(slide.getAttribute('data-stage'), 10);
+          slide.classList.toggle('active', slideStage === stageIdx);
+        });
+
+        // Update active phase pill button
         phaseBtns.forEach((btn, idx) => {
-          const btnStage = idx % STAGES.length;
-          if (btnStage === stageIdx) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
+          const btnIdx = idx % STAGE_META.length;
+          btn.classList.toggle('active', btnIdx === stageIdx);
+          btn.setAttribute('aria-selected', btnIdx === stageIdx ? 'true' : 'false');
         });
       }
 
       // ----------------------------------------------------------------------
-      // 6. Dynamic Spine Waveform Real-Time Update
+      // 6. Desktop Gyro Mouse Parallax Tilt
       // ----------------------------------------------------------------------
-      updateSpineWaveform(p, timestamp);
-
-      // ----------------------------------------------------------------------
-      // 7. Desktop Gyro Parallax Tilt & Levitation
-      // ----------------------------------------------------------------------
-      if (window.innerWidth > 768 && stageContainer) {
+      if (window.innerWidth > 991 && stageContainer) {
         currentTiltX += (targetTiltX - currentTiltX) * 0.08;
         currentTiltY += (targetTiltY - currentTiltY) * 0.08;
-        const subtleFloat = Math.sin(timestamp * 0.0018) * 4.5;
-        stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${subtleFloat.toFixed(2)}px)`;
+        const subtleLevitate = Math.sin(timestamp * 0.0018) * 4;
+        stageContainer.style.transform = `perspective(1200px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${subtleLevitate.toFixed(2)}px)`;
       }
 
       requestAnimationFrame(renderEngine);
@@ -392,64 +261,30 @@
 
     requestAnimationFrame(renderEngine);
 
-    // Interactive Phase Buttons: Smoothly scroll to story milestones
+    // Interactive Phase Buttons: Smoothly animate to stage milestones
     phaseBtns.forEach((btn, idx) => {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        const stageIdx = idx % STAGES.length;
-        const stage = STAGES[stageIdx];
+        const stageIdx = idx % STAGE_META.length;
+        const targetMeta = STAGE_META[stageIdx];
         const totalScroll = wrapper.offsetHeight - window.innerHeight;
         const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
-        const targetScrollTop = wrapperTop + (totalScroll * stage.milestone);
+        const targetScrollTop = wrapperTop + (totalScroll * targetMeta.milestone);
+
+        // Immediate visual response
+        currentTargetProgress = targetMeta.milestone;
+
         window.scrollTo({
           top: targetScrollTop,
           behavior: 'smooth'
         });
       });
     });
-
-    // Timeline Track Direct Scrubbing
-    if (timelineWrapper) {
-      timelineWrapper.addEventListener('click', function (e) {
-        const rect = this.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const fraction = Math.max(0, Math.min(1, clickX / rect.width));
-        const totalScroll = wrapper.offsetHeight - window.innerHeight;
-        const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
-        const targetScrollTop = wrapperTop + (totalScroll * fraction);
-        window.scrollTo({
-          top: targetScrollTop,
-          behavior: 'smooth'
-        });
-      });
-    }
-
-    // Auto-Tour Demonstration Mode
-    let autoTourTimer = null;
-    if (playPauseBtn) {
-      let isAutoTouring = false;
-      playPauseBtn.addEventListener('click', function () {
-        isAutoTouring = !isAutoTouring;
-        if (isAutoTouring) {
-          this.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><rect x="5" y="4" width="4" height="16" rx="1"/><rect x="15" y="4" width="4" height="16" rx="1"/></svg><span>Stop Auto Tour</span>';
-          let tourStep = 0;
-          autoTourTimer = setInterval(() => {
-            tourStep = (tourStep + 1) % STAGES.length;
-            const totalScroll = wrapper.offsetHeight - window.innerHeight;
-            const targetScrollTop = wrapper.offsetTop + (totalScroll * STAGES[tourStep].milestone);
-            window.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
-          }, 3500);
-        } else {
-          this.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Resume Auto Tour</span>';
-          clearInterval(autoTourTimer);
-        }
-      });
-    }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScrollDeconstructedHero);
+    document.addEventListener('DOMContentLoaded', initZeroGHero);
   } else {
-    initScrollDeconstructedHero();
+    initZeroGHero();
   }
 })();
