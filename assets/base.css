@@ -4788,22 +4788,23 @@ body {
   .hero-mobile-phase-ctrl .phase-buttons {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    gap: 0.35rem !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
     width: 100% !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 0 0.5rem !important;
+    padding: 0 !important;
   }
   .hero-mobile-phase-ctrl .phase-btn {
     flex: 1 1 0 !important;
+    min-width: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.3rem !important;
-    padding: 0.45rem 0.35rem !important;
-    font-size: 0.72rem !important;
+    gap: 3px !important;
+    padding: 0.35rem 0.15rem !important;
+    font-size: 0.65rem !important;
     font-weight: 700 !important;
     text-align: center !important;
     white-space: nowrap !important;
@@ -5187,13 +5188,13 @@ body {
     align-items: stretch !important;
     gap: 0.65rem !important;
   }
-  .phase-buttons {
+  .circadian-controller .phase-buttons {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 0.35rem !important;
     width: 100% !important;
   }
-  .phase-btn {
+  .circadian-controller .phase-btn {
     padding: 0.45rem 0.2rem !important;
     font-size: 0.68rem !important;
     text-align: center !important;

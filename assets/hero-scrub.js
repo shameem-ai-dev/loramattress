@@ -75,7 +75,7 @@
       },
       {
         index: 1,
-        milestone: 0.42,
+        milestone: 0.45,
         label: '02 / 4-TIER DECONSTRUCTED ANATOMY',
         title: 'Deconstructed.<br><span class="gradient-text hero-shimmer-title">Zero Compromise.</span>',
         copy: 'Biometric laser cross-section reveals 4 precision-engineered tiers: cloud-quilted cooling top, 100% Dunlop latex, 1,200+ pocket springs, and acoustic base.',
@@ -89,7 +89,7 @@
       },
       {
         index: 2,
-        milestone: 0.74,
+        milestone: 0.80,
         label: '03 / SPINEALIGN™ 7-ZONE BIOMETRICS',
         title: 'SpineAlign™.<br><span class="gradient-text hero-shimmer-title">Zero Spinal Shear.</span>',
         copy: 'Dynamic 7 localized support zones contour dynamically to cervical, thoracic, and lumbar vertebrae, eliminating back strain and pressure points permanently.',
@@ -98,21 +98,7 @@
         m1Val: '100% Neutral Fill',
         m2Label: 'Vertebral Shear Force',
         m2Val: '0.0 N (Zero-Shear)',
-        btnPrimaryText: 'View SpineAlign Science →',
-        btnPrimaryHref: '#spine-simulator'
-      },
-      {
-        index: 3,
-        milestone: 0.95,
-        label: '04 / UNIFIED REST SANCTUARY',
-        title: 'Bring Weightless Rest<br><span class="gradient-text hero-shimmer-title">To Your Home.</span>',
-        copy: 'Precision sleep engineering delivered 100% full-size flat across India. Backed by our 100-night home trial and 15-year factory warranty.',
-        tag: 'SANCTUARY READY',
-        m1Label: 'Home Trial Guarantee',
-        m1Val: '100 Nights Risk-Free',
-        m2Label: 'Direct Warranty',
-        m2Val: '15-Year Coverage',
-        btnPrimaryText: 'Order Your Mattress →',
+        btnPrimaryText: 'Explore The 8 Models ↓',
         btnPrimaryHref: '#the-collection'
       }
     ];
@@ -154,6 +140,7 @@
 
     window.addEventListener('scroll', onScrollUpdate, { passive: true });
     window.addEventListener('resize', onScrollUpdate, { passive: true });
+    window.addEventListener('load', onScrollUpdate, { passive: true });
 
     if (!forceStaticProgress) {
       currentTargetProgress = calculateScrollProgress();
@@ -325,12 +312,10 @@
       // 5. Active Stage Milestone Determination
       // ----------------------------------------------------------------------
       let stageIdx = 0;
-      if (p >= 0.24 && p < 0.58) {
+      if (p >= 0.28 && p < 0.65) {
         stageIdx = 1;
-      } else if (p >= 0.58 && p < 0.85) {
+      } else if (p >= 0.65) {
         stageIdx = 2;
-      } else if (p >= 0.85) {
-        stageIdx = 3;
       }
 
       if (stageIdx !== activeStageIndex) {
@@ -392,7 +377,8 @@
         const stageIdx = idx % STAGES.length;
         const stage = STAGES[stageIdx];
         const totalScroll = wrapper.offsetHeight - window.innerHeight;
-        const targetScrollTop = wrapper.offsetTop + (totalScroll * stage.milestone);
+        const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
+        const targetScrollTop = wrapperTop + (totalScroll * stage.milestone);
         window.scrollTo({
           top: targetScrollTop,
           behavior: 'smooth'
@@ -407,7 +393,8 @@
         const clickX = e.clientX - rect.left;
         const fraction = Math.max(0, Math.min(1, clickX / rect.width));
         const totalScroll = wrapper.offsetHeight - window.innerHeight;
-        const targetScrollTop = wrapper.offsetTop + (totalScroll * fraction);
+        const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
+        const targetScrollTop = wrapperTop + (totalScroll * fraction);
         window.scrollTo({
           top: targetScrollTop,
           behavior: 'smooth'
