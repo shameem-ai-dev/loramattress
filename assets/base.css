@@ -96,12 +96,10 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
-  max-width: 100vw;
 }
 
 body {
@@ -110,9 +108,8 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   font-weight: 400;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
-  max-width: 100vw;
   position: relative;
 }
 
@@ -534,19 +531,21 @@ button, input, select {
    ========================================================================== */
 .hero-scroll-wrapper {
   position: relative;
-  min-height: 100vh;
-  height: auto;
+  height: 280vh;
+  min-height: 280vh;
   background-color: var(--brand-midnight);
 }
 
 .hero-sticky-container {
-  position: relative;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   min-height: 100vh;
-  height: auto;
   width: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;
+  z-index: 2;
 }
 
 .hero-visual-stage {
@@ -593,7 +592,71 @@ button, input, select {
   pointer-events: none;
 }
 
-/* 3D Floating Feature Callouts (Disabled) */
+/* Dynamic Floating Holographic Spatial Callouts (Desktop) */
+.hero-spatial-callouts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+.spatial-callout {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(14px) scale(0.92);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.spatial-callout.active {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+.spatial-callout-latex {
+  top: 24%;
+  left: 12%;
+}
+.spatial-callout-coils {
+  bottom: 24%;
+  right: 12%;
+}
+.spatial-callout-spine {
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%) translateY(14px) scale(0.92);
+}
+.spatial-callout-spine.active {
+  transform: translateX(-50%) translateY(0) scale(1) !important;
+}
+.callout-glass-card {
+  background: rgba(8, 14, 30, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 180, 216, 0.25);
+  border-radius: 12px;
+  padding: 0.55rem 0.95rem;
+  max-width: 220px;
+}
+.callout-pill-tag {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #38BDF8;
+  margin-bottom: 0.15rem;
+}
+.callout-stat-lead {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+.callout-stat-detail {
+  font-size: 0.7rem;
+  color: #94A3B8;
+  margin-top: 0.15rem;
+  line-height: 1.25;
+}
+
 .hero-callout-overlay,
 .hero-callout-pin {
   display: none !important;
@@ -3404,7 +3467,7 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -4265,13 +4328,12 @@ body {
      MOBILE HERO ARCHITECTURE — BIG AESTHETIC LUXURY ZERO-G ANIMATION SHOWCASE
      ========================================================================== */
   .hero-scroll-wrapper {
-    min-height: auto !important;
-    height: auto !important;
-    padding-top: calc(3.8rem + env(safe-area-inset-top, 0px)) !important;
-    padding-bottom: 2rem !important;
-    background: radial-gradient(circle at 50% 12%, #0E1D38 0%, #060913 65%, #020408 100%) !important;
     position: relative !important;
-    overflow: hidden !important;
+    height: 240vh !important;
+    min-height: 240vh !important;
+    padding: 0 !important;
+    background: radial-gradient(circle at 50% 12%, #0E1D38 0%, #060913 65%, #020408 100%) !important;
+    overflow: visible !important;
   }
 
   /* Ambient Cosmic Starlight Shimmer Drift */
@@ -4298,13 +4360,18 @@ body {
   }
 
   .hero-sticky-container {
-    min-height: auto !important;
-    height: auto !important;
-    position: relative !important;
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
-    padding: 0 1.15rem !important;
+    justify-content: space-between !important;
+    padding: calc(3.4rem + env(safe-area-inset-top, 0px)) 1rem calc(0.6rem + env(safe-area-inset-bottom, 0px)) !important;
+    box-sizing: border-box !important;
     z-index: 2 !important;
+    overflow: hidden !important;
   }
 
   .hero-content-overlay,
@@ -4483,6 +4550,122 @@ body {
   .hero-vignette-overlay,
   .hero-callout-overlay {
     display: none !important;
+  }
+
+  /* Dynamic Floating Holographic Spatial Callouts */
+  .hero-spatial-callouts {
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 6 !important;
+  }
+  .spatial-callout {
+    position: absolute !important;
+    opacity: 0 !important;
+    transform: translateY(12px) scale(0.92) !important;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity, transform !important;
+  }
+  .spatial-callout.active {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+  }
+  .spatial-callout-latex {
+    top: 5% !important;
+    left: 2% !important;
+  }
+  .spatial-callout-coils {
+    bottom: 8% !important;
+    right: 2% !important;
+  }
+  .spatial-callout-spine {
+    top: 4% !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(12px) scale(0.92) !important;
+  }
+  .spatial-callout-spine.active {
+    transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
+  .callout-glass-card {
+    background: rgba(8, 14, 30, 0.88) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.45) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 180, 216, 0.28) !important;
+    border-radius: 10px !important;
+    padding: 0.38rem 0.65rem !important;
+    max-width: 175px !important;
+  }
+  .callout-pill-tag {
+    display: inline-block !important;
+    font-size: 0.58rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    color: #38BDF8 !important;
+    margin-bottom: 0.12rem !important;
+  }
+  .callout-stat-lead {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    line-height: 1.2 !important;
+  }
+  .callout-stat-detail {
+    font-size: 0.62rem !important;
+    color: #94A3B8 !important;
+    margin-top: 0.12rem !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Interactive Scroll Deconstruct HUD Strip */
+  .hero-scroll-progress-hud {
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 0.4rem auto 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+  .scroll-hud-track {
+    width: 100% !important;
+    height: 3px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 999px !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  .scroll-hud-fill {
+    height: 100% !important;
+    width: 0% !important;
+    background: linear-gradient(90deg, #00B4D8 0%, #38BDF8 60%, #FFFFFF 100%) !important;
+    box-shadow: 0 0 10px #38BDF8 !important;
+    border-radius: 999px !important;
+    transition: width 0.06s linear !important;
+  }
+  .scroll-hud-meta {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 0.64rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    color: #94A3B8 !important;
+  }
+  .scroll-hud-pct {
+    color: #38BDF8 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+  }
+  .scroll-hud-prompt {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    color: #E0F2FE !important;
+    transition: opacity 0.3s ease !important;
+    animation: promptPulse 2s ease-in-out infinite !important;
+  }
+  @keyframes promptPulse {
+    0%, 100% { opacity: 0.65; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(2px); color: #38BDF8; }
   }
 
   /* Seamless Organic Phase Switcher (Zero Boxy Containers) */

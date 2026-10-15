@@ -1502,6 +1502,36 @@
           <img src="assets/hero-lora-spine.jpg" alt="LORA SpineAlign 7-Zone Biometric Contour" class="hero-stage-layer stage-layer-spine" loading="eager">
         </div>
         
+        <!-- Dynamic Floating Holographic Spatial Callouts -->
+        <div class="hero-spatial-callouts" aria-hidden="true">
+          <!-- Callout 1: 100% Natural Latex Matrix (Tier 2) -->
+          <div class="spatial-callout spatial-callout-latex" id="spatial-callout-latex">
+            <div class="callout-glass-card">
+              <span class="callout-pill-tag">TIER 02 • PIN-CORE</span>
+              <div class="callout-stat-lead">100% Kerala Dunlop Latex</div>
+              <div class="callout-stat-detail">Zero synthetic fillers • Instant contour</div>
+            </div>
+          </div>
+
+          <!-- Callout 2: Titanium Pocket Coils (Tier 3) -->
+          <div class="spatial-callout spatial-callout-coils" id="spatial-callout-coils">
+            <div class="callout-glass-card">
+              <span class="callout-pill-tag">TIER 03 • 1,200+ SPRINGS</span>
+              <div class="callout-stat-lead">Isolated Pocket Coils</div>
+              <div class="callout-stat-detail">Zero motion transfer • Zoned lumbar</div>
+            </div>
+          </div>
+
+          <!-- Callout 3: SpineAlign Biometrics (Stage 3) -->
+          <div class="spatial-callout spatial-callout-spine" id="spatial-callout-spine">
+            <div class="callout-glass-card">
+              <span class="callout-pill-tag">7-ZONE BIOMETRICS</span>
+              <div class="callout-stat-lead">0.0 N Spinal Shear</div>
+              <div class="callout-stat-detail">100% neutral fill • Zero pressure spikes</div>
+            </div>
+          </div>
+        </div>
+        
         <div class="hero-vignette-overlay"></div>
         <div class="hero-callout-overlay"></div>
       </div>
@@ -1525,15 +1555,29 @@
           <!-- Organic Fluid Phase Selector (Zero Boxy Containers) -->
           <div class="hero-mobile-phase-ctrl">
             <div class="phase-buttons">
-              <button type="button" class="phase-btn active" data-phase="0.12">
+              <button type="button" class="phase-btn active" data-phase="0.05">
                 <span class="phase-dot-indicator"></span>01. Core
               </button>
               <button type="button" class="phase-btn" data-phase="0.48">
                 <span class="phase-dot-indicator"></span>02. Anatomy
               </button>
-              <button type="button" class="phase-btn" data-phase="0.84">
+              <button type="button" class="phase-btn" data-phase="0.85">
                 <span class="phase-dot-indicator"></span>03. Spine
               </button>
+            </div>
+
+            <!-- Interactive Scroll Deconstruct HUD Strip -->
+            <div class="hero-scroll-progress-hud">
+              <div class="scroll-hud-track">
+                <div class="scroll-hud-fill" id="hero-scroll-hud-fill"></div>
+              </div>
+              <div class="scroll-hud-meta">
+                <span class="scroll-hud-pct" id="hero-scroll-pct">0% DECONSTRUCTED</span>
+                <span class="scroll-hud-prompt" id="hero-scroll-prompt">
+                  <span>Scroll to deconstruct</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                </span>
+              </div>
             </div>
           </div>
 
@@ -1596,9 +1640,9 @@
         <div class="hero-footer-bar">
           <div class="circadian-controller">
             <div class="phase-buttons">
-              <button type="button" class="phase-btn active" data-phase="0.12">01. Assembled Core</button>
+              <button type="button" class="phase-btn active" data-phase="0.05">01. Assembled Core</button>
               <button type="button" class="phase-btn" data-phase="0.48">02. Deconstructed Layers</button>
-              <button type="button" class="phase-btn" data-phase="0.84">03. SpineAlign™ Science</button>
+              <button type="button" class="phase-btn" data-phase="0.85">03. SpineAlign™ Science</button>
             </div>
 
             <div class="timeline-track-wrapper" title="Drag or click to scrub 3D deconstruction">

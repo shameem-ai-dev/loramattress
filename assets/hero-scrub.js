@@ -1,22 +1,20 @@
 /**
- * LORA Mattress — The Zero-Gravity Flagship Architectural Showcase
+ * LORA Mattress — The Zero-Gravity Cinematic Scroll-Driven Deconstruction Engine
  * 
- * Features:
- * - 3 Flagship Master Stages:
- *     Stage 0: 01. Core (Assembled Monolith in Zero-G suspension)
- *     Stage 1: 02. Anatomy (4-Tier Deconstructed Architecture)
- *     Stage 2: 03. SpineAlign™ (7-Zone Biometric Ergonomic Alignment)
- * - Silk discrete crossfade transitions (zero ghosting, zero label bleed)
- * - 4.5s steady hold per stage with smooth auto-progression
- * - Interactive pause lock: User taps hold stage for 8.5s without jumping
- * - Pointer 3D perspective parallax for desktop
- * - Zero boxy artifacts, pure luxury sleep science presentation
+ * Concept:
+ * - Truly pinned scroll-driven storytelling (240vh mobile / 280vh desktop)
+ * - Stage 1 (0% - 28%): Monolith Core floating in Zero-G
+ * - Stage 2 (28% - 66%): 4-Tier Exploded Architecture with Floating Spatial Callouts
+ * - Stage 3 (66% - 100%): SpineAlign™ 7-Zone Biometric X-Ray Contour & Zero Spinal Shear
+ * - Liquid-smooth 60fps lerp interpolation
+ * - Interactive chapter buttons that smoothly scroll to each story milestone
+ * - Real-time deconstruction percentage meter & progress HUD
  */
 
 (function () {
   'use strict';
 
-  function initDeconstructedHeroEngine() {
+  function initScrollDeconstructedHero() {
     const wrapper = document.querySelector('.hero-scroll-wrapper');
     if (!wrapper) return;
 
@@ -36,18 +34,24 @@
     const hudMetric2Label = document.querySelector('#hud-m2-label');
     const hudMetric2Val = document.querySelector('#hud-m2-val');
     const hudTag = document.querySelector('#hud-status-tag');
-    const calloutOverlay = wrapper.querySelector('.hero-callout-overlay');
 
-    if (calloutOverlay) {
-      calloutOverlay.innerHTML = '';
-    }
+    // Spatial Callouts
+    const calloutLatex = document.querySelector('#spatial-callout-latex');
+    const calloutCoils = document.querySelector('#spatial-callout-coils');
+    const calloutSpine = document.querySelector('#spatial-callout-spine');
+
+    // Scroll Progress HUD elements
+    const scrollHudFill = document.querySelector('#hero-scroll-hud-fill');
+    const scrollHudPct = document.querySelector('#hero-scroll-pct');
+    const scrollHudPrompt = document.querySelector('#hero-scroll-prompt');
 
     const STAGES = [
       {
         index: 0,
+        milestone: 0.05,
         label: '01 / ARCHITECTURAL ZERO-G SLEEP',
         title: 'Sculpted for<br><span class="gradient-text hero-shimmer-title">Weightless Sleep.</span>',
-        copy: 'Leave gravity behind. The unified LORA core floats in zero-gravity suspension. 100% natural Dunlop latex meets zoned titanium coils.',
+        copy: 'Leave gravity behind. 100% natural Kerala Dunlop latex meets zoned titanium coils. Scroll down to deconstruct the interior.',
         tag: 'ZERO-G SUSPENSION',
         m1Label: 'Core Architecture',
         m1Val: 'Multi-Tier Unified',
@@ -56,7 +60,8 @@
       },
       {
         index: 1,
-        label: '02 / DECONSTRUCTED 4-TIER ANATOMY',
+        milestone: 0.48,
+        label: '02 / 4-TIER DECONSTRUCTED ANATOMY',
         title: 'Deconstructed.<br><span class="gradient-text hero-shimmer-title">Zero Compromise.</span>',
         copy: 'Every tier serves an uncompromising biological purpose: 100% natural Dunlop latex for buoyant contouring, 1,200+ titanium pocket springs for motion isolation.',
         tag: '4-TIER SPATIAL ANATOMY',
@@ -67,6 +72,7 @@
       },
       {
         index: 2,
+        milestone: 0.85,
         label: '03 / SPINEALIGN™ 7-ZONE BIOMETRICS',
         title: 'SpineAlign™.<br><span class="gradient-text hero-shimmer-title">Zero Spinal Shear.</span>',
         copy: 'Dynamic 7 localized support zones contour dynamically to cervical, thoracic, and lumbar vertebrae, eliminating back strain and pressure points permanently.',
@@ -78,158 +84,243 @@
       }
     ];
 
-    let currentStageIndex = 0;
-    let isPlaying = true;
-    let lastStageSwitch = Date.now();
-    let userPauseUntil = 0;
-    const STAGE_DURATION_MS = 4500; // 4.5s hold per stage
+    let currentTargetProgress = 0;
+    let smoothProgress = 0;
+    let activeStageIndex = 0;
 
-    // 3D Parallax Tilt state (Desktop)
+    // Desktop Parallax Tilt state
     let targetTiltX = 0;
     let targetTiltY = 0;
     let currentTiltX = 0;
     let currentTiltY = 0;
 
-    function setStage(index, isUserAction = false) {
-      currentStageIndex = ((index % STAGES.length) + STAGES.length) % STAGES.length;
-      const stage = STAGES[currentStageIndex];
+    function calculateScrollProgress() {
+      const rect = wrapper.getBoundingClientRect();
+      const totalScroll = wrapper.offsetHeight - window.innerHeight;
+      if (totalScroll <= 0) return 0;
+      const scrolled = -rect.top;
+      return Math.min(1, Math.max(0, scrolled / totalScroll));
+    }
 
-      // Discrete opacities: only the active stage is 1, others are 0.
-      // CSS handles the smooth 450ms crossfade transition without ghosting.
-      if (layerAssembled) layerAssembled.style.opacity = currentStageIndex === 0 ? '1' : '0';
-      if (layerExploded) layerExploded.style.opacity = currentStageIndex === 1 ? '1' : '0';
-      if (layerSpine) layerSpine.style.opacity = currentStageIndex === 2 ? '1' : '0';
+    // Scroll listener updates target
+    function onScrollUpdate() {
+      currentTargetProgress = calculateScrollProgress();
+    }
 
-      // Status pill label
-      if (statusLabel) {
-        statusLabel.textContent = stage.label;
+    window.addEventListener('scroll', onScrollUpdate, { passive: true });
+    window.addEventListener('resize', onScrollUpdate, { passive: true });
+    currentTargetProgress = calculateScrollProgress();
+    smoothProgress = currentTargetProgress;
+
+    // Desktop Pointer Tilt
+    window.addEventListener('mousemove', function (e) {
+      if (window.innerWidth <= 768) return;
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      targetTiltX = ((e.clientX - centerX) / centerX) * 6;
+      targetTiltY = -((e.clientY - centerY) / centerY) * 4;
+    }, { passive: true });
+
+    function renderEngine(timestamp) {
+      // Liquid lerp interpolation for silky scroll physics
+      smoothProgress += (currentTargetProgress - smoothProgress) * 0.14;
+      const p = smoothProgress;
+
+      // 1. Layer Opacities & Spatial Depth Transforms
+      // Stage 1: Assembled Core (0.00 - 0.32)
+      let o1 = 0;
+      if (p <= 0.20) {
+        o1 = 1;
+      } else if (p < 0.32) {
+        o1 = (0.32 - p) / 0.12;
+      }
+      if (layerAssembled) {
+        layerAssembled.style.opacity = Math.max(0, Math.min(1, o1)).toFixed(3);
+        const scale1 = (1 + (p * 0.08)).toFixed(3);
+        const y1 = (p * -12).toFixed(1);
+        layerAssembled.style.transform = `scale(${scale1}) translateY(${y1}px)`;
       }
 
-      // Dynamic text updates
-      if (heroTitle && heroTitle.dataset.index !== String(currentStageIndex)) {
-        heroTitle.dataset.index = String(currentStageIndex);
-        heroTitle.innerHTML = stage.title;
+      // Stage 2: Exploded Anatomy (0.22 - 0.68)
+      let o2 = 0;
+      if (p >= 0.22 && p < 0.34) {
+        o2 = (p - 0.22) / 0.12;
+      } else if (p >= 0.34 && p <= 0.58) {
+        o2 = 1;
+      } else if (p > 0.58 && p < 0.68) {
+        o2 = (0.68 - p) / 0.10;
+      }
+      if (layerExploded) {
+        layerExploded.style.opacity = Math.max(0, Math.min(1, o2)).toFixed(3);
+        // Peak spatial explosion at 0.46
+        const progressInStage2 = Math.max(0, Math.min(1, (p - 0.22) / 0.46));
+        const explosionFactor = Math.sin(progressInStage2 * Math.PI);
+        const scale2 = (0.97 + (explosionFactor * 0.05)).toFixed(3);
+        const y2 = (explosionFactor * -8).toFixed(1);
+        layerExploded.style.transform = `scale(${scale2}) translateY(${y2}px)`;
+      }
+
+      // Stage 3: SpineAlign Biometrics (0.60 - 1.00)
+      let o3 = 0;
+      if (p >= 0.60 && p < 0.72) {
+        o3 = (p - 0.60) / 0.12;
+      } else if (p >= 0.72) {
+        o3 = 1;
+      }
+      if (layerSpine) {
+        layerSpine.style.opacity = Math.max(0, Math.min(1, o3)).toFixed(3);
+        const scale3 = (0.98 + (Math.min(1, (p - 0.60) / 0.40) * 0.02)).toFixed(3);
+        layerSpine.style.transform = `scale(${scale3})`;
+      }
+
+      // 2. Holographic Spatial Callouts Active States
+      if (calloutLatex) {
+        if (p >= 0.28 && p <= 0.62) {
+          calloutLatex.classList.add('active');
+        } else {
+          calloutLatex.classList.remove('active');
+        }
+      }
+      if (calloutCoils) {
+        if (p >= 0.32 && p <= 0.64) {
+          calloutCoils.classList.add('active');
+        } else {
+          calloutCoils.classList.remove('active');
+        }
+      }
+      if (calloutSpine) {
+        if (p >= 0.68 && p <= 0.98) {
+          calloutSpine.classList.add('active');
+        } else {
+          calloutSpine.classList.remove('active');
+        }
+      }
+
+      // 3. Update Progress HUD
+      if (scrollHudFill) {
+        scrollHudFill.style.width = `${(p * 100).toFixed(1)}%`;
+      }
+      if (scrollHudPct) {
+        const pct = Math.round(p * 100);
+        if (pct >= 95) {
+          scrollHudPct.textContent = '100% COMPLETE';
+        } else {
+          scrollHudPct.textContent = `${pct}% DECONSTRUCTED`;
+        }
+      }
+      if (scrollHudPrompt) {
+        scrollHudPrompt.style.opacity = p > 0.06 ? '0' : '1';
+      }
+
+      // 4. Update Desktop Controller timeline thumb
+      if (timelineThumb) {
+        timelineThumb.style.width = `${(p * 100).toFixed(1)}%`;
+      }
+
+      // 5. Active Stage milestone determination
+      let stageIdx = 0;
+      if (p >= 0.28 && p < 0.64) {
+        stageIdx = 1;
+      } else if (p >= 0.64) {
+        stageIdx = 2;
+      }
+
+      if (stageIdx !== activeStageIndex) {
+        activeStageIndex = stageIdx;
+        const stage = STAGES[stageIdx];
+
+        if (statusLabel) statusLabel.textContent = stage.label;
+        if (heroTitle) {
+          heroTitle.dataset.index = String(stageIdx);
+          heroTitle.innerHTML = stage.title;
+        }
         if (heroCopy) heroCopy.innerHTML = stage.copy;
         if (hudTag) hudTag.textContent = stage.tag;
         if (hudMetric1Label) hudMetric1Label.textContent = stage.m1Label;
         if (hudMetric1Val) hudMetric1Val.textContent = stage.m1Val;
         if (hudMetric2Label) hudMetric2Label.textContent = stage.m2Label;
         if (hudMetric2Val) hudMetric2Val.textContent = stage.m2Val;
+
+        // Update button highlight
+        phaseBtns.forEach((btn, idx) => {
+          const btnStage = idx % STAGES.length;
+          if (btnStage === stageIdx) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
       }
 
-      // Update Phase Buttons active states (mobile & desktop)
-      phaseBtns.forEach((btn, idx) => {
-        const stageIdx = idx % STAGES.length;
-        if (stageIdx === currentStageIndex) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-
-      // Update Timeline Thumb
-      if (timelineThumb) {
-        const pct = ((currentStageIndex + 1) / STAGES.length) * 100;
-        timelineThumb.style.width = `${pct}%`;
-      }
-
-      lastStageSwitch = Date.now();
-
-      // If user tapped a button or scrubbed, lock auto-cycle for 8.5 seconds
-      if (isUserAction) {
-        userPauseUntil = Date.now() + 8500;
-      }
-    }
-
-    // Initialize with Stage 0
-    setStage(0, false);
-
-    // Desktop Pointer Parallax Listener
-    window.addEventListener('mousemove', function (e) {
-      if (window.innerWidth <= 768) return;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      targetTiltX = ((e.clientX - centerX) / centerX) * 7;
-      targetTiltY = -((e.clientY - centerY) / centerY) * 5;
-    }, { passive: true });
-
-    // Animation & Timing Loop
-    function renderLoop(timestamp) {
-      // Desktop subtle gyro tilt
+      // 6. Desktop gyro parallax tilt
       if (window.innerWidth > 768 && stageContainer) {
         currentTiltX += (targetTiltX - currentTiltX) * 0.08;
         currentTiltY += (targetTiltY - currentTiltY) * 0.08;
-        const levitation = Math.sin(timestamp * 0.0015) * 6;
-        stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${levitation.toFixed(2)}px)`;
+        const subtleFloat = Math.sin(timestamp * 0.0015) * 5;
+        stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${subtleFloat.toFixed(2)}px)`;
       }
 
-      // Auto-cycle progression
-      const now = Date.now();
-      if (isPlaying && now > userPauseUntil) {
-        if (now - lastStageSwitch >= STAGE_DURATION_MS) {
-          setStage(currentStageIndex + 1, false);
-        }
-      }
-
-      requestAnimationFrame(renderLoop);
+      requestAnimationFrame(renderEngine);
     }
 
-    requestAnimationFrame(renderLoop);
+    requestAnimationFrame(renderEngine);
 
-    // Play / Pause Ambient Float Toggle
-    if (playPauseBtn) {
-      playPauseBtn.addEventListener('click', function () {
-        isPlaying = !isPlaying;
-        this.innerHTML = isPlaying
-          ? '<span>⏸ Pause Ambient Float</span>'
-          : '<span>▶ Resume Ambient Float</span>';
-        if (isPlaying) {
-          lastStageSwitch = Date.now();
-          userPauseUntil = 0;
-        }
-      });
-    }
-
-    // Phase Buttons Click Listeners (both desktop & mobile)
+    // Interactive Phase Buttons: Smoothly scroll to that section of the story!
     phaseBtns.forEach((btn, idx) => {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        const stageIndex = idx % STAGES.length;
-        setStage(stageIndex, true);
+        const stageIdx = idx % STAGES.length;
+        const stage = STAGES[stageIdx];
+        const totalScroll = wrapper.offsetHeight - window.innerHeight;
+        const targetScrollTop = wrapper.offsetTop + (totalScroll * stage.milestone);
+        window.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
       });
     });
 
-    // Timeline Track Click & Scrub
+    // Timeline Track Click
     if (timelineWrapper) {
       timelineWrapper.addEventListener('click', function (e) {
         const rect = this.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
-        const fraction = Math.max(0, Math.min(0.999, clickX / rect.width));
-        const stageIndex = Math.floor(fraction * STAGES.length);
-        setStage(stageIndex, true);
+        const fraction = Math.max(0, Math.min(1, clickX / rect.width));
+        const totalScroll = wrapper.offsetHeight - window.innerHeight;
+        const targetScrollTop = wrapper.offsetTop + (totalScroll * fraction);
+        window.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
       });
     }
 
-    // Beacon clicks if present
-    const specBeacons = wrapper.querySelectorAll('.hero-spec-beacon');
-    specBeacons.forEach(beacon => {
-      beacon.addEventListener('click', function () {
-        if (this.dataset.stageTarget !== undefined) {
-          const target = parseInt(this.dataset.stageTarget, 10);
-          setStage(target, true);
-        } else if (this.dataset.scrollTarget) {
-          const targetEl = document.querySelector(this.dataset.scrollTarget);
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
-          }
+    // Loop toggle acts as an auto-tour demo
+    let autoTourTimer = null;
+    if (playPauseBtn) {
+      let isAutoTouring = false;
+      playPauseBtn.addEventListener('click', function () {
+        isAutoTouring = !isAutoTouring;
+        if (isAutoTouring) {
+          this.innerHTML = '<span>⏸ Stop Auto Tour</span>';
+          let tourStep = 0;
+          autoTourTimer = setInterval(() => {
+            tourStep = (tourStep + 1) % STAGES.length;
+            const totalScroll = wrapper.offsetHeight - window.innerHeight;
+            const targetScrollTop = wrapper.offsetTop + (totalScroll * STAGES[tourStep].milestone);
+            window.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+          }, 3500);
+        } else {
+          this.innerHTML = '<span>▶ Resume Auto Tour</span>';
+          clearInterval(autoTourTimer);
         }
       });
-    });
+    }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDeconstructedHeroEngine);
+    document.addEventListener('DOMContentLoaded', initScrollDeconstructedHero);
   } else {
-    initDeconstructedHeroEngine();
+    initScrollDeconstructedHero();
   }
 })();
