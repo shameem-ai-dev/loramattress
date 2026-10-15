@@ -559,6 +559,15 @@ button, input, select {
   transition: transform 120ms ease-out;
 }
 
+.hero-layers-viewport {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
 .hero-stage-layer {
   position: absolute;
   inset: 0;
@@ -566,7 +575,7 @@ button, input, select {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: opacity 120ms ease-out, transform 250ms ease-out;
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms ease;
   will-change: opacity, transform;
 }
 
@@ -896,7 +905,6 @@ button, input, select {
 .hero-aura-glow,
 .hero-orbital-ring,
 .hero-spec-beacon,
-.hero-laser-scanner,
 .hero-ambient-nebula {
   display: none;
 }
@@ -4370,7 +4378,7 @@ body {
     inset: unset !important;
     width: 100% !important;
     max-width: 100% !important;
-    height: clamp(330px, 46vh, 410px) !important;
+    height: clamp(320px, 44vh, 400px) !important;
     margin: 0.25rem 0 0.85rem !important;
     border: none !important;
     border-radius: 0 !important;
@@ -4380,7 +4388,19 @@ body {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    perspective: 1200px !important;
+    animation: luxuryStageLevitate 6s ease-in-out infinite !important;
+    will-change: transform !important;
+    -webkit-mask-image: radial-gradient(ellipse 92% 86% at 50% 50%, #000 60%, transparent 98%) !important;
+    mask-image: radial-gradient(ellipse 92% 86% at 50% 50%, #000 60%, transparent 98%) !important;
+  }
+
+  @keyframes luxuryStageLevitate {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
 
   /* Cosmic Radial Breathing Aura */
@@ -4428,7 +4448,19 @@ body {
     z-index: 0 !important;
   }
 
-  /* Floating Flagship Mattress Layers with 3D Zero-G Levitation */
+  /* Seamless Mask Viewport (Fades All Outer Image Edges to Zero) */
+  .hero-layers-viewport {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    -webkit-mask-image: radial-gradient(ellipse 80% 74% at 50% 50%, #000 45%, transparent 88%) !important;
+    mask-image: radial-gradient(ellipse 80% 74% at 50% 50%, #000 45%, transparent 88%) !important;
+    border-radius: 0 !important;
+  }
+
+  /* Floating Flagship Mattress Layers with Silk Discrete Transitions */
   .hero-stage-layer {
     position: absolute !important;
     inset: 0 !important;
@@ -4436,67 +4468,17 @@ body {
     height: 100% !important;
     object-fit: contain !important;
     object-position: center !important;
-    z-index: 2 !important;
-    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 35px rgba(0, 180, 216, 0.3)) !important;
-    transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms ease !important;
-    animation: luxuryZeroGFloat 6s ease-in-out infinite !important;
-    will-change: transform, opacity !important;
-  }
-
-  @keyframes luxuryZeroGFloat {
-    0% {
-      transform: translateY(0px) rotateX(1.2deg) rotateY(0deg) scale(1);
-    }
-    33% {
-      transform: translateY(-9px) rotateX(2.5deg) rotateY(-1.2deg) scale(1.02);
-    }
-    66% {
-      transform: translateY(5px) rotateX(-1deg) rotateY(1.2deg) scale(0.99);
-    }
-    100% {
-      transform: translateY(0px) rotateX(1.2deg) rotateY(0deg) scale(1);
-    }
-  }
-
-  /* Attention-Getting Holographic Biometric Laser Scan Beam */
-  .hero-laser-scanner {
-    display: block !important;
-    position: absolute !important;
-    inset: 5% 8% !important;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 35px rgba(0, 180, 216, 0.28)) !important;
+    transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity !important;
     pointer-events: none !important;
-    z-index: 4 !important;
-    overflow: hidden !important;
+    -webkit-mask-image: radial-gradient(ellipse 85% 78% at 50% 50%, #000 48%, transparent 86%) !important;
+    mask-image: radial-gradient(ellipse 85% 78% at 50% 50%, #000 48%, transparent 86%) !important;
   }
-  .laser-beam-line {
-    position: absolute !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 2px !important;
-    background: linear-gradient(90deg, transparent 0%, #38BDF8 25%, #FFFFFF 50%, #38BDF8 75%, transparent 100%) !important;
-    box-shadow: 0 0 12px #38BDF8, 0 0 25px rgba(56, 189, 248, 0.9) !important;
-    animation: scanGlide 5s ease-in-out infinite alternate !important;
-  }
-  .laser-beam-glow {
-    position: absolute !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 45px !important;
-    background: linear-gradient(180deg, rgba(56, 189, 248, 0.22) 0%, transparent 100%) !important;
-    transform: translateY(-50%) !important;
-    animation: scanGlideGlow 5s ease-in-out infinite alternate !important;
-  }
-  @keyframes scanGlide {
-    0% { top: 12%; opacity: 0; }
-    12% { opacity: 1; }
-    88% { opacity: 1; }
-    100% { top: 88%; opacity: 0; }
-  }
-  @keyframes scanGlideGlow {
-    0% { top: 12%; opacity: 0; }
-    12% { opacity: 0.55; }
-    88% { opacity: 0.55; }
-    100% { top: 88%; opacity: 0; }
-  }
+
+  .stage-layer-assembled { z-index: 1 !important; }
+  .stage-layer-exploded { z-index: 2 !important; }
+  .stage-layer-spine { z-index: 3 !important; }
 
   .hero-vignette-overlay,
   .hero-callout-overlay {
@@ -4508,26 +4490,27 @@ body {
     order: 5 !important;
     display: block !important;
     width: 100% !important;
-    max-width: 360px !important;
+    max-width: 380px !important;
     margin: 0 auto 1.15rem !important;
   }
   .hero-mobile-phase-ctrl .phase-buttons {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.45rem !important;
+    gap: 0.35rem !important;
     width: 100% !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 0 !important;
+    padding: 0 0.5rem !important;
   }
   .hero-mobile-phase-ctrl .phase-btn {
+    flex: 1 1 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
-    padding: 0.45rem 0.85rem !important;
+    gap: 0.3rem !important;
+    padding: 0.45rem 0.35rem !important;
     font-size: 0.72rem !important;
     font-weight: 700 !important;
     text-align: center !important;

@@ -1,16 +1,16 @@
 /**
- * LORA Mattress — The Zero-Gravity Deconstructed Architecture & Spine Resonance Engine
- * Unique Concept:
- * - Stage 1: Assembled Monolith Core floating in zero-gravity space
- * - Stage 2: 4-Tier Deconstructed Architectural Layers floating with 3D spatial depth
- * - Stage 3: SpineAlign™ Holographic Contour & 7-Zone Biometric Pressure Mapping
+ * LORA Mattress — The Zero-Gravity Flagship Architectural Showcase
  * 
  * Features:
- * - Real-time scroll scrub + autonomous ambient loop
- * - Mouse / pointer dynamic 3D perspective gyroscope tilt
- * - Instant interactive state triggers (Assembled, Deconstructed, SpineAlign)
- * - Draggable / clickable timeline scrub controller
- * - Interactive layer callout inspection
+ * - 3 Flagship Master Stages:
+ *     Stage 0: 01. Core (Assembled Monolith in Zero-G suspension)
+ *     Stage 1: 02. Anatomy (4-Tier Deconstructed Architecture)
+ *     Stage 2: 03. SpineAlign™ (7-Zone Biometric Ergonomic Alignment)
+ * - Silk discrete crossfade transitions (zero ghosting, zero label bleed)
+ * - 4.5s steady hold per stage with smooth auto-progression
+ * - Interactive pause lock: User taps hold stage for 8.5s without jumping
+ * - Pointer 3D perspective parallax for desktop
+ * - Zero boxy artifacts, pure luxury sleep science presentation
  */
 
 (function () {
@@ -38,28 +38,16 @@
     const hudTag = document.querySelector('#hud-status-tag');
     const calloutOverlay = wrapper.querySelector('.hero-callout-overlay');
 
-    let isPlaying = true;
-    let loopProgress = 0.05;
-    let targetProgress = loopProgress;
-    let lastScrollY = window.scrollY;
-    let lastTimestamp = performance.now();
-
-    // 3D Parallax Tilt state
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetTiltX = 0;
-    let targetTiltY = 0;
-    let currentTiltX = 0;
-    let currentTiltY = 0;
-
-    const BASE_SPEED = 0.00025; // elegant ambient tempo
+    if (calloutOverlay) {
+      calloutOverlay.innerHTML = '';
+    }
 
     const STAGES = [
       {
-        progress: 0.12,
+        index: 0,
         label: '01 / ARCHITECTURAL ZERO-G SLEEP',
         title: 'Sculpted for<br><span class="gradient-text hero-shimmer-title">Weightless Sleep.</span>',
-        copy: 'Leave gravity behind. The unified LORA core floats in zero-gravity suspension. 100% natural Dunlop latex meets zoned titanium coils—scroll to deconstruct.',
+        copy: 'Leave gravity behind. The unified LORA core floats in zero-gravity suspension. 100% natural Dunlop latex meets zoned titanium coils.',
         tag: 'ZERO-G SUSPENSION',
         m1Label: 'Core Architecture',
         m1Val: 'Multi-Tier Unified',
@@ -67,7 +55,7 @@
         m2Val: 'Active Micro-Knit'
       },
       {
-        progress: 0.48,
+        index: 1,
         label: '02 / DECONSTRUCTED 4-TIER ANATOMY',
         title: 'Deconstructed.<br><span class="gradient-text hero-shimmer-title">Zero Compromise.</span>',
         copy: 'Every tier serves an uncompromising biological purpose: 100% natural Dunlop latex for buoyant contouring, 1,200+ titanium pocket springs for motion isolation.',
@@ -78,7 +66,7 @@
         m2Val: '100% Dunlop Pin-Core'
       },
       {
-        progress: 0.84,
+        index: 2,
         label: '03 / SPINEALIGN™ 7-ZONE BIOMETRICS',
         title: 'SpineAlign™.<br><span class="gradient-text hero-shimmer-title">Zero Spinal Shear.</span>',
         copy: 'Dynamic 7 localized support zones contour dynamically to cervical, thoracic, and lumbar vertebrae, eliminating back strain and pressure points permanently.',
@@ -90,172 +78,124 @@
       }
     ];
 
-    function updateCallouts() {
-      if (calloutOverlay) {
-        calloutOverlay.innerHTML = '';
-      }
-    }
+    let currentStageIndex = 0;
+    let isPlaying = true;
+    let lastStageSwitch = Date.now();
+    let userPauseUntil = 0;
+    const STAGE_DURATION_MS = 4500; // 4.5s hold per stage
 
-    function applyStageProgress(prog) {
-      const p = ((prog % 1) + 1) % 1;
+    // 3D Parallax Tilt state (Desktop)
+    let targetTiltX = 0;
+    let targetTiltY = 0;
+    let currentTiltX = 0;
+    let currentTiltY = 0;
 
-      // 3-Way Crossfade between the 3 high-res 3D stages:
-      // 0.00 - 0.33: Stage 1 Assembled dominates, Stage 2 Exploded begins to separate
-      // 0.33 - 0.66: Stage 2 Exploded peaks with full layer separation
-      // 0.66 - 1.00: Stage 3 SpineAlign Resonance peaks with glowing spine wave and pressure nodes
-      let a1 = 0, a2 = 0, a3 = 0;
+    function setStage(index, isUserAction = false) {
+      currentStageIndex = ((index % STAGES.length) + STAGES.length) % STAGES.length;
+      const stage = STAGES[currentStageIndex];
 
-      if (p < 0.33) {
-        const t = p / 0.33;
-        a1 = 1 - (t * 0.5);
-        a2 = t;
-        a3 = 0;
-      } else if (p < 0.66) {
-        const t = (p - 0.33) / 0.33;
-        a1 = Math.max(0, (1 - t) * 0.5);
-        a2 = 1;
-        a3 = t;
-      } else {
-        const t = (p - 0.66) / 0.34;
-        a1 = t * 0.6; // smoothly wraps into stage 1
-        a2 = 1 - t;
-        a3 = 1 - (t * 0.4);
+      // Discrete opacities: only the active stage is 1, others are 0.
+      // CSS handles the smooth 450ms crossfade transition without ghosting.
+      if (layerAssembled) layerAssembled.style.opacity = currentStageIndex === 0 ? '1' : '0';
+      if (layerExploded) layerExploded.style.opacity = currentStageIndex === 1 ? '1' : '0';
+      if (layerSpine) layerSpine.style.opacity = currentStageIndex === 2 ? '1' : '0';
+
+      // Status pill label
+      if (statusLabel) {
+        statusLabel.textContent = stage.label;
       }
 
-      if (layerAssembled) layerAssembled.style.opacity = Math.max(0, Math.min(1, a1)).toFixed(3);
-      if (layerExploded) layerExploded.style.opacity = Math.max(0, Math.min(1, a2)).toFixed(3);
-      if (layerSpine) layerSpine.style.opacity = Math.max(0, Math.min(1, a3)).toFixed(3);
-
-      // Scrub indicator thumb
-      if (timelineThumb) {
-        timelineThumb.style.width = `${(p * 100).toFixed(1)}%`;
+      // Dynamic text updates
+      if (heroTitle && heroTitle.dataset.index !== String(currentStageIndex)) {
+        heroTitle.dataset.index = String(currentStageIndex);
+        heroTitle.innerHTML = stage.title;
+        if (heroCopy) heroCopy.innerHTML = stage.copy;
+        if (hudTag) hudTag.textContent = stage.tag;
+        if (hudMetric1Label) hudMetric1Label.textContent = stage.m1Label;
+        if (hudMetric1Val) hudMetric1Val.textContent = stage.m1Val;
+        if (hudMetric2Label) hudMetric2Label.textContent = stage.m2Label;
+        if (hudMetric2Val) hudMetric2Val.textContent = stage.m2Val;
       }
 
-      // Determine active stage configuration
-      let activeIndex = 0;
-      if (p >= 0.28 && p < 0.62) {
-        activeIndex = 1;
-      } else if (p >= 0.62) {
-        activeIndex = 2;
-      }
-
-      const activeStage = STAGES[activeIndex];
-      if (statusLabel && statusLabel.textContent !== activeStage.label) {
-        statusLabel.textContent = activeStage.label;
-      }
-
-      if (heroTitle && heroTitle.dataset.index !== String(activeIndex)) {
-        heroTitle.dataset.index = String(activeIndex);
-        heroTitle.innerHTML = activeStage.title;
-        if (heroCopy) heroCopy.innerHTML = activeStage.copy;
-        if (hudTag) hudTag.textContent = activeStage.tag;
-        if (hudMetric1Label) hudMetric1Label.textContent = activeStage.m1Label;
-        if (hudMetric1Val) hudMetric1Val.textContent = activeStage.m1Val;
-        if (hudMetric2Label) hudMetric2Label.textContent = activeStage.m2Label;
-        if (hudMetric2Val) hudMetric2Val.textContent = activeStage.m2Val;
-        updateCallouts(activeIndex);
-      }
-
-      // Highlight corresponding phase button (supports both desktop & mobile controls)
+      // Update Phase Buttons active states (mobile & desktop)
       phaseBtns.forEach((btn, idx) => {
-        const stageIndex = idx % STAGES.length;
-        if (stageIndex === activeIndex) {
+        const stageIdx = idx % STAGES.length;
+        if (stageIdx === currentStageIndex) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
         }
       });
+
+      // Update Timeline Thumb
+      if (timelineThumb) {
+        const pct = ((currentStageIndex + 1) / STAGES.length) * 100;
+        timelineThumb.style.width = `${pct}%`;
+      }
+
+      lastStageSwitch = Date.now();
+
+      // If user tapped a button or scrubbed, lock auto-cycle for 8.5 seconds
+      if (isUserAction) {
+        userPauseUntil = Date.now() + 8500;
+      }
     }
 
-    // Pointer Parallax / 3D Tilt Listener
+    // Initialize with Stage 0
+    setStage(0, false);
+
+    // Desktop Pointer Parallax Listener
     window.addEventListener('mousemove', function (e) {
+      if (window.innerWidth <= 768) return;
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      targetTiltX = ((e.clientX - centerX) / centerX) * 8; // -8deg to +8deg
-      targetTiltY = -((e.clientY - centerY) / centerY) * 6; // -6deg to +6deg
+      targetTiltX = ((e.clientX - centerX) / centerX) * 7;
+      targetTiltY = -((e.clientY - centerY) / centerY) * 5;
     }, { passive: true });
 
-    function renderEngine(timestamp) {
-      const delta = timestamp - lastTimestamp;
-      lastTimestamp = timestamp;
+    // Animation & Timing Loop
+    function renderLoop(timestamp) {
+      // Desktop subtle gyro tilt
+      if (window.innerWidth > 768 && stageContainer) {
+        currentTiltX += (targetTiltX - currentTiltX) * 0.08;
+        currentTiltY += (targetTiltY - currentTiltY) * 0.08;
+        const levitation = Math.sin(timestamp * 0.0015) * 6;
+        stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${levitation.toFixed(2)}px)`;
+      }
 
-      // Smooth 3D tilt interpolation
-      currentTiltX += (targetTiltX - currentTiltX) * 0.08;
-      currentTiltY += (targetTiltY - currentTiltY) * 0.08;
-
-      if (stageContainer) {
-        if (window.innerWidth > 768) {
-          // Subtle organic zero-gravity breathing levitation on desktop
-          const levitation = Math.sin(timestamp * 0.0015) * 6;
-          stageContainer.style.transform = `perspective(1400px) rotateX(${currentTiltY.toFixed(2)}deg) rotateY(${currentTiltX.toFixed(2)}deg) translateY(${levitation.toFixed(2)}px)`;
-        } else if (stageContainer.style.transform) {
-          // On mobile, let pure hardware-accelerated CSS keyframes handle 60fps zero-G levitation
-          stageContainer.style.transform = '';
+      // Auto-cycle progression
+      const now = Date.now();
+      if (isPlaying && now > userPauseUntil) {
+        if (now - lastStageSwitch >= STAGE_DURATION_MS) {
+          setStage(currentStageIndex + 1, false);
         }
       }
 
-      // Scroll scrub integration
-      const currentScrollY = window.scrollY;
-      const scrollDiff = currentScrollY - lastScrollY;
-      lastScrollY = currentScrollY;
-
-      const rect = wrapper.getBoundingClientRect();
-      if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
-        // Accelerate scrub with scroll velocity
-        targetProgress = (targetProgress + (scrollDiff * 0.0014)) % 1;
-      }
-
-      if (isPlaying) {
-        targetProgress = (targetProgress + (BASE_SPEED * (delta / 16.67))) % 1;
-      }
-
-      // Liquid lerp for smooth transitions
-      loopProgress += (targetProgress - loopProgress) * 0.12;
-      applyStageProgress(loopProgress);
-
-      requestAnimationFrame(renderEngine);
+      requestAnimationFrame(renderLoop);
     }
 
-    requestAnimationFrame(renderEngine);
+    requestAnimationFrame(renderLoop);
 
-    // Play / Pause Toggle
+    // Play / Pause Ambient Float Toggle
     if (playPauseBtn) {
       playPauseBtn.addEventListener('click', function () {
         isPlaying = !isPlaying;
         this.innerHTML = isPlaying
           ? '<span>⏸ Pause Ambient Float</span>'
           : '<span>▶ Resume Ambient Float</span>';
+        if (isPlaying) {
+          lastStageSwitch = Date.now();
+          userPauseUntil = 0;
+        }
       });
     }
 
-    // Phase Buttons Click (Handles both desktop and mobile buttons)
+    // Phase Buttons Click Listeners (both desktop & mobile)
     phaseBtns.forEach((btn, idx) => {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
         const stageIndex = idx % STAGES.length;
-        const stage = STAGES[stageIndex];
-        if (stage) {
-          targetProgress = stage.progress;
-          loopProgress = stage.progress;
-          applyStageProgress(loopProgress);
-        }
-      });
-    });
-
-    // Holographic Spec Beacons Click (Mobile Interactive Showcase)
-    const specBeacons = wrapper.querySelectorAll('.hero-spec-beacon');
-    specBeacons.forEach(beacon => {
-      beacon.addEventListener('click', function () {
-        if (this.dataset.phaseTarget) {
-          const target = parseFloat(this.dataset.phaseTarget);
-          targetProgress = target;
-          loopProgress = target;
-          applyStageProgress(loopProgress);
-        } else if (this.dataset.scrollTarget) {
-          const targetEl = document.querySelector(this.dataset.scrollTarget);
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
+        setStage(stageIndex, true);
       });
     });
 
@@ -264,15 +204,27 @@
       timelineWrapper.addEventListener('click', function (e) {
         const rect = this.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
-        const fraction = Math.max(0, Math.min(1, clickX / rect.width));
-        targetProgress = fraction;
-        loopProgress = fraction;
-        applyStageProgress(loopProgress);
+        const fraction = Math.max(0, Math.min(0.999, clickX / rect.width));
+        const stageIndex = Math.floor(fraction * STAGES.length);
+        setStage(stageIndex, true);
       });
     }
 
-    // Initial callout setup
-    updateCallouts(0);
+    // Beacon clicks if present
+    const specBeacons = wrapper.querySelectorAll('.hero-spec-beacon');
+    specBeacons.forEach(beacon => {
+      beacon.addEventListener('click', function () {
+        if (this.dataset.stageTarget !== undefined) {
+          const target = parseInt(this.dataset.stageTarget, 10);
+          setStage(target, true);
+        } else if (this.dataset.scrollTarget) {
+          const targetEl = document.querySelector(this.dataset.scrollTarget);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
   }
 
   if (document.readyState === 'loading') {
