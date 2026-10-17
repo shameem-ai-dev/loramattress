@@ -1,0 +1,49 @@
+{{ 'signature-hero.css' | asset_url | stylesheet_tag }}
+
+<!-- =========================================================
+     LORA — THE SIGNATURE CLOSE-UP (Hero)
+     Macro of the hand-tufted top -> continuous camera pull-back -> full mattress
+     ========================================================= -->
+<section class="sig-hero" id="signature-closeup" aria-label="The LORA Signature mattress">
+  <div class="sig-sticky">
+
+    <div class="sig-camera" aria-hidden="true">
+      <img class="sig-frame sig-frame--macro is-first" src="{{ 'signature-1-macro.jpg' | asset_url }}" alt="" fetchpriority="high">
+      <img class="sig-frame sig-frame--mid" src="{{ 'signature-2-mid.jpg' | asset_url }}" alt="">
+      <div class="sig-halo"></div>
+      <img class="sig-frame sig-frame--full" src="{{ 'signature-3-full.jpg' | asset_url }}" alt="">
+    </div>
+    <div class="sig-vignette" aria-hidden="true"></div>
+    <div class="sig-intro-shade" aria-hidden="true"></div>
+
+    <div class="sig-intro">
+      <span class="sig-eyebrow">The LORA Signature</span>
+      <h2>Hand-tufted.<br><em>Hand-finished.</em></h2>
+    </div>
+
+    <div class="sig-cue" aria-hidden="true">Scroll</div>
+
+    <div class="sig-final">
+      <h1>Engineered for Deep Sleep. <span>Designed for You.</span></h1>
+      <p>Natural latex, zoned pocket springs and a hand-quilted top, built to last up to 15 years.</p>
+      <div class="sig-actions">
+        <a class="sig-btn" href="#the-collection">Shop the Collection</a>
+        <a class="sig-link" href="#sleep-quiz">Find my match</a>
+      </div>
+    </div>
+
+    <div class="sig-trust">
+      <span>Trusted by <strong>5,00,000+ sleepers</strong></span>
+      <span class="sig-trust-sep" aria-hidden="true"></span>
+      <span>Up to <strong>15-year warranty</strong></span>
+      <span class="sig-trust-sep" aria-hidden="true"></span>
+      <span><strong>Orthopedic</strong> support</span>
+      <span class="sig-trust-sep" aria-hidden="true"></span>
+      <span><strong>Free</strong> flat delivery</span>
+      <span class="sig-trust-sep" aria-hidden="true"></span>
+      <span>Made with <strong>precision</strong></span>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'signature-hero.js' | asset_url }}" defer></script>

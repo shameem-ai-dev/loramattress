@@ -1,0 +1,271 @@
+/**
+ * LORA — THE SIGNATURE CLOSE-UP (Hero)
+ * One continuous camera pull-back on scroll:
+ * macro of hand-tufted top  ->  corner with LORA embroidery  ->  full mattress, then copy + CTA.
+ */
+
+.sig-hero {
+  position: relative;
+  height: 320vh;                       /* scroll runway */
+  background: #050814;
+  color: #F4F1EA;
+  isolation: isolate;
+}
+
+.sig-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  /* centre colour = exact background of the renders (#03102D) so the full frame melts in */
+  background: radial-gradient(ellipse 80% 75% at 50% 55%, #03102D 0%, #03102D 45%, #050814 100%);
+}
+
+/* ---------- Camera frames ---------- */
+.sig-camera {
+  position: absolute;
+  inset: 0;
+}
+
+.sig-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  opacity: 0;
+  will-change: opacity, transform;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sig-frame.is-first { opacity: 1; }
+
+/* final full-mattress frame: contained, feathered into the navy, no visible edge */
+.sig-frame--full {
+  object-fit: contain;
+  top: 12vh;
+  height: 80vh;
+  -webkit-mask-image: radial-gradient(ellipse 60% 68% at 50% 52%, #000 60%, transparent 100%);
+          mask-image: radial-gradient(ellipse 60% 68% at 50% 52%, #000 60%, transparent 100%);
+}
+
+.sig-halo {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  width: 70vw;
+  height: 40vh;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(216, 192, 138, 0.10), rgba(124, 196, 255, 0.08) 40%, transparent 70%);
+  filter: blur(40px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sig-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(5,8,20,0.85) 0%, rgba(5,8,20,0) 22%),
+    linear-gradient(0deg, rgba(5,8,20,0.95) 0%, rgba(5,8,20,0) 26%);
+}
+
+/* shade behind the intro caption so it reads over the bright fabric macro */
+.sig-intro-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 65% at 0% 100%, rgba(3,16,45,0.92) 0%, rgba(3,16,45,0.55) 45%, transparent 78%);
+  will-change: opacity;
+}
+
+/* ---------- Intro caption (over the macro) ---------- */
+.sig-intro {
+  position: absolute;
+  left: clamp(1.5rem, 6vw, 5rem);
+  bottom: clamp(3rem, 12vh, 7rem);
+  z-index: 4;
+  max-width: 460px;
+  will-change: opacity, transform;
+}
+
+.sig-eyebrow {
+  display: block;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #D8C08A;
+  margin-bottom: 1rem;
+}
+
+.sig-intro h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+  line-height: 1.04;
+  margin: 0;
+  color: #F4F1EA;
+}
+
+.sig-intro h2 em { font-style: italic; color: #D8C08A; }
+.sig-intro h2, .sig-eyebrow { text-shadow: 0 2px 24px rgba(3, 16, 45, 0.7); }
+
+/* ---------- Final copy (over the full mattress) ---------- */
+.sig-final {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  padding: clamp(6.5rem, 13vh, 8rem) 1.5rem 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.sig-final.is-live { pointer-events: auto; }
+
+.sig-final h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.sig-final h1 span { display: block; font-style: italic; color: #D8C08A; }
+
+.sig-final p {
+  margin: 0.9rem auto 0;
+  max-width: 480px;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.92rem, 1.4vw, 1.04rem);
+  color: rgba(244, 241, 234, 0.65);
+}
+
+.sig-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6rem;
+  margin-top: 1.5rem;
+}
+
+.sig-btn {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: #050814;
+  background: #F4F1EA;
+  padding: 0.9rem 2rem;
+  border-radius: 9999px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.sig-btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(216, 192, 138, 0.25);
+}
+
+.sig-link {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.86rem;
+  color: rgba(244, 241, 234, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(244, 241, 234, 0.3);
+  padding-bottom: 2px;
+}
+
+.sig-link:hover { color: #fff; border-color: #fff; }
+
+/* ---------- Trust bar ---------- */
+.sig-trust {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.2rem, 4vh, 2rem);
+  z-index: 4;
+  width: min(1040px, 92vw);
+  transform: translate(-50%, 16px);
+  opacity: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 2rem;
+  border-radius: 9999px;
+  background: rgba(9, 19, 44, 0.42);
+  border: 1px solid rgba(216, 192, 138, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.76rem;
+  color: rgba(244, 241, 234, 0.65);
+  will-change: opacity, transform;
+}
+
+.sig-trust strong { color: #F4F1EA; font-weight: 600; }
+
+.sig-trust-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(244, 241, 234, 0.14);
+  flex-shrink: 0;
+}
+
+/* ---------- Scroll cue ---------- */
+.sig-cue {
+  position: absolute;
+  right: clamp(1.5rem, 5vw, 4rem);
+  bottom: clamp(3rem, 12vh, 7rem);
+  z-index: 4;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.7);
+  writing-mode: vertical-rl;
+  text-shadow: 0 2px 16px rgba(3, 16, 45, 0.8);
+  transition: opacity 0.5s ease;
+}
+
+.sig-cue::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 46px;
+  margin: 0.9rem auto 0;
+  background: linear-gradient(180deg, rgba(244, 241, 234, 0.7), transparent);
+  animation: sigCue 2.4s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes sigCue {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+.sig-hero.is-moving .sig-cue { opacity: 0; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .sig-hero { height: 280vh; }
+  .sig-frame--full { top: 28vh; height: 54vh; }
+  .sig-trust, .sig-cue { display: none; }
+  .sig-final p { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sig-cue::after { animation: none; }
+}

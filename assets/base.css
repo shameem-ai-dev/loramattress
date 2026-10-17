@@ -527,552 +527,680 @@ button, input, select {
 }
 
 /* ==========================================================================
-   HERO: ZERO-G SPATIAL SCIENCE (NEW CONCEPT)
+   2. HERO: LORA ATELIER SCROLL DECONSTRUCTION RUNWAY
+   Matches Reference Architecture in Seamless Midnight Navy & Royal Azure
+   100% Unboxed • Floating Mattress Renders • Scroll-Driven Layer Deconstruction
    ========================================================================== */
-.hero-scroll-wrapper {
+
+.atelier-scroll-hero,
+.quantum-hero-section,
+.scroll-deconstruct-section {
   position: relative;
-  height: 240vh;
-  min-height: 240vh;
-  background-color: #060913;
-  overflow: visible;
+  width: 100%;
+  height: 280vh;
+  background-color: #050814;
+  color: #FFFFFF;
+  box-sizing: border-box;
 }
 
-.hero-sticky-container {
+/* Atmospheric Full-Bleed Midnight Navy Backdrop */
+.atelier-backdrop {
   position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100dvh;
-  min-height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #060913;
-  z-index: 2;
-}
-
-/* Atmospheric Ambient Canvas */
-.hero-bg-canvas {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.hero-ambient-nebula {
-  position: absolute;
-  top: 35%;
-  right: 15%;
-  width: 550px;
-  height: 550px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 180, 216, 0.16) 0%, rgba(30, 27, 75, 0.1) 45%, transparent 70%);
-  filter: blur(80px);
-  pointer-events: none;
-}
-
-.hero-aura-glow {
-  position: absolute;
-  top: 50%;
-  left: 60%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.12) 0%, rgba(6, 9, 19, 0) 70%);
-  filter: blur(60px);
-  pointer-events: none;
-}
-
-.hero-grid-mesh {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at 65% 50%, #000 20%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at 65% 50%, #000 20%, transparent 75%);
-  opacity: 0.5;
-}
-
-/* Two-Column Grid: Narrative on Left, 3D Canvas on Right */
-.hero-layout-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 3.5rem;
-  align-items: center;
-  width: 100%;
-  position: relative;
-  z-index: 2;
-  padding: 4.5rem 0 1.5rem;
-}
-
-.hero-narrative-col {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  z-index: 3;
-}
-
-.hero-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.38rem 0.95rem;
-  border-radius: 999px;
-  background: rgba(14, 23, 42, 0.85);
-  border: 1px solid rgba(0, 242, 254, 0.35);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  color: #E0F2FE;
-  margin-bottom: 1.25rem;
-  box-shadow: 0 0 16px rgba(0, 242, 254, 0.18);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.pulse-node {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #00F2FE;
-  box-shadow: 0 0 10px #00F2FE;
-  animation: pulseCyan 2s infinite ease-in-out;
-}
-
-@keyframes pulseCyan {
-  0%, 100% { opacity: 0.5; transform: scale(0.85); }
-  50% { opacity: 1; transform: scale(1.3); }
-}
-
-/* Cross-Fading Story Cards (Zero layout shift, 60fps CSS transitions) */
-.hero-story-deck {
-  position: relative;
-  width: 100%;
-  min-height: 180px;
-  margin-bottom: 1.5rem;
-}
-
-.hero-story-slide {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  opacity: 0;
-  transform: translateY(14px);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
 }
 
-.hero-story-slide.active {
-  position: relative;
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.hero-title {
-  font-size: clamp(2.3rem, 4.2vw, 3.8rem);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-  color: #FFFFFF;
-  margin-bottom: 0.85rem;
-}
-
-.hero-shimmer-title {
-  background: linear-gradient(90deg, #38BDF8 0%, #FFFFFF 25%, #00F2FE 50%, #FFFFFF 75%, #38BDF8 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: luxuryTextShimmer 4s linear infinite;
-}
-
-@keyframes luxuryTextShimmer {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-.hero-supporting-copy {
-  font-size: clamp(0.95rem, 1.15vw, 1.08rem);
-  line-height: 1.65;
-  color: #94A3B8;
-  max-width: 520px;
-}
-
-/* Interactive Fluid Phase Selector Pills */
-.hero-phase-switcher {
-  width: 100%;
-  max-width: 480px;
-  margin-bottom: 1.75rem;
-}
-
-.phase-buttons {
-  display: flex;
-  gap: 0.4rem;
-  margin-bottom: 0.65rem;
-}
-
-.phase-btn {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #94A3B8;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.22s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.phase-btn:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  color: #FFFFFF;
-}
-
-.phase-btn.active {
-  background: rgba(0, 180, 216, 0.22);
-  border-color: #38BDF8;
-  color: #FFFFFF;
-  box-shadow: 0 0 16px rgba(0, 180, 216, 0.35);
-}
-
-.phase-dot-indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #38BDF8;
-  box-shadow: 0 0 6px #38BDF8;
-}
-
-.hero-scrub-track-bar {
-  width: 100%;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 0.4rem;
-}
-
-.hero-scrub-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00B4D8, #38BDF8, #FFFFFF);
-  box-shadow: 0 0 8px #38BDF8;
-  border-radius: 999px;
-  transition: width 0.08s linear;
-}
-
-.hero-scrub-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #64748B;
-}
-
-.hero-scrub-pct {
-  color: #38BDF8;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.hero-scrub-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: #94A3B8;
-  animation: promptPulse 2s ease-in-out infinite;
-}
-
-@keyframes promptPulse {
-  0%, 100% { opacity: 0.65; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(2px); color: #38BDF8; }
-}
-
-/* Call to Action Buttons */
-.hero-ctas {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-}
-
-.hero-btn-primary {
-  position: relative;
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem 1.85rem;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
-  color: #FFFFFF;
-  font-size: 0.95rem;
-  font-weight: 800;
-  text-decoration: none;
-  box-shadow: 0 6px 24px rgba(0, 180, 216, 0.4);
-  border: none;
-  transition: all 0.25s ease;
-}
-
-.hero-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 180, 216, 0.6);
-  color: #FFFFFF;
-}
-
-.hero-btn-primary .btn-shimmer-sweep {
+.atelier-navy-gradient {
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  animation: btnSweep 3.5s infinite;
+  inset: 0;
+  background: radial-gradient(circle at 50% 25%, #0C1A38 0%, #070E22 55%, #050814 100%);
 }
 
-@keyframes btnSweep {
-  0% { left: -100%; }
-  25%, 100% { left: 200%; }
-}
-
-.hero-secondary-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: #E0F2FE;
-  font-size: 0.92rem;
-  font-weight: 700;
-  text-decoration: none;
-  padding: 0.5rem 0.75rem;
-  transition: all 0.2s ease;
-}
-
-.hero-secondary-link:hover {
-  color: #38BDF8;
-  gap: 0.65rem;
-}
-
-/* Trust Bar */
-.hero-trust-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  font-size: 0.76rem;
-  color: #94A3B8;
-}
-
-.hero-trust-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.hero-trust-sep {
-  color: rgba(255, 255, 255, 0.2);
-}
-
-.hero-trust-badge {
-  background: rgba(0, 180, 216, 0.15);
-  border: 1px solid rgba(0, 180, 216, 0.35);
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  color: #E0F2FE;
-  font-size: 0.7rem;
-}
-
-/* ==========================================================================
-   3D VISUAL STAGE & HIGH-DEFINITION LAYERS
-   ========================================================================== */
-.hero-stage-col {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-visual-stage {
-  position: relative;
-  width: 100%;
-  max-width: 620px;
-  aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: luxuryStageLevitate 6s ease-in-out infinite;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-@keyframes luxuryStageLevitate {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-.hero-layers-viewport {
+.atelier-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: 16px;
-  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.hero-stage-layer {
+.atelier-radial-aura {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 950px;
+  height: 700px;
+  background: radial-gradient(ellipse at center, rgba(2, 132, 199, 0.22) 0%, rgba(30, 58, 138, 0.08) 50%, transparent 75%);
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Sticky Viewport Stage */
+.atelier-sticky-stage {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+  margin-top: -100vh;
+  margin-top: -100dvh;
+}
+
+.atelier-stage-inner {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 3.2rem 1.5rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  text-align: center;
+}
+
+/* 1. Masthead (Matches Reference Image) */
+.atelier-masthead {
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.atelier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #38BDF8;
+  margin-bottom: 0.4rem;
+}
+
+.ab-spark {
+  color: #F59E0B;
+  animation: obsSparkle 2.4s infinite ease-in-out;
+}
+
+@keyframes obsSparkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.18); filter: drop-shadow(0 0 6px #F59E0B); }
+}
+
+.atelier-title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #FFFFFF;
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.atelier-title-accent {
+  display: block;
+  color: #38BDF8;
+  font-family: inherit;
+  font-weight: 500;
+  text-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+}
+
+.atelier-rule-line {
+  width: 140px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.45), transparent);
+  margin: 0.5rem auto 0.4rem;
+}
+
+.atelier-subtitle {
+  font-size: clamp(0.88rem, 1.2vw, 1.02rem);
+  color: rgba(226, 232, 240, 0.75);
+  margin: 0 0 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+/* 5 Feature Buttons Row (Matches Reference Image Cleanly) */
+.atelier-features-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3.8vw, 3.5rem);
+  flex-wrap: wrap;
+  margin: 0.5rem auto 0;
+}
+
+.afr-item {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.55);
+  transition: all 0.28s ease;
+  padding: 0.2rem 0.4rem;
+}
+
+.afr-item:hover,
+.afr-item.active {
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.afr-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38BDF8;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.afr-item.active .afr-icon-wrap {
+  color: #FFFFFF;
+  filter: drop-shadow(0 0 8px #38BDF8);
+  transform: scale(1.1);
+}
+
+.afr-label {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.afr-item.active .afr-label {
+  color: #38BDF8;
+  font-weight: 600;
+}
+
+/* 2. Centerpiece Mattress Viewport (Grand, Seamless, Zero Box, Zero Dotted Beacons) */
+.atelier-visual-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 48vh;
+  min-height: 330px;
+  max-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.1rem auto;
+  z-index: 2;
+}
+
+.atelier-stage-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  height: 85%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(14, 165, 233, 0.22) 0%, rgba(30, 58, 138, 0.12) 42%, rgba(2, 6, 23, 0) 74%);
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.atelier-ground-pedestal {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 78%;
+  max-width: 820px;
+  height: 42px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.82) 0%, rgba(2, 6, 23, 0.5) 45%, transparent 75%);
+  filter: blur(18px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.atelier-render-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.atelier-render-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
-  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 35px rgba(0, 242, 254, 0.22));
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.stage-layer-assembled { z-index: 1; opacity: 1; }
-.stage-layer-exploded { z-index: 2; opacity: 0; }
-.stage-layer-spine { z-index: 3; opacity: 0; }
-
-/* Floating Architectural Layer Badges */
-.hero-spatial-callouts {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 6;
-}
-
-.spatial-callout {
-  position: absolute;
   opacity: 0;
-  transform: translateY(12px) scale(0.94);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  will-change: opacity, transform;
-}
-
-.spatial-callout.active {
-  opacity: 1 !important;
-  transform: translateY(0) scale(1) !important;
-}
-
-.spatial-callout-quilt { top: -6%; left: 4%; }
-.spatial-callout-latex { top: 22%; right: -6%; }
-.spatial-callout-coils { bottom: 22%; left: -6%; }
-.spatial-callout-base { bottom: -6%; right: 4%; }
-
-.callout-glass-card {
-  background: rgba(8, 14, 30, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 180, 216, 0.25);
-  border-radius: 10px;
-  padding: 0.45rem 0.8rem;
-  white-space: nowrap;
-}
-
-.callout-pill-tag {
-  display: inline-block;
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #38BDF8;
-  margin-bottom: 0.1rem;
-}
-
-.callout-stat-lead {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  line-height: 1.2;
-}
-
-.callout-stat-detail {
-  font-size: 0.68rem;
-  color: #94A3B8;
-  margin-top: 0.1rem;
-}
-
-/* Live Telemetry Card (Active in Stage 3 SpineAlign) */
-.hero-telemetry-badge {
-  position: absolute;
-  bottom: -22px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  display: inline-flex;
-  align-items: center;
-  gap: 1.15rem;
-  padding: 0.45rem 1.2rem;
-  background: rgba(8, 14, 30, 0.92);
-  border: 1px solid rgba(0, 242, 254, 0.4);
-  border-radius: 999px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 242, 254, 0.25);
-  z-index: 8;
-  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98) translateY(2px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s;
   pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  /* Cinematic luxury studio lighting & soft ground shadow */
+  filter: drop-shadow(0 26px 48px rgba(0, 0, 0, 0.85)) drop-shadow(0 4px 14px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 50px rgba(14, 165, 233, 0.22));
 }
 
-.hero-telemetry-badge.active {
+.atelier-render-img.active {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
 }
 
-.telemetry-item {
+/* 3. Minimalist Editorial Layer Strip (Zero Dots, Elegant Luxury Navigation) */
+.atelier-layer-strip {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.4rem;
+  z-index: 10;
+  margin: 0.15rem auto 0;
+  width: 100%;
+  max-width: 860px;
 }
 
-.telemetry-label {
-  font-size: 0.58rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.als-tab-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.4rem, 1.6vw, 1.2rem);
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  background: rgba(9, 19, 44, 0.5);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 18px rgba(0, 4, 16, 0.3);
+}
+
+.als-tab {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0.28rem 0.65rem;
+  border-radius: 9999px;
+  transition: all 0.24s ease;
+  white-space: nowrap;
+}
+
+.als-tab:hover {
+  color: #FFFFFF;
+}
+
+.als-tab.active {
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.16);
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+}
+
+.als-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 0.76rem;
+  color: rgba(226, 232, 240, 0.8);
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  flex-wrap: wrap;
+}
+
+.als-title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-size: 1.08rem;
+  color: #FFFFFF;
+  letter-spacing: 0.02em;
+}
+
+.als-sep {
+  color: rgba(56, 189, 248, 0.35);
+  font-weight: 300;
+}
+
+.als-detail {
+  color: rgba(226, 232, 240, 0.75);
+  letter-spacing: 0.02em;
+}
+
+/* 4. Bottom Floating Pill Trust Bar (Exact Reference Match, Pill Ends, Glassmorphic Navy) */
+.atelier-trust-bar {
+  width: 100%;
+  max-width: 1060px;
+  z-index: 10;
+  margin: 0.45rem auto 0;
+}
+
+.atb-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.6rem 2rem;
+  border-radius: 9999px;
+  background: rgba(9, 19, 44, 0.42);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  box-shadow: 0 8px 28px rgba(0, 4, 18, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.atb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.atb-item svg {
+  color: #38BDF8;
+  flex-shrink: 0;
+}
+
+.atb-item strong {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.atb-sep {
+  width: 1px;
+  height: 22px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  flex-shrink: 0;
+}
+
+/* Responsive Optimization: Mobile (< 768px) */
+@media (max-width: 768px) {
+  .atelier-scroll-hero,
+  .quantum-hero-section,
+  .scroll-deconstruct-section {
+    height: 240vh;
+  }
+
+  .atelier-stage-inner {
+    padding: 3.8rem 1rem 0.8rem;
+  }
+
+  .atelier-title {
+    font-size: clamp(1.75rem, 6.5vw, 2.2rem);
+  }
+
+  .atelier-subtitle {
+    display: none;
+  }
+
+  .atelier-features-row {
+    gap: 0.8rem;
+    margin-top: 0.3rem;
+  }
+
+  .afr-label {
+    font-size: 0.64rem;
+  }
+
+  .atelier-visual-stage {
+    height: 32vh;
+    min-height: 220px;
+    max-height: 300px;
+  }
+
+  .ab-line {
+    display: none;
+  }
+
+  .ab-tag {
+    font-size: 0.62rem;
+    padding: 3px 8px;
+  }
+
+  .as-label {
+    display: none;
+  }
+
+  .atb-sep {
+    display: none;
+  }
+
+  .atb-grid {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+  }
+
+  .atb-item {
+    font-size: 0.66rem;
+  }
+}
+
+
+/* ==========================================================================
+   2B. INSIDE THE COMFORT (CRAFTSMANSHIP & MATERIAL INTEGRITY)
+   ========================================================================== */
+.inside-comfort-section {
+  position: relative;
+  background: #080D1A;
+  padding: 5.5rem 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 2;
+}
+
+.comfort-header-editorial {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 3.5rem;
+}
+
+.eyebrow-gold {
+  color: #D4AF37 !important;
+  letter-spacing: 0.16em !important;
+}
+
+.comfort-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.3rem, 4vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  margin: 0.5rem 0 1rem;
+}
+
+.comfort-subtext {
+  font-size: 1.05rem;
+  line-height: 1.7;
   color: #94A3B8;
 }
 
-.telemetry-val {
-  font-size: 0.82rem;
+.comfort-interactive-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.comfort-stage-display {
+  position: relative;
+  width: 100%;
+}
+
+.comfort-media-frame {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #05070E;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.12);
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.comfort-stage-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.comfort-media-frame:hover .comfort-stage-img {
+  transform: scale(1.03);
+}
+
+.comfort-badge-overlay {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(10, 15, 29, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
   font-weight: 700;
+  color: #FFF6D6;
+}
+
+.badge-accent-line {
+  width: 14px;
+  height: 2px;
+  background: #D4AF37;
+  border-radius: 999px;
+}
+
+/* Layer Deck Cards */
+.comfort-layers-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comfort-layer-card {
+  background: rgba(14, 21, 38, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.comfort-layer-card:hover {
+  background: rgba(18, 28, 50, 0.8);
+  border-color: rgba(212, 175, 55, 0.35);
+  transform: translateX(4px);
+}
+
+.comfort-layer-card.active {
+  background: rgba(20, 31, 56, 0.9);
+  border-color: rgba(212, 175, 55, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.18);
+  transform: translateX(6px);
+}
+
+.card-tier-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.tier-number {
   font-family: 'JetBrains Mono', monospace;
-  color: #00F2FE;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #D4AF37;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
 }
 
-.telemetry-divider {
-  width: 1px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.15);
+.tier-role {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #E2C288;
 }
 
-.mobile-tier-hud {
-  display: none;
+.tier-heading {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.4rem;
 }
 
-.hero-mobile-phase-ctrl,
-.hero-aura-glow,
-.hero-orbital-ring,
-.hero-spec-beacon,
-.hero-ambient-nebula {
-  display: none;
+.tier-body {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #94A3B8;
+  margin-bottom: 0.65rem;
+}
+
+.tier-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tpill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #CBD5E1;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+.comfort-layer-card.active .tpill {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.35);
+  color: #FFF6D6;
 }
 
 /* ==========================================================================
@@ -4515,277 +4643,255 @@ body {
   }
 
   /* ==========================================================================
-     MOBILE HERO ARCHITECTURE — BIG AESTHETIC LUXURY ZERO-G ANIMATION SHOWCASE
-     ================================================================  /* ==========================================================================
-     MOBILE HERO ARCHITECTURE — ZERO-G SPATIAL SCIENCE (NEW CONCEPT)
+     MOBILE HERO: LORA ATELIER SANCTUARY (RESPONSIVE LIVING THEATER)
      ========================================================================== */
-  .hero-scroll-wrapper {
-    position: relative !important;
-    height: 190vh !important;
-    min-height: 190vh !important;
-    padding: 0 !important;
-    background: #060913 !important;
-    overflow: visible !important;
-  }
-
-  .hero-sticky-container {
-    position: sticky !important;
-    top: 0 !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    min-height: 100vh !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: calc(3.4rem + env(safe-area-inset-top, 0px)) 1rem calc(0.6rem + env(safe-area-inset-bottom, 0px)) !important;
-    box-sizing: border-box !important;
-    z-index: 2 !important;
-    overflow: hidden !important;
-    background: #060913 !important;
-  }
-
-  .hero-layout-grid {
-    grid-template-columns: 1fr !important;
-    gap: 0.35rem !important;
-    padding: 0 !important;
-    width: 100% !important;
-    max-width: 400px !important;
-    margin: 0 auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-  }
-
-  .hero-narrative-col {
-    align-items: center !important;
-    text-align: center !important;
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .hero-status-pill {
-    margin-bottom: 0.3rem !important;
-    padding: 0.28rem 0.75rem !important;
-    font-size: 0.65rem !important;
-  }
-
-  .hero-story-deck {
+  .sanctuary-hero-section,
+  .quantum-hero-section {
     min-height: unset !important;
-    margin-bottom: 0.25rem !important;
-    width: 100% !important;
+    padding: calc(4.8rem + env(safe-area-inset-top, 0px)) 0.75rem 2.5rem !important;
   }
 
-  .hero-story-slide {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    opacity: 0 !important;
-    transform: translateY(8px) !important;
-    transition: opacity 0.3s ease, transform 0.3s ease !important;
+  .sanctuary-container,
+  .quantum-container {
+    padding: 0 0.5rem !important;
   }
 
-  .hero-story-slide.active {
-    position: relative !important;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-
-  .hero-title {
-    font-size: clamp(1.4rem, 6.2vw, 1.85rem) !important;
-    line-height: 1.15 !important;
-    margin-bottom: 0.2rem !important;
-    text-align: center !important;
-  }
-
-  .hero-supporting-copy {
-    font-size: 0.8rem !important;
-    line-height: 1.35 !important;
-    margin: 0 auto 0.35rem !important;
-    max-width: 360px !important;
-    text-align: center !important;
-  }
-
-  .hero-stage-col {
-    width: 100% !important;
-    margin: 0.2rem 0 0.4rem !important;
-    display: flex !important;
-    justify-content: center !important;
-  }
-
-  .hero-visual-stage {
-    width: 100% !important;
-    max-width: 340px !important;
-    height: clamp(180px, 26vh, 220px) !important;
-    aspect-ratio: unset !important;
-    margin: 0 auto !important;
-  }
-
-  .hero-layers-viewport {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-  }
-
-  .hero-stage-layer {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    object-position: center !important;
-    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 20px rgba(0, 242, 254, 0.2)) !important;
-    transition: opacity 350ms ease !important;
-    will-change: opacity !important;
-    pointer-events: none !important;
-  }
-
-  .hero-spatial-callouts,
-  .spatial-callout,
-  .hero-telemetry-badge {
+  .sanctuary-side-rail,
+  .quantum-hud-rail,
+  .quantum-radar-rings {
     display: none !important;
   }
 
-  /* Dynamic Mobile Tier Indicator Pill */
-  .mobile-tier-hud {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.45rem !important;
-    position: absolute !important;
-    bottom: 4px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 10 !important;
-    background: rgba(8, 14, 30, 0.94) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border: 1px solid rgba(56, 189, 248, 0.45) !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65), 0 0 14px rgba(0, 180, 216, 0.25) !important;
-    border-radius: 999px !important;
-    padding: 0.3rem 0.8rem !important;
-    white-space: nowrap !important;
-    max-width: 92% !important;
-    pointer-events: none !important;
+  .sanctuary-header,
+  .quantum-header {
+    margin-bottom: 1.5rem !important;
   }
 
-  .mobile-tier-beacon {
-    width: 6px !important;
-    height: 6px !important;
-    border-radius: 50% !important;
-    background: #00F2FE !important;
-    box-shadow: 0 0 8px #00F2FE !important;
-    flex-shrink: 0 !important;
+  .sanctuary-brand-capsule,
+  .quantum-brand-capsule {
+    padding: 0.32rem 0.85rem !important;
+    font-size: 0.68rem !important;
+    margin-bottom: 0.85rem !important;
   }
 
-  .mobile-tier-content {
-    font-size: 0.7rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.03em !important;
-    color: #E0F2FE !important;
-    text-overflow: ellipsis !important;
-    overflow: hidden !important;
+  .sanctuary-capsule-sub,
+  .capsule-sub {
+    display: none !important;
   }
 
-  .hero-phase-switcher {
+  .sanctuary-title,
+  .quantum-title {
+    font-size: clamp(2rem, 8vw, 2.7rem) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .sanctuary-gradient-text,
+  .quantum-gradient-text {
+    font-size: 1.05rem !important;
+    line-height: 1.35 !important;
+    margin-top: 0.35rem !important;
+  }
+
+  .sanctuary-subtext,
+  .quantum-subtext {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .sanctuary-theater-wrapper,
+  .quantum-theater-wrapper {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .sanctuary-stage-card,
+  .quantum-stage-card {
+    border-radius: 16px !important;
+  }
+
+  .sanctuary-toolbar,
+  .quantum-toolbar {
+    padding: 0.55rem 0.75rem !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .sanctuary-mode-tabs,
+  .qmode-pills {
     width: 100% !important;
-    max-width: 350px !important;
-    margin: 0 auto 0.45rem !important;
+    justify-content: center !important;
+    gap: 0.3rem !important;
   }
 
-  .phase-btn {
-    padding: 0.35rem 0.2rem !important;
+  .sanctuary-tab-btn,
+  .qmode-btn {
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.7rem !important;
+    flex: 1 !important;
+    justify-content: center !important;
+  }
+
+  .sanctuary-status-pill,
+  .qstatus-pill {
     font-size: 0.65rem !important;
-    gap: 0.25rem !important;
+    padding: 0.25rem 0.65rem !important;
   }
 
-  .hero-scrub-track-bar {
-    height: 2.5px !important;
-    margin-bottom: 0.25rem !important;
+  .sanctuary-viewport,
+  .quantum-viewport {
+    aspect-ratio: 16 / 10 !important;
   }
 
-  .hero-scrub-meta {
+  .sanctuary-curtain-handle,
+  .qlaser-handle {
+    padding: 0.42rem 0.75rem !important;
+  }
+
+  .chandle-text,
+  .qhandle-text {
     font-size: 0.62rem !important;
   }
 
-  .hero-ctas {
-    flex-direction: column !important;
-    gap: 0.35rem !important;
-    width: 100% !important;
-    max-width: 320px !important;
-    margin: 0 auto 0.45rem !important;
+  .sanctuary-callout,
+  .qhud-callout {
+    display: none !important;
   }
 
-  .hero-btn-primary {
+  .sanctuary-hotspot .qhotspot-card,
+  .quantum-hotspot .qhotspot-card {
+    width: 175px !important;
+    font-size: 0.65rem !important;
+    padding: 0.55rem 0.7rem !important;
+  }
+
+  .sanctuary-viewport-footer,
+  .qviewport-footer {
+    padding: 0.5rem 0.85rem !important;
+  }
+
+  .svf-label,
+  .qvf-tag {
+    font-size: 0.6rem !important;
+  }
+
+  .svf-hint,
+  .qvf-instruction {
+    display: none !important;
+  }
+
+  .sanctuary-trust-bar,
+  .quantum-stage-subbar {
+    flex-direction: column !important;
+    gap: 0.4rem !important;
+    text-align: center !important;
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.74rem !important;
+  }
+
+  .trust-bar-sep,
+  .qmetric-sep {
+    display: none !important;
+  }
+
+  .sanctuary-control-deck,
+  .quantum-control-deck {
+    grid-template-columns: 1fr !important;
+    gap: 1.35rem !important;
+  }
+
+  .sanctuary-feel-card,
+  .qdeck-feel-card {
+    padding: 0.95rem 1rem !important;
+  }
+
+  .sfeel-pills-row,
+  .qfeel-pills-row {
+    gap: 0.35rem !important;
+  }
+
+  .sfeel-pill,
+  .feel-pill-btn {
+    padding: 0.48rem 0.35rem !important;
+  }
+
+  .sfeel-name,
+  .fpill-name {
+    font-size: 0.68rem !important;
+  }
+
+  .sfeel-star,
+  .fpill-star {
+    display: none !important;
+  }
+
+  .sfeel-feedback,
+  .feel-feedback-card {
+    font-size: 0.74rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .sanctuary-btn-row,
+  .qaction-btn-row {
+    flex-direction: column !important;
+    gap: 0.65rem !important;
     width: 100% !important;
-    min-height: 44px !important;
-    height: 44px !important;
+  }
+
+  .btn-sanctuary-primary,
+  .btn-quantum-primary,
+  .btn-sanctuary-secondary,
+  .btn-quantum-secondary {
+    width: 100% !important;
+    min-height: 48px !important;
     font-size: 0.92rem !important;
     padding: 0 1.25rem !important;
-  }
-
-  .hero-secondary-link {
-    font-size: 0.82rem !important;
-    padding: 0.2rem 0.5rem !important;
-  }
-
-  .hero-trust-bar {
-    font-size: 0.66rem !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
-  }important;
-  }
-  .hero-secondary-link:hover,
-  .hero-secondary-link:active {
-    color: #38BDF8 !important;
-    gap: 0.6rem !important;
   }
 
-  /* Trust Highlights Bar */
-  .hero-trust-bar {
-    order: 7 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.65rem !important;
-    width: 100% !important;
+  .sanctuary-emi-card,
+  .qaction-emi-pill {
     font-size: 0.74rem !important;
-    color: #CBD5E1 !important;
-    margin: 0 auto !important;
-    flex-wrap: wrap !important;
+    padding: 0.5rem 0.75rem !important;
   }
 
-  /* Trust Highlights Bar */
-  .hero-trust-bar {
-    order: 7 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.65rem !important;
-    width: 100% !important;
-    font-size: 0.74rem !important;
-    color: #CBD5E1 !important;
-    margin: 0 auto !important;
-    flex-wrap: wrap !important;
+  /* Inside The Comfort Mobile */
+  .inside-comfort-section {
+    padding: 3.5rem 0 !important;
   }
-  .hero-trust-item {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.35rem !important;
+
+  .comfort-header-editorial {
+    margin-bottom: 2rem !important;
   }
-  .hero-trust-sep {
-    color: #475569 !important;
+
+  .comfort-title {
+    font-size: clamp(1.8rem, 6.5vw, 2.3rem) !important;
   }
-  .hero-trust-badge {
-    background: rgba(0, 180, 216, 0.16) !important;
-    border: 1px solid rgba(0, 180, 216, 0.45) !important;
-    padding: 0.25rem 0.65rem !important;
-    border-radius: 999px !important;
-    font-weight: 700 !important;
-    color: #E0F2FE !important;
+
+  .comfort-subtext {
+    font-size: 0.92rem !important;
+  }
+
+  .comfort-interactive-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.75rem !important;
+  }
+
+  .comfort-media-frame {
+    aspect-ratio: 16 / 11 !important;
+    padding: 1rem !important;
+  }
+
+  .comfort-layer-card {
+    padding: 1rem 1.15rem !important;
+  }
+
+  .tier-heading {
+    font-size: 0.98rem !important;
+  }
+
+  .tier-body {
+    font-size: 0.84rem !important;
   }
 
   /* Collection Polish & Filter Pills */
@@ -6921,6 +7027,12 @@ body.has-offer-ribbon .site-header {
   top: calc(var(--lora-ribbon-height-desktop) + 0.65rem);
 }
 
+body.has-offer-ribbon .sanctuary-hero-section,
+body.has-offer-ribbon .quantum-hero-section,
+body.has-offer-ribbon .cinema-hero-section {
+  padding-top: calc(6.5rem + var(--lora-ribbon-height-desktop) + env(safe-area-inset-top, 0px)) !important;
+}
+
 body.has-offer-ribbon .pdp-header-nav {
   top: var(--lora-ribbon-height-desktop);
 }
@@ -6960,8 +7072,12 @@ body.has-offer-ribbon.pdp-page {
     top: var(--lora-ribbon-height-mobile) !important;
   }
 
+  body.has-offer-ribbon .sanctuary-hero-section,
+  body.has-offer-ribbon .quantum-hero-section,
+  body.has-offer-ribbon .cinema-hero-section,
+  body.has-offer-ribbon .atelier-hero,
   body.has-offer-ribbon .hero-scroll-wrapper {
-    padding-top: calc(3.6rem + var(--lora-ribbon-height-mobile) + env(safe-area-inset-top, 0px)) !important;
+    padding-top: calc(4.8rem + var(--lora-ribbon-height-mobile) + env(safe-area-inset-top, 0px)) !important;
   }
 
   body.has-offer-ribbon .pdp-header-nav {

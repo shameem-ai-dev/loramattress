@@ -1,0 +1,101 @@
+{{ 'lora-sleeptech.css' | asset_url | stylesheet_tag }}
+
+<!-- =========================================================
+     LORA — "ENGINEERED SLEEP" PARTICLE HERO (blue theme)
+     Restless particle cloud -> 3D mattress -> 5 layers -> deep sleep
+     ========================================================= -->
+<section class="ls" id="lora-sleeptech" data-chapter="0" aria-label="LORA engineered sleep">
+  <div class="ls-stage">
+
+    <div class="ls-grid" aria-hidden="true"></div>
+    <canvas class="ls-canvas" aria-hidden="true"></canvas>
+    <img class="ls-fallback" src="{{ 'lora-cine-4-hero.jpg' | asset_url }}" alt="" aria-hidden="true" loading="lazy">
+    <div class="ls-scrim" aria-hidden="true"></div>
+    <div class="ls-progress" aria-hidden="true"><span></span></div>
+
+    <div class="ls-label" aria-hidden="true"><span><b>01</b>Quilted Euro-top</span></div>
+    <div class="ls-label" aria-hidden="true"><span><b>02</b>Natural latex</span></div>
+    <div class="ls-label" aria-hidden="true"><span><b>03</b>Cool-gel memory foam</span></div>
+    <div class="ls-label" aria-hidden="true"><span><b>04</b>7-zone pocket springs</span></div>
+    <div class="ls-label" aria-hidden="true"><span><b>05</b>High-density base</span></div>
+
+    <div class="ls-content">
+
+      <article class="ls-chapter">
+        <span class="ls-eyebrow ls-fade"><i></i>LORA Sleep-Tech</span>
+        <h2 class="ls-title">
+          <span class="ls-line" style="--d:0"><span>Restless nights</span></span>
+          <span class="ls-line" style="--d:1"><span class="ls-accent">end here.</span></span>
+        </h2>
+        <p class="ls-lede ls-fade" style="--d:3">Tossing, turning, waking up sore. Scroll to see what changes when every layer is engineered for sleep.</p>
+      </article>
+
+      <article class="ls-chapter">
+        <span class="ls-eyebrow ls-fade"><i></i>02 · Engineered</span>
+        <h2 class="ls-title">
+          <span class="ls-line" style="--d:0"><span>Chaos, turned</span></span>
+          <span class="ls-line" style="--d:1"><span class="ls-accent">into calm.</span></span>
+        </h2>
+        <p class="ls-lede ls-fade" style="--d:3">Precision-built in our own factory and shipped direct to you, with nothing lost in between.</p>
+        <div class="ls-stats">
+          <div class="ls-stat ls-fade" style="--d:4"><strong>7-Zone</strong><span>Orthopedic support</span></div>
+          <div class="ls-stat ls-fade" style="--d:5"><strong>15 yrs</strong><span>Warranty, up to</span></div>
+          <div class="ls-stat ls-fade" style="--d:6"><strong>5 Lakh+</strong><span>Deep sleepers</span></div>
+        </div>
+      </article>
+
+      <article class="ls-chapter">
+        <span class="ls-eyebrow ls-fade"><i></i>03 · Inside</span>
+        <h2 class="ls-title">
+          <span class="ls-line" style="--d:0"><span>Five layers.</span></span>
+          <span class="ls-line" style="--d:1"><span class="ls-accent">Zero compromise.</span></span>
+        </h2>
+        <p class="ls-lede ls-fade" style="--d:3">A quilted Euro-top, natural latex, cool-gel memory foam and 7-zone pocket springs, each doing one job perfectly.</p>
+      </article>
+
+      <article class="ls-chapter">
+        <span class="ls-eyebrow ls-fade"><i></i>04 · Deep sleep</span>
+        <h1 class="ls-title">
+          <span class="ls-line" style="--d:0"><span>Engineered for</span></span>
+          <span class="ls-line" style="--d:1"><span>Deep Sleep.</span></span>
+          <span class="ls-line" style="--d:2"><span class="ls-accent">Designed for You.</span></span>
+        </h1>
+        <p class="ls-lede ls-fade" style="--d:3">Precision-engineered orthopedic, hybrid and natural latex mattresses, direct from our factory.</p>
+        <div class="ls-actions ls-fade" style="--d:4">
+          <a class="ls-btn" href="#the-collection">
+            Shop the Collection
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="ls-btn-ghost" href="#sleep-quiz">Find my match</a>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="ls-foot" aria-hidden="true">
+      <div class="ls-wave">
+        <canvas></canvas>
+        <div class="ls-wave-meta"><small>Sleep state</small><b data-ls-state>Restless</b></div>
+      </div>
+      <div class="ls-counter">
+        <b data-ls-count>01</b>
+        <span class="ls-track"><span></span></span>
+        <span class="ls-total">04</span>
+      </div>
+    </div>
+
+    <div class="ls-trust">
+      <span>Trusted by <strong>5,00,000+ sleepers</strong></span>
+      <span class="ls-trust-sep" aria-hidden="true"></span>
+      <span>Up to <strong>15-year warranty</strong></span>
+      <span class="ls-trust-sep" aria-hidden="true"></span>
+      <span><strong>Orthopedic</strong> support</span>
+      <span class="ls-trust-sep" aria-hidden="true"></span>
+      <span><strong>Free</strong> flat delivery</span>
+      <span class="ls-trust-sep" aria-hidden="true"></span>
+      <span>Made with <strong>precision</strong></span>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'lora-sleeptech.js' | asset_url }}" defer></script>

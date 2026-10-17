@@ -345,8 +345,8 @@ const server = http.createServer((req, res) => {
         {
           id: "ribbon_2",
           tag: "FACTORY DIRECT",
-          text: "100% Natural Latex Mattresses Direct from Kerala Factory to Your Bedroom",
-          link: "#factory-direct"
+          text: "100% Natural Latex & Memory Foam Mattresses Direct from Factory to Your Bedroom",
+          link: "#the-collection"
         },
         {
           id: "ribbon_3",
@@ -357,8 +357,8 @@ const server = http.createServer((req, res) => {
         {
           id: "ribbon_4",
           tag: "FREE DELIVERY",
-          text: "Complimentary Flat Delivery & Unboxing Across Kerala within 24–48 Hours",
-          link: "#factory-direct"
+          text: "Complimentary Flat Delivery & Unboxing Across India within 24–48 Hours",
+          link: "#the-collection"
         }
       ],
       updatedAt: new Date().toISOString()

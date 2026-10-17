@@ -1,0 +1,82 @@
+{{ 'lora-float.css' | asset_url | stylesheet_tag }}
+<!-- =========================================================
+     LORA — FLOATING MATTRESS HERO
+     Silk-wave night scene, CSS-3D mattress that explodes into its six layers on scroll
+     ========================================================= -->
+<section class="lf" id="lora-float" data-logo="{{ 'lora-logo-transparent.png' | asset_url }}" aria-label="Meet the LORA mattress">
+  <div class="lf-sticky">
+    <div class="lf-bg" aria-hidden="true">
+      <img src="{{ 'lora-float-bg.jpg' | asset_url }}" alt="" fetchpriority="high" decoding="async">
+    </div>
+    <canvas class="lf-lines" aria-hidden="true"></canvas>
+    <div class="lf-shade" aria-hidden="true"></div>
+
+    <div class="lf-stage" aria-hidden="true">
+      <div class="lf-glow"></div>
+      <div class="lf-ground">
+        <div class="lf-shadow"></div>
+        <div class="lf-ring"></div>
+        <div class="lf-ring"></div>
+        <div class="lf-ring"></div>
+      </div>
+      <div class="lf-enter">
+        <div class="lf-float">
+          <div class="lf-mt">
+            <div class="lf-slab lf-base"></div>
+            <div class="lf-slab lf-springs lf-shelled"></div>
+            <div class="lf-slab lf-gel lf-shelled"></div>
+            <div class="lf-slab lf-latex lf-shelled"></div>
+            <div class="lf-slab lf-comfort lf-shelled"></div>
+            <div class="lf-slab lf-quilt"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lf-tags" aria-label="What's inside a LORA mattress">
+      <span class="lf-tag"><i>01</i><span class="l">Cloud-soft quilted top</span><span class="s">Quilted top</span></span>
+      <span class="lf-tag"><i>02</i><span class="l">Breathable comfort foam</span><span class="s">Comfort foam</span></span>
+      <span class="lf-tag"><i>03</i><span class="l">Natural latex bounce</span><span class="s">Natural latex</span></span>
+      <span class="lf-tag"><i>04</i><span class="l">Cool-gel memory foam</span><span class="s">Cool-gel foam</span></span>
+      <span class="lf-tag"><i>05</i><span class="l">7-zone pocket springs</span><span class="s">Pocket springs</span></span>
+      <span class="lf-tag"><i>06</i><span class="l">Rock-solid support base</span><span class="s">Support base</span></span>
+    </div>
+
+    <div class="lf-copy">
+      <span class="lf-eyebrow">Hey, night owl</span>
+      <h1 class="lf-title">{{ section.settings.title_line_1 }} <em>{{ section.settings.title_line_2 }}</em></h1>
+      <p class="lf-sub">{{ section.settings.subtitle }}</p>
+      <div class="lf-actions">
+        <a class="lf-btn" href="#the-collection">Find your comfy</a>
+        <a class="lf-link" href="#sleep-quiz">60-sec sleep quiz
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="lf-trust">
+        <span><strong>5,00,000+</strong> sleepers</span>
+        <span>Up to <strong>15-year</strong> warranty</span>
+        <span><strong>Orthopedic</strong> support</span>
+        <span><strong>Free</strong> flat delivery</span>
+        <span>Made with <strong>precision</strong></span>
+      </div>
+    </div>
+
+    <a class="lf-cue" href="#inside-comfort">Peek inside
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+    </a>
+  </div>
+</section>
+
+<script src="{{ 'lora-float.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "LORA floating hero",
+  "settings": [
+    { "type": "text", "id": "title_line_1", "label": "Title line 1", "default": "We’ve Thought About Every Layer," },
+    { "type": "text", "id": "title_line_2", "label": "Title line 2 (accent)", "default": "So You Can Forget About Everything Else" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Every Inch Has a Story of Comfort." }
+  ],
+  "presets": [{ "name": "LORA floating hero" }]
+}
+{% endschema %}

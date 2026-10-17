@@ -1,166 +1,146 @@
-<section class="hero-scroll-wrapper" id="signature-hero" aria-label="LORA Deconstructed Sleep Science">
-  <div class="hero-sticky-container">
-    <!-- Visual Stage with 3D Zero-Gravity Deconstructed Anatomy -->
-    <div class="hero-visual-stage">
-      <img src="{{ section.settings.image_assembled | default: 'hero-lora-flagship.jpg' | asset_url }}" 
-           alt="LORA Assembled Zero-G Mattress" 
-           class="hero-stage-layer stage-layer-assembled" 
-           fetchpriority="high"
-           width="1920" 
-           height="1080">
+<section class="atelier-scroll-hero quantum-hero-section scroll-deconstruct-section" id="signature-hero" aria-label="LORA Mattress Deconstructed Scroll Runway">
+  
+  <!-- Seamless Full-Bleed Deep Sapphire Midnight Backdrop (Zero Canvas Dots) -->
+  <div class="atelier-backdrop" aria-hidden="true">
+    <div class="atelier-navy-gradient"></div>
+    <div class="atelier-radial-aura"></div>
+  </div>
 
-      <img src="{{ section.settings.image_exploded | default: 'hero-lora-exploded.jpg' | asset_url }}" 
-           alt="LORA 4-Tier Deconstructed Architectural Layers" 
-           class="hero-stage-layer stage-layer-exploded" 
-           loading="eager"
-           width="1920" 
-           height="1080">
-
-      <img src="{{ section.settings.image_spine | default: 'hero-lora-spine.jpg' | asset_url }}" 
-           alt="LORA SpineAlign 7-Zone Biometric Contour" 
-           class="hero-stage-layer stage-layer-spine" 
-           loading="eager"
-           width="1920" 
-           height="1080">
-
-      <div class="hero-vignette-overlay"></div>
-      <div class="hero-callout-overlay"></div>
-    </div>
-
-    <!-- Hero Content Overlay -->
-    <div class="container hero-content-overlay">
-      <div class="hero-header-block">
-        <div class="hero-status-pill">
-          <span class="pulse-node"></span>
-          <span class="scrub-status-label">01 / ASSEMBLED CORE • ZERO-G SUSPENSION</span>
+  <!-- Sticky Viewport Stage: Locks in place during scroll runway -->
+  <div class="atelier-sticky-stage" id="atelier-sticky-stage">
+    <div class="atelier-stage-inner">
+      
+      <!-- 1. Top Editorial Masthead (Exact Reference Layout in Blue Theme, Zero Dots) -->
+      <header class="atelier-masthead">
+        <div class="atelier-badge font-mono">
+          <span>LORA ATELIER · SLEEP ARCHITECTURE</span>
         </div>
-
-        <h1 class="hero-title hero-title-dynamic">
-          Better nights.<br>
-          <span class="gradient-text">Better mornings.</span>
+        <h1 class="atelier-title">
+          Engineered for Deep Sleep.
+          <span class="atelier-title-accent">Designed for You.</span>
         </h1>
+        <div class="atelier-rule-line" aria-hidden="true"></div>
+        <p class="atelier-subtitle">{{ section.settings.supporting_copy | default: "Premium Comfort. Lasting Quality." }}</p>
 
-        <p class="hero-supporting-copy hero-copy-dynamic">
-          {{ section.settings.supporting_copy | default: 'Leave the day behind. The unified LORA core floats in zero-gravity suspension. Molecular comfort foam meets zoned titanium coils—scroll to deconstruct the architecture.' }}
-        </p>
-
-        <div class="hero-ctas">
-          <a href="{{ section.settings.primary_cta_link | default: '#the-collection' }}" class="btn btn-primary" style="padding: 1.05rem 2.25rem; font-size: 1rem;">
-            {{ section.settings.primary_cta_label | default: 'Explore The 8 Models' }} ↓
-          </a>
-          <a href="{{ section.settings.secondary_cta_link | default: '#sleep-quiz' }}" class="btn btn-outline-white" style="padding: 1.05rem 2.25rem; font-size: 1rem;">
-            {{ section.settings.secondary_cta_label | default: 'Find Your Sleep Match ✨' }}
-          </a>
-        </div>
-
-        <!-- Financing & Trust Highlights -->
-        <div style="display: flex; gap: 1.75rem; margin-top: 1.75rem; font-size: 0.84rem; color: #E2E8F0; align-items: center; flex-wrap: wrap;">
-          <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
-            <strong style="color: #38BDF8;">★ 4.9/5</strong> Google Rated (5,00,000+ Sleepers)
-          </span>
-          <span>•</span>
-          <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
-            <strong style="color: #38BDF8;">15-Year</strong> Direct Factory Warranty
-          </span>
-          <span>•</span>
-          <span style="background: rgba(0, 180, 216, 0.15); border: 1px solid rgba(0, 180, 216, 0.4); padding: 0.25rem 0.65rem; border-radius: var(--radius-sm); font-weight: 700; color: #E0F2FE;">
-            Bajaj EMI Assistance Available
-          </span>
-        </div>
-      </div>
-
-      <!-- Floating Biometric HUD Overlay -->
-      <div class="hero-floating-hud">
-        <div class="hud-header">
-          <span class="hud-title">SpineAlign™ Architecture Telemetry</span>
-          <span class="badge-verified" id="hud-status-tag">ZERO-G SUSPENSION</span>
-        </div>
-
-        <svg class="spine-contour-svg" viewBox="0 0 320 60">
-          <defs>
-            <linearGradient id="spine-cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#00B4D8" />
-              <stop offset="50%" stop-color="#48CAE4" />
-              <stop offset="100%" stop-color="#0077B6" />
-            </linearGradient>
-          </defs>
-          <path id="hero-spine-path" class="spine-svg-line" d="M 10 32 Q 45 20, 90 28 T 160 34 T 240 26 T 310 32" />
-          <circle class="spine-node-dot" cx="45" cy="24" r="3.5" />
-          <circle class="spine-node-dot" cx="90" cy="28" r="3.5" />
-          <circle class="spine-node-dot" cx="160" cy="34" r="3.5" />
-          <circle class="spine-node-dot" cx="240" cy="26" r="3.5" />
-        </svg>
-
-        <div class="hud-metrics-row">
-          <div class="hud-metric-box">
-            <span class="hud-metric-label" id="hud-m1-label">Core Architecture</span>
-            <span class="hud-metric-val" id="hud-m1-val">Multi-Tier Unified</span>
-          </div>
-          <div class="hud-metric-box">
-            <span class="hud-metric-label" id="hud-m2-label">Surface Cooling</span>
-            <span class="hud-metric-val" id="hud-m2-val">Active Micro-Knit</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Interactive 3D Stage Controller Bar -->
-      <div class="hero-footer-bar">
-        <div class="circadian-controller">
-          <div class="phase-buttons">
-            <button type="button" class="phase-btn active" data-phase="0.12">01. Assembled Core</button>
-            <button type="button" class="phase-btn" data-phase="0.48">02. Deconstructed Layers</button>
-            <button type="button" class="phase-btn" data-phase="0.84">03. SpineAlign™ Science</button>
-          </div>
-
-          <div class="timeline-track-wrapper" title="Drag or click to scrub 3D deconstruction">
-            <div class="timeline-track">
-              <div class="timeline-thumb"></div>
+        <!-- 5 Feature Buttons Row (Matches Reference Image Cleanly) -->
+        <div class="atelier-features-row" role="tablist" aria-label="Mattress Core Features">
+          <button type="button" class="afr-item active" data-feature="0" role="tab" aria-selected="true" aria-label="Orthopedic Support">
+            <div class="afr-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 7l10-4 10 4-10 4L2 7z"/><path d="M2 12l10 4 10-4"/><path d="M2 17l10 4 10-4"/></svg>
             </div>
-          </div>
-
-          <button type="button" class="hero-loop-toggle">
-            <span>⏸ Pause Ambient Float</span>
+            <span class="afr-label font-mono">Orthopedic<br>Support</span>
+          </button>
+          <button type="button" class="afr-item" data-feature="1" role="tab" aria-selected="false" aria-label="Cooling Technology">
+            <div class="afr-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/><circle cx="12" cy="12" r="2.5"/></svg>
+            </div>
+            <span class="afr-label font-mono">Cooling<br>Technology</span>
+          </button>
+          <button type="button" class="afr-item" data-feature="2" role="tab" aria-selected="false" aria-label="Natural Latex Comfort">
+            <div class="afr-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+            </div>
+            <span class="afr-label font-mono">Natural Latex<br>Comfort</span>
+          </button>
+          <button type="button" class="afr-item" data-feature="3" role="tab" aria-selected="false" aria-label="Up to 15 Years Warranty">
+            <div class="afr-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><text x="12" y="14.5" font-size="7.5" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none" font-family="sans-serif">15</text></svg>
+            </div>
+            <span class="afr-label font-mono">Up to 15 Years<br>Warranty</span>
+          </button>
+          <button type="button" class="afr-item" data-feature="4" role="tab" aria-selected="false" aria-label="Breathable Fabric">
+            <div class="afr-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 18c4-1 6-3 8-3s4 2 8 3"/><path d="M4 21c4-1 6-3 8-3s4 2 8 3"/><path d="M7 11V3m0 0L4.5 5.5M7 3l2.5 2.5"/><path d="M12 11V2m0 0l-2.5 2.5M12 2l2.5 2.5"/><path d="M17 11V3m0 0l-2.5 2.5M17 3l2.5 2.5"/></svg>
+            </div>
+            <span class="afr-label font-mono">Breathable<br>Fabric</span>
           </button>
         </div>
+      </header>
 
-        <a href="#the-collection" style="color: #94A3B8; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
-          <span>Scroll to Explore 8 Models</span> ↓
-        </a>
+      <!-- 2. Centerpiece Mattress Viewport (Grand, Seamless, Zero Box, Zero Dotted Beacons) -->
+      <div class="atelier-visual-stage" id="atelier-visual-stage">
+        <div class="atelier-stage-glow" aria-hidden="true"></div>
+        <div class="atelier-ground-pedestal" aria-hidden="true"></div>
+        
+        <div class="atelier-render-stack">
+          <!-- Stage 0: Assembled 3D Graphical Mattress (100% Transparent, No Room Background) -->
+          <img src="{{ 'hero-lora-flagship.png' | asset_url }}?v=4" alt="LORA Assembled Masterpiece Hybrid Mattress" class="atelier-render-img render-assembled active" id="atelier-img-assembled">
+          
+          <!-- Stage 1-4: Exploded 5-Layers Floating in Mid-Air (100% Transparent, No Room Background) -->
+          <img src="{{ 'hero-architecture-exploded.png' | asset_url }}?v=4" alt="LORA 5-Layer Deconstructed Architecture" class="atelier-render-img render-exploded" id="atelier-img-exploded">
+          
+          <!-- Stage 5: SpineAlign Zero-Gravity Holographic View (100% Transparent, No Room Background) -->
+          <img src="{{ 'hero-lora-spine.png' | asset_url }}?v=4" alt="LORA SpineAlign Zero-Gravity Ergonomic Alignment" class="atelier-render-img render-spine" id="atelier-img-spine">
+        </div>
       </div>
+
+      <!-- 3. Minimalist Editorial Layer Strip (Zero Dots, Elegant Luxury Navigation) -->
+      <div class="atelier-layer-strip" id="atelier-layer-strip">
+        <nav class="als-tab-group" role="tablist" aria-label="Mattress Anatomical Layers">
+          <button type="button" class="als-tab active" data-step="0" role="tab" aria-selected="true">01 Flagship</button>
+          <button type="button" class="als-tab" data-step="1" role="tab" aria-selected="false">02 Linen Quilt</button>
+          <button type="button" class="als-tab" data-step="2" role="tab" aria-selected="false">03 Memory Foam</button>
+          <button type="button" class="als-tab" data-step="3" role="tab" aria-selected="false">04 Botanical Latex</button>
+          <button type="button" class="als-tab" data-step="4" role="tab" aria-selected="false">05 Pocket Coils</button>
+          <button type="button" class="als-tab" data-step="5" role="tab" aria-selected="false">06 SpineAlign</button>
+        </nav>
+        
+        <div class="als-info" id="atelier-narrative-deck" aria-live="polite">
+          <span class="als-title" id="an-heading">The Handcrafted LORA Flagship</span>
+          <span class="als-sep">|</span>
+          <span class="als-detail" id="an-metrics">300mm Profile  ·  Zero Motion Transfer  ·  15-Year Warranty</span>
+        </div>
+      </div>
+
+      <!-- 4. Bottom Floating Pill Trust Bar (Exact Reference Match, Pill Ends, Glassmorphic Navy) -->
+      <footer class="atelier-trust-bar">
+        <div class="atb-grid font-mono">
+          <div class="atb-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Trusted by<br><strong>5,00,000+ Sleepers</strong></span>
+          </div>
+          <div class="atb-sep" aria-hidden="true"></div>
+          <div class="atb-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <span>Quality You<br><strong>Can Trust</strong></span>
+          </div>
+          <div class="atb-sep" aria-hidden="true"></div>
+          <div class="atb-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>Made with<br><strong>Precision</strong></span>
+          </div>
+          <div class="atb-sep" aria-hidden="true"></div>
+          <div class="atb-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>
+            <span>Designed for<br><strong>Better Sleep</strong></span>
+          </div>
+          <div class="atb-sep" aria-hidden="true"></div>
+          <div class="atb-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+            <span>Comfort You Feel,<br><strong>Every Day</strong></span>
+          </div>
+        </div>
+      </footer>
+
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Deconstructed 3D Hero",
+  "name": "Deconstructed Scroll Hero",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "image_assembled",
-      "label": "Assembled Core Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_exploded",
-      "label": "Exploded Layers Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_spine",
-      "label": "SpineAlign Mapping Image"
-    },
     {
       "type": "textarea",
       "id": "supporting_copy",
-      "label": "Supporting Copy",
-      "default": "Leave the day behind. The unified LORA core floats in zero-gravity suspension. Molecular comfort foam meets zoned titanium coils—scroll to deconstruct the architecture."
+      "label": "Supporting Subtitle",
+      "default": "Premium Comfort. Lasting Quality."
     },
     {
       "type": "text",
       "id": "primary_cta_label",
       "label": "Primary Button Label",
-      "default": "Explore The 8 Models"
+      "default": "Explore The Collection"
     },
     {
       "type": "url",
@@ -181,7 +161,7 @@
   ],
   "presets": [
     {
-      "name": "Deconstructed 3D Hero"
+      "name": "Deconstructed Scroll Hero"
     }
   ]
 }

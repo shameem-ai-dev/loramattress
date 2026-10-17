@@ -272,7 +272,7 @@
             <div class="lumi-q-chip-grid">
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('Why is LORA full-size flat delivery better than compressed rolled box?')">Why flat delivery?</button>
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What standard sizes and custom dimensions can you make?')">Sizing & Custom fit</button>
-              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What is the 100-night trial and warranty coverage?')">Trial & Warranty</button>
+              <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('What is the 15-year warranty and factory guarantee coverage?')">15-Year Warranty</button>
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.ask('How does Bajaj EMI assistance work?')">EMI Options</button>
               <button type="button" class="lumi-q-chip" onclick="window.LoraLumi.requestLeadCard()">Request Specialist Call</button>
             </div>
