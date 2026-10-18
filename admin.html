@@ -3471,6 +3471,7 @@ fbq('track', 'PageView');
                   <h3 style="font-size: 1.05rem; font-weight: 800; color: #FFFFFF; margin: 0;">2. WhatsApp OTP Integration</h3>
                   <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
                     <span class="otp-provider-badge">Meta Cloud API</span>
+                    <span class="otp-provider-badge">Fast2SMS</span>
                     <span class="otp-provider-badge">Gupshup</span>
                     <span class="otp-provider-badge">Twilio</span>
                     <span class="otp-provider-badge">Interakt</span>
@@ -3495,13 +3496,14 @@ fbq('track', 'PageView');
                 <label>WhatsApp Provider</label>
                 <select id="cfg-wa-provider" class="admin-select">
                   <option value="Meta WhatsApp Cloud API" selected>Meta WhatsApp Cloud API (Official & Recommended)</option>
+                  <option value="Fast2SMS">Fast2SMS WhatsApp Business / OTP API</option>
                   <option value="Gupshup">Gupshup Enterprise Messaging API</option>
                   <option value="Twilio">Twilio WhatsApp Messaging</option>
                   <option value="Interakt">Interakt WhatsApp Business API</option>
                   <option value="WATI">WATI WhatsApp Business Suite</option>
                   <option value="Custom WhatsApp API">Custom Webhook / REST WhatsApp Gateway</option>
                 </select>
-                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Official WhatsApp Business API integration with high deliverability.</span>
+                <span id="cfg-wa-provider-hint" class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Official WhatsApp Business API integration with high deliverability.</span>
               </div>
 
               <div class="input-block">
@@ -3520,7 +3522,7 @@ fbq('track', 'PageView');
               </div>
               <div class="field-grid-2" style="margin-bottom: 0;">
                 <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">WHATSAPP_API_TOKEN</div>
+                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">WHATSAPP_API_TOKEN / FAST2SMS_API_KEY</div>
                   <div id="cfg-wa-key-display" style="font-size: 0.84rem; font-weight: 700; color: #94A3B8; font-family: monospace;">Loading...</div>
                 </div>
                 <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
@@ -3529,7 +3531,7 @@ fbq('track', 'PageView');
                 </div>
               </div>
               <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0.5rem 0 0 0; line-height: 1.4;">
-                🔒 <strong>Single Source of Truth:</strong> WhatsApp Cloud API access token is read securely from server environment variable (<code>WHATSAPP_API_TOKEN</code>). Configure it in GoDaddy <em>Setup Node.js App → Environment Variables</em> and click <strong>Restart</strong>.
+                🔒 <strong>Single Source of Truth:</strong> WhatsApp access token / API key is read securely from server environment variable (<code>WHATSAPP_API_TOKEN</code> or <code>FAST2SMS_API_KEY</code> / <code>SMS_API_KEY</code>). Configure it in GoDaddy <em>Setup Node.js App → Environment Variables</em> and click <strong>Restart</strong>.
               </p>
             </div>
 
@@ -7772,7 +7774,8 @@ Order Notes: [Customer Instructions]</pre>
           waKeyDisp.style.color = otpStatus.whatsapp?.has_key ? '#34D399' : '#F87171';
         }
         if (waPhoneDisp) {
-          waPhoneDisp.textContent = otpConfig.whatsapp?.phoneId || 'Configured in GoDaddy';
+          const isFast = (otpConfig.whatsapp?.provider || '').includes('Fast2SMS');
+          waPhoneDisp.textContent = isFast ? 'Fast2SMS WABA Gateway' : (otpConfig.whatsapp?.phoneId || 'Configured in GoDaddy');
         }
 
         // Email
@@ -8008,6 +8011,29 @@ Order Notes: [Customer Instructions]</pre>
           otpConfig.whatsapp.templateName = document.querySelector('#cfg-wa-template-name').value;
           otpConfig.whatsapp.templateLang = document.querySelector('#cfg-wa-template-lang').value;
           saveOtpConfig('wa-save-feedback');
+        });
+      }
+
+      // WhatsApp Provider Switch Handler (Fast2SMS / Meta Cloud)
+      const waProvSelect = document.querySelector('#cfg-wa-provider');
+      const waApiInput = document.querySelector('#cfg-wa-api-url');
+      const waHint = document.querySelector('#cfg-wa-provider-hint');
+      if (waProvSelect) {
+        waProvSelect.addEventListener('change', function () {
+          const val = waProvSelect.value;
+          if (val === 'Fast2SMS') {
+            if (!waApiInput.value || waApiInput.value.includes('graph.facebook.com')) {
+              waApiInput.value = 'https://www.fast2sms.com/dev/whatsapp';
+            }
+            if (waHint) waHint.textContent = 'Fast2SMS WhatsApp API integration. Uses FAST2SMS_API_KEY, WHATSAPP_API_TOKEN, or SMS_API_KEY.';
+            const phoneDisp = document.querySelector('#cfg-wa-phone-display');
+            if (phoneDisp) phoneDisp.textContent = 'Fast2SMS WABA Gateway';
+          } else if (val.includes('Meta')) {
+            if (!waApiInput.value || waApiInput.value.includes('fast2sms.com')) {
+              waApiInput.value = 'https://graph.facebook.com/v18.0/108429183429812/messages';
+            }
+            if (waHint) waHint.textContent = 'Official WhatsApp Business API integration with high deliverability.';
+          }
         });
       }
 

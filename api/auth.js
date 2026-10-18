@@ -26,9 +26,12 @@ function getIntegrationStatus() {
   const smsSenderId = (process.env.SMS_SENDER_ID || 'LORAMT').trim();
   const smsConfigured = Boolean(smsKey);
 
+  const waProvider = (process.env.WHATSAPP_PROVIDER || 'META_CLOUD').trim();
+  const isFast2SmsWa = waProvider.toUpperCase() === 'FAST2SMS' || waProvider.toUpperCase().includes('FAST2SMS');
   const waToken = (process.env.WHATSAPP_API_TOKEN || '').trim();
   const waPhoneId = (process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
-  const waConfigured = Boolean(waToken && waPhoneId);
+  const fastKey = (process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY || '').trim();
+  const waConfigured = isFast2SmsWa ? Boolean(waToken || fastKey) : Boolean(waToken && waPhoneId);
 
   const smtpHost = (process.env.SMTP_HOST || '').trim();
   const smtpUser = (process.env.SMTP_USER || '').trim();
@@ -50,8 +53,8 @@ function getIntegrationStatus() {
     },
     whatsapp: {
       configured: waConfigured,
-      provider: process.env.WHATSAPP_PROVIDER || 'META_CLOUD',
-      phone_id: waPhoneId ? (waPhoneId.slice(0, 4) + '••••') : null
+      provider: waProvider,
+      phone_id: waPhoneId ? (waPhoneId.slice(0, 4) + '••••') : (isFast2SmsWa && waConfigured ? 'Fast2SMS WABA' : null)
     },
     email: {
       configured: emailConfigured,

@@ -94,8 +94,66 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // 3. Test WhatsApp Gateway (Read-only Graph API /me check)
+    // 3. Test WhatsApp Gateway
     else if (channel === 'whatsapp') {
+      const waProvider = (payload.provider || process.env.WHATSAPP_PROVIDER || 'META_CLOUD').toUpperCase();
+      const isFast2Sms = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
+
+      if (isFast2Sms) {
+        const apiKey = (process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY || '').trim();
+
+        if (!apiKey) {
+          return res.status(200).json({
+            success: false,
+            configured: false,
+            message: 'Fast2SMS WhatsApp Gateway Unconfigured: FAST2SMS_API_KEY, WHATSAPP_API_TOKEN, or SMS_API_KEY is missing from GoDaddy.'
+          });
+        }
+
+        // Query Fast2SMS balance/status endpoint (read-only; sends 0 messages, incurs 0 charge)
+        const checkResult = await new Promise((resolve) => {
+          const reqOpt = {
+            hostname: 'www.fast2sms.com',
+            path: '/dev/wallet',
+            method: 'POST',
+            headers: {
+              'authorization': apiKey,
+              'Content-Type': 'application/json'
+            },
+            timeout: 6000
+          };
+          const fReq = https.request(reqOpt, (fRes) => {
+            let body = '';
+            fRes.on('data', c => body += c);
+            fRes.on('end', () => {
+              try {
+                const parsed = JSON.parse(body);
+                resolve({ ok: parsed.return === true, wallet: parsed.wallet, message: parsed.message });
+              } catch (e) {
+                resolve({ ok: false, error: body });
+              }
+            });
+          });
+          fReq.on('error', err => resolve({ ok: false, error: err.message }));
+          fReq.on('timeout', () => { fReq.destroy(); resolve({ ok: false, error: 'Fast2SMS timeout' }); });
+          fReq.end();
+        });
+
+        if (checkResult.ok) {
+          return res.status(200).json({
+            success: true,
+            configured: true,
+            message: `Fast2SMS WhatsApp Gateway handshake verified! Active wallet balance: ₹${checkResult.wallet ?? '0'}. Ready for WhatsApp OTP dispatch.`
+          });
+        } else {
+          return res.status(200).json({
+            success: false,
+            configured: true,
+            message: `Fast2SMS authentication failed: ${checkResult.message || 'Invalid API key'}. Check FAST2SMS_API_KEY or WHATSAPP_API_TOKEN in GoDaddy.`
+          });
+        }
+      }
+
       const waToken = (process.env.WHATSAPP_API_TOKEN || '').trim();
       const waPhoneId = (process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
 

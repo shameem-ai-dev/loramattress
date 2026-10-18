@@ -21,6 +21,12 @@ module.exports = async function handler(req, res) {
 
   // GET: Return integration configuration status without revealing secrets
   if (req.method === 'GET') {
+    const waProvider = (process.env.WHATSAPP_PROVIDER || 'META_CLOUD').toUpperCase();
+    const isFast2SmsWa = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
+    const waConfigured = isFast2SmsWa
+      ? Boolean(process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY)
+      : Boolean(process.env.WHATSAPP_API_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID);
+
     return res.status(200).json({
       success: true,
       channels: {
@@ -30,7 +36,7 @@ module.exports = async function handler(req, res) {
           sender_id: process.env.SMS_SENDER_ID || 'LORAMT'
         },
         whatsapp: {
-          configured: Boolean(process.env.WHATSAPP_API_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID),
+          configured: waConfigured,
           provider: process.env.WHATSAPP_PROVIDER || 'META_CLOUD'
         },
         email: {
@@ -134,70 +140,137 @@ module.exports = async function handler(req, res) {
 
     // 2. Channel: WhatsApp
     else if (channel === 'whatsapp') {
-      const waToken = (process.env.WHATSAPP_API_TOKEN || '').trim();
-      const waPhoneId = (process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
+      const waProvider = (payload.provider || process.env.WHATSAPP_PROVIDER || 'META_CLOUD').toUpperCase();
+      const isFast2Sms = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
 
-      if (!waToken || !waPhoneId) {
-        return res.status(503).json({
-          success: false,
-          configured: false,
-          message: 'WhatsApp OTP service is unconfigured. Please add WHATSAPP_API_TOKEN and WHATSAPP_PHONE_NUMBER_ID in GoDaddy environment variables.'
-        });
-      }
+      if (isFast2Sms) {
+        const apiKey = (process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY || '').trim();
 
-      // Real Meta Cloud API dispatch
-      const waPost = JSON.stringify({
-        messaging_product: 'whatsapp',
-        to: identifier.replace(/[^0-9]/g, ''),
-        type: 'template',
-        template: {
-          name: process.env.WHATSAPP_TEMPLATE_NAME || 'lora_auth_otp',
-          language: { code: 'en' },
-          components: [
-            {
-              type: 'body',
-              parameters: [{ type: 'text', text: plainOtp }]
-            },
-            {
-              type: 'button',
-              sub_type: 'url',
-              index: '0',
-              parameters: [{ type: 'text', text: plainOtp }]
-            }
-          ]
-        }
-      });
-
-      const waResult = await new Promise((resolve) => {
-        const reqOpt = {
-          hostname: 'graph.facebook.com',
-          path: `/v18.0/${waPhoneId}/messages`,
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${waToken}`,
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(waPost)
-          },
-          timeout: 8000
-        };
-        const waReq = https.request(reqOpt, (waRes) => {
-          let body = '';
-          waRes.on('data', c => body += c);
-          waRes.on('end', () => {
-            resolve({ ok: waRes.statusCode >= 200 && waRes.statusCode < 300, body });
+        if (!apiKey) {
+          return res.status(503).json({
+            success: false,
+            configured: false,
+            message: 'Fast2SMS WhatsApp OTP service is unconfigured. Please add FAST2SMS_API_KEY or WHATSAPP_API_TOKEN in GoDaddy environment variables.'
           });
-        });
-        waReq.on('error', err => resolve({ ok: false, error: err.message }));
-        waReq.on('timeout', () => { waReq.destroy(); resolve({ ok: false, error: 'WhatsApp timeout' }); });
-        waReq.write(waPost);
-        waReq.end();
-      });
+        }
 
-      if (!waResult.ok) {
-        return res.status(502).json({
-          success: false,
-          message: 'WhatsApp delivery failed. Check WHATSAPP_API_TOKEN and WHATSAPP_PHONE_NUMBER_ID in GoDaddy.'
+        const cleanPhone = identifier.replace(/[^0-9]/g, '').slice(-10);
+        const messageId = (process.env.FAST2SMS_WHATSAPP_MESSAGE_ID || process.env.WHATSAPP_TEMPLATE_NAME || payload.templateName || 'lora_auth_otp').trim();
+
+        const postBody = {
+          numbers: cleanPhone,
+          variables_values: plainOtp
+        };
+        if (messageId) postBody.message_id = messageId;
+        if (process.env.WHATSAPP_PHONE_NUMBER_ID) postBody.phone_number_id = process.env.WHATSAPP_PHONE_NUMBER_ID;
+
+        const postData = JSON.stringify(postBody);
+
+        const fastWaResult = await new Promise((resolve) => {
+          const reqOpt = {
+            hostname: 'www.fast2sms.com',
+            path: '/dev/whatsapp',
+            method: 'POST',
+            headers: {
+              'authorization': apiKey,
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(postData)
+            },
+            timeout: 8000
+          };
+          const waReq = https.request(reqOpt, (waRes) => {
+            let body = '';
+            waRes.on('data', c => body += c);
+            waRes.on('end', () => {
+              try {
+                const parsed = JSON.parse(body);
+                resolve({
+                  ok: parsed.return === true || waRes.statusCode === 200,
+                  error: parsed.message || (Array.isArray(parsed.message) ? parsed.message.join(', ') : body)
+                });
+              } catch (e) {
+                resolve({ ok: waRes.statusCode === 200, error: body });
+              }
+            });
+          });
+          waReq.on('error', err => resolve({ ok: false, error: err.message }));
+          waReq.on('timeout', () => { waReq.destroy(); resolve({ ok: false, error: 'Fast2SMS WhatsApp gateway timeout' }); });
+          waReq.write(postData);
+          waReq.end();
         });
+
+        if (!fastWaResult.ok) {
+          return res.status(502).json({
+            success: false,
+            message: `Fast2SMS WhatsApp transmission failed (${fastWaResult.error || 'Provider rejected request'}). Check FAST2SMS_API_KEY in GoDaddy.`
+          });
+        }
+      } else {
+        const waToken = (process.env.WHATSAPP_API_TOKEN || '').trim();
+        const waPhoneId = (process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
+
+        if (!waToken || !waPhoneId) {
+          return res.status(503).json({
+            success: false,
+            configured: false,
+            message: 'WhatsApp OTP service is unconfigured. Please add WHATSAPP_API_TOKEN and WHATSAPP_PHONE_NUMBER_ID in GoDaddy environment variables.'
+          });
+        }
+
+        // Real Meta Cloud API dispatch
+        const waPost = JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: identifier.replace(/[^0-9]/g, ''),
+          type: 'template',
+          template: {
+            name: process.env.WHATSAPP_TEMPLATE_NAME || 'lora_auth_otp',
+            language: { code: 'en' },
+            components: [
+              {
+                type: 'body',
+                parameters: [{ type: 'text', text: plainOtp }]
+              },
+              {
+                type: 'button',
+                sub_type: 'url',
+                index: '0',
+                parameters: [{ type: 'text', text: plainOtp }]
+              }
+            ]
+          }
+        });
+
+        const waResult = await new Promise((resolve) => {
+          const reqOpt = {
+            hostname: 'graph.facebook.com',
+            path: `/v18.0/${waPhoneId}/messages`,
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${waToken}`,
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(waPost)
+            },
+            timeout: 8000
+          };
+          const waReq = https.request(reqOpt, (waRes) => {
+            let body = '';
+            waRes.on('data', c => body += c);
+            waRes.on('end', () => {
+              resolve({ ok: waRes.statusCode >= 200 && waRes.statusCode < 300, body });
+            });
+          });
+          waReq.on('error', err => resolve({ ok: false, error: err.message }));
+          waReq.on('timeout', () => { waReq.destroy(); resolve({ ok: false, error: 'WhatsApp timeout' }); });
+          waReq.write(waPost);
+          waReq.end();
+        });
+
+        if (!waResult.ok) {
+          return res.status(502).json({
+            success: false,
+            message: 'WhatsApp delivery failed. Check WHATSAPP_API_TOKEN and WHATSAPP_PHONE_NUMBER_ID in GoDaddy.'
+          });
+        }
       }
     }
 
