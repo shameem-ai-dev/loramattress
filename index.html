@@ -1354,6 +1354,10 @@
       box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.25);
       outline: none;
     }
+    @media (max-width: 480px) {
+      .otp-digit-inputs { gap: 0.4rem; }
+      .otp-digit-box { width: min(44px, calc((100vw - 7rem) / 6)); height: 50px; font-size: 1.2rem; }
+    }
 
     .cust-dash-tab-nav {
       display: flex;
@@ -10559,6 +10563,7 @@
       // Only channels the SERVER reports as configured are offered (avoids failed/paid retries).
       let serverOtpChannels = null;
       let serverOtpChannelsFetching = false;
+      let serverPreferredChannel = null;
       async function refreshServerOtpChannels() {
         if (serverOtpChannels || serverOtpChannelsFetching) return;
         serverOtpChannelsFetching = true;
@@ -10567,6 +10572,7 @@
           const data = await res.json();
           if (data && data.channels) {
             serverOtpChannels = data.channels;
+            serverPreferredChannel = data.preferredChannel || null;
             renderAuthChannels();
           }
         } catch (e) {} finally { serverOtpChannelsFetching = false; }
@@ -10591,6 +10597,10 @@
             cfg[k] = cfg[k] || {};
             if (!(serverOtpChannels[k] && serverOtpChannels[k].configured)) cfg[k].enabled = false;
           });
+          // Server knows which provider actually works — prefer it over any locally cached default
+          if (serverPreferredChannel && cfg[serverPreferredChannel] && cfg[serverPreferredChannel].enabled) {
+            cfg.defaultMethod = serverPreferredChannel;
+          }
           if (!(cfg[cfg.defaultMethod] && cfg[cfg.defaultMethod].enabled)) {
             cfg.defaultMethod = ['sms', 'whatsapp', 'email'].find(k => cfg[k] && cfg[k].enabled) || cfg.defaultMethod;
           }
@@ -10611,7 +10621,7 @@
         const cfg = getActiveOtpConfig();
         const enabledMethods = [];
 
-        if (cfg.whatsapp && cfg.whatsapp.enabled) enabledMethods.push({ key: 'whatsapp', name: 'WhatsApp OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>', badge: 'Instant & Free' });
+        if (cfg.whatsapp && cfg.whatsapp.enabled) enabledMethods.push({ key: 'whatsapp', name: 'WhatsApp OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>', badge: 'WhatsApp Message' });
         if (cfg.sms && cfg.sms.enabled) enabledMethods.push({ key: 'sms', name: 'SMS OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>', badge: 'Carrier SMS' });
         if (cfg.email && cfg.email.enabled) enabledMethods.push({ key: 'email', name: 'Email OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>', badge: 'Inbox Verification' });
 

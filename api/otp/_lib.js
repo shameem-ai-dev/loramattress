@@ -59,6 +59,20 @@ function canonicalProvider(name) {
   return null;
 }
 
+const WA_PROVIDERS = ['Twilio', 'Fast2SMS', 'Meta WhatsApp Cloud API', 'Gupshup', 'Interakt', 'WATI', 'Custom WhatsApp API'];
+function canonicalWaProvider(name) {
+  const v = String(name || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!v) return null;
+  if (v.startsWith('twilio')) return 'Twilio';
+  if (v.startsWith('fast2sms')) return 'Fast2SMS';
+  if (v.startsWith('meta') || v === 'metacloud') return 'Meta WhatsApp Cloud API';
+  if (v.startsWith('gupshup')) return 'Gupshup';
+  if (v.startsWith('interakt')) return 'Interakt';
+  if (v.startsWith('wati')) return 'WATI';
+  if (v.startsWith('custom')) return 'Custom WhatsApp API';
+  return null;
+}
+
 let memorySettings = null;
 
 function readOtpSettings() {
@@ -69,6 +83,7 @@ function readOtpSettings() {
   if (!saved && memorySettings) saved = memorySettings;
   saved = saved || {};
   const sms = saved.sms || {};
+  const wa = saved.whatsapp || {};
   return {
     sms: {
       provider: canonicalProvider(sms.provider) || canonicalProvider(process.env.SMS_PROVIDER) || 'Fast2SMS',
@@ -76,24 +91,39 @@ function readOtpSettings() {
       templateId: String(sms.templateId || process.env.MSG91_TEMPLATE_ID || process.env.SMS_TEMPLATE_ID || '').slice(0, 64),
       endpoint: String(sms.endpoint || 'https://control.msg91.com/api/v5/otp').slice(0, 200)
     },
+    whatsapp: {
+      provider: canonicalWaProvider(wa.provider) || canonicalWaProvider(process.env.WHATSAPP_PROVIDER) || ((process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY) ? 'Fast2SMS' : 'Meta WhatsApp Cloud API'),
+      templateName: String(wa.templateName || process.env.WHATSAPP_TEMPLATE_NAME || 'lora_auth_otp').slice(0, 64),
+      templateLang: String(wa.templateLang || 'en').slice(0, 10)
+    },
     updatedAt: saved.updatedAt || null
   };
 }
 
 function saveOtpSettings(input) {
   const current = readOtpSettings();
-  const sms = (input && input.sms) || {};
-  const provider = canonicalProvider(sms.provider);
-  if (!provider) throw new Error(`Unknown SMS provider. Allowed: ${SMS_PROVIDERS.join(', ')}.`);
-  const next = {
-    sms: {
+  const next = { sms: { ...current.sms }, whatsapp: { ...current.whatsapp }, updatedAt: new Date().toISOString() };
+  if (input && input.sms) {
+    const sms = input.sms;
+    const provider = canonicalProvider(sms.provider);
+    if (!provider) throw new Error(`Unknown SMS provider. Allowed: ${SMS_PROVIDERS.join(', ')}.`);
+    next.sms = {
       provider,
       senderId: typeof sms.senderId === 'string' ? sms.senderId.trim().slice(0, 11) : current.sms.senderId,
       templateId: typeof sms.templateId === 'string' ? sms.templateId.trim().slice(0, 64) : current.sms.templateId,
       endpoint: typeof sms.endpoint === 'string' ? sms.endpoint.trim().slice(0, 200) : current.sms.endpoint
-    },
-    updatedAt: new Date().toISOString()
-  };
+    };
+  }
+  if (input && input.whatsapp) {
+    const wa = input.whatsapp;
+    const provider = canonicalWaProvider(wa.provider);
+    if (!provider) throw new Error(`Unknown WhatsApp provider. Allowed: ${WA_PROVIDERS.join(', ')}.`);
+    next.whatsapp = {
+      provider,
+      templateName: typeof wa.templateName === 'string' ? wa.templateName.trim().slice(0, 64) : current.whatsapp.templateName,
+      templateLang: typeof wa.templateLang === 'string' ? wa.templateLang.trim().slice(0, 10) : current.whatsapp.templateLang
+    };
+  }
   memorySettings = next;
   let persisted = false;
   try {
@@ -154,6 +184,36 @@ function smsProviderStatus(provider, settings) {
     message: `${provider} is not supported for server-side SMS OTP. Please select Twilio, MSG91 or Fast2SMS.` };
 }
 
+function waProviderStatus(provider, settings) {
+  settings = settings || readOtpSettings();
+  provider = canonicalWaProvider(provider) || settings.whatsapp.provider;
+  if (provider === 'Twilio') {
+    const s = twilioEnvStatus();
+    return { provider, ...s, message: s.configured
+      ? 'Twilio Verify credentials found. WhatsApp must also be enabled on your Twilio Verify service (Verify → Services → WhatsApp).'
+      : s.problems.join('; ') + '.' };
+  }
+  if (provider === 'Fast2SMS') {
+    const hasKey = Boolean(env('FAST2SMS_API_KEY') || env('WHATSAPP_API_TOKEN') || env('SMS_API_KEY'));
+    const hasId = Boolean(env('FAST2SMS_OTP_ID') || env('FAST2SMS_WHATSAPP_MESSAGE_ID') || env('WHATSAPP_TEMPLATE_NAME'));
+    const problems = [];
+    if (!hasKey) problems.push('FAST2SMS_API_KEY (or SMS_API_KEY) is not set');
+    if (!hasId) problems.push('FAST2SMS_OTP_ID is not set (approved WhatsApp OTP template)');
+    return { provider, configured: hasKey, vars: { FAST2SMS_API_KEY: hasKey, FAST2SMS_OTP_ID: hasId }, problems,
+      message: problems.length ? problems.join('; ') + '.' : 'Fast2SMS WhatsApp key and template found.' };
+  }
+  if (provider === 'Meta WhatsApp Cloud API') {
+    const t = Boolean(env('WHATSAPP_API_TOKEN')); const id = Boolean(env('WHATSAPP_PHONE_NUMBER_ID'));
+    const problems = [];
+    if (!t) problems.push('WHATSAPP_API_TOKEN is not set');
+    if (!id) problems.push('WHATSAPP_PHONE_NUMBER_ID is not set');
+    return { provider, configured: t && id, vars: { WHATSAPP_API_TOKEN: t, WHATSAPP_PHONE_NUMBER_ID: id }, problems,
+      message: problems.length ? problems.join('; ') + '.' : 'Meta WhatsApp Cloud API credentials found.' };
+  }
+  return { provider, configured: false, vars: {}, problems: [`${provider} is not supported for server-side WhatsApp OTP`],
+    message: `${provider} is not supported for server-side WhatsApp OTP. Please select Twilio, Fast2SMS or Meta WhatsApp Cloud API.` };
+}
+
 // ---------------------------------------------------------------------------
 // Twilio Verify client
 // ---------------------------------------------------------------------------
@@ -177,6 +237,7 @@ const TWILIO_ERRORS = {
   60203: 'Maximum OTP sends reached for this number. Please wait about 10 minutes and try again.',
   60205: 'SMS is not supported for this number (it may be a landline).',
   60212: 'Too many concurrent requests for this number. Please wait and try again.',
+  60223: 'WhatsApp is not enabled on your Twilio Verify service. Enable it in Twilio Console → Verify → Services → your service → WhatsApp, or use SMS.',
   60410: 'This number has been temporarily blocked by Twilio fraud protection.'
 };
 
@@ -218,10 +279,10 @@ function twilioError(result) {
   return { message: msg, code: code || null, httpStatus: result.statusCode };
 }
 
-async function twilioSendVerification(phoneE164) {
+async function twilioSendVerification(phoneE164, channel) {
   const st = twilioEnvStatus();
   if (!st.configured) return { ok: false, configured: false, message: 'Twilio Verify is not configured: ' + st.problems.join('; ') + '.' };
-  const r = await twilioRequest('POST', `/v2/Services/${encodeURIComponent(env('TWILIO_VERIFY_SERVICE_SID'))}/Verifications`, { To: phoneE164, Channel: 'sms' });
+  const r = await twilioRequest('POST', `/v2/Services/${encodeURIComponent(env('TWILIO_VERIFY_SERVICE_SID'))}/Verifications`, { To: phoneE164, Channel: channel === 'whatsapp' ? 'whatsapp' : 'sms' });
   if (r.statusCode >= 200 && r.statusCode < 300 && r.data && r.data.status) {
     return { ok: true, status: r.data.status };
   }
@@ -386,6 +447,9 @@ module.exports = {
   last10,
   maskPhone,
   canonicalProvider,
+  canonicalWaProvider,
+  WA_PROVIDERS,
+  waProviderStatus,
   readOtpSettings,
   saveOtpSettings,
   twilioEnvStatus,

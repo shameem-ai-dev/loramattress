@@ -1297,7 +1297,10 @@
       .admin-main-stage { padding: 1.5rem 1rem 8rem 1rem; }
       .save-toolbar { left: 1rem; right: 1rem; width: auto; flex-direction: column; gap: 0.75rem; border-radius: var(--radius-lg); }
       .kpi-grid { grid-template-columns: 1fr; }
-      .field-grid-2, .field-grid-3 { grid-template-columns: 1fr; }
+      .field-grid-2, .field-grid-3 { grid-template-columns: 1fr !important; }
+      .env-var-grid { grid-template-columns: 1fr !important; }
+      #btn-test-wa-otp, #btn-test-sms-otp, #btn-save-wa-gateway, #btn-save-sms-gateway { width: 100%; }
+      #btn-test-wa-otp + div, #btn-test-sms-otp + div { width: 100%; flex-direction: column; align-items: stretch !important; }
     }
 
     /* ==========================================
@@ -3502,7 +3505,7 @@ fbq('track', 'PageView');
                   <option value="Meta WhatsApp Cloud API" selected>Meta WhatsApp Cloud API (Official & Recommended)</option>
                   <option value="Fast2SMS">Fast2SMS WhatsApp Business / OTP API</option>
                   <option value="Gupshup">Gupshup Enterprise Messaging API</option>
-                  <option value="Twilio">Twilio WhatsApp Messaging</option>
+                  <option value="Twilio">Twilio Verify (WhatsApp OTP)</option>
                   <option value="Interakt">Interakt WhatsApp Business API</option>
                   <option value="WATI">WATI WhatsApp Business Suite</option>
                   <option value="Custom WhatsApp API">Custom Webhook / REST WhatsApp Gateway</option>
@@ -3510,7 +3513,7 @@ fbq('track', 'PageView');
                 <span id="cfg-wa-provider-hint" class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Official WhatsApp Business API integration with high deliverability.</span>
               </div>
 
-              <div class="input-block">
+              <div class="input-block" data-wa-providers="Meta WhatsApp Cloud API,Fast2SMS,Gupshup,Interakt,WATI,Custom WhatsApp API">
                 <label>API URL / Webhook Endpoint</label>
                 <input type="url" id="cfg-wa-api-url" class="admin-input" value="https://graph.facebook.com/v18.0/108429183429812/messages" placeholder="https://graph.facebook.com/v18.0/...">
               </div>
@@ -3524,22 +3527,19 @@ fbq('track', 'PageView');
                 </div>
                 <span id="cfg-wa-env-status" class="status-badge" style="font-size: 0.72rem;">Checking...</span>
               </div>
-              <div class="field-grid-2" style="margin-bottom: 0;">
-                <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">WHATSAPP_API_TOKEN / FAST2SMS_API_KEY</div>
-                  <div id="cfg-wa-key-display" style="font-size: 0.84rem; font-weight: 700; color: #94A3B8; font-family: monospace;">Loading...</div>
-                </div>
-                <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">WHATSAPP_PHONE_NUMBER_ID</div>
-                  <div id="cfg-wa-phone-display" style="font-size: 0.84rem; font-weight: 700; color: #94A3B8; font-family: monospace;">Loading...</div>
-                </div>
-              </div>
-              <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0.5rem 0 0 0; line-height: 1.4;">
-                🔒 <strong>Single Source of Truth:</strong> WhatsApp access token / API key is read securely from server environment variable (<code>WHATSAPP_API_TOKEN</code> or <code>FAST2SMS_API_KEY</code> / <code>SMS_API_KEY</code>). Configure it in GoDaddy <em>Setup Node.js App → Environment Variables</em> and click <strong>Restart</strong>.
+              <div id="cfg-wa-env-vars" class="env-var-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;"></div>
+              <div id="cfg-wa-env-problems" style="display:none; margin-top: 0.6rem; font-size: 0.76rem; color: #FCA5A5; line-height: 1.45;"></div>
+              <p id="cfg-wa-env-help" style="font-size: 0.72rem; color: var(--text-muted); margin: 0.5rem 0 0 0; line-height: 1.4;">
+                🔒 WhatsApp credentials are read only from server environment variables. Configure them in GoDaddy <em>Setup Node.js App → Environment Variables</em> and click <strong>Restart</strong>.
               </p>
             </div>
 
-            <div class="field-grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+            <div data-wa-providers="Twilio" style="display:none; background: rgba(242, 47, 70, 0.08); border: 1px solid rgba(242, 47, 70, 0.3); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.78rem; color: #E2E8F0; line-height: 1.5;">
+              <strong>Twilio Verify over WhatsApp</strong> uses the same <code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code> and <code>TWILIO_VERIFY_SERVICE_SID</code> as SMS. No sender number, template or API URL is needed here — Twilio supplies its own approved OTP template.<br>
+              ⚠ You must enable <strong>WhatsApp</strong> on your Verify service (Twilio Console → Verify → Services → your service → WhatsApp), otherwise OTPs will not be delivered.
+            </div>
+
+            <div class="field-grid-3" data-wa-providers="Meta WhatsApp Cloud API,Fast2SMS,Gupshup,Interakt,WATI,Custom WhatsApp API" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
               <div class="input-block">
                 <label>WhatsApp Business Sender Number</label>
                 <input type="text" id="cfg-wa-biz-num" class="admin-input" value="+919876543210" placeholder="+919876543210">
@@ -7819,6 +7819,79 @@ Order Notes: [Customer Instructions]</pre>
         }
       }
 
+      const WA_PROVIDER_ENV_HELP = {
+        'Twilio': 'Twilio Verify (WhatsApp) reads TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN and TWILIO_VERIFY_SERVICE_SID. WhatsApp must be enabled on the Verify service.',
+        'Fast2SMS': 'Fast2SMS WhatsApp reads FAST2SMS_API_KEY (or SMS_API_KEY) and FAST2SMS_OTP_ID.',
+        'Meta WhatsApp Cloud API': 'Meta Cloud API reads WHATSAPP_API_TOKEN and WHATSAPP_PHONE_NUMBER_ID.'
+      };
+      const WA_PROVIDER_HINT = {
+        'Twilio': 'Twilio Verify sends the OTP over WhatsApp using Twilio’s approved template.',
+        'Fast2SMS': 'Fast2SMS WhatsApp OTP API (requires an approved WhatsApp OTP template).',
+        'Meta WhatsApp Cloud API': 'Official WhatsApp Business API integration with high deliverability.'
+      };
+
+      function updateWaProviderFields(provider) {
+        provider = provider || (document.querySelector('#cfg-wa-provider') || {}).value || 'Meta WhatsApp Cloud API';
+        document.querySelectorAll('[data-wa-providers]').forEach(el => {
+          const allowed = el.getAttribute('data-wa-providers').split(',').map(s => s.trim());
+          if (el.dataset.waShowDisplay === undefined) {
+            const d = el.style.display;
+            el.dataset.waShowDisplay = (d && d !== 'none') ? d : (el.classList.contains('field-grid-3') ? 'grid' : '');
+          }
+          el.style.display = allowed.includes(provider) ? el.dataset.waShowDisplay : 'none';
+        });
+        const hint = document.querySelector('#cfg-wa-provider-hint');
+        if (hint) hint.textContent = WA_PROVIDER_HINT[provider] || `${provider} has no server-side WhatsApp OTP integration yet — choose Twilio, Fast2SMS or Meta.`;
+        const help = document.querySelector('#cfg-wa-env-help');
+        if (help) help.textContent = '🔒 ' + (WA_PROVIDER_ENV_HELP[provider] || 'This provider is not supported server-side.') + ' Set these in your hosting environment variables and restart. Secrets are never shown here.';
+      }
+
+      function renderWaProviderStatus(status) {
+        if (!status) return;
+        const badge = document.querySelector('#cfg-wa-env-status');
+        const varsBox = document.querySelector('#cfg-wa-env-vars');
+        const problemsBox = document.querySelector('#cfg-wa-env-problems');
+        if (badge) {
+          badge.className = `status-badge ${status.configured ? 'status-delivered' : 'status-failed'}`;
+          badge.textContent = status.configured ? `${status.provider}: Configured` : `${status.provider}: Not configured`;
+        }
+        if (varsBox) {
+          const vars = status.vars || {};
+          varsBox.innerHTML = Object.keys(vars).map(name => `
+            <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem; font-family: monospace; word-break: break-all;">${name}</div>
+              <div style="font-size: 0.84rem; font-weight: 700; font-family: monospace; color: ${vars[name] ? '#34D399' : '#F87171'};">${vars[name] ? '✓ Set (hidden)' : '✕ Missing'}</div>
+            </div>`).join('');
+        }
+        if (problemsBox) {
+          const probs = status.problems || [];
+          problemsBox.style.display = probs.length ? 'block' : 'none';
+          problemsBox.textContent = probs.length ? '⚠ ' + probs.join(' • ') : '';
+        }
+      }
+
+      async function fetchWaProviderStatus(previewProvider) {
+        try {
+          const qs = previewProvider ? `?waProvider=${encodeURIComponent(previewProvider)}` : '';
+          const res = await fetch('/api/otp/settings' + qs, { cache: 'no-store' });
+          const data = await res.json();
+          if (!data || !data.success) throw new Error('Status unavailable');
+          if (!previewProvider && data.settings && data.settings.whatsapp) {
+            otpConfig.whatsapp = Object.assign({}, otpConfig.whatsapp, data.settings.whatsapp);
+            const sel = document.querySelector('#cfg-wa-provider');
+            if (sel) sel.value = data.settings.whatsapp.provider;
+            if (document.querySelector('#cfg-wa-template-name')) document.querySelector('#cfg-wa-template-name').value = data.settings.whatsapp.templateName || '';
+            if (document.querySelector('#cfg-wa-template-lang')) document.querySelector('#cfg-wa-template-lang').value = data.settings.whatsapp.templateLang || 'en';
+            updateWaProviderFields(data.settings.whatsapp.provider);
+            try { localStorage.setItem(OTP_CONFIG_KEY, JSON.stringify(otpConfig)); } catch (e) {}
+          }
+          renderWaProviderStatus(data.waStatus);
+        } catch (e) {
+          const badge = document.querySelector('#cfg-wa-env-status');
+          if (badge) { badge.className = 'status-badge status-failed'; badge.textContent = 'Server unreachable'; }
+        }
+      }
+
       function syncOtpIntegrationUI(otpStatus) {
         if (!otpStatus) return;
 
@@ -7826,21 +7899,8 @@ Order Notes: [Customer Instructions]</pre>
         if (otpStatus.sms && otpStatus.sms.vars) renderSmsProviderStatus(otpStatus.sms);
 
         // WhatsApp
-        const waBadge = document.querySelector('#cfg-wa-env-status');
-        const waKeyDisp = document.querySelector('#cfg-wa-key-display');
-        const waPhoneDisp = document.querySelector('#cfg-wa-phone-display');
-        if (waBadge) {
-          waBadge.className = `status-badge ${otpStatus.whatsapp?.configured ? 'status-delivered' : 'status-failed'}`;
-          waBadge.textContent = otpStatus.whatsapp?.configured ? 'Configured' : 'Unconfigured in GoDaddy';
-        }
-        if (waKeyDisp) {
-          waKeyDisp.textContent = otpStatus.whatsapp?.has_key ? 'Configured (••••••••)' : 'Not configured in GoDaddy';
-          waKeyDisp.style.color = otpStatus.whatsapp?.has_key ? '#34D399' : '#F87171';
-        }
-        if (waPhoneDisp) {
-          const isFast = (otpConfig.whatsapp?.provider || '').includes('Fast2SMS');
-          waPhoneDisp.textContent = isFast ? 'Fast2SMS WABA Gateway' : (otpConfig.whatsapp?.phoneId || 'Configured in GoDaddy');
-        }
+        // (provider-specific status comes from /api/otp/settings via fetchWaProviderStatus)
+        if (otpStatus.whatsapp && otpStatus.whatsapp.vars) renderWaProviderStatus(otpStatus.whatsapp);
 
         // Email
         const emailBadge = document.querySelector('#cfg-email-env-status');
@@ -7861,6 +7921,7 @@ Order Notes: [Customer Instructions]</pre>
 
       async function fetchOtpEnvStatus() {
         fetchSmsProviderStatus();
+        fetchWaProviderStatus();
         try {
           const res = await fetch('/api/otp/send', { method: 'GET' });
           if (res.ok) {
@@ -7950,6 +8011,7 @@ Order Notes: [Customer Instructions]</pre>
         if (document.querySelector('#cfg-wa-biz-num')) document.querySelector('#cfg-wa-biz-num').value = otpConfig.whatsapp.businessNumber || '+919876543210';
         if (document.querySelector('#cfg-wa-template-name')) document.querySelector('#cfg-wa-template-name').value = otpConfig.whatsapp.templateName || 'lora_auth_otp';
         if (document.querySelector('#cfg-wa-template-lang')) document.querySelector('#cfg-wa-template-lang').value = otpConfig.whatsapp.templateLang || 'en';
+        updateWaProviderFields(otpConfig.whatsapp.provider || 'Meta WhatsApp Cloud API');
 
         // Email Card
         const emailToggle = document.querySelector('#toggle-email-otp');
@@ -8113,13 +8175,44 @@ Order Notes: [Customer Instructions]</pre>
       // Save WhatsApp Gateway
       const btnSaveWa = document.querySelector('#btn-save-wa-gateway');
       if (btnSaveWa) {
-        btnSaveWa.addEventListener('click', function () {
+        btnSaveWa.addEventListener('click', async function () {
           otpConfig.whatsapp.provider = document.querySelector('#cfg-wa-provider').value;
           otpConfig.whatsapp.apiUrl = document.querySelector('#cfg-wa-api-url').value;
           otpConfig.whatsapp.businessNumber = document.querySelector('#cfg-wa-biz-num').value;
           otpConfig.whatsapp.templateName = document.querySelector('#cfg-wa-template-name').value;
           otpConfig.whatsapp.templateLang = document.querySelector('#cfg-wa-template-lang').value;
-          saveOtpConfig('wa-save-feedback');
+          const problemsBox = document.querySelector('#cfg-wa-env-problems');
+          const originalText = btnSaveWa.textContent;
+          btnSaveWa.disabled = true;
+          btnSaveWa.textContent = 'Saving...';
+          try {
+            const res = await fetch('/api/otp/settings', {
+              method: 'POST',
+              headers: getAdminAuthHeaders(),
+              body: JSON.stringify({ whatsapp: {
+                provider: otpConfig.whatsapp.provider,
+                templateName: otpConfig.whatsapp.templateName,
+                templateLang: otpConfig.whatsapp.templateLang
+              } })
+            });
+            const data = await res.json().catch(() => null);
+            if (!res.ok || !data || !data.success) throw new Error((data && data.message) || `Save failed (HTTP ${res.status})`);
+            otpConfig.whatsapp = Object.assign({}, otpConfig.whatsapp, data.settings.whatsapp);
+            saveOtpConfig('wa-save-feedback');
+            renderWaProviderStatus(data.waStatus);
+            if (!data.persisted && problemsBox) {
+              problemsBox.style.display = 'block';
+              problemsBox.textContent = data.message;
+            }
+          } catch (err) {
+            if (problemsBox) {
+              problemsBox.style.display = 'block';
+              problemsBox.textContent = '✕ ' + (err.message || 'Could not save WhatsApp settings.');
+            }
+          } finally {
+            btnSaveWa.disabled = false;
+            btnSaveWa.textContent = originalText;
+          }
         });
       }
 
@@ -8143,6 +8236,8 @@ Order Notes: [Customer Instructions]</pre>
             }
             if (waHint) waHint.textContent = 'Official WhatsApp Business API integration with high deliverability.';
           }
+          updateWaProviderFields(val);
+          fetchWaProviderStatus(val);
         });
       }
 
@@ -8188,11 +8283,15 @@ Order Notes: [Customer Instructions]</pre>
           testInput.value = '';
           if (realWrap && selProvider === 'Twilio') realWrap.style.display = 'flex';
         } else if (channel === 'whatsapp') {
-          testTitle.textContent = '⚡ Test WhatsApp OTP Integration';
-          testSub.textContent = `Provider: ${otpConfig.whatsapp.provider} | Template: ${otpConfig.whatsapp.templateName}`;
-          testLabel.textContent = 'Recipient WhatsApp Number (with country code)';
+          const selWa = (document.querySelector('#cfg-wa-provider') || {}).value || otpConfig.whatsapp.provider;
+          testTitle.textContent = `⚡ Test WhatsApp OTP Integration — ${selWa}`;
+          testSub.textContent = selWa === 'Twilio'
+            ? 'Provider: Twilio Verify (WhatsApp) | Checks credentials and the Verify service (nothing sent unless you tick the box)'
+            : `Provider: ${selWa} | Template: ${otpConfig.whatsapp.templateName}`;
+          testLabel.textContent = 'Recipient WhatsApp Number (+91)';
           testInput.placeholder = '+919876543210';
-          testInput.value = '+919876543210';
+          testInput.value = '';
+          if (realWrap && selWa === 'Twilio') realWrap.style.display = 'flex';
         } else {
           testTitle.textContent = '⚡ Send Test Email OTP';
           testSub.textContent = `Provider: ${otpConfig.email.provider} | Host: ${otpConfig.email.host}`;
@@ -8232,8 +8331,10 @@ Order Notes: [Customer Instructions]</pre>
 
           const testProvider = currentTestChannel === 'sms'
             ? ((document.querySelector('#cfg-sms-provider') || {}).value || otpConfig.sms.provider)
-            : otpConfig[currentTestChannel].provider;
-          const sendRealTest = currentTestChannel === 'sms' && !!(document.querySelector('#test-send-real-otp') || {}).checked;
+            : currentTestChannel === 'whatsapp'
+              ? ((document.querySelector('#cfg-wa-provider') || {}).value || otpConfig.whatsapp.provider)
+              : otpConfig[currentTestChannel].provider;
+          const sendRealTest = (currentTestChannel === 'sms' || currentTestChannel === 'whatsapp') && testProvider === 'Twilio' && !!(document.querySelector('#test-send-real-otp') || {}).checked;
           if (sendRealTest && !target) {
             alert('Enter the +91 mobile number that should receive the test OTP.');
             btnExecTest.disabled = false;

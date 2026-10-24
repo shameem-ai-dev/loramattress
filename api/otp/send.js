@@ -45,16 +45,16 @@ module.exports = async function handler(req, res) {
 
   // GET: Return integration configuration status without revealing secrets
   if (req.method === 'GET') {
-    const waProvider = (process.env.WHATSAPP_PROVIDER || 'META_CLOUD').toUpperCase();
-    const isFast2SmsWa = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
-    const waConfigured = isFast2SmsWa
-      ? Boolean(process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY)
-      : Boolean(process.env.WHATSAPP_API_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID);
     const otpSettings = otpLib.readOtpSettings();
     const smsStatus = otpLib.smsProviderStatus(otpSettings.sms.provider, otpSettings);
+    const waStatus = otpLib.waProviderStatus(otpSettings.whatsapp.provider, otpSettings);
+    const emailConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+    // Channel customers should see first: the one that will actually deliver
+    const preferredChannel = smsStatus.configured ? 'sms' : (waStatus.configured ? 'whatsapp' : (emailConfigured ? 'email' : 'sms'));
 
     return res.status(200).json({
       success: true,
+      preferredChannel,
       channels: {
         sms: {
           configured: smsStatus.configured,
@@ -63,8 +63,10 @@ module.exports = async function handler(req, res) {
           message: smsStatus.message
         },
         whatsapp: {
-          configured: waConfigured,
-          provider: process.env.WHATSAPP_PROVIDER || 'META_CLOUD'
+          configured: waStatus.configured,
+          provider: waStatus.provider,
+          vars: waStatus.vars,
+          message: waStatus.message
         },
         email: {
           configured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
@@ -122,6 +124,7 @@ module.exports = async function handler(req, res) {
     const existingSession = global._loraOtpStore.get(identifier) || null;
     const otpSettings = otpLib.readOtpSettings();
     let smsProvider = null;
+    let waProviderName = null;
 
     const plainOtp = crypto.randomInt(100000, 1000000).toString();
     const expiryMinutes = Math.min(Math.max(Number(payload.expiryMinutes) || 5, 1), 10);
@@ -179,15 +182,30 @@ module.exports = async function handler(req, res) {
 
     // 2. Channel: WhatsApp
     else if (channel === 'whatsapp') {
-      const hasFast2smsKey = Boolean(process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY);
-      const waProvider = (
-        payload.provider || 
-        process.env.WHATSAPP_PROVIDER || 
-        (hasFast2smsKey ? 'FAST2SMS' : 'META_CLOUD')
-      ).toUpperCase();
-      const isFast2Sms = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
+      // Provider chosen in Admin → WhatsApp card (saved server-side; browser input is ignored)
+      waProviderName = otpSettings.whatsapp.provider;
+      const waStatus = otpLib.waProviderStatus(waProviderName, otpSettings);
+      if (!['Twilio', 'Fast2SMS', 'Meta WhatsApp Cloud API'].includes(waProviderName) || (waProviderName === 'Twilio' && !waStatus.configured)) {
+        return res.status(503).json({
+          success: false,
+          configured: false,
+          provider: waProviderName,
+          message: `WhatsApp OTP is not available right now (${waProviderName}: ${waStatus.message}) Please choose SMS instead.`
+        });
+      }
+      const isFast2Sms = waProviderName === 'Fast2SMS';
 
-      if (isFast2Sms) {
+      if (waProviderName === 'Twilio') {
+        const tw = await otpLib.twilioSendVerification(identifier, 'whatsapp');
+        if (!tw.ok) {
+          return res.status(tw.code === 60203 || tw.code === 20429 ? 429 : 502).json({
+            success: false,
+            provider: 'Twilio',
+            message: tw.message
+          });
+        }
+        expiresAt = now + 10 * 60 * 1000;
+      } else if (isFast2Sms) {
         const apiKey = (process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY || '').trim();
 
         if (!apiKey) {
@@ -418,7 +436,7 @@ module.exports = async function handler(req, res) {
 
     let providerTag;
     if (channel === 'sms') providerTag = smsProvider === 'Twilio' ? 'TWILIO' : smsProvider.toUpperCase();
-    else if (channel === 'whatsapp') providerTag = isFast2SmsActive ? 'FAST2SMS' : 'META_CLOUD';
+    else if (channel === 'whatsapp') providerTag = waProviderName === 'Twilio' ? 'TWILIO' : (waProviderName === 'Fast2SMS' ? 'FAST2SMS' : 'META_CLOUD');
     else providerTag = 'SMTP';
 
     const sessionObj = {
@@ -445,7 +463,7 @@ module.exports = async function handler(req, res) {
       message: `Verification code sent to ${masked} via ${channel === 'sms' ? 'SMS' : channel === 'whatsapp' ? 'WhatsApp' : 'Email'}.`,
       channel: channel,
       identifier: identifier,
-      provider: channel === 'sms' ? smsProvider : providerTag,
+      provider: channel === 'sms' ? smsProvider : (channel === 'whatsapp' ? waProviderName : providerTag),
       cooldown: otpLib.LIMITS.resendCooldownSec,
       expiresInMinutes: Math.round((expiresAt - now) / 60000)
     });

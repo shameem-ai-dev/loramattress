@@ -83,13 +83,14 @@ module.exports = async function handler(req, res) {
 
     const now = Date.now();
     const record = global._loraOtpStore.get(identifier) || null;
-    const activeSmsProvider = otpLib.readOtpSettings().sms.provider;
+    const otpSettingsNow = otpLib.readOtpSettings();
+    const twilioActive = otpSettingsNow.sms.provider === 'Twilio' || otpSettingsNow.whatsapp.provider === 'Twilio';
 
     // Twilio Verify keeps the code server-side at Twilio, so we can check even if this
     // instance has no local record (e.g. after a restart or on another serverless instance).
     const useTwilio = !isEmail && (
       (record && record.provider === 'TWILIO') ||
-      (!record && activeSmsProvider === 'Twilio')
+      (!record && twilioActive)
     );
 
     let isValid = false;

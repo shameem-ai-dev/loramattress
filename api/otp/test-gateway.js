@@ -133,8 +133,38 @@ module.exports = async function handler(req, res) {
 
     // 3. Test WhatsApp Gateway
     else if (channel === 'whatsapp') {
-      const waProvider = (payload.provider || process.env.WHATSAPP_PROVIDER || 'META_CLOUD').toUpperCase();
+      const waSettings = otpLib.readOtpSettings();
+      const waSelected = otpLib.canonicalWaProvider(payload.provider) || waSettings.whatsapp.provider;
+      const waProvider = waSelected.toUpperCase();
       const isFast2Sms = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
+
+      if (waSelected === 'Twilio') {
+        const st = otpLib.waProviderStatus('Twilio', waSettings);
+        if (!st.configured) {
+          return res.status(200).json({ success: false, configured: false, provider: 'Twilio', vars: st.vars, message: `Twilio (WhatsApp) is not ready: ${st.message}` });
+        }
+        const svc = await otpLib.twilioFetchService();
+        if (!svc.ok) {
+          return res.status(200).json({ success: false, configured: true, provider: 'Twilio', message: `Twilio check failed: ${svc.message}` });
+        }
+        let extra = ' Make sure WhatsApp is enabled on this Verify service.';
+        if (payload.sendTest === true) {
+          const phone = otpLib.normalizeIndianPhone(payload.identifier);
+          if (!phone) {
+            return res.status(200).json({ success: false, configured: true, provider: 'Twilio', message: 'Credentials OK, but the test number is not a valid +91 mobile number.' });
+          }
+          const sent = await otpLib.twilioSendVerification(phone, 'whatsapp');
+          if (!sent.ok) {
+            return res.status(200).json({ success: false, configured: true, provider: 'Twilio', message: `Credentials OK, but the WhatsApp test OTP failed: ${sent.message}` });
+          }
+          extra = ` A real WhatsApp test OTP was sent to ${otpLib.maskPhone(phone)} (status: ${sent.status}).`;
+        }
+        return res.status(200).json({ success: true, configured: true, provider: 'Twilio', message: `Twilio Verify connected — service "${svc.friendlyName}".${extra}` });
+      }
+
+      if (!isFast2Sms && waSelected !== 'Meta WhatsApp Cloud API') {
+        return res.status(200).json({ success: false, configured: false, provider: waSelected, message: `${waSelected} is not supported for server-side WhatsApp OTP. Select Twilio, Fast2SMS or Meta WhatsApp Cloud API.` });
+      }
 
       if (isFast2Sms) {
         const apiKey = (process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY || '').trim();
