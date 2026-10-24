@@ -2,6 +2,8 @@
 // Handles authoritative order synchronization from customer storefront and admin dashboard
 const fs = require('fs');
 const path = require('path');
+const { verifyAdminAuth } = require('./auth.js');
+const otpLib = require('./otp/_lib.js');
 
 const ORDERS_FILE = path.join(__dirname, '..', 'config', 'orders_data.json');
 let memoryOrders = null;
@@ -41,7 +43,7 @@ function getOrders() {
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Customer-Session');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -68,6 +70,13 @@ module.exports = async function handler(req, res) {
 
       const orderMap = new Map();
       orders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
+
+      // Checkout verification enforced server-side: brand-new orders need a verified phone session
+      const newOrders = toAdd.filter(o => o && o.id && !orderMap.has(o.id));
+      const denied = otpLib.authorizeNewOrders(req, newOrders, verifyAdminAuth(req));
+      if (denied) {
+        return res.status(denied.status).json({ success: false, code: denied.code, message: denied.message });
+      }
 
       toAdd.forEach(newO => {
         if (newO && newO.id) {

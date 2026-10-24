@@ -8715,6 +8715,79 @@
       // =========================================================
       window.verifiedCheckoutPhone = '';
 
+      // Server-signed verified-phone session (issued by /api/otp/verify). The backend
+      // re-checks this token on every new order, so it cannot be faked client-side.
+      const CUST_TOKEN_KEY = 'lora_customer_session_token_v1';
+      function getCustomerSession() {
+        try {
+          const raw = localStorage.getItem(CUST_TOKEN_KEY);
+          if (!raw) return null;
+          const s = JSON.parse(raw);
+          if (!s || !s.token || !s.phone || !s.expiresAt || Date.now() > s.expiresAt) {
+            localStorage.removeItem(CUST_TOKEN_KEY);
+            return null;
+          }
+          return s;
+        } catch (e) { return null; }
+      }
+      function setCustomerSession(token, phone, expiresAt) {
+        try { localStorage.setItem(CUST_TOKEN_KEY, JSON.stringify({ token, phone, expiresAt })); } catch (e) {}
+      }
+      function clearCustomerSession() {
+        try { localStorage.removeItem(CUST_TOKEN_KEY); } catch (e) {}
+      }
+      function getCustomerSessionHeaders() {
+        const s = getCustomerSession();
+        return s ? { 'X-Customer-Session': s.token } : {};
+      }
+      async function confirmServerSession(phone10) {
+        const s = getCustomerSession();
+        if (!s || String(s.phone).replace(/[^0-9]/g, '').slice(-10) !== phone10) return false;
+        try {
+          const res = await fetch('/api/otp/session', { headers: { 'X-Customer-Session': s.token }, cache: 'no-store' });
+          const data = await res.json();
+          if (data && data.valid && String(data.phone).replace(/[^0-9]/g, '').slice(-10) === phone10) return true;
+          clearCustomerSession();
+          return false;
+        } catch (e) {
+          // Network issue: let the order request decide (backend enforces anyway)
+          return true;
+        }
+      }
+      window.getCustomerSession = getCustomerSession;
+      window.setCustomerSession = setCustomerSession;
+      window.clearCustomerSession = clearCustomerSession;
+      window.getCustomerSessionHeaders = getCustomerSessionHeaders;
+
+      // Preserve checkout details while the customer verifies their phone
+      const CHECKOUT_DRAFT_KEY = 'lora_checkout_draft_v1';
+      function saveCheckoutDraft() {
+        const form = document.querySelector('#storefront-checkout-form');
+        if (!form) return;
+        const draft = {};
+        form.querySelectorAll('input[id], select[id], textarea[id]').forEach(el => {
+          if (el.type === 'checkbox' || el.type === 'radio') draft[el.id] = { checked: el.checked };
+          else draft[el.id] = { value: el.value };
+        });
+        try { sessionStorage.setItem(CHECKOUT_DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+      }
+      function restoreCheckoutDraft() {
+        let draft = null;
+        try { draft = JSON.parse(sessionStorage.getItem(CHECKOUT_DRAFT_KEY) || 'null'); } catch (e) {}
+        if (!draft) return;
+        Object.keys(draft).forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if ('checked' in draft[id]) el.checked = draft[id].checked;
+          else if (draft[id].value !== '' && draft[id].value != null) el.value = draft[id].value;
+        });
+        try { sessionStorage.removeItem(CHECKOUT_DRAFT_KEY); } catch (e) {}
+        if (typeof updateCheckoutPaymentUI === 'function') updateCheckoutPaymentUI();
+        if (typeof updateAddressValidationStatus === 'function') updateAddressValidationStatus();
+      }
+      window.saveCheckoutDraft = saveCheckoutDraft;
+      window.restoreCheckoutDraft = restoreCheckoutDraft;
+
       function getSavedCustomerByPhone(phone) {
         if (!phone) return null;
         const clean = String(phone).replace(/[^0-9]/g, '').slice(-10);
@@ -8815,18 +8888,12 @@
         const clean = String(phone).replace(/[^0-9]/g, '').slice(-10);
         if (clean.length < 10) return false;
 
-        if (window.verifiedCheckoutPhone && window.verifiedCheckoutPhone === clean) {
+        // Only a valid server-issued session for THIS number counts as verified
+        const s = getCustomerSession();
+        if (s && String(s.phone).replace(/[^0-9]/g, '').slice(-10) === clean) {
+          window.verifiedCheckoutPhone = clean;
           return true;
         }
-
-        if (currentCustomer && currentCustomer.phone) {
-          const custClean = String(currentCustomer.phone).replace(/[^0-9]/g, '').slice(-10);
-          if (custClean === clean) {
-            window.verifiedCheckoutPhone = clean;
-            return true;
-          }
-        }
-
         return false;
       }
       window.isCheckoutPhoneVerified = isCheckoutPhoneVerified;
@@ -8943,20 +9010,20 @@
           return;
         }
 
+        // Reuse an existing verified session instead of sending another OTP
+        if (isCheckoutPhoneVerified(clean)) {
+          updateCheckoutPhoneStateUI();
+          return;
+        }
+
         window._checkoutTempName = document.querySelector('#chk-customer-name')?.value || '';
         window._reopenCheckoutAfterLogin = true;
         window._checkoutPendingPhone = clean;
+        saveCheckoutDraft();
 
         closeCheckoutModal();
+        // Prefill only — the OTP is sent ONLY when the customer clicks "Send OTP"
         openCustomerAuthModal(clean);
-
-        // Automatically trigger OTP send immediately so user directly lands on OTP input
-        setTimeout(() => {
-          const btnSend = document.querySelector('#btn-cust-send-otp');
-          if (btnSend && !btnSend.disabled) {
-            btnSend.click();
-          }
-        }, 180);
       }
       window.triggerCheckoutPhoneVerification = triggerCheckoutPhoneVerification;
 
@@ -9204,7 +9271,7 @@
 
           const res = await fetch('/api/orders', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...getCustomerSessionHeaders() },
             body: JSON.stringify({ orders: outbox })
           });
           if (res.ok) {
@@ -9289,9 +9356,15 @@
           try {
             const res = await fetch('/api/orders', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', ...getCustomerSessionHeaders() },
               body: JSON.stringify({ order: newOrder })
             });
+            if (res.status === 401 || res.status === 403) {
+              const data = await res.json().catch(() => ({}));
+              clearCustomerSession();
+              alert((data && data.message) || 'Please verify your mobile number with OTP to place this order.');
+              return;
+            }
             if (!res.ok) throw new Error('Status ' + res.status);
             console.log('[ORDER PERSISTENCE] Successfully committed to backend server database:', newOrder.id);
           } catch (err) {
@@ -9579,6 +9652,14 @@
           }
 
           const phone = cleanPhone;
+
+          // Confirm the verified session with the server before placing the order
+          if (!(await confirmServerSession(cleanPhone))) {
+            if (errPhone) errPhone.textContent = 'Your verification has expired. Please verify your mobile number via OTP.';
+            updateCheckoutPhoneStateUI();
+            triggerCheckoutPhoneVerification();
+            return;
+          }
           const altPhone = document.querySelector('#chk-customer-alt-phone')?.value.trim() || '';
           const email = document.querySelector('#chk-customer-email')?.value.trim() || '';
           const landmark = document.querySelector('#chk-customer-landmark')?.value.trim() || '';
@@ -9721,7 +9802,7 @@
           try {
             const rzpRes = await fetch('/api/razorpay/create-order', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', ...getCustomerSessionHeaders() },
               body: JSON.stringify({
                 amount: finalOrderPrice,
                 currency: 'INR',
@@ -10269,17 +10350,13 @@
         const inputId = document.querySelector('#cust-input-identifier');
         if (inputId) {
           inputId.value = prefillIdentifier || '';
-          setTimeout(() => {
-            inputId.focus();
-            if (window._reopenCheckoutAfterLogin && prefillIdentifier && String(prefillIdentifier).replace(/[^0-9]/g, '').length === 10) {
-              const btnSend = document.querySelector('#btn-cust-send-otp');
-              if (btnSend && !btnSend.disabled) btnSend.click();
-            }
-          }, 150);
+          // Focus only. An OTP is sent ONLY when the customer clicks "Send OTP".
+          setTimeout(() => { inputId.focus(); }, 150);
         }
 
         try {
           renderAuthChannels();
+          refreshServerOtpChannels();
         } catch (e) {
           console.warn('[AUTH] renderAuthChannels fallback:', e);
         }
@@ -10292,6 +10369,15 @@
           cAuth.style.display = 'none';
         }
         document.body.style.overflow = '';
+        // If the customer abandons verification during checkout, bring checkout back with their details
+        if (window._reopenCheckoutAfterLogin && !window._completingCustomerLogin) {
+          window._reopenCheckoutAfterLogin = false;
+          setTimeout(() => {
+            if (typeof openCheckoutModal === 'function') openCheckoutModal();
+            restoreCheckoutDraft();
+            if (typeof updateCheckoutPhoneStateUI === 'function') updateCheckoutPhoneStateUI();
+          }, 50);
+        }
       }
 
       let _customerDashSyncInterval = null;
@@ -10361,9 +10447,12 @@
       }
 
       function handleCheckoutLoginClick() {
+        saveCheckoutDraft();
         closeCheckoutModal();
         window._reopenCheckoutAfterLogin = true;
-        openCustomerAuthModal();
+        const phoneEl = document.querySelector('#chk-customer-phone');
+        const clean = (phoneEl ? phoneEl.value : '').replace(/[^0-9]/g, '').slice(-10);
+        openCustomerAuthModal(clean.length === 10 ? clean : '');
       }
 
       // Assign all auth window delegates
@@ -10389,6 +10478,7 @@
         try {
           localStorage.removeItem(CUST_SESSION_KEY);
           sessionStorage.removeItem(CUST_SESSION_KEY);
+          clearCustomerSession();
         } catch (err) {}
         updateHeaderAuthUI();
         closeCustomerDashboardModal();
@@ -10466,18 +10556,51 @@
       }
 
       // Render Available OTP Channels from Admin Configuration
+      // Only channels the SERVER reports as configured are offered (avoids failed/paid retries).
+      let serverOtpChannels = null;
+      let serverOtpChannelsFetching = false;
+      async function refreshServerOtpChannels() {
+        if (serverOtpChannels || serverOtpChannelsFetching) return;
+        serverOtpChannelsFetching = true;
+        try {
+          const res = await fetch('/api/otp/send', { method: 'GET', cache: 'no-store' });
+          const data = await res.json();
+          if (data && data.channels) {
+            serverOtpChannels = data.channels;
+            renderAuthChannels();
+          }
+        } catch (e) {} finally { serverOtpChannelsFetching = false; }
+      }
+
       function getActiveOtpConfig() {
+        let cfg = null;
         try {
           const raw = localStorage.getItem(OTP_CONFIG_KEY);
-          if (raw) return JSON.parse(raw);
+          if (raw) cfg = JSON.parse(raw);
         } catch (e) {}
-        return {
-          defaultMethod: 'whatsapp',
+        cfg = cfg || {
+          defaultMethod: 'sms',
           customerCanChoose: true,
           sms: { enabled: true },
           whatsapp: { enabled: true },
           email: { enabled: true }
         };
+        cfg = JSON.parse(JSON.stringify(cfg));
+        if (serverOtpChannels) {
+          ['sms', 'whatsapp', 'email'].forEach(k => {
+            cfg[k] = cfg[k] || {};
+            if (!(serverOtpChannels[k] && serverOtpChannels[k].configured)) cfg[k].enabled = false;
+          });
+          if (!(cfg[cfg.defaultMethod] && cfg[cfg.defaultMethod].enabled)) {
+            cfg.defaultMethod = ['sms', 'whatsapp', 'email'].find(k => cfg[k] && cfg[k].enabled) || cfg.defaultMethod;
+          }
+        }
+        // Checkout requires PHONE verification — never offer email there
+        if (window._reopenCheckoutAfterLogin) {
+          cfg.email = Object.assign({}, cfg.email, { enabled: false });
+          if (cfg.defaultMethod === 'email') cfg.defaultMethod = (cfg.sms && cfg.sms.enabled) ? 'sms' : 'whatsapp';
+        }
+        return cfg;
       }
 
       function renderAuthChannels() {
@@ -10545,15 +10668,36 @@
         });
       }
 
-      // Step 1: Send OTP
+      // Step 1: Send OTP (only ever triggered by an explicit customer click/submit)
+      let otpSendInFlight = false;
+      let otpSendLock = { key: '', until: 0 };
+      const otpLockKey = (v) => (String(v || '').includes('@') ? String(v).toLowerCase() : String(v || '').replace(/[^0-9]/g, '').slice(-10));
       async function handleSendCustomerOtp(e) {
         if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        if (otpSendInFlight) return; // prevent duplicate requests from repeated clicks
 
         const inputId = document.querySelector('#cust-input-identifier');
         const errBox = document.querySelector('#cust-auth-error-msg');
         const btnSend = document.querySelector('#btn-cust-send-otp');
         const rawId = (inputId ? inputId.value : '') || '';
         const identifier = rawId.trim().replace(/\s+/g, '');
+
+        const otpSendLockedUntil = otpSendLock.key === otpLockKey(identifier) ? otpSendLock.until : 0;
+        if (Date.now() < otpSendLockedUntil) {
+          if (errBox) {
+            errBox.textContent = `Please wait ${Math.ceil((otpSendLockedUntil - Date.now()) / 1000)}s before requesting another OTP.`;
+            errBox.style.display = 'block';
+          }
+          return;
+        }
+
+        // Reuse an existing verified session for this number — no new OTP needed
+        const existingSession = getCustomerSession();
+        if (existingSession && !identifier.includes('@') &&
+            String(existingSession.phone).replace(/[^0-9]/g, '').slice(-10) === identifier.replace(/[^0-9]/g, '').slice(-10)) {
+          completeCustomerLogin(existingSession.phone);
+          return;
+        }
 
         if (!identifier) {
           if (errBox) {
@@ -10567,29 +10711,51 @@
         // Read chosen channel
         const selectedChannelRadio = document.querySelector('input[name="cust_selected_channel"]:checked') || 
                                      document.querySelector('input[name="cust_selected_channel"]');
-        const channel = (selectedChannelRadio && selectedChannelRadio.value) ? selectedChannelRadio.value : 'whatsapp';
+        const channel = (selectedChannelRadio && selectedChannelRadio.value) ? selectedChannelRadio.value : 'sms';
 
+        if (channel !== 'email') {
+          const digits = identifier.replace(/[^0-9]/g, '');
+          const ten = digits.length === 12 && digits.startsWith('91') ? digits.slice(2) : (digits.length === 11 && digits.startsWith('0') ? digits.slice(1) : digits);
+          if (!/^[6-9]\d{9}$/.test(ten)) {
+            if (errBox) {
+              errBox.textContent = 'Please enter a valid 10-digit Indian mobile number (+91).';
+              errBox.style.display = 'block';
+            }
+            return;
+          }
+        }
+
+        otpSendInFlight = true;
         if (btnSend) {
           btnSend.disabled = true;
-          btnSend.textContent = 'Sending Passcode...';
+          btnSend.textContent = 'Sending OTP...';
         }
         if (errBox) errBox.style.display = 'none';
 
         try {
+          const activeCfg = getActiveOtpConfig();
+          const channelConfig = (activeCfg && activeCfg[channel]) || {};
           const res = await fetch('/api/otp/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ identifier, channel })
+            body: JSON.stringify({
+              identifier: identifier,
+              channel: channel,
+              provider: channelConfig.provider,
+              templateName: channelConfig.templateName,
+              otp_id: channelConfig.otpId || channelConfig.templateName
+            })
           });
           const data = await res.json();
 
-          if (data && data.success) {
+          if (res.ok && data && data.success) {
             activeOtpSession = {
-              identifier: identifier,
+              identifier: data.identifier || identifier,
               channel: channel,
               cooldown: data.cooldown || 30,
               expiresInMinutes: data.expiresInMinutes || 5
             };
+            otpSendLock = { key: otpLockKey(identifier), until: Date.now() + (data.cooldown || 30) * 1000 };
 
             // Notify Admin audit log
             window.dispatchEvent(new CustomEvent('lora:otp_event', {
@@ -10598,27 +10764,30 @@
                 timestamp: new Date().toISOString(),
                 identifier: identifier,
                 channel: channel,
-                provider: 'Storefront Gateway',
+                provider: data.provider || channelConfig.provider || 'Storefront Gateway',
                 status: 'sent',
                 details: `OTP dispatched to customer via ${channel}. Expiry: ${data.expiresInMinutes || 5}m.`
               }
             }));
 
-            transitionToVerifyStep(data.devSimulationOtp);
+            transitionToVerifyStep();
           } else {
-            throw new Error((data && data.message) || 'Failed to send OTP. Please try again.');
+            // Surface real provider rejection or unconfigured status
+            if (data && data.retryAfter) otpSendLock = { key: otpLockKey(identifier), until: Date.now() + data.retryAfter * 1000 };
+            const errMsg = (data && data.message) || 'Failed to send the verification code. Please check the number and try again.';
+            if (errBox) {
+              errBox.textContent = errMsg;
+              errBox.style.display = 'block';
+            }
           }
         } catch (err) {
-          // Local fallback simulation if server is offline
-          console.warn('API send OTP offline fallback', err);
-          activeOtpSession = {
-            identifier: identifier,
-            channel: channel,
-            cooldown: 30,
-            expiresInMinutes: 5
-          };
-          transitionToVerifyStep('123456');
+          console.error('API send OTP error:', err && err.message);
+          if (errBox) {
+            errBox.textContent = 'Unable to connect to verification server. Please check your connection and try again.';
+            errBox.style.display = 'block';
+          }
         } finally {
+          otpSendInFlight = false;
           if (btnSend) {
             btnSend.disabled = false;
             btnSend.textContent = 'Send OTP Passcode →';
@@ -10741,23 +10910,67 @@
 
       const btnResendOtp = document.querySelector('#btn-cust-resend-otp');
       if (btnResendOtp) {
+        let otpResendInFlight = false;
         btnResendOtp.addEventListener('click', async function () {
-          if (!activeOtpSession) return;
+          if (!activeOtpSession || otpResendInFlight || btnResendOtp.disabled) return;
+          otpResendInFlight = true;
+          const verifyErrBox = document.querySelector('#cust-verify-error-msg');
+          if (verifyErrBox) verifyErrBox.style.display = 'none';
+
           btnResendOtp.disabled = true;
           btnResendOtp.textContent = 'Resending...';
 
           try {
-            await fetch('/api/otp/send', {
+            const activeCfg = getActiveOtpConfig();
+            const channelConfig = (activeCfg && activeCfg[activeOtpSession.channel]) || {};
+            const res = await fetch('/api/otp/send', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 identifier: activeOtpSession.identifier,
-                channel: activeOtpSession.channel
+                channel: activeOtpSession.channel,
+                provider: channelConfig.provider,
+                templateName: channelConfig.templateName,
+                otp_id: channelConfig.otpId || channelConfig.templateName
               })
             });
-          } catch (e) {}
+            const data = await res.json();
 
-          startResendTimer(30);
+            otpResendInFlight = false;
+            if (res.ok && data && data.success) {
+              startResendTimer(data.cooldown || 30);
+              if (verifyErrBox) {
+                verifyErrBox.style.background = 'rgba(16, 185, 129, 0.15)';
+                verifyErrBox.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                verifyErrBox.style.color = '#6EE7B7';
+                verifyErrBox.textContent = `✓ A new verification code has been sent via ${activeOtpSession.channel === 'sms' ? 'SMS' : activeOtpSession.channel === 'whatsapp' ? 'WhatsApp' : 'Email'}.`;
+                verifyErrBox.style.display = 'block';
+                setTimeout(() => { if (verifyErrBox.textContent.includes('dispatched')) verifyErrBox.style.display = 'none'; }, 4000);
+              }
+            } else {
+              // Honour server cooldown if provided, otherwise allow retry
+              if (data && data.retryAfter) startResendTimer(data.retryAfter);
+              else { btnResendOtp.disabled = false; btnResendOtp.textContent = 'Resend OTP Now'; }
+              if (verifyErrBox) {
+                verifyErrBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                verifyErrBox.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                verifyErrBox.style.color = '#FCA5A5';
+                verifyErrBox.textContent = (data && data.message) || 'Resend request was not accepted by the provider. Please check configuration or wait.';
+                verifyErrBox.style.display = 'block';
+              }
+            }
+          } catch (e) {
+            otpResendInFlight = false;
+            btnResendOtp.disabled = false;
+            btnResendOtp.textContent = 'Resend OTP Now';
+            if (verifyErrBox) {
+              verifyErrBox.style.background = 'rgba(239, 68, 68, 0.15)';
+              verifyErrBox.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+              verifyErrBox.style.color = '#FCA5A5';
+              verifyErrBox.textContent = 'Communication failure while resending OTP. Please try again.';
+              verifyErrBox.style.display = 'block';
+            }
+          }
         });
       }
 
@@ -10773,8 +10986,10 @@
       }
 
       // Step 2: Verify OTP
+      let otpVerifyInFlight = false;
       async function handleVerifyCustomerOtp(e) {
         if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        if (otpVerifyInFlight) return; // auto-submit + Enter must not double-check the code
 
         const digitInputs = document.querySelectorAll('.otp-digit-box');
         const otpEntered = Array.from(digitInputs).map(b => b.value).join('');
@@ -10789,6 +11004,7 @@
           return;
         }
 
+        otpVerifyInFlight = true;
         if (btnVerify) {
           btnVerify.disabled = true;
           btnVerify.textContent = 'Verifying Passcode...';
@@ -10796,8 +11012,7 @@
         if (errBox) errBox.style.display = 'none';
 
         const identifier = (activeOtpSession && activeOtpSession.identifier) || 
-                           (document.querySelector('#cust-input-identifier')?.value || '').trim() || 
-                           '9876543210';
+                           (document.querySelector('#cust-input-identifier')?.value || '').trim();
 
         try {
           const res = await fetch('/api/otp/verify', {
@@ -10807,8 +11022,9 @@
           });
           const data = await res.json();
 
-          if (data && data.success) {
-            completeCustomerLogin(identifier);
+          if (res.ok && data && data.success) {
+            if (data.sessionToken) setCustomerSession(data.sessionToken, data.phone, data.sessionExpiresAt);
+            completeCustomerLogin(data.phone || identifier);
           } else {
             throw new Error((data && data.message) || 'Invalid verification passcode. Please recheck.');
           }
@@ -10818,6 +11034,7 @@
             errBox.style.display = 'block';
           }
         } finally {
+          otpVerifyInFlight = false;
           if (btnVerify) {
             btnVerify.disabled = false;
             btnVerify.textContent = 'Verify & Continue →';
@@ -10853,7 +11070,7 @@
             name: (pastSaved && pastSaved.name) ? pastSaved.name : (defaultName.charAt(0).toUpperCase() + defaultName.slice(1)),
             phone: isEmail ? '+919876543210' : (identifier.startsWith('+91') ? identifier : `+91${identifier}`),
             altPhone: (pastSaved && pastSaved.altPhone) || '',
-            email: isEmail ? identifier : ((pastSaved && pastSaved.email) || `${identifier.replace(/[^0-9]/g, '')}@customer.loramattress.com`),
+            email: isEmail ? identifier : ((pastSaved && pastSaved.email) || `${identifier.replace(/[^0-9]/g, '').slice(-10)}@customer.loramattress.com`),
             house: (pastSaved && pastSaved.house) || '',
             street: (pastSaved && pastSaved.street) || '',
             landmark: (pastSaved && pastSaved.landmark) || '',
@@ -10888,7 +11105,9 @@
           }
         }));
 
+        window._completingCustomerLogin = true;
         closeCustomerAuthModal();
+        window._completingCustomerLogin = false;
         updateHeaderAuthUI();
         if (window._reopenCheckoutAfterLogin) {
           window._reopenCheckoutAfterLogin = false;
@@ -10896,6 +11115,10 @@
           if (typeof autoFillCheckoutFieldsFromProfile === 'function') {
             autoFillCheckoutFieldsFromProfile(cleanPhoneId);
           }
+          // Customer-typed checkout details win over saved profile values
+          restoreCheckoutDraft();
+          const chkPhoneEl = document.querySelector('#chk-customer-phone');
+          if (chkPhoneEl) chkPhoneEl.value = cleanPhoneId;
           if (typeof updateCheckoutPhoneStateUI === 'function') {
             updateCheckoutPhoneStateUI();
           }

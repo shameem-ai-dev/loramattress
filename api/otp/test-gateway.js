@@ -3,6 +3,7 @@
 
 const https = require('https');
 const { verifyAdminAuth } = require('../auth.js');
+const otpLib = require('./_lib.js');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,21 +30,61 @@ module.exports = async function handler(req, res) {
     const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const channel = (payload.channel || 'sms').toLowerCase();
 
-    // 2. Test SMS Gateway (Read-only account/profile check)
+    // 2. Test SMS Gateway — tests the provider currently selected in the admin form
     if (channel === 'sms') {
-      const apiKey = (process.env.SMS_API_KEY || '').trim();
-      const provider = (process.env.SMS_PROVIDER || 'FAST2SMS').toUpperCase();
-      const senderId = (process.env.SMS_SENDER_ID || 'LORAMT').trim();
+      const settings = otpLib.readOtpSettings();
+      const provider = otpLib.canonicalProvider(payload.provider) || settings.sms.provider;
+      const status = otpLib.smsProviderStatus(provider, settings);
 
-      if (!apiKey) {
+      if (!status.configured) {
         return res.status(200).json({
           success: false,
           configured: false,
-          message: 'SMS Gateway Unconfigured: SMS_API_KEY is missing from GoDaddy environment variables.'
+          provider,
+          vars: status.vars,
+          message: `${provider} is not ready: ${status.message}`
         });
       }
 
-      if (provider === 'FAST2SMS') {
+      if (provider === 'Twilio') {
+        // Read-only handshake: fetch the Verify service (sends nothing, costs nothing)
+        const svc = await otpLib.twilioFetchService();
+        if (!svc.ok) {
+          return res.status(200).json({ success: false, configured: true, provider, message: `Twilio check failed: ${svc.message}` });
+        }
+        let extra = '';
+        if (payload.sendTest === true) {
+          const phone = otpLib.normalizeIndianPhone(payload.identifier);
+          if (!phone) {
+            return res.status(200).json({ success: false, configured: true, provider, message: 'Credentials OK, but the test number is not a valid +91 mobile number.' });
+          }
+          const sent = await otpLib.twilioSendVerification(phone);
+          if (!sent.ok) {
+            return res.status(200).json({ success: false, configured: true, provider, message: `Credentials OK, but the test SMS failed: ${sent.message}` });
+          }
+          extra = ` A real test OTP was sent to ${otpLib.maskPhone(phone)} (status: ${sent.status}).`;
+        }
+        return res.status(200).json({
+          success: true,
+          configured: true,
+          provider,
+          message: `Twilio Verify connected — service "${svc.friendlyName}" (${svc.codeLength}-digit codes).${extra}`
+        });
+      }
+
+      if (provider === 'MSG91') {
+        return res.status(200).json({
+          success: true,
+          configured: true,
+          provider,
+          message: `MSG91 credentials present (SMS_API_KEY set, template ID configured). MSG91 has no free read-only check; send a real OTP from the storefront to confirm delivery.`
+        });
+      }
+
+      // Fast2SMS
+      const apiKey = (process.env.SMS_API_KEY || process.env.FAST2SMS_API_KEY || '').trim();
+      const senderId = (process.env.SMS_SENDER_ID || 'LORAMT').trim();
+      {
         // Query Fast2SMS balance/status endpoint (read-only; sends 0 messages, incurs 0 charge)
         const checkResult = await new Promise((resolve) => {
           const reqOpt = {
@@ -76,22 +117,18 @@ module.exports = async function handler(req, res) {
           return res.status(200).json({
             success: true,
             configured: true,
+            provider,
             message: `Fast2SMS Gateway handshake verified! Active balance: ₹${checkResult.wallet ?? '0'}. Sender ID: ${senderId}.`
           });
         } else {
           return res.status(200).json({
             success: false,
             configured: true,
-            message: `Fast2SMS authentication failed: ${checkResult.message || 'Invalid API key'}. Check SMS_API_KEY in GoDaddy.`
+            provider,
+            message: `Fast2SMS authentication failed: ${String(checkResult.message || 'Invalid API key').slice(0, 200)}. Check SMS_API_KEY in your hosting environment variables.`
           });
         }
       }
-
-      return res.status(200).json({
-        success: true,
-        configured: true,
-        message: `${provider} Gateway credentials present (Sender ID: ${senderId}).`
-      });
     }
 
     // 3. Test WhatsApp Gateway
@@ -140,16 +177,18 @@ module.exports = async function handler(req, res) {
         });
 
         if (checkResult.ok) {
+          const otpId = (process.env.FAST2SMS_OTP_ID || process.env.FAST2SMS_WHATSAPP_MESSAGE_ID || process.env.WHATSAPP_TEMPLATE_NAME || '').trim();
+          const templateStatus = otpId ? `Template / OTP ID configured: "${otpId}".` : 'Note: Configure FAST2SMS_OTP_ID in GoDaddy for Smart OTP delivery.';
           return res.status(200).json({
             success: true,
             configured: true,
-            message: `Fast2SMS WhatsApp Gateway handshake verified! Active wallet balance: ₹${checkResult.wallet ?? '0'}. Ready for WhatsApp OTP dispatch.`
+            message: `Fast2SMS API Credential Handshake Verified! Active wallet balance: ₹${checkResult.wallet ?? '0'}. ${templateStatus} (Note: This is an admin connection test; live OTPs are sent through the customer login flow).`
           });
         } else {
           return res.status(200).json({
             success: false,
             configured: true,
-            message: `Fast2SMS authentication failed: ${checkResult.message || 'Invalid API key'}. Check FAST2SMS_API_KEY or WHATSAPP_API_TOKEN in GoDaddy.`
+            message: `Fast2SMS authentication failed: ${checkResult.message || 'Invalid API key'}. Check FAST2SMS_API_KEY or SMS_API_KEY in GoDaddy.`
           });
         }
       }

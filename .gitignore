@@ -7,3 +7,6 @@ node_modules/
 !.env.example
 !.env.godaddy.example
 .env.local
+
+# OTP runtime files (never commit)
+config/.customer_session_secret

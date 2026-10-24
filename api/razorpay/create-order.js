@@ -35,6 +35,15 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ success: false, message: 'Valid payment amount is required.' });
     }
 
+    // Checkout phone verification enforced server-side before any payment order is created
+    const otpLib = require('../otp/_lib.js');
+    const { verifyAdminAuth } = require('../auth.js');
+    const checkoutPhone = (payload.notes && payload.notes.customer_phone) || '';
+    const denied = otpLib.authorizeNewOrders(req, [{ phone: checkoutPhone }], verifyAdminAuth(req));
+    if (denied) {
+      return res.status(denied.status).json({ success: false, code: denied.code, message: denied.message });
+    }
+
     const amountInPaise = Math.round(rawAmount * 100);
     const currency = (payload.currency || 'INR').toUpperCase();
     const receipt = String(payload.receipt || ('rcpt_' + Date.now())).slice(0, 40);

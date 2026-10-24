@@ -3396,19 +3396,19 @@ fbq('track', 'PageView');
 
             <div class="field-grid-2">
               <div class="input-block">
-                <label>SMS Provider Name</label>
+                <label for="cfg-sms-provider">SMS Provider Name</label>
                 <select id="cfg-sms-provider" class="admin-select">
                   <option value="MSG91" selected>MSG91 (India DLT Compliant)</option>
-                  <option value="Twilio">Twilio Verify / Programmable SMS</option>
+                  <option value="Twilio">Twilio Verify (SMS OTP)</option>
                   <option value="Fast2SMS">Fast2SMS Quick SMS API</option>
-                  <option value="Firebase">Firebase Phone Auth Gateway</option>
-                  <option value="Custom API">Custom HTTP REST SMS Gateway</option>
+                  <option value="Firebase">Firebase Phone Auth Gateway (not supported server-side)</option>
+                  <option value="Custom API">Custom HTTP REST SMS Gateway (not supported server-side)</option>
                 </select>
-                <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Modular provider selection. Switch anytime without changing storefront code.</span>
+                <span class="field-hint" id="cfg-sms-provider-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Saved on the server. Customers receive SMS OTPs through the saved provider.</span>
               </div>
 
-              <div class="input-block">
-                <label>SMS Sender ID / Header</label>
+              <div class="input-block" id="cfg-sms-sender-block" data-sms-providers="MSG91,Fast2SMS">
+                <label for="cfg-sms-sender">SMS Sender ID / Header</label>
                 <input type="text" id="cfg-sms-sender" class="admin-input" value="LORAMT" placeholder="e.g. LORAMT (6 alphabetic characters for DLT)">
               </div>
             </div>
@@ -3421,33 +3421,37 @@ fbq('track', 'PageView');
                 </div>
                 <span id="cfg-sms-env-status" class="status-badge" style="font-size: 0.72rem;">Checking...</span>
               </div>
-              <div class="field-grid-2" style="margin-bottom: 0;">
-                <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">SMS_API_KEY</div>
-                  <div id="cfg-sms-key-display" style="font-size: 0.84rem; font-weight: 700; color: #94A3B8; font-family: monospace;">Loading...</div>
-                </div>
-                <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                  <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem;">SMS_SENDER_ID / SENDER</div>
-                  <div id="cfg-sms-sender-display" style="font-size: 0.84rem; font-weight: 700; color: #94A3B8; font-family: monospace;">Loading...</div>
-                </div>
+              <div class="field-grid-2" id="cfg-sms-env-vars" style="margin-bottom: 0;">
+                <!-- Rendered per selected provider: shows only whether each server variable is set -->
               </div>
-              <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0.5rem 0 0 0; line-height: 1.4;">
-                🔒 <strong>Single Source of Truth:</strong> SMS provider secrets are securely read from server environment variables (<code>SMS_API_KEY</code>, <code>SMS_SENDER_ID</code>). Configure them in GoDaddy <em>Setup Node.js App → Environment Variables</em> and click <strong>Restart</strong>.
+              <div id="cfg-sms-env-problems" style="display:none; font-size: 0.74rem; color: #FCA5A5; margin-top: 0.5rem; line-height: 1.4;"></div>
+              <p id="cfg-sms-env-help" style="font-size: 0.72rem; color: var(--text-muted); margin: 0.5rem 0 0 0; line-height: 1.4;">
+                🔒 Secrets are read only from server environment variables and are never shown here or sent to the browser.
               </p>
             </div>
 
-            <div class="field-grid-2">
+            <div class="field-grid-2" id="cfg-sms-msg91-fields" data-sms-providers="MSG91">
               <div class="input-block">
-                <label>DLT Approved Template ID</label>
+                <label for="cfg-sms-template">DLT Approved Template ID</label>
                 <input type="text" id="cfg-sms-template" class="admin-input" value="140716129840129" placeholder="e.g. 14071612...">
                 <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Template text: Your LORA login verification OTP is {#var#}. Valid for 5 minutes.</span>
               </div>
 
               <div class="input-block">
-                <label>API Gateway Endpoint URL</label>
-                <input type="url" id="cfg-sms-endpoint" class="admin-input" value="https://api.msg91.com/api/v5/otp" placeholder="https://api.msg91.com/api/v5/otp">
+                <label for="cfg-sms-endpoint">API Gateway Endpoint URL</label>
+                <input type="url" id="cfg-sms-endpoint" class="admin-input" value="https://control.msg91.com/api/v5/otp" placeholder="https://control.msg91.com/api/v5/otp">
               </div>
             </div>
+
+            <div id="cfg-sms-twilio-info" data-sms-providers="Twilio" style="display:none; background: rgba(242, 47, 70, 0.08); border: 1px solid rgba(242, 47, 70, 0.3); border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 0.78rem; color: #E2E8F0; line-height: 1.5;">
+              <strong>Twilio Verify</strong> generates, sends and checks the 6-digit code. No sender ID, DLT template or endpoint is needed here. Customers are signed in only when Twilio returns <code>approved</code>. Numbers are sent in +91 format.
+            </div>
+
+            <div id="cfg-sms-unsupported-info" data-sms-providers="Firebase,Custom API" style="display:none; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 0.78rem; color: #FCD34D; line-height: 1.5;">
+              This provider is not supported for server-side SMS OTP. Customers will see an error if SMS is selected. Please choose Twilio, MSG91 or Fast2SMS.
+            </div>
+
+            <div id="sms-save-error" style="display:none; margin-top: 0.75rem; color: #FCA5A5; font-size: 0.8rem; font-weight: 700;"></div>
 
             <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
               <button type="button" class="btn-action-secondary" id="btn-test-sms-otp" style="border-color: rgba(56, 189, 248, 0.4); color: #38BDF8;">
@@ -4410,9 +4414,13 @@ Order Notes: [Customer Instructions]</pre>
           Enter a destination phone number or email to send a real-time verification probe.
         </div>
         <div class="input-block" style="margin-bottom: 0;">
-          <label id="test-target-label">Recipient Phone Number (with +91)</label>
+          <label id="test-target-label" for="test-target-input">Recipient Phone Number (with +91)</label>
           <input type="text" id="test-target-input" class="admin-input" placeholder="+919876543210">
         </div>
+        <label id="test-send-real-wrap" style="display:none; margin-top: 0.75rem; font-size: 0.78rem; color: #E2E8F0; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="test-send-real-otp">
+          Also send a real test OTP to this number (uses 1 paid SMS)
+        </label>
       </div>
 
       <div id="test-gateway-result" style="display: none; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem; font-size: 0.82rem; line-height: 1.4;">
@@ -6424,7 +6432,7 @@ Order Notes: [Customer Instructions]</pre>
           try {
             fetch('/api/orders', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: getAdminAuthHeaders(),
               body: JSON.stringify({ orders: orders })
             }).catch(() => {});
           } catch (e) {}
@@ -6450,19 +6458,19 @@ Order Notes: [Customer Instructions]</pre>
           if (orderToUpdate && orderToUpdate.id) {
             fetch(`/api/orders/${encodeURIComponent(orderToUpdate.id)}`, {
               method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
+              headers: getAdminAuthHeaders(),
               body: JSON.stringify(orderToUpdate)
             }).catch(e => console.warn('Could not PUT order update to server', e));
 
             fetch('/api/orders', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: getAdminAuthHeaders(),
               body: JSON.stringify({ order: orderToUpdate, orders })
             }).catch(() => {});
           } else {
             fetch('/api/orders', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: getAdminAuthHeaders(),
               body: JSON.stringify({ orders })
             }).catch(e => console.warn('Could not POST orders to server', e));
           }
@@ -7742,24 +7750,80 @@ Order Notes: [Customer Instructions]</pre>
       let otpConfig = JSON.parse(JSON.stringify(defaultOtpConfig));
       let otpLogs = [];
 
+      // ---- SMS provider: field visibility + real server-side status ----
+      const SMS_PROVIDER_ENV_HELP = {
+        Twilio: 'Twilio Verify reads TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN and TWILIO_VERIFY_SERVICE_SID from your hosting environment variables. Restart the app after changing them.',
+        MSG91: 'MSG91 reads SMS_API_KEY (your MSG91 auth key) from your hosting environment variables. Restart the app after changing it.',
+        Fast2SMS: 'Fast2SMS reads SMS_API_KEY from your hosting environment variables. Restart the app after changing it.'
+      };
+
+      function updateSmsProviderFields(provider) {
+        provider = provider || (document.querySelector('#cfg-sms-provider') || {}).value || 'MSG91';
+        document.querySelectorAll('#card-sms-otp [data-sms-providers]').forEach(el => {
+          const allowed = el.getAttribute('data-sms-providers').split(',').map(s => s.trim());
+          el.style.display = allowed.includes(provider) ? '' : 'none';
+        });
+        const help = document.querySelector('#cfg-sms-env-help');
+        if (help) help.textContent = '🔒 ' + (SMS_PROVIDER_ENV_HELP[provider] || 'This provider has no server-side SMS integration.') + ' Secrets are never shown here or sent to the browser.';
+      }
+
+      function renderSmsProviderStatus(status) {
+        const smsBadge = document.querySelector('#cfg-sms-env-status');
+        const varsBox = document.querySelector('#cfg-sms-env-vars');
+        const problemsBox = document.querySelector('#cfg-sms-env-problems');
+        if (!status) return;
+        if (smsBadge) {
+          smsBadge.className = `status-badge ${status.configured ? 'status-delivered' : 'status-failed'}`;
+          smsBadge.textContent = status.configured ? `${status.provider}: Configured` : `${status.provider}: Not configured`;
+        }
+        if (varsBox) {
+          const vars = status.vars || {};
+          const names = Object.keys(vars);
+          varsBox.innerHTML = names.length ? names.map(name => `
+            <div style="background: rgba(10, 15, 29, 0.6); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06);">
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem; font-family: monospace;">${name}</div>
+              <div style="font-size: 0.84rem; font-weight: 700; font-family: monospace; color: ${vars[name] ? '#34D399' : '#F87171'};">${vars[name] ? '✓ Set (hidden)' : '✕ Missing'}</div>
+            </div>`).join('') : '';
+        }
+        if (problemsBox) {
+          const probs = status.problems || [];
+          problemsBox.style.display = probs.length ? 'block' : 'none';
+          problemsBox.textContent = probs.length ? '⚠ ' + probs.join(' • ') : '';
+        }
+      }
+
+      async function fetchSmsProviderStatus(previewProvider) {
+        try {
+          const qs = previewProvider ? `?provider=${encodeURIComponent(previewProvider)}` : '';
+          const res = await fetch('/api/otp/settings' + qs, { cache: 'no-store' });
+          const data = await res.json();
+          if (!data || !data.success) throw new Error((data && data.message) || 'Status unavailable');
+          if (!previewProvider && data.settings && data.settings.sms) {
+            // Server is the source of truth for the saved provider
+            otpConfig.sms = Object.assign({}, otpConfig.sms, data.settings.sms);
+            const sel = document.querySelector('#cfg-sms-provider');
+            if (sel) sel.value = data.settings.sms.provider;
+            if (document.querySelector('#cfg-sms-sender')) document.querySelector('#cfg-sms-sender').value = data.settings.sms.senderId || '';
+            if (document.querySelector('#cfg-sms-template')) document.querySelector('#cfg-sms-template').value = data.settings.sms.templateId || '';
+            if (document.querySelector('#cfg-sms-endpoint')) document.querySelector('#cfg-sms-endpoint').value = data.settings.sms.endpoint || '';
+            updateSmsProviderFields(data.settings.sms.provider);
+            try { localStorage.setItem(OTP_CONFIG_KEY, JSON.stringify(otpConfig)); } catch (e) {}
+          }
+          renderSmsProviderStatus(data.status);
+        } catch (e) {
+          const smsBadge = document.querySelector('#cfg-sms-env-status');
+          if (smsBadge) {
+            smsBadge.className = 'status-badge status-failed';
+            smsBadge.textContent = 'Server unreachable';
+          }
+        }
+      }
+
       function syncOtpIntegrationUI(otpStatus) {
         if (!otpStatus) return;
 
-        // SMS
-        const smsBadge = document.querySelector('#cfg-sms-env-status');
-        const smsKeyDisp = document.querySelector('#cfg-sms-key-display');
-        const smsSenderDisp = document.querySelector('#cfg-sms-sender-display');
-        if (smsBadge) {
-          smsBadge.className = `status-badge ${otpStatus.sms?.configured ? 'status-delivered' : 'status-failed'}`;
-          smsBadge.textContent = otpStatus.sms?.configured ? 'Configured' : 'Unconfigured in GoDaddy';
-        }
-        if (smsKeyDisp) {
-          smsKeyDisp.textContent = otpStatus.sms?.has_key ? 'Configured (••••••••)' : 'Not configured in GoDaddy';
-          smsKeyDisp.style.color = otpStatus.sms?.has_key ? '#38BDF8' : '#F87171';
-        }
-        if (smsSenderDisp) {
-          smsSenderDisp.textContent = otpConfig.sms?.senderId || 'LORAMT';
-        }
+        // SMS (provider-specific status comes from /api/otp/settings)
+        if (otpStatus.sms && otpStatus.sms.vars) renderSmsProviderStatus(otpStatus.sms);
 
         // WhatsApp
         const waBadge = document.querySelector('#cfg-wa-env-status');
@@ -7796,13 +7860,13 @@ Order Notes: [Customer Instructions]</pre>
       }
 
       async function fetchOtpEnvStatus() {
+        fetchSmsProviderStatus();
         try {
           const res = await fetch('/api/otp/send', { method: 'GET' });
           if (res.ok) {
             const data = await res.json();
             if (data && data.channels) {
               syncOtpIntegrationUI({
-                sms: { configured: data.channels.sms?.configured, has_key: data.channels.sms?.configured },
                 whatsapp: { configured: data.channels.whatsapp?.configured, has_key: data.channels.whatsapp?.configured },
                 email: { configured: data.channels.email?.configured, has_key: data.channels.email?.configured }
               });
@@ -7874,7 +7938,8 @@ Order Notes: [Customer Instructions]</pre>
         if (document.querySelector('#cfg-sms-provider')) document.querySelector('#cfg-sms-provider').value = otpConfig.sms.provider || 'MSG91';
         if (document.querySelector('#cfg-sms-sender')) document.querySelector('#cfg-sms-sender').value = otpConfig.sms.senderId || 'LORAMT';
         if (document.querySelector('#cfg-sms-template')) document.querySelector('#cfg-sms-template').value = otpConfig.sms.templateId || '140716129840129';
-        if (document.querySelector('#cfg-sms-endpoint')) document.querySelector('#cfg-sms-endpoint').value = otpConfig.sms.endpoint || 'https://api.msg91.com/api/v5/otp';
+        if (document.querySelector('#cfg-sms-endpoint')) document.querySelector('#cfg-sms-endpoint').value = otpConfig.sms.endpoint || 'https://control.msg91.com/api/v5/otp';
+        updateSmsProviderFields(otpConfig.sms.provider || 'MSG91');
 
         // WhatsApp Card
         const waToggle = document.querySelector('#toggle-wa-otp');
@@ -7989,15 +8054,59 @@ Order Notes: [Customer Instructions]</pre>
         });
       }
 
-      // Save SMS Gateway
+      // SMS provider dropdown: show only the selected provider's fields + its real status
+      const smsProvSelect = document.querySelector('#cfg-sms-provider');
+      if (smsProvSelect) {
+        smsProvSelect.addEventListener('change', function () {
+          updateSmsProviderFields(smsProvSelect.value);
+          fetchSmsProviderStatus(smsProvSelect.value);
+          const errBox = document.querySelector('#sms-save-error');
+          if (errBox) errBox.style.display = 'none';
+        });
+      }
+
+      // Save SMS Gateway (persisted on the server; never includes secrets)
       const btnSaveSms = document.querySelector('#btn-save-sms-gateway');
       if (btnSaveSms) {
-        btnSaveSms.addEventListener('click', function () {
-          otpConfig.sms.provider = document.querySelector('#cfg-sms-provider').value;
-          otpConfig.sms.senderId = document.querySelector('#cfg-sms-sender').value;
-          otpConfig.sms.templateId = document.querySelector('#cfg-sms-template').value;
-          otpConfig.sms.endpoint = document.querySelector('#cfg-sms-endpoint').value;
-          saveOtpConfig('sms-save-feedback');
+        btnSaveSms.addEventListener('click', async function () {
+          const errBox = document.querySelector('#sms-save-error');
+          if (errBox) errBox.style.display = 'none';
+          const provider = document.querySelector('#cfg-sms-provider').value;
+          const smsPayload = { provider };
+          if (provider === 'MSG91' || provider === 'Fast2SMS') smsPayload.senderId = document.querySelector('#cfg-sms-sender').value;
+          if (provider === 'MSG91') {
+            smsPayload.templateId = document.querySelector('#cfg-sms-template').value;
+            smsPayload.endpoint = document.querySelector('#cfg-sms-endpoint').value;
+          }
+          btnSaveSms.disabled = true;
+          const originalText = btnSaveSms.textContent;
+          btnSaveSms.textContent = 'Saving...';
+          try {
+            const res = await fetch('/api/otp/settings', {
+              method: 'POST',
+              headers: getAdminAuthHeaders(),
+              body: JSON.stringify({ sms: smsPayload })
+            });
+            const data = await res.json().catch(() => null);
+            if (!res.ok || !data || !data.success) throw new Error((data && data.message) || `Save failed (HTTP ${res.status})`);
+            otpConfig.sms = Object.assign({}, otpConfig.sms, data.settings.sms);
+            saveOtpConfig('sms-save-feedback');
+            renderSmsProviderStatus(data.status);
+            if (!data.persisted && errBox) {
+              errBox.style.color = '#FCD34D';
+              errBox.textContent = data.message;
+              errBox.style.display = 'block';
+            }
+          } catch (err) {
+            if (errBox) {
+              errBox.style.color = '#FCA5A5';
+              errBox.textContent = '✕ ' + (err.message || 'Could not save SMS settings.');
+              errBox.style.display = 'block';
+            }
+          } finally {
+            btnSaveSms.disabled = false;
+            btnSaveSms.textContent = originalText;
+          }
         });
       }
 
@@ -8064,12 +8173,20 @@ Order Notes: [Customer Instructions]</pre>
       function openTestGatewayModal(channel) {
         currentTestChannel = channel;
         if (testResult) testResult.style.display = 'none';
+        const realWrap = document.querySelector('#test-send-real-wrap');
+        const realChk = document.querySelector('#test-send-real-otp');
+        if (realChk) realChk.checked = false;
+        if (realWrap) realWrap.style.display = 'none';
         if (channel === 'sms') {
-          testTitle.textContent = '⚡ Test SMS OTP Integration';
-          testSub.textContent = `Provider: ${otpConfig.sms.provider} | Sender: ${otpConfig.sms.senderId}`;
-          testLabel.textContent = 'Recipient Mobile Number (with country code)';
+          const selProvider = (document.querySelector('#cfg-sms-provider') || {}).value || otpConfig.sms.provider;
+          testTitle.textContent = `⚡ Test SMS Integration — ${selProvider}`;
+          testSub.textContent = selProvider === 'Twilio'
+            ? 'Provider: Twilio Verify | Checks credentials and the Verify service (no SMS sent unless you tick the box)'
+            : `Provider: ${selProvider} | Sender: ${otpConfig.sms.senderId}`;
+          testLabel.textContent = 'Recipient Mobile Number (+91)';
           testInput.placeholder = '+919876543210';
-          testInput.value = '+919876543210';
+          testInput.value = '';
+          if (realWrap && selProvider === 'Twilio') realWrap.style.display = 'flex';
         } else if (channel === 'whatsapp') {
           testTitle.textContent = '⚡ Test WhatsApp OTP Integration';
           testSub.textContent = `Provider: ${otpConfig.whatsapp.provider} | Template: ${otpConfig.whatsapp.templateName}`;
@@ -8099,7 +8216,8 @@ Order Notes: [Customer Instructions]</pre>
       if (btnExecTest) {
         btnExecTest.addEventListener('click', async function () {
           const target = testInput.value.trim();
-          if (!target) {
+          const escHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+          if (!target && currentTestChannel !== 'sms') {
             alert('Please enter a valid recipient phone or email for testing.');
             return;
           }
@@ -8112,6 +8230,16 @@ Order Notes: [Customer Instructions]</pre>
           testResult.style.color = '#38BDF8';
           testResult.innerHTML = `Verifying <strong>${currentTestChannel.toUpperCase()} Gateway</strong> credentials with server...`;
 
+          const testProvider = currentTestChannel === 'sms'
+            ? ((document.querySelector('#cfg-sms-provider') || {}).value || otpConfig.sms.provider)
+            : otpConfig[currentTestChannel].provider;
+          const sendRealTest = currentTestChannel === 'sms' && !!(document.querySelector('#test-send-real-otp') || {}).checked;
+          if (sendRealTest && !target) {
+            alert('Enter the +91 mobile number that should receive the test OTP.');
+            btnExecTest.disabled = false;
+            btnExecTest.textContent = '⚡ Run Connection Check';
+            return;
+          }
           try {
             const res = await fetch('/api/otp/test-gateway', {
               method: 'POST',
@@ -8119,7 +8247,8 @@ Order Notes: [Customer Instructions]</pre>
               body: JSON.stringify({
                 channel: currentTestChannel,
                 identifier: target,
-                provider: otpConfig[currentTestChannel].provider
+                provider: testProvider,
+                sendTest: sendRealTest
               })
             });
             const data = await res.json();
@@ -8127,13 +8256,13 @@ Order Notes: [Customer Instructions]</pre>
               testResult.style.background = 'rgba(16, 185, 129, 0.15)';
               testResult.style.border = '1px solid rgba(16, 185, 129, 0.4)';
               testResult.style.color = '#6EE7B7';
-              testResult.innerHTML = `<strong>✓ Handshake Verified (200 OK)</strong><br>${data.message}`;
+              testResult.innerHTML = `<strong>✓ Connection Verified</strong><br>${escHtml(data.message)}`;
               recordOtpAuditLog({
                 id: 'AUDIT-' + Date.now(),
                 timestamp: new Date().toISOString(),
-                identifier: target,
+                identifier: target || '—',
                 channel: currentTestChannel,
-                provider: otpConfig[currentTestChannel].provider,
+                provider: testProvider,
                 status: 'test_success',
                 details: `Gateway handshake verified for ${target}`
               });
@@ -8141,7 +8270,7 @@ Order Notes: [Customer Instructions]</pre>
               testResult.style.background = 'rgba(239, 68, 68, 0.15)';
               testResult.style.border = '1px solid rgba(239, 68, 68, 0.4)';
               testResult.style.color = '#F87171';
-              testResult.innerHTML = `<strong>✕ Gateway Check: ${data.configured === false ? 'Unconfigured' : 'Authentication Failed'}</strong><br>${data.message || 'Check credentials in GoDaddy Environment Variables.'}`;
+              testResult.innerHTML = `<strong>✕ ${escHtml(testProvider || currentTestChannel.toUpperCase())}: ${data.configured === false ? 'Not configured' : 'Check failed'}</strong><br>${escHtml(data.message || 'Check the environment variables in your hosting panel.')}`;
               recordOtpAuditLog({
                 id: 'AUDIT-' + Date.now(),
                 timestamp: new Date().toISOString(),

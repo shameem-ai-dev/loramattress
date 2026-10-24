@@ -3,11 +3,35 @@
 
 const crypto = require('crypto');
 const https = require('https');
+const otpLib = require('./_lib.js');
 
 global._loraOtpStore = global._loraOtpStore || new Map();
 
 function hashOtp(otp) {
   return crypto.createHash('sha256').update(String(otp)).digest('hex');
+}
+
+function postJson(hostname, apiPath, headers, payloadObj, timeout) {
+  const data = payloadObj ? JSON.stringify(payloadObj) : '';
+  return new Promise((resolve) => {
+    const r = https.request({
+      hostname, path: apiPath, method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data), ...headers },
+      timeout: timeout || 8000
+    }, (resp) => {
+      let body = '';
+      resp.on('data', c => body += c);
+      resp.on('end', () => {
+        let parsed = null;
+        try { parsed = JSON.parse(body); } catch (e) {}
+        resolve({ statusCode: resp.statusCode, data: parsed, raw: body });
+      });
+    });
+    r.on('error', err => resolve({ statusCode: 0, error: err.message }));
+    r.on('timeout', () => { r.destroy(); resolve({ statusCode: 0, error: 'Gateway timeout' }); });
+    if (data) r.write(data);
+    r.end();
+  });
 }
 
 module.exports = async function handler(req, res) {
@@ -26,14 +50,17 @@ module.exports = async function handler(req, res) {
     const waConfigured = isFast2SmsWa
       ? Boolean(process.env.FAST2SMS_API_KEY || process.env.WHATSAPP_API_TOKEN || process.env.SMS_API_KEY)
       : Boolean(process.env.WHATSAPP_API_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID);
+    const otpSettings = otpLib.readOtpSettings();
+    const smsStatus = otpLib.smsProviderStatus(otpSettings.sms.provider, otpSettings);
 
     return res.status(200).json({
       success: true,
       channels: {
         sms: {
-          configured: Boolean(process.env.SMS_API_KEY),
-          provider: process.env.SMS_PROVIDER || 'FAST2SMS',
-          sender_id: process.env.SMS_SENDER_ID || 'LORAMT'
+          configured: smsStatus.configured,
+          provider: smsStatus.provider,
+          vars: smsStatus.vars,
+          message: smsStatus.message
         },
         whatsapp: {
           configured: waConfigured,
@@ -51,96 +78,113 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
 
+  let payload;
   try {
-    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const identifier = (payload.identifier || '').trim();
-    const channel = (payload.channel || 'sms').toLowerCase();
+    payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+  } catch (e) {
+    return res.status(400).json({ success: false, message: 'Invalid request body.' });
+  }
 
-    if (!identifier) {
-      return res.status(400).json({ success: false, message: 'Mobile number or email is required.' });
+  const rawIdentifier = String(payload.identifier || '').trim();
+  const channel = String(payload.channel || 'sms').toLowerCase();
+  if (!['sms', 'whatsapp', 'email'].includes(channel)) {
+    return res.status(400).json({ success: false, message: 'Invalid OTP channel.' });
+  }
+  if (!rawIdentifier) {
+    return res.status(400).json({ success: false, message: 'Mobile number or email is required.' });
+  }
+
+  let identifier;
+  if (channel === 'email') {
+    identifier = rawIdentifier.toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier)) {
+      return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
     }
+  } else {
+    identifier = otpLib.normalizeIndianPhone(rawIdentifier);
+    if (!identifier) {
+      return res.status(400).json({ success: false, message: 'Please enter a valid 10-digit Indian mobile number (e.g. +91 98765 43210).' });
+    }
+  }
 
-    const plainOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiryMinutes = payload.expiryMinutes || 5;
-    const expiresAt = Date.now() + expiryMinutes * 60 * 1000;
+  // Server-side rate limiting, cooldown and duplicate-click protection
+  const ip = otpLib.clientIp(req);
+  const blocked = otpLib.checkSendAllowed(identifier, ip);
+  if (blocked) {
+    return res.status(blocked.status).json({ success: false, message: blocked.message, retryAfter: blocked.retryAfter });
+  }
 
-    // 1. Channel: SMS
+  otpLib.beginSend(identifier);
+  let sendSucceeded = false;
+  try {
+    const now = Date.now();
+    const cleanPhone = channel === 'email' ? '' : otpLib.last10(identifier);
+    const existingSession = global._loraOtpStore.get(identifier) || null;
+    const otpSettings = otpLib.readOtpSettings();
+    let smsProvider = null;
+
+    const plainOtp = crypto.randomInt(100000, 1000000).toString();
+    const expiryMinutes = Math.min(Math.max(Number(payload.expiryMinutes) || 5, 1), 10);
+    let expiresAt = now + expiryMinutes * 60 * 1000;
+
+    // 1. Channel: SMS (provider chosen in Admin → OTP settings, saved server-side)
     if (channel === 'sms') {
-      const apiKey = (process.env.SMS_API_KEY || '').trim();
-      const senderId = (process.env.SMS_SENDER_ID || 'LORAMT').trim();
-      const provider = (process.env.SMS_PROVIDER || 'FAST2SMS').toUpperCase();
-
-      if (!apiKey) {
+      smsProvider = otpSettings.sms.provider;
+      const status = otpLib.smsProviderStatus(smsProvider, otpSettings);
+      if (!status.configured) {
         return res.status(503).json({
           success: false,
           configured: false,
-          message: 'SMS OTP service is currently unconfigured. Please add SMS_API_KEY and SMS_SENDER_ID in GoDaddy environment variables.'
+          provider: smsProvider,
+          message: `SMS OTP is not available right now (${smsProvider}: ${status.message}) Please try again later or choose another method.`
         });
       }
 
-      // Format mobile number
-      const cleanPhone = identifier.replace(/[^0-9]/g, '').slice(-10);
-
-      // Dispatch real SMS via configured provider (Fast2SMS / MSG91 / Twilio)
-      let dispatchSuccess = false;
-      let dispatchError = '';
-
-      if (provider === 'FAST2SMS') {
-        const postData = JSON.stringify({
-          route: 'otp',
-          variables_values: plainOtp,
-          numbers: cleanPhone
-        });
-
-        const fastResult = await new Promise((resolve) => {
-          const reqOpt = {
-            hostname: 'www.fast2sms.com',
-            path: '/dev/bulkV2',
-            method: 'POST',
-            headers: {
-              'authorization': apiKey,
-              'Content-Type': 'application/json',
-              'Content-Length': Buffer.byteLength(postData)
-            },
-            timeout: 7000
-          };
-          const smsReq = https.request(reqOpt, (smsRes) => {
-            let body = '';
-            smsRes.on('data', c => body += c);
-            smsRes.on('end', () => {
-              try {
-                const parsed = JSON.parse(body);
-                resolve({ ok: parsed.return === true || smsRes.statusCode === 200, error: parsed.message });
-              } catch (e) {
-                resolve({ ok: false, error: body });
-              }
-            });
+      if (smsProvider === 'Twilio') {
+        // Twilio Verify generates, sends and stores the code itself
+        const tw = await otpLib.twilioSendVerification(identifier);
+        if (!tw.ok) {
+          return res.status(tw.code === 60203 || tw.code === 20429 ? 429 : 502).json({
+            success: false,
+            provider: 'Twilio',
+            message: tw.message
           });
-          smsReq.on('error', err => resolve({ ok: false, error: err.message }));
-          smsReq.on('timeout', () => { smsReq.destroy(); resolve({ ok: false, error: 'SMS gateway timeout' }); });
-          smsReq.write(postData);
-          smsReq.end();
-        });
-
-        dispatchSuccess = fastResult.ok;
-        dispatchError = fastResult.error;
-      } else {
-        // Generic gateway HTTP check
-        dispatchError = `Provider ${provider} configured. Verify delivery logs in GoDaddy.`;
-        dispatchSuccess = true;
-      }
-
-      if (!dispatchSuccess) {
-        return res.status(502).json({
-          success: false,
-          message: `SMS transmission failed (${dispatchError || 'Provider rejected request'}). Check SMS_API_KEY in GoDaddy.`
-        });
+        }
+        expiresAt = now + 10 * 60 * 1000; // Twilio Verify default code lifetime
+      } else if (smsProvider === 'Fast2SMS') {
+        const apiKey = (process.env.SMS_API_KEY || process.env.FAST2SMS_API_KEY || '').trim();
+        const r = await postJson('www.fast2sms.com', '/dev/bulkV2', { authorization: apiKey },
+          { route: 'otp', variables_values: plainOtp, numbers: cleanPhone }, 7000);
+        const ok = r.data ? r.data.return === true : false;
+        if (!ok) {
+          const msg = (r.data && (Array.isArray(r.data.message) ? r.data.message.join(', ') : r.data.message)) || r.error || 'Provider rejected request';
+          return res.status(502).json({ success: false, provider: 'Fast2SMS', message: `SMS could not be sent via Fast2SMS (${String(msg).slice(0, 200)}).` });
+        }
+      } else if (smsProvider === 'MSG91') {
+        const apiKey = (process.env.SMS_API_KEY || '').trim();
+        const qs = new URLSearchParams({
+          template_id: otpSettings.sms.templateId,
+          mobile: '91' + cleanPhone,
+          otp: plainOtp,
+          otp_expiry: String(expiryMinutes)
+        }).toString();
+        const r = await postJson('control.msg91.com', `/api/v5/otp?${qs}`, { authkey: apiKey }, {}, 8000);
+        const ok = r.data && String(r.data.type).toLowerCase() === 'success';
+        if (!ok) {
+          const msg = (r.data && r.data.message) || r.error || `HTTP ${r.statusCode}`;
+          return res.status(502).json({ success: false, provider: 'MSG91', message: `SMS could not be sent via MSG91 (${String(msg).slice(0, 200)}).` });
+        }
       }
     }
 
     // 2. Channel: WhatsApp
     else if (channel === 'whatsapp') {
-      const waProvider = (payload.provider || process.env.WHATSAPP_PROVIDER || 'META_CLOUD').toUpperCase();
+      const hasFast2smsKey = Boolean(process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY);
+      const waProvider = (
+        payload.provider || 
+        process.env.WHATSAPP_PROVIDER || 
+        (hasFast2smsKey ? 'FAST2SMS' : 'META_CLOUD')
+      ).toUpperCase();
       const isFast2Sms = waProvider === 'FAST2SMS' || waProvider.includes('FAST2SMS');
 
       if (isFast2Sms) {
@@ -150,59 +194,135 @@ module.exports = async function handler(req, res) {
           return res.status(503).json({
             success: false,
             configured: false,
-            message: 'Fast2SMS WhatsApp OTP service is unconfigured. Please add FAST2SMS_API_KEY or WHATSAPP_API_TOKEN in GoDaddy environment variables.'
+            message: 'Fast2SMS WhatsApp OTP service is unconfigured. Please add FAST2SMS_API_KEY or SMS_API_KEY in GoDaddy environment variables.'
           });
         }
 
-        const cleanPhone = identifier.replace(/[^0-9]/g, '').slice(-10);
-        const messageId = (process.env.FAST2SMS_WHATSAPP_MESSAGE_ID || process.env.WHATSAPP_TEMPLATE_NAME || payload.templateName || 'lora_auth_otp').trim();
-
-        const postBody = {
-          numbers: cleanPhone,
-          variables_values: plainOtp
-        };
-        if (messageId) postBody.message_id = messageId;
-        if (process.env.WHATSAPP_PHONE_NUMBER_ID) postBody.phone_number_id = process.env.WHATSAPP_PHONE_NUMBER_ID;
-
-        const postData = JSON.stringify(postBody);
-
-        const fastWaResult = await new Promise((resolve) => {
-          const reqOpt = {
-            hostname: 'www.fast2sms.com',
-            path: '/dev/whatsapp',
-            method: 'POST',
-            headers: {
-              'authorization': apiKey,
-              'Content-Type': 'application/json',
-              'Content-Length': Buffer.byteLength(postData)
-            },
-            timeout: 8000
-          };
-          const waReq = https.request(reqOpt, (waRes) => {
-            let body = '';
-            waRes.on('data', c => body += c);
-            waRes.on('end', () => {
-              try {
-                const parsed = JSON.parse(body);
-                resolve({
-                  ok: parsed.return === true || waRes.statusCode === 200,
-                  error: parsed.message || (Array.isArray(parsed.message) ? parsed.message.join(', ') : body)
-                });
-              } catch (e) {
-                resolve({ ok: waRes.statusCode === 200, error: body });
-              }
-            });
+        if (!cleanPhone || cleanPhone.length !== 10) {
+          return res.status(400).json({
+            success: false,
+            message: 'Please provide a valid 10-digit Indian mobile number for WhatsApp verification.'
           });
-          waReq.on('error', err => resolve({ ok: false, error: err.message }));
-          waReq.on('timeout', () => { waReq.destroy(); resolve({ ok: false, error: 'Fast2SMS WhatsApp gateway timeout' }); });
-          waReq.write(postData);
-          waReq.end();
-        });
+        }
 
-        if (!fastWaResult.ok) {
+        const otpId = (
+          process.env.FAST2SMS_OTP_ID || 
+          process.env.FAST2SMS_WHATSAPP_MESSAGE_ID || 
+          process.env.WHATSAPP_TEMPLATE_NAME || 
+          payload.otp_id || 
+          payload.templateName || 
+          ''
+        ).trim();
+
+        let fastResult = null;
+        let triedSmartOtp = false;
+
+        // Step 1: Use Fast2SMS Smart OTP Endpoint: POST https://www.fast2sms.com/dev/otp/send
+        // Parameters: otp_id, mobile, otp, otp_expiry, otp_length
+        if (otpId) {
+          triedSmartOtp = true;
+          const smartOtpPayload = JSON.stringify({
+            otp_id: otpId,
+            mobile: cleanPhone,
+            otp: plainOtp,
+            otp_expiry: expiryMinutes,
+            otp_length: 6
+          });
+
+          fastResult = await new Promise((resolve) => {
+            const reqOpt = {
+              hostname: 'www.fast2sms.com',
+              path: '/dev/otp/send',
+              method: 'POST',
+              headers: {
+                'authorization': apiKey,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Content-Length': Buffer.byteLength(smartOtpPayload)
+              },
+              timeout: 9000
+            };
+            const sReq = https.request(reqOpt, (sRes) => {
+              let body = '';
+              sRes.on('data', c => body += c);
+              sRes.on('end', () => {
+                try {
+                  const parsed = JSON.parse(body);
+                  const isOk = parsed.return === true || parsed.status_code === 200;
+                  resolve({
+                    ok: isOk,
+                    statusCode: sRes.statusCode,
+                    message: parsed.message || (Array.isArray(parsed.message) ? parsed.message.join(', ') : body)
+                  });
+                } catch (e) {
+                  resolve({ ok: false, statusCode: sRes.statusCode, message: body });
+                }
+              });
+            });
+            sReq.on('error', err => resolve({ ok: false, message: 'Fast2SMS connection error: ' + err.message }));
+            sReq.on('timeout', () => { sReq.destroy(); resolve({ ok: false, message: 'Fast2SMS gateway timeout' }); });
+            sReq.write(smartOtpPayload);
+            sReq.end();
+          });
+        }
+
+        // Step 2: Fallback to WhatsApp endpoint if Smart OTP was not attempted or returned template error
+        if (!fastResult || (!fastResult.ok && String(fastResult.message).toLowerCase().includes('otp id'))) {
+          const waPayload = {
+            numbers: cleanPhone,
+            variables_values: plainOtp
+          };
+          if (otpId) waPayload.message_id = otpId;
+          if (process.env.WHATSAPP_PHONE_NUMBER_ID) waPayload.phone_number_id = process.env.WHATSAPP_PHONE_NUMBER_ID;
+
+          const waData = JSON.stringify(waPayload);
+
+          const waResult = await new Promise((resolve) => {
+            const reqOpt = {
+              hostname: 'www.fast2sms.com',
+              path: '/dev/whatsapp',
+              method: 'POST',
+              headers: {
+                'authorization': apiKey,
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(waData)
+              },
+              timeout: 9000
+            };
+            const wReq = https.request(reqOpt, (wRes) => {
+              let body = '';
+              wRes.on('data', c => body += c);
+              wRes.on('end', () => {
+                try {
+                  const parsed = JSON.parse(body);
+                  const isOk = parsed.return === true || wRes.statusCode === 200;
+                  resolve({
+                    ok: isOk,
+                    statusCode: wRes.statusCode,
+                    message: parsed.message || (Array.isArray(parsed.message) ? parsed.message.join(', ') : body)
+                  });
+                } catch (e) {
+                  resolve({ ok: false, statusCode: wRes.statusCode, message: body });
+                }
+              });
+            });
+            wReq.on('error', err => resolve({ ok: false, message: 'Fast2SMS connection error: ' + err.message }));
+            wReq.on('timeout', () => { wReq.destroy(); resolve({ ok: false, message: 'Fast2SMS gateway timeout' }); });
+            wReq.write(waData);
+            wReq.end();
+          });
+
+          if (waResult.ok || !triedSmartOtp) {
+            fastResult = waResult;
+          }
+        }
+
+        // If provider rejected, return 502 with honest provider error
+        if (!fastResult || !fastResult.ok) {
+          const errMsg = fastResult ? fastResult.message : (otpId ? 'Fast2SMS dispatch rejected' : 'Missing approved OTP Template ID. Please configure FAST2SMS_OTP_ID or WHATSAPP_TEMPLATE_NAME in GoDaddy.');
           return res.status(502).json({
             success: false,
-            message: `Fast2SMS WhatsApp transmission failed (${fastWaResult.error || 'Provider rejected request'}). Check FAST2SMS_API_KEY in GoDaddy.`
+            message: `Fast2SMS WhatsApp delivery rejected: ${errMsg}`
           });
         }
       } else {
@@ -289,29 +409,50 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Store hashed OTP in memory store
-    global._loraOtpStore.set(identifier, {
-      hashedOtp: hashOtp(plainOtp),
-      plainOtp: plainOtp,
+    // Store hashed OTP in memory (ONLY after provider accepted the send). Plain OTPs are never stored.
+    const isFast2SmsActive = (channel === 'whatsapp' && (
+      (payload.provider || '').toUpperCase().includes('FAST2SMS') || 
+      (process.env.WHATSAPP_PROVIDER || '').toUpperCase().includes('FAST2SMS') ||
+      Boolean(process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY)
+    ));
+
+    let providerTag;
+    if (channel === 'sms') providerTag = smsProvider === 'Twilio' ? 'TWILIO' : smsProvider.toUpperCase();
+    else if (channel === 'whatsapp') providerTag = isFast2SmsActive ? 'FAST2SMS' : 'META_CLOUD';
+    else providerTag = 'SMTP';
+
+    const sessionObj = {
+      hashedOtp: providerTag === 'TWILIO' ? null : hashOtp(plainOtp),
       expiresAt: expiresAt,
       attempts: 0,
-      maxAttempts: payload.maxAttempts || 5,
-      channel: channel
-    });
+      maxAttempts: otpLib.LIMITS.maxVerifyAttemptsPer15Min,
+      channel: channel,
+      provider: providerTag,
+      lastSentAt: now,
+      firstSentAt: existingSession?.firstSentAt || now,
+      sendCount: (existingSession?.sendCount || 0) + 1
+    };
 
-    const masked = identifier.includes('@')
+    global._loraOtpStore.set(identifier, sessionObj);
+    sendSucceeded = true;
+
+    const masked = channel === 'email'
       ? identifier.replace(/^(.)(.*)(@.*)$/, '$1•••$3')
-      : identifier.slice(0, 3) + '••••' + identifier.slice(-3);
+      : otpLib.maskPhone(identifier);
 
     return res.status(200).json({
       success: true,
-      message: `Verification code successfully dispatched to ${masked}.`,
+      message: `Verification code sent to ${masked} via ${channel === 'sms' ? 'SMS' : channel === 'whatsapp' ? 'WhatsApp' : 'Email'}.`,
       channel: channel,
-      cooldown: 30,
-      expiresInMinutes: expiryMinutes
+      identifier: identifier,
+      provider: channel === 'sms' ? smsProvider : providerTag,
+      cooldown: otpLib.LIMITS.resendCooldownSec,
+      expiresInMinutes: Math.round((expiresAt - now) / 60000)
     });
 
   } catch (err) {
-    return res.status(500).json({ success: false, message: 'OTP transmission failed: ' + err.message });
+    return res.status(500).json({ success: false, message: 'OTP could not be sent due to a server error. Please try again.' });
+  } finally {
+    otpLib.endSend(identifier, ip, sendSucceeded);
   }
 };

@@ -21,10 +21,12 @@ function getIntegrationStatus() {
   const rzpConfigured = Boolean(rzpKeyId && rzpSecret);
   const rzpMode = process.env.RAZORPAY_MODE || (rzpKeyId.startsWith('rzp_live_') ? 'live' : 'test');
 
-  const smsKey = (process.env.SMS_API_KEY || '').trim();
-  const smsProvider = (process.env.SMS_PROVIDER || 'FAST2SMS').trim();
-  const smsSenderId = (process.env.SMS_SENDER_ID || 'LORAMT').trim();
-  const smsConfigured = Boolean(smsKey);
+  const otpLib = require('./otp/_lib.js');
+  const otpSettings = otpLib.readOtpSettings();
+  const smsStatus = otpLib.smsProviderStatus(otpSettings.sms.provider, otpSettings);
+  const smsProvider = smsStatus.provider;
+  const smsSenderId = otpSettings.sms.senderId;
+  const smsConfigured = smsStatus.configured;
 
   const waProvider = (process.env.WHATSAPP_PROVIDER || 'META_CLOUD').trim();
   const isFast2SmsWa = waProvider.toUpperCase() === 'FAST2SMS' || waProvider.toUpperCase().includes('FAST2SMS');
@@ -49,7 +51,9 @@ function getIntegrationStatus() {
     sms: {
       configured: smsConfigured,
       provider: smsProvider,
-      sender_id: smsSenderId
+      sender_id: smsSenderId,
+      vars: smsStatus.vars,
+      message: smsStatus.message
     },
     whatsapp: {
       configured: waConfigured,

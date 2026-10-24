@@ -38,6 +38,11 @@ const rzpVerifyPaymentHandler = require('../api/razorpay/verify-payment.js');
 const rzpTestConnectionHandler = require('../api/razorpay/test-connection.js');
 const otpSendHandler = require('../api/otp/send.js');
 const otpTestGatewayHandler = require('../api/otp/test-gateway.js');
+const otpVerifyHandler = require('../api/otp/verify.js');
+const otpSettingsHandler = require('../api/otp/settings.js');
+const otpSessionHandler = require('../api/otp/session.js');
+const otpLib = require('../api/otp/_lib.js');
+const { verifyAdminAuth } = require('../api/auth.js');
 
 function callApiHandler(handler, req, res, bodyData) {
   req.body = bodyData;
@@ -239,8 +244,8 @@ const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Customer-Session'
     });
     res.end();
     return;
@@ -250,6 +255,12 @@ const server = http.createServer((req, res) => {
   if (pathname.startsWith('/api/otp/')) {
     if (req.method === 'GET' && pathname === '/api/otp/send') {
       return callApiHandler(otpSendHandler, req, res, null);
+    }
+    if (req.method === 'GET' && pathname === '/api/otp/settings') {
+      return callApiHandler(otpSettingsHandler, req, res, null);
+    }
+    if (req.method === 'GET' && pathname === '/api/otp/session') {
+      return callApiHandler(otpSessionHandler, req, res, null);
     }
 
     let body = '';
@@ -263,51 +274,19 @@ const server = http.createServer((req, res) => {
         return callApiHandler(otpSendHandler, req, res, payload);
       }
 
-      // 2. Verify OTP (Strict token verification without mock bypass)
+      // 2. Verify OTP (Strict server token verification via api/otp/verify.js)
       if (pathname === '/api/otp/verify' && req.method === 'POST') {
-        const identifier = (payload.identifier || '').trim();
-        const enteredOtp = (payload.otp || '').trim();
-
-        if (!identifier || !enteredOtp) {
-          return sendJson(400, { success: false, message: 'Identifier and OTP are required.' });
-        }
-
-        const store = global._loraOtpStore || otpStore;
-        const record = store.get(identifier);
-        if (!record) {
-          return sendJson(400, { success: false, message: 'No active OTP verification session found or code expired.' });
-        }
-
-        if (Date.now() > record.expiresAt) {
-          store.delete(identifier);
-          return sendJson(400, { success: false, message: 'OTP has expired. Please request a new verification code.' });
-        }
-
-        const hashedEntered = hashOtp(enteredOtp);
-        const isValid = (record.hashedOtp && hashedEntered === record.hashedOtp) || (record.plainOtp && enteredOtp === record.plainOtp);
-
-        if (!isValid) {
-          record.attempts = (record.attempts || 0) + 1;
-          const remaining = Math.max(0, (record.maxAttempts || 3) - record.attempts);
-          if (remaining === 0) {
-            store.delete(identifier);
-            return sendJson(400, { success: false, message: 'Too many failed verification attempts. Please request a new OTP.' });
-          }
-          return sendJson(400, { success: false, message: `Incorrect OTP code. ${remaining} attempt(s) remaining.` });
-        }
-
-        // Successfully Verified
-        store.delete(identifier);
-        return sendJson(200, {
-          success: true,
-          message: 'OTP verified successfully.',
-          verifiedIdentifier: identifier
-        });
+        return callApiHandler(otpVerifyHandler, req, res, payload);
       }
 
       // 3. Test Gateway (Admin authorized non-destructive check via api/otp/test-gateway.js)
       if (pathname === '/api/otp/test-gateway' && req.method === 'POST') {
         return callApiHandler(otpTestGatewayHandler, req, res, payload);
+      }
+
+      // 3b. Save OTP provider settings (admin only, non-secret values)
+      if (pathname === '/api/otp/settings' && req.method === 'POST') {
+        return callApiHandler(otpSettingsHandler, req, res, payload);
       }
 
       // 4. Retrieve Audit Logs for Admin
@@ -791,6 +770,13 @@ const server = http.createServer((req, res) => {
           // Support single order or batch of orders (sync from offline clients)
           const toAdd = Array.isArray(payload.orders) ? payload.orders : (payload.order ? [payload.order] : [payload]);
 
+          // Checkout verification enforced server-side: brand-new orders need a verified phone session
+          const newOrders = toAdd.filter(o => o && o.id && !orderMap.has(o.id));
+          const denied = otpLib.authorizeNewOrders(req, newOrders, verifyAdminAuth(req));
+          if (denied) {
+            return sendJson(denied.status, { success: false, code: denied.code, message: denied.message });
+          }
+
           toAdd.forEach(newO => {
             if (newO && newO.id) {
               if (orderMap.has(newO.id)) {
@@ -833,6 +819,10 @@ const server = http.createServer((req, res) => {
             res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
             res.end(JSON.stringify({ success: true, order: currentOrders[index], orders: currentOrders }));
           } else if (updateData && updateData.id) {
+            const denied = otpLib.authorizeNewOrders(req, [updateData], verifyAdminAuth(req));
+            if (denied) {
+              return sendJson(denied.status, { success: false, code: denied.code, message: denied.message });
+            }
             currentOrders.unshift(updateData);
             fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf8');
             res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
