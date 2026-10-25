@@ -49,27 +49,57 @@ module.exports = async function handler(req, res) {
     const smsStatus = otpLib.smsProviderStatus(otpSettings.sms.provider, otpSettings);
     const waStatus = otpLib.waProviderStatus(otpSettings.whatsapp.provider, otpSettings);
     const emailConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-    // Channel customers should see first: the one that will actually deliver
-    const preferredChannel = smsStatus.configured ? 'sms' : (waStatus.configured ? 'whatsapp' : (emailConfigured ? 'email' : 'sms'));
+
+    const smsEnabled = otpSettings.sms.enabled !== false;
+    const waEnabled = otpSettings.whatsapp.enabled !== false;
+    const emailEnabled = otpSettings.email.enabled !== false;
+
+    const smsAvailable = smsEnabled && smsStatus.configured;
+    const waAvailable = waEnabled && waStatus.configured;
+    const emailAvailable = emailEnabled && emailConfigured;
+
+    // Determine preferred channel based on admin default and actual availability
+    let preferredChannel = otpSettings.defaultMethod || 'sms';
+    const isAvailable = (ch) => ch === 'sms' ? smsAvailable : (ch === 'whatsapp' ? waAvailable : (ch === 'email' ? emailAvailable : false));
+
+    if (!isAvailable(preferredChannel)) {
+      if (smsAvailable) preferredChannel = 'sms';
+      else if (waAvailable) preferredChannel = 'whatsapp';
+      else if (emailAvailable) preferredChannel = 'email';
+      else preferredChannel = 'sms';
+    }
 
     return res.status(200).json({
       success: true,
       preferredChannel,
+      defaultMethod: otpSettings.defaultMethod || 'sms',
+      customerCanChoose: otpSettings.customerCanChoose !== false,
+      policy: {
+        expiryMinutes: otpSettings.expiryMinutes || 5,
+        resendCooldown: otpSettings.resendCooldown || 30,
+        maxAttempts: otpSettings.maxAttempts || 3
+      },
       channels: {
         sms: {
+          enabled: smsEnabled,
           configured: smsStatus.configured,
+          available: smsAvailable,
           provider: smsStatus.provider,
           vars: smsStatus.vars,
           message: smsStatus.message
         },
         whatsapp: {
+          enabled: waEnabled,
           configured: waStatus.configured,
+          available: waAvailable,
           provider: waStatus.provider,
           vars: waStatus.vars,
           message: waStatus.message
         },
         email: {
-          configured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
+          enabled: emailEnabled,
+          configured: emailConfigured,
+          available: emailAvailable,
           host: process.env.SMTP_HOST || null
         }
       }
@@ -107,6 +137,18 @@ module.exports = async function handler(req, res) {
     if (!identifier) {
       return res.status(400).json({ success: false, message: 'Please enter a valid 10-digit Indian mobile number (e.g. +91 98765 43210).' });
     }
+  }
+
+  // Enforce channel enabled status configured by administrator
+  const otpSettings = otpLib.readOtpSettings();
+  if (channel === 'whatsapp' && otpSettings.whatsapp.enabled === false) {
+    return res.status(403).json({ success: false, message: 'WhatsApp OTP is disabled by administrator. Please choose SMS or Email OTP.' });
+  }
+  if (channel === 'sms' && otpSettings.sms.enabled === false) {
+    return res.status(403).json({ success: false, message: 'SMS OTP is disabled by administrator. Please choose another method.' });
+  }
+  if (channel === 'email' && otpSettings.email.enabled === false) {
+    return res.status(403).json({ success: false, message: 'Email OTP is disabled by administrator. Please choose SMS or WhatsApp OTP.' });
   }
 
   // Server-side rate limiting, cooldown and duplicate-click protection

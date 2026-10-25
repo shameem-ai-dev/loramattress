@@ -45,10 +45,10 @@ module.exports = async function handler(req, res) {
       .update(`${razorpayOrderId}|${razorpayPaymentId}`)
       .digest('hex');
 
-    const isValid = crypto.timingSafeEqual(
-      Buffer.from(expectedSignature, 'utf8'),
-      Buffer.from(razorpaySignature, 'utf8')
-    );
+    const expBuf = Buffer.from(expectedSignature, 'utf8');
+    const sigBuf = Buffer.from(razorpaySignature, 'utf8');
+
+    const isValid = expBuf.length === sigBuf.length && crypto.timingSafeEqual(expBuf, sigBuf);
 
     if (!isValid) {
       return res.status(400).json({

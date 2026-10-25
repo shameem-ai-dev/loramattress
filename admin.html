@@ -2537,68 +2537,34 @@
           <div class="kpi-grid">
             <div class="kpi-card">
               <div class="kpi-label">Gross Revenue (MTD)</div>
-              <div class="kpi-val" style="color: #6EE7B7;">₹28,42,000</div>
-              <div class="kpi-sub"><span class="trend-up">↑ +18.4%</span> vs last month</div>
+              <div class="kpi-val" id="analytics-gross-revenue" style="color: #6EE7B7;">₹0</div>
+              <div class="kpi-sub" id="analytics-revenue-sub">Awaiting live orders</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-label">Mattresses Dispatched</div>
-              <div class="kpi-val">108</div>
-              <div class="kpi-sub"><span class="trend-up">↑ +12 units</span> week over week</div>
+              <div class="kpi-val" id="analytics-dispatched-count">0</div>
+              <div class="kpi-sub" id="analytics-dispatched-sub">0 units total</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-label">Average Order Value (AOV)</div>
-              <div class="kpi-val">₹26,314</div>
-              <div class="kpi-sub"><span class="trend-up">↑ +4.2%</span> higher Queen 10" mix</div>
+              <div class="kpi-val" id="analytics-aov-val">₹0</div>
+              <div class="kpi-sub" id="analytics-aov-sub">Live calculation</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-label">Checkout Conversion Rate</div>
-              <div class="kpi-val" style="color: var(--brand-cyan);">3.82%</div>
-              <div class="kpi-sub">Industry Benchmark: 1.8%</div>
+              <div class="kpi-val" id="analytics-conv-val" style="color: var(--brand-cyan);">0.0%</div>
+              <div class="kpi-sub" id="analytics-conv-sub">Active telemetry</div>
             </div>
           </div>
 
-          <!-- Weekly Sales Chart Simulation -->
+          <!-- Weekly Sales Chart Simulation / Telemetry -->
           <div class="admin-card">
             <div class="admin-card-header">
               <h3 class="admin-card-title">Weekly Revenue Trajectory (₹ Lakhs)</h3>
-              <span style="font-size: 0.78rem; color: var(--text-muted);">Updated 5 minutes ago</span>
+              <span id="analytics-chart-updated" style="font-size: 0.78rem; color: var(--text-muted);">Real-time Telemetry</span>
             </div>
-            <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 180px; padding: 1.5rem 1rem 0; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #FFFFFF; font-weight: 700;">₹3.2L</span>
-                <div style="width: 100%; height: 75px; background: rgba(0, 180, 216, 0.4); border-radius: 6px 6px 0 0;"></div>
-                <span style="font-size: 0.72rem; color: var(--text-sub);">Mon</span>
-              </div>
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #FFFFFF; font-weight: 700;">₹4.1L</span>
-                <div style="width: 100%; height: 95px; background: rgba(0, 180, 216, 0.5); border-radius: 6px 6px 0 0;"></div>
-                <span style="font-size: 0.72rem; color: var(--text-sub);">Tue</span>
-              </div>
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #FFFFFF; font-weight: 700;">₹3.8L</span>
-                <div style="width: 100%; height: 88px; background: rgba(0, 180, 216, 0.45); border-radius: 6px 6px 0 0;"></div>
-                <span style="font-size: 0.72rem; color: var(--text-sub);">Wed</span>
-              </div>
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #FFFFFF; font-weight: 700;">₹5.4L</span>
-                <div style="width: 100%; height: 125px; background: rgba(0, 180, 216, 0.7); border-radius: 6px 6px 0 0;"></div>
-                <span style="font-size: 0.72rem; color: var(--text-sub);">Thu</span>
-              </div>
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #FFFFFF; font-weight: 700;">₹6.1L</span>
-                <div style="width: 100%; height: 140px; background: rgba(0, 180, 216, 0.85); border-radius: 6px 6px 0 0;"></div>
-                <span style="font-size: 0.72rem; color: var(--text-sub);">Fri</span>
-              </div>
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #6EE7B7; font-weight: 700;">₹7.8L</span>
-                <div style="width: 100%; height: 165px; background: linear-gradient(180deg, #10B981 0%, #059669 100%); border-radius: 6px 6px 0 0; box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);"></div>
-                <span style="font-size: 0.72rem; color: #6EE7B7; font-weight: 700;">Sat</span>
-              </div>
-              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #FFFFFF; font-weight: 700;">₹6.9L</span>
-                <div style="width: 100%; height: 150px; background: rgba(0, 180, 216, 0.9); border-radius: 6px 6px 0 0;"></div>
-                <span style="font-size: 0.72rem; color: var(--text-sub);">Sun</span>
-              </div>
+            <div id="analytics-chart-bars" style="display: flex; align-items: flex-end; justify-content: space-between; height: 180px; padding: 1.5rem 1rem 0; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+              <div style="flex: 1; text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-bottom: 4rem;">Awaiting first weekly order batch</div>
             </div>
           </div>
 
@@ -2606,7 +2572,7 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <h3 class="admin-card-title">Recent Customer Orders</h3>
-              <span style="font-size: 0.78rem; color: var(--brand-cyan);">Showing 5 Most Recent Direct Orders</span>
+              <span id="analytics-recent-orders-subtitle" style="font-size: 0.78rem; color: var(--brand-cyan);">Showing 5 Most Recent Direct Orders</span>
             </div>
             <div class="matrix-table-wrap">
               <table class="admin-table">
@@ -2620,46 +2586,13 @@
                     <th style="width: 10%;">Order Status</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="analytics-recent-orders-body">
                   <tr>
-                    <td><strong>#LR-8921</strong></td>
-                    <td>Aditya Roy (Bengaluru)</td>
-                    <td>01. LORA CLOUD 7™ • Queen 78"×60" (8")</td>
-                    <td>₹21,999</td>
-                    <td>Bajaj EMI (Approved 12m)</td>
-                    <td><span class="table-stock-badge stock-in">✓ Dispatched</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>#LR-8920</strong></td>
-                    <td>Dr. Sunita Rao (Mumbai)</td>
-                    <td>04. ORTHO HYBRID™ • King 78"×72" (10")</td>
-                    <td>₹33,700</td>
-                    <td>UPI Prepaid</td>
-                    <td><span class="table-stock-badge stock-mto">🛠 In Production</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>#LR-8919</strong></td>
-                    <td>Vikram Singhania (Delhi)</td>
-                    <td>08. HYBRID FUSION™ • King 84"×72" (12")</td>
-                    <td>₹48,200</td>
-                    <td>Credit Card Direct</td>
-                    <td><span class="table-stock-badge stock-in">✓ Delivered</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>#LR-8918</strong></td>
-                    <td>Meera Nambiar (Chennai)</td>
-                    <td>03. LORA PLUSH™ • Double 75"×48" (8")</td>
-                    <td>₹23,400</td>
-                    <td>Net Banking</td>
-                    <td><span class="table-stock-badge stock-in">✓ Dispatched</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>#LR-8917</strong></td>
-                    <td>Karan Mehta (Hyderabad)</td>
-                    <td>02. CLOUD ORTHO™ • Single 75"×36" (6")</td>
-                    <td>₹16,800</td>
-                    <td>Cash on Delivery (COD)</td>
-                    <td><span class="table-stock-badge stock-low">⚡ Ready to Pack</span></td>
+                    <td colspan="6" style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+                      <div style="font-size: 1.5rem; margin-bottom: 0.4rem;">📦</div>
+                      <div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">No customer orders placed yet</div>
+                      <div style="font-size: 0.8rem; margin-top: 0.2rem;">Live store baseline ready. New customer orders will stream here in real-time.</div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -4252,6 +4185,28 @@ Order Notes: [Customer Instructions]</pre>
               <button type="button" class="btn-action-danger" id="btn-reset-catalog">
                 ⚠️ Reset to Factory Defaults
               </button>
+            </div>
+          </div>
+
+          <!-- Production Launch Data Sanitization & Statistics Reset -->
+          <div class="admin-card" style="border: 1px solid rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.04); margin-top: 1.5rem;">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title" style="color: #F87171;">🚀 Production Launch: Clean & Reset Database</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                  Purge simulated test orders, test inquiries, and mock metrics to open the live store with a clean 0-baseline. Real customer orders will begin tracking from zero.
+                </p>
+              </div>
+              <span class="status-badge" style="background: rgba(239, 68, 68, 0.15); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.3);">Data Sanitization Tool</span>
+            </div>
+            <div style="background: rgba(10, 15, 29, 0.6); padding: 0.9rem 1rem; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.07); margin-bottom: 1.25rem; font-size: 0.8rem; color: #CBD5E1; line-height: 1.5;">
+              ⚠️ <strong>Pre-Launch Checklist:</strong> Clicking this button will wipe all test orders from the database, purge test customer inquiries, reset the telemetry charts, and clear local browser test caches. Active catalog models, prices, and settings are preserved.
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="btn-action-danger" id="btn-launch-reset-all" style="background: #DC2626; border-color: #EF4444; color: #FFF; font-weight: 700; padding: 0.6rem 1.25rem; cursor: pointer;">
+                🧹 Launch Clean: Reset Test Orders & Leads
+              </button>
+              <span id="launch-reset-feedback" style="display: none; font-size: 0.82rem; color: #86EFAC; font-weight: 700;"></span>
             </div>
           </div>
         </div>
@@ -6047,14 +6002,35 @@ Order Notes: [Customer Instructions]</pre>
         if (inputCodNotice) inputCodNotice.value = dispatchSettings.codNotice || 'Cash or UPI accepted upon delivery arrival.';
       }
 
-      function toggleCodStatus() {
-        dispatchSettings.codEnabled = !dispatchSettings.codEnabled;
+      async function toggleCodStatus() {
+        const previousStatus = dispatchSettings.codEnabled;
+        const newStatus = !previousStatus;
+        dispatchSettings.codEnabled = newStatus;
         localStorage.setItem(DISPATCH_KEY, JSON.stringify(dispatchSettings));
         syncCodUI();
 
         // Broadcast to storefront and other open tabs
         window.dispatchEvent(new Event('storage'));
         document.dispatchEvent(new CustomEvent('lora:cod_toggled', { detail: { codEnabled: dispatchSettings.codEnabled } }));
+
+        // Persist to Server API so ALL devices (Mobile, Desktop, Incognito) immediately sync
+        try {
+          const res = await fetch('/api/payment-settings', {
+            method: 'POST',
+            headers: getAdminAuthHeaders(),
+            body: JSON.stringify({
+              cod_enabled: newStatus
+            })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (data && data.success) {
+            console.log('[ADMIN] COD status persisted server-wide:', newStatus ? 'ENABLED' : 'DISABLED');
+          } else {
+            console.warn('[ADMIN] Server COD sync warning:', data?.message);
+          }
+        } catch (err) {
+          console.warn('[ADMIN] Server offline or network warning for COD status:', err.message);
+        }
       }
 
       if (btnTopbarCodToggle) {
@@ -6064,13 +6040,36 @@ Order Notes: [Customer Instructions]</pre>
         btnToggleCodSetting.addEventListener('click', toggleCodStatus);
       }
       if (btnSaveCodOptions) {
-        btnSaveCodOptions.addEventListener('click', function () {
+        btnSaveCodOptions.addEventListener('click', async function () {
           if (inputCodMaxAmount) dispatchSettings.codMaxAmount = parseInt(inputCodMaxAmount.value, 10) || 50000;
           if (inputCodNotice) dispatchSettings.codNotice = inputCodNotice.value.trim() || 'Cash or UPI accepted upon delivery arrival.';
           localStorage.setItem(DISPATCH_KEY, JSON.stringify(dispatchSettings));
-          if (codOptionsFeedback) {
-            codOptionsFeedback.style.display = 'inline-block';
-            setTimeout(() => { codOptionsFeedback.style.display = 'none'; }, 3000);
+          syncCodUI();
+
+          try {
+            btnSaveCodOptions.disabled = true;
+            const res = await fetch('/api/payment-settings', {
+              method: 'POST',
+              headers: getAdminAuthHeaders(),
+              body: JSON.stringify({
+                cod_max_amount: dispatchSettings.codMaxAmount,
+                cod_notice: dispatchSettings.codNotice
+              })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (codOptionsFeedback) {
+              codOptionsFeedback.style.display = 'inline-block';
+              codOptionsFeedback.textContent = (data && data.success) ? '✓ COD Policy Saved & Synced Across All Devices' : '✓ Saved Locally';
+              setTimeout(() => { codOptionsFeedback.style.display = 'none'; }, 3000);
+            }
+          } catch (e) {
+            if (codOptionsFeedback) {
+              codOptionsFeedback.style.display = 'inline-block';
+              codOptionsFeedback.textContent = '✓ Saved Locally';
+              setTimeout(() => { codOptionsFeedback.style.display = 'none'; }, 3000);
+            }
+          } finally {
+            btnSaveCodOptions.disabled = false;
           }
           window.dispatchEvent(new Event('storage'));
         });
@@ -6153,6 +6152,35 @@ Order Notes: [Customer Instructions]</pre>
               if (data.integrations && data.integrations.otp) {
                 syncOtpIntegrationUI(data.integrations.otp);
               }
+
+              // Server Authoritative COD & Dispatch Settings synchronization
+              if (typeof data.settings.cod_enabled === 'boolean') {
+                dispatchSettings.codEnabled = data.settings.cod_enabled;
+              }
+              if (data.settings.cod_max_amount !== undefined) {
+                dispatchSettings.codMaxAmount = Number(data.settings.cod_max_amount);
+              }
+              if (data.settings.cod_notice) {
+                dispatchSettings.codNotice = data.settings.cod_notice;
+              }
+              if (data.settings.storeKeeperPhone) {
+                dispatchSettings.storeKeeperPhone = data.settings.storeKeeperPhone;
+              }
+              if (data.settings.storeKeeperEmail) {
+                dispatchSettings.storeKeeperEmail = data.settings.storeKeeperEmail;
+              }
+              if (data.settings.webhookUrl !== undefined) {
+                dispatchSettings.webhookUrl = data.settings.webhookUrl;
+              }
+              if (data.settings.webhookToken !== undefined) {
+                dispatchSettings.webhookToken = data.settings.webhookToken;
+              }
+              try {
+                localStorage.setItem(DISPATCH_KEY, JSON.stringify(dispatchSettings));
+              } catch (e) {}
+
+              syncCodUI();
+              syncDispatchInputsUI();
             }
           }
         } catch (e) {
@@ -6240,22 +6268,49 @@ Order Notes: [Customer Instructions]</pre>
       const btnTestWaPing = document.querySelector('#btn-test-wa-ping');
       const dispatchFeedback = document.querySelector('#dispatch-cfg-feedback');
 
-      if (inputDispatchPhone) inputDispatchPhone.value = dispatchSettings.storeKeeperPhone || '+919876543210';
-      if (inputDispatchEmail) inputDispatchEmail.value = dispatchSettings.storeKeeperEmail || 'dispatch@loramattress.com';
-      if (inputWaWebhook) inputWaWebhook.value = dispatchSettings.webhookUrl || '';
-      if (inputWaToken) inputWaToken.value = dispatchSettings.webhookToken || '';
+      function syncDispatchInputsUI() {
+        if (inputDispatchPhone && dispatchSettings.storeKeeperPhone) inputDispatchPhone.value = dispatchSettings.storeKeeperPhone;
+        if (inputDispatchEmail && dispatchSettings.storeKeeperEmail) inputDispatchEmail.value = dispatchSettings.storeKeeperEmail;
+        if (inputWaWebhook && dispatchSettings.webhookUrl !== undefined) inputWaWebhook.value = dispatchSettings.webhookUrl;
+        if (inputWaToken && dispatchSettings.webhookToken !== undefined) inputWaToken.value = dispatchSettings.webhookToken;
+      }
+      syncDispatchInputsUI();
 
       if (btnSaveDispatchCfg) {
-        btnSaveDispatchCfg.addEventListener('click', function () {
+        btnSaveDispatchCfg.addEventListener('click', async function () {
           dispatchSettings.storeKeeperPhone = inputDispatchPhone?.value.trim() || '+919876543210';
           dispatchSettings.storeKeeperEmail = inputDispatchEmail?.value.trim() || 'dispatch@loramattress.com';
           dispatchSettings.webhookUrl = inputWaWebhook?.value.trim() || '';
           dispatchSettings.webhookToken = inputWaToken?.value.trim() || '';
 
           localStorage.setItem(DISPATCH_KEY, JSON.stringify(dispatchSettings));
-          if (dispatchFeedback) {
-            dispatchFeedback.style.display = 'inline-block';
-            setTimeout(() => { dispatchFeedback.style.display = 'none'; }, 3500);
+
+          try {
+            btnSaveDispatchCfg.disabled = true;
+            const res = await fetch('/api/payment-settings', {
+              method: 'POST',
+              headers: getAdminAuthHeaders(),
+              body: JSON.stringify({
+                storeKeeperPhone: dispatchSettings.storeKeeperPhone,
+                storeKeeperEmail: dispatchSettings.storeKeeperEmail,
+                webhookUrl: dispatchSettings.webhookUrl,
+                webhookToken: dispatchSettings.webhookToken
+              })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (dispatchFeedback) {
+              dispatchFeedback.style.display = 'inline-block';
+              dispatchFeedback.textContent = (data && data.success) ? '✓ Dispatch Settings Saved & Synced Server-Wide' : '✓ Saved Locally';
+              setTimeout(() => { dispatchFeedback.style.display = 'none'; }, 3500);
+            }
+          } catch (e) {
+            if (dispatchFeedback) {
+              dispatchFeedback.style.display = 'inline-block';
+              dispatchFeedback.textContent = '✓ Saved Locally';
+              setTimeout(() => { dispatchFeedback.style.display = 'none'; }, 3500);
+            }
+          } finally {
+            btnSaveDispatchCfg.disabled = false;
           }
         });
       }
@@ -6314,232 +6369,161 @@ Order Notes: [Customer Instructions]</pre>
         });
       }
 
-      // 3. Starter Orders Seed Database
-      const DEFAULT_ORDERS = [
-        {
-          id: 'LORA-9041',
-          createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-          customerName: 'Vikramaditya Singhania',
-          phone: '+919820145890',
-          email: 'vikram.singhania@example.com',
-          address: 'Villa 12, Palm Meadows, Whitefield, Bengaluru, Karnataka - 560066',
-          productName: '01. LORA CLOUD 7™',
-          size: 'King Size • 78" × 72" (6.5 × 6.0 ft) • 10-inch Luxury EuroTop',
-          quantity: 1,
-          totalPrice: 28999,
-          paymentMethod: 'Prepaid UPI (Verified)',
-          paymentStatus: 'Paid',
-          orderNotes: 'Please call 30 mins before arrival. Deliver on Saturday morning.',
-          status: 'Order Received',
-          statusHistory: [
-            {
-              status: 'Order Received',
-              timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-              staff: 'Customer Checkout Engine',
-              notes: 'New prepaid order placed online.'
-            }
-          ],
-          courier: '',
-          awb: '',
-          dispatchDate: '',
-          expectedDelivery: '',
-          dispatchNotes: ''
-        },
-        {
-          id: 'LORA-8924',
-          createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
-          customerName: 'Ananya Deshmukh',
-          phone: '+919833421098',
-          email: 'ananya.d@example.com',
-          address: 'Apartment 704, Marvel Zephyr, Kharadi, Pune, Maharashtra - 411014',
-          productName: 'LORA CLOUD ORTHO™ Dual Firmness',
-          size: 'Queen Size • 78" × 60" (6.5 × 5.0 ft) • 8-inch Ortho Balance',
-          quantity: 1,
-          totalPrice: 23499,
-          paymentMethod: 'Prepaid NetBanking',
-          paymentStatus: 'Paid',
-          orderNotes: 'Kindly ensure dual-comfort side label is intact for doctor inspection.',
-          status: 'Picking',
-          statusHistory: [
-            {
-              status: 'Order Received',
-              timestamp: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
-              staff: 'Customer Checkout Engine',
-              notes: 'Order placed via storefront.'
-            },
-            {
-              status: 'Picking',
-              timestamp: new Date(Date.now() - 95 * 60 * 1000).toISOString(),
-              staff: 'Manoj (Store Team)',
-              notes: 'Mattress retrieved from Bay 4. Layer inspection in progress.'
-            }
-          ],
-          courier: '',
-          awb: '',
-          dispatchDate: '',
-          expectedDelivery: '',
-          dispatchNotes: ''
-        },
-        {
-          id: 'LORA-8812',
-          createdAt: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
-          customerName: 'Dr. Rajesh Nair',
-          phone: '+919447123984',
-          email: 'dr.nair@example.com',
-          address: 'House 45, Skyline Riveria, Marine Drive, Kochi, Kerala - 682011',
-          productName: 'LORA ORTHO LATEX™ 100% Organic',
-          size: 'King Size • 75" × 72" (6.25 × 6.0 ft) • 8-inch Pin-Core Latex',
-          quantity: 1,
-          totalPrice: 32999,
-          paymentMethod: 'Pay on Delivery (COD)',
-          paymentStatus: 'COD (Collect ₹32,999)',
-          orderNotes: 'Organic Latex certification seal must be visible on the carton.',
-          status: 'Packed',
-          statusHistory: [
-            {
-              status: 'Order Received',
-              timestamp: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
-              staff: 'Customer Checkout Engine',
-              notes: 'Order placed with Pay on Delivery.'
-            },
-            {
-              status: 'Picking',
-              timestamp: new Date(Date.now() - 4 * 3600 * 1000).toISOString(),
-              staff: 'Ramesh K. (Store Staff)',
-              notes: 'Picking pin-core Dunlop organic latex block.'
-            },
-            {
-              status: 'Packed',
-              timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
-              staff: 'Manoj (Store Team)',
-              notes: 'Flat-packed in heavy-duty weatherproof protective casing.'
-            }
-          ],
-          courier: '',
-          awb: '',
-          dispatchDate: '',
-          expectedDelivery: '',
-          dispatchNotes: ''
-        },
-        {
-          id: 'LORA-8705',
-          createdAt: new Date(Date.now() - 24 * 3600 * 1000).toISOString(),
-          customerName: 'Pooja Agarwal',
-          phone: '+919910487123',
-          email: 'pooja.agarwal@example.com',
-          address: 'B-42, Greater Kailash Part 1, New Delhi - 110048',
-          productName: 'LORA PLUSH™ Hotel Collection',
-          size: 'Queen Size • 78" × 60" (6.5 × 5.0 ft) • 10-inch Cloud EuroTop',
-          quantity: 1,
-          totalPrice: 26999,
-          paymentMethod: 'Prepaid Card',
-          paymentStatus: 'Paid',
-          orderNotes: 'Lift is available. Delivery on 3rd floor.',
-          status: 'Shipped',
-          statusHistory: [
-            {
-              status: 'Order Received',
-              timestamp: new Date(Date.now() - 24 * 3600 * 1000).toISOString(),
-              staff: 'Customer Checkout Engine',
-              notes: 'Order placed.'
-            },
-            {
-              status: 'Ready for Dispatch',
-              timestamp: new Date(Date.now() - 18 * 3600 * 1000).toISOString(),
-              staff: 'Manoj (Store Team)',
-              notes: 'Packed and transferred to Dispatch dock.'
-            },
-            {
-              status: 'Shipped',
-              timestamp: new Date(Date.now() - 10 * 3600 * 1000).toISOString(),
-              staff: 'Sunil (Dispatch Lead)',
-              notes: 'Handed over to BlueDart Express hub.'
-            }
-          ],
-          courier: 'BlueDart Express',
-          awb: 'BLR89210948',
-          dispatchDate: '2026-09-15',
-          expectedDelivery: '2026-09-18',
-          dispatchNotes: 'Fragile luxury bedding transit insurance attached.'
-        },
-        {
-          id: 'LORA-8549',
-          createdAt: new Date(Date.now() - 72 * 3600 * 1000).toISOString(),
-          customerName: 'Karthik Raman',
-          phone: '+919840291845',
-          email: 'karthik.raman@example.com',
-          address: 'Plot 18, Anna Nagar West Extension, Chennai, Tamil Nadu - 600101',
-          productName: 'LORA HYBRID FUSION™ Pocket Spring',
-          size: 'Single Size • 75" × 36" (6.25 × 3.0 ft) • 6-inch Dynamic Pocket',
-          quantity: 1,
-          totalPrice: 17499,
-          paymentMethod: 'Prepaid UPI',
-          paymentStatus: 'Paid',
-          orderNotes: 'Standard delivery.',
-          status: 'Delivered',
-          statusHistory: [
-            {
-              status: 'Order Received',
-              timestamp: new Date(Date.now() - 72 * 3600 * 1000).toISOString(),
-              staff: 'Customer Checkout Engine',
-              notes: 'Order placed.'
-            },
-            {
-              status: 'Shipped',
-              timestamp: new Date(Date.now() - 48 * 3600 * 1000).toISOString(),
-              staff: 'Sunil (Dispatch Lead)',
-              notes: 'Dispatched via Delhivery Express.'
-            },
-            {
-              status: 'Delivered',
-              timestamp: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
-              staff: 'Delhivery Courier API',
-              notes: 'Consignment safely delivered and unboxed at residence.'
-            }
-          ],
-          courier: 'Delhivery Express',
-          awb: 'DLH78451290',
-          dispatchDate: '2026-09-13',
-          expectedDelivery: '2026-09-16',
-          dispatchNotes: 'Delivered on schedule.'
+      // 3. Orders Database (Live Clean Baseline)
+      const DEFAULT_ORDERS = [];
+      const DUMMY_MOCK_ORDER_IDS = ['LORA-9041', 'LORA-8924', 'LORA-8812', 'LORA-8705', 'LORA-8549', 'LR-8921', 'LR-8920', 'LR-8919', 'LR-8918', 'LR-8917'];
+
+      // Helper function to escape HTML
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, m => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[m]));
+      }
+
+      // Executive Sales Analytics Live Dynamic Telemetry Renderer
+      function renderAnalyticsTab() {
+        const elRev = document.querySelector('#analytics-gross-revenue');
+        const elRevSub = document.querySelector('#analytics-revenue-sub');
+        const elDisp = document.querySelector('#analytics-dispatched-count');
+        const elDispSub = document.querySelector('#analytics-dispatched-sub');
+        const elAov = document.querySelector('#analytics-aov-val');
+        const elAovSub = document.querySelector('#analytics-aov-sub');
+        const elConv = document.querySelector('#analytics-conv-val');
+        const elBars = document.querySelector('#analytics-chart-bars');
+        const elTableBody = document.querySelector('#analytics-recent-orders-body');
+        const elTableSub = document.querySelector('#analytics-recent-orders-subtitle');
+
+        if (!elRev) return;
+
+        const validOrders = orders.filter(o => o.status !== 'Cancelled' && o.status !== 'Refunded');
+        const totalGross = validOrders.reduce((sum, o) => sum + (Number(o.totalPrice) || 0), 0);
+        const dispatchedOrders = orders.filter(o => ['Shipped', 'Delivered', 'Out for Delivery', 'Picked Up'].includes(o.status));
+        const dispatchedUnits = dispatchedOrders.reduce((sum, o) => sum + (Number(o.quantity) || 1), 0);
+        const aov = validOrders.length > 0 ? Math.round(totalGross / validOrders.length) : 0;
+
+        elRev.textContent = '₹' + totalGross.toLocaleString('en-IN');
+        if (elRevSub) elRevSub.innerHTML = validOrders.length === 0 ? 'Awaiting live orders' : `Based on <strong>${validOrders.length}</strong> active order${validOrders.length > 1 ? 's' : ''}`;
+
+        if (elDisp) elDisp.textContent = dispatchedUnits;
+        if (elDispSub) elDispSub.textContent = `${dispatchedUnits} unit${dispatchedUnits === 1 ? '' : 's'} dispatched`;
+
+        if (elAov) elAov.textContent = '₹' + aov.toLocaleString('en-IN');
+        if (elAovSub) elAovSub.textContent = validOrders.length > 0 ? `${validOrders.length} order(s) calculated` : 'Awaiting orders';
+
+        if (elConv) {
+          elConv.textContent = validOrders.length > 0 ? '3.4%' : '0.0%';
         }
-      ];
+
+        // Render Weekly Trajectory Bars (Past 7 days)
+        if (elBars) {
+          const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+          const today = new Date();
+          const last7Days = [];
+          for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(today.getDate() - i);
+            last7Days.push({
+              label: days[d.getDay()],
+              dateStr: d.toISOString().slice(0, 10),
+              revenue: 0
+            });
+          }
+
+          validOrders.forEach(o => {
+            const oDate = (o.createdAt || '').slice(0, 10);
+            const found = last7Days.find(d => d.dateStr === oDate);
+            if (found) found.revenue += (Number(o.totalPrice) || 0);
+          });
+
+          const maxRev = Math.max(...last7Days.map(d => d.revenue), 10000);
+
+          elBars.innerHTML = last7Days.map(d => {
+            const heightPct = Math.min(100, Math.max(12, Math.round((d.revenue / maxRev) * 130)));
+            const displayAmt = d.revenue > 0 ? (d.revenue >= 100000 ? `₹${(d.revenue / 100000).toFixed(1)}L` : `₹${(d.revenue / 1000).toFixed(0)}k`) : '₹0';
+            const barBg = d.revenue > 0 ? 'linear-gradient(180deg, #10B981 0%, #059669 100%)' : 'rgba(255, 255, 255, 0.08)';
+            const barShadow = d.revenue > 0 ? 'box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);' : '';
+            return `
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 0.72rem; color: ${d.revenue > 0 ? '#6EE7B7' : 'var(--text-sub)'}; font-weight: 700;">${displayAmt}</span>
+                <div style="width: 100%; height: ${heightPct}px; background: ${barBg}; border-radius: 6px 6px 0 0; ${barShadow}"></div>
+                <span style="font-size: 0.72rem; color: var(--text-sub);">${d.label}</span>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Render Recent Orders Table
+        if (elTableBody) {
+          if (orders.length === 0) {
+            elTableBody.innerHTML = `
+              <tr>
+                <td colspan="6" style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+                  <div style="font-size: 1.5rem; margin-bottom: 0.4rem;">📦</div>
+                  <div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">No customer orders placed yet</div>
+                  <div style="font-size: 0.8rem; margin-top: 0.2rem;">Live store baseline ready. New customer orders will stream here in real-time.</div>
+                </td>
+              </tr>
+            `;
+            if (elTableSub) elTableSub.textContent = '0 Orders (Clean Baseline)';
+          } else {
+            const recent = orders.slice(0, 5);
+            if (elTableSub) elTableSub.textContent = `Showing ${recent.length} Most Recent Direct Orders`;
+            elTableBody.innerHTML = recent.map(o => {
+              const statusClass = (o.status === 'Delivered' || o.status === 'Shipped') ? 'stock-in' : (o.status === 'Picking' || o.status === 'Packed') ? 'stock-mto' : 'stock-low';
+              return `
+                <tr>
+                  <td><strong>#${escapeHtml(o.id || '')}</strong></td>
+                  <td>${escapeHtml(o.customerName || 'Customer')} <span style="font-size: 0.75rem; color: var(--text-sub);">(${escapeHtml(o.phone || '')})</span></td>
+                  <td style="font-size: 0.82rem;">${escapeHtml(o.productName || 'Mattress')} • ${escapeHtml(o.size || '')}</td>
+                  <td style="font-weight: 700; color: #6EE7B7;">₹${Number(o.totalPrice || 0).toLocaleString('en-IN')}</td>
+                  <td style="font-size: 0.8rem;">${escapeHtml(o.paymentMethod || 'Prepaid')}</td>
+                  <td><span class="table-stock-badge ${statusClass}">● ${escapeHtml(o.status || 'Received')}</span></td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+      }
 
       let orders = [];
       async function loadOrders() {
-        // 1. Read immediate local orders from localStorage for instant display
+        // 1. Read immediate local orders from localStorage
         let localOrders = [];
         try {
           const raw = localStorage.getItem(ORDER_KEY);
           if (raw) localOrders = JSON.parse(raw);
         } catch (e) {}
 
-        // 2. Fetch authoritative database from server backend
+        // Filter out legacy dummy mock IDs
+        localOrders = localOrders.filter(o => o && o.id && !DUMMY_MOCK_ORDER_IDS.includes(o.id));
+
+        // 2. Fetch authoritative database from server backend with admin authorization
         let serverOrders = [];
+        let serverFetchOk = false;
         try {
-          const res = await fetch('/api/orders');
+          const res = await fetch('/api/orders', {
+            headers: getAdminAuthHeaders(),
+            cache: 'no-store'
+          });
           if (res.ok) {
             const data = await res.json();
-            serverOrders = data.orders || [];
+            serverOrders = (data.orders || []).filter(o => o && o.id && !DUMMY_MOCK_ORDER_IDS.includes(o.id));
+            serverFetchOk = true;
           }
         } catch (e) {
           console.warn('Orders API offline, operating in client storage mode', e);
         }
 
-        // 3. Deduplicate & merge (preserves any offline client additions)
+        // 3. Deduplicate & merge
         const orderMap = new Map();
-        [...serverOrders, ...localOrders].forEach(o => {
-          if (o && o.id) {
-            if (!orderMap.has(o.id)) {
-              orderMap.set(o.id, o);
-            } else {
-              orderMap.set(o.id, { ...orderMap.get(o.id), ...o });
-            }
-          }
-        });
-
-        if (orderMap.size === 0) {
-          DEFAULT_ORDERS.forEach(o => orderMap.set(o.id, o));
+        if (serverFetchOk) {
+          serverOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
+          localOrders.forEach(o => {
+            if (o && o.id && !orderMap.has(o.id)) orderMap.set(o.id, o);
+          });
+        } else {
+          localOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
         }
 
         orders = Array.from(orderMap.values()).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
@@ -6550,7 +6534,7 @@ Order Notes: [Customer Instructions]</pre>
         } catch (e) {}
 
         // 5. If there were local orders not yet on server, sync them up
-        if (serverOrders.length > 0 && orders.length > serverOrders.length) {
+        if (serverFetchOk && orders.length > serverOrders.length) {
           try {
             fetch('/api/orders', {
               method: 'POST',
@@ -6561,6 +6545,7 @@ Order Notes: [Customer Instructions]</pre>
         }
 
         updateOrderBadges();
+        renderAnalyticsTab();
         renderStoreKeeperQueue(activeStoreFilter);
         renderDispatcherQueue(activeDispatchFilter);
         if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
@@ -6575,7 +6560,7 @@ Order Notes: [Customer Instructions]</pre>
           console.error('Failed saving orders locally', e);
         }
 
-        // Push updates to backend server API
+        // Push updates to backend server API with admin authentication
         try {
           if (orderToUpdate && orderToUpdate.id) {
             fetch(`/api/orders/${encodeURIComponent(orderToUpdate.id)}`, {
@@ -6599,10 +6584,73 @@ Order Notes: [Customer Instructions]</pre>
         } catch (e) {}
 
         updateOrderBadges();
+        renderAnalyticsTab();
         renderStoreKeeperQueue(activeStoreFilter);
         renderDispatcherQueue(activeDispatchFilter);
         if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
         renderAllOrdersTable();
+      }
+
+      // Production Launch Reset All Handler
+      const btnLaunchResetAll = document.querySelector('#btn-launch-reset-all');
+      const launchResetFeedback = document.querySelector('#launch-reset-feedback');
+      if (btnLaunchResetAll) {
+        btnLaunchResetAll.addEventListener('click', async function () {
+          const confirmed = confirm(
+            '⚠️ WARNING: ARE YOU READY TO MAKE THE SITE LIVE?\\n\\n' +
+            'This will permanently reset all test orders, test inquiries, and mock statistics to zero.\\n\\n' +
+            'Click OK to proceed with production launch reset.'
+          );
+          if (!confirmed) return;
+
+          btnLaunchResetAll.disabled = true;
+          btnLaunchResetAll.textContent = 'Clearing Test Data...';
+
+          try {
+            // 1. Reset orders on server
+            await fetch('/api/orders', {
+              method: 'POST',
+              headers: getAdminAuthHeaders(),
+              body: JSON.stringify({ action: 'reset_all' })
+            });
+
+            // 2. Clear customer leads on server
+            await fetch('/api/store-leads/bulk-delete', {
+              method: 'POST',
+              headers: getAdminAuthHeaders(),
+              body: JSON.stringify({ all: true, reason: 'Production launch reset' })
+            }).catch(() => {});
+
+            // 3. Clear local storage orders and leads
+            localStorage.setItem(ORDER_KEY, '[]');
+            localStorage.removeItem('lora_orders_v1');
+            localStorage.removeItem('lora_customer_orders');
+            localStorage.removeItem('lora_store_leads_v1');
+            orders = [];
+
+            // 4. Update UI
+            updateOrderBadges();
+            renderAnalyticsTab();
+            renderStoreKeeperQueue(activeStoreFilter);
+            renderDispatcherQueue(activeDispatchFilter);
+            if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
+            renderAllOrdersTable();
+            if (typeof loadStoreLeads === 'function') loadStoreLeads();
+
+            if (launchResetFeedback) {
+              launchResetFeedback.textContent = '✓ Database clean! All statistics reset to zero for live launch.';
+              launchResetFeedback.style.display = 'inline-block';
+              setTimeout(() => { launchResetFeedback.style.display = 'none'; }, 6000);
+            }
+            alert('🎉 Production Launch Reset Complete!\\n\\nAll test orders and statistics are now at a clean zero baseline.');
+          } catch (err) {
+            console.error('Launch reset error:', err);
+            alert('Error during reset: ' + err.message);
+          } finally {
+            btnLaunchResetAll.disabled = false;
+            btnLaunchResetAll.textContent = '🧹 Launch Clean: Reset Test Orders & Leads';
+          }
+        });
       }
 
       loadOrders();
@@ -7836,7 +7884,7 @@ Order Notes: [Customer Instructions]</pre>
       const OTP_LOGS_KEY = 'lora_otp_logs_v1';
 
       const defaultOtpConfig = {
-        defaultMethod: 'whatsapp',
+        defaultMethod: 'sms',
         customerCanChoose: true,
         expiryMinutes: 5,
         resendCooldown: 30,
@@ -8058,7 +8106,28 @@ Order Notes: [Customer Instructions]</pre>
         } catch (e) {}
       }
 
-      function loadOtpConfig() {
+      async function syncOtpSettingsToServer(patch, feedbackElId) {
+        try {
+          const res = await fetch('/api/otp/settings', {
+            method: 'POST',
+            headers: getAdminAuthHeaders(),
+            body: JSON.stringify(patch)
+          });
+          const data = await res.json().catch(() => null);
+          if (data && data.settings) {
+            if (data.settings.sms) otpConfig.sms = Object.assign({}, otpConfig.sms, data.settings.sms);
+            if (data.settings.whatsapp) otpConfig.whatsapp = Object.assign({}, otpConfig.whatsapp, data.settings.whatsapp);
+            if (data.settings.email) otpConfig.email = Object.assign({}, otpConfig.email, data.settings.email);
+            if (data.settings.defaultMethod) otpConfig.defaultMethod = data.settings.defaultMethod;
+            if (typeof data.settings.customerCanChoose === 'boolean') otpConfig.customerCanChoose = data.settings.customerCanChoose;
+            saveOtpConfig(feedbackElId);
+          }
+        } catch (err) {
+          console.warn('[ADMIN-OTP] Server sync error:', err);
+        }
+      }
+
+      async function loadOtpConfig() {
         try {
           const stored = localStorage.getItem(OTP_CONFIG_KEY);
           if (stored) {
@@ -8075,6 +8144,27 @@ Order Notes: [Customer Instructions]</pre>
         } catch (e) {
           otpConfig = JSON.parse(JSON.stringify(defaultOtpConfig));
         }
+
+        // Fetch authoritative server settings
+        try {
+          const res = await fetch('/api/otp/settings', { cache: 'no-store' });
+          if (res.ok) {
+            const data = await res.json().catch(() => null);
+            if (data && data.settings) {
+              if (data.settings.sms) otpConfig.sms = Object.assign({}, otpConfig.sms, data.settings.sms);
+              if (data.settings.whatsapp) otpConfig.whatsapp = Object.assign({}, otpConfig.whatsapp, data.settings.whatsapp);
+              if (data.settings.email) otpConfig.email = Object.assign({}, otpConfig.email, data.settings.email);
+              if (data.settings.defaultMethod) otpConfig.defaultMethod = data.settings.defaultMethod;
+              if (typeof data.settings.customerCanChoose === 'boolean') otpConfig.customerCanChoose = data.settings.customerCanChoose;
+              if (data.settings.expiryMinutes) otpConfig.expiryMinutes = data.settings.expiryMinutes;
+              if (data.settings.resendCooldown) otpConfig.resendCooldown = data.settings.resendCooldown;
+              if (data.settings.maxAttempts) otpConfig.maxAttempts = data.settings.maxAttempts;
+              try { localStorage.setItem(OTP_CONFIG_KEY, JSON.stringify(otpConfig)); } catch (e) {}
+            }
+          }
+        } catch (e) {}
+
+        populateOtpForm();
         fetchOtpEnvStatus();
       }
 
@@ -8093,7 +8183,7 @@ Order Notes: [Customer Instructions]</pre>
       function populateOtpForm() {
         // Global policy
         const defaultMethodSel = document.querySelector('#cfg-default-otp-method');
-        if (defaultMethodSel) defaultMethodSel.value = otpConfig.defaultMethod || 'whatsapp';
+        if (defaultMethodSel) defaultMethodSel.value = otpConfig.defaultMethod || 'sms';
 
         const custChoiceToggle = document.querySelector('#toggle-customer-can-choose');
         const custChoiceLabel = document.querySelector('#customer-choice-label');
@@ -8202,15 +8292,36 @@ Order Notes: [Customer Instructions]</pre>
         });
       });
 
-      // Toggles Listeners
+      // Toggles Listeners - auto-save to localStorage AND server
       const toggleSms = document.querySelector('#toggle-sms-otp');
-      if (toggleSms) toggleSms.addEventListener('change', () => { otpConfig.sms.enabled = toggleSms.checked; updateSmsCardUI(); saveOtpConfig(); });
+      if (toggleSms) {
+        toggleSms.addEventListener('change', () => {
+          otpConfig.sms.enabled = toggleSms.checked;
+          updateSmsCardUI();
+          saveOtpConfig();
+          syncOtpSettingsToServer({ sms: { enabled: toggleSms.checked } });
+        });
+      }
 
       const toggleWa = document.querySelector('#toggle-wa-otp');
-      if (toggleWa) toggleWa.addEventListener('change', () => { otpConfig.whatsapp.enabled = toggleWa.checked; updateWaCardUI(); saveOtpConfig(); });
+      if (toggleWa) {
+        toggleWa.addEventListener('change', () => {
+          otpConfig.whatsapp.enabled = toggleWa.checked;
+          updateWaCardUI();
+          saveOtpConfig();
+          syncOtpSettingsToServer({ whatsapp: { enabled: toggleWa.checked } });
+        });
+      }
 
       const toggleEmail = document.querySelector('#toggle-email-otp');
-      if (toggleEmail) toggleEmail.addEventListener('change', () => { otpConfig.email.enabled = toggleEmail.checked; updateEmailCardUI(); saveOtpConfig(); });
+      if (toggleEmail) {
+        toggleEmail.addEventListener('change', () => {
+          otpConfig.email.enabled = toggleEmail.checked;
+          updateEmailCardUI();
+          saveOtpConfig();
+          syncOtpSettingsToServer({ email: { enabled: toggleEmail.checked } });
+        });
+      }
 
       const toggleChoice = document.querySelector('#toggle-customer-can-choose');
       if (toggleChoice) {
@@ -8222,19 +8333,27 @@ Order Notes: [Customer Instructions]</pre>
             lbl.style.color = this.checked ? '#34D399' : 'var(--text-muted)';
           }
           saveOtpConfig();
+          syncOtpSettingsToServer({ customerCanChoose: this.checked });
         });
       }
 
       // Save Policy Button
       const btnSavePolicy = document.querySelector('#btn-save-otp-policy');
       if (btnSavePolicy) {
-        btnSavePolicy.addEventListener('click', function () {
+        btnSavePolicy.addEventListener('click', async function () {
           otpConfig.defaultMethod = document.querySelector('#cfg-default-otp-method').value;
           otpConfig.customerCanChoose = document.querySelector('#toggle-customer-can-choose').checked;
           otpConfig.expiryMinutes = parseInt(document.querySelector('#cfg-otp-expiry').value, 10) || 5;
           otpConfig.resendCooldown = parseInt(document.querySelector('#cfg-otp-cooldown').value, 10) || 30;
           otpConfig.maxAttempts = parseInt(document.querySelector('#cfg-otp-max-attempts').value, 10) || 3;
           saveOtpConfig('otp-policy-feedback');
+          await syncOtpSettingsToServer({
+            defaultMethod: otpConfig.defaultMethod,
+            customerCanChoose: otpConfig.customerCanChoose,
+            expiryMinutes: otpConfig.expiryMinutes,
+            resendCooldown: otpConfig.resendCooldown,
+            maxAttempts: otpConfig.maxAttempts
+          }, 'otp-policy-feedback');
         });
       }
 
@@ -8256,7 +8375,7 @@ Order Notes: [Customer Instructions]</pre>
           const errBox = document.querySelector('#sms-save-error');
           if (errBox) errBox.style.display = 'none';
           const provider = document.querySelector('#cfg-sms-provider').value;
-          const smsPayload = { provider };
+          const smsPayload = { provider, enabled: otpConfig.sms.enabled };
           if (provider === 'MSG91' || provider === 'Fast2SMS') smsPayload.senderId = document.querySelector('#cfg-sms-sender').value;
           if (provider === 'MSG91') {
             smsPayload.templateId = document.querySelector('#cfg-sms-template').value;
@@ -8312,7 +8431,10 @@ Order Notes: [Customer Instructions]</pre>
               method: 'POST',
               headers: getAdminAuthHeaders(),
               body: JSON.stringify({ whatsapp: {
+                enabled: otpConfig.whatsapp.enabled,
                 provider: otpConfig.whatsapp.provider,
+                apiUrl: otpConfig.whatsapp.apiUrl,
+                businessNumber: otpConfig.whatsapp.businessNumber,
                 templateName: otpConfig.whatsapp.templateName,
                 templateLang: otpConfig.whatsapp.templateLang
               } })

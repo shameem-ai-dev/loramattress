@@ -1,7 +1,12 @@
 {
   "razorpay_enabled": true,
+  "razorpay_mode": "live",
   "razorpay_theme_color": "#00B4D8",
   "cod_enabled": true,
   "cod_max_amount": 50000,
-  "cod_notice": "Cash or UPI accepted upon delivery arrival."
+  "cod_notice": "Cash or UPI accepted upon delivery arrival.",
+  "storeKeeperPhone": "+919876543210",
+  "storeKeeperEmail": "dispatch@loramattress.com",
+  "webhookUrl": "",
+  "webhookToken": ""
 }

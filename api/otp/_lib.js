@@ -84,49 +84,121 @@ function readOtpSettings() {
   saved = saved || {};
   const sms = saved.sms || {};
   const wa = saved.whatsapp || {};
+  const email = saved.email || {};
+  const policy = saved.policy || {};
   return {
     sms: {
+      enabled: typeof sms.enabled === 'boolean' ? sms.enabled : (process.env.SMS_OTP_ENABLED !== 'false'),
       provider: canonicalProvider(sms.provider) || canonicalProvider(process.env.SMS_PROVIDER) || 'Fast2SMS',
       senderId: String(sms.senderId || process.env.SMS_SENDER_ID || 'LORAMT').slice(0, 11),
       templateId: String(sms.templateId || process.env.MSG91_TEMPLATE_ID || process.env.SMS_TEMPLATE_ID || '').slice(0, 64),
       endpoint: String(sms.endpoint || 'https://control.msg91.com/api/v5/otp').slice(0, 200)
     },
     whatsapp: {
+      enabled: typeof wa.enabled === 'boolean' ? wa.enabled : (process.env.WHATSAPP_OTP_ENABLED !== 'false'),
       provider: canonicalWaProvider(wa.provider) || canonicalWaProvider(process.env.WHATSAPP_PROVIDER) || ((process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY) ? 'Fast2SMS' : 'Meta WhatsApp Cloud API'),
+      apiUrl: String(wa.apiUrl || '').slice(0, 200),
+      businessNumber: String(wa.businessNumber || '').slice(0, 30),
       templateName: String(wa.templateName || process.env.WHATSAPP_TEMPLATE_NAME || 'lora_auth_otp').slice(0, 64),
       templateLang: String(wa.templateLang || 'en').slice(0, 10)
     },
+    email: {
+      enabled: typeof email.enabled === 'boolean' ? email.enabled : (process.env.EMAIL_OTP_ENABLED !== 'false'),
+      provider: String(email.provider || 'SendGrid').slice(0, 50),
+      senderEmail: String(email.senderEmail || 'auth@loramattress.com').slice(0, 100),
+      senderName: String(email.senderName || 'LORA Sleepworks Security').slice(0, 100),
+      host: String(email.host || process.env.SMTP_HOST || 'smtp.sendgrid.net').slice(0, 100),
+      port: String(email.port || process.env.SMTP_PORT || '587').slice(0, 10),
+      username: String(email.username || process.env.SMTP_USER || 'apikey').slice(0, 100),
+      template: String(email.template || '').slice(0, 100)
+    },
+    defaultMethod: ['sms', 'whatsapp', 'email'].includes(saved.defaultMethod) ? saved.defaultMethod : (process.env.DEFAULT_OTP_METHOD || 'sms'),
+    customerCanChoose: typeof saved.customerCanChoose === 'boolean' ? saved.customerCanChoose : true,
+    expiryMinutes: Number(saved.expiryMinutes || policy.expiryMinutes || 5),
+    resendCooldown: Number(saved.resendCooldown || policy.resendCooldown || 30),
+    maxAttempts: Number(saved.maxAttempts || policy.maxAttempts || 3),
     updatedAt: saved.updatedAt || null
   };
 }
 
 function saveOtpSettings(input) {
   const current = readOtpSettings();
-  const next = { sms: { ...current.sms }, whatsapp: { ...current.whatsapp }, updatedAt: new Date().toISOString() };
+  const next = {
+    sms: { ...current.sms },
+    whatsapp: { ...current.whatsapp },
+    email: { ...current.email },
+    defaultMethod: current.defaultMethod,
+    customerCanChoose: current.customerCanChoose,
+    expiryMinutes: current.expiryMinutes,
+    resendCooldown: current.resendCooldown,
+    maxAttempts: current.maxAttempts,
+    updatedAt: new Date().toISOString()
+  };
+
+  if (input && typeof input.defaultMethod === 'string') {
+    const dm = input.defaultMethod.trim().toLowerCase();
+    if (['sms', 'whatsapp', 'email'].includes(dm)) next.defaultMethod = dm;
+  }
+  if (input && typeof input.customerCanChoose === 'boolean') {
+    next.customerCanChoose = input.customerCanChoose;
+  }
+  if (input && (typeof input.expiryMinutes === 'number' || !isNaN(Number(input.expiryMinutes)))) {
+    const n = Number(input.expiryMinutes);
+    if (n >= 1 && n <= 15) next.expiryMinutes = n;
+  }
+  if (input && (typeof input.resendCooldown === 'number' || !isNaN(Number(input.resendCooldown)))) {
+    const n = Number(input.resendCooldown);
+    if (n >= 10 && n <= 120) next.resendCooldown = n;
+  }
+  if (input && (typeof input.maxAttempts === 'number' || !isNaN(Number(input.maxAttempts)))) {
+    const n = Number(input.maxAttempts);
+    if (n >= 1 && n <= 10) next.maxAttempts = n;
+  }
+
   if (input && input.sms) {
     const sms = input.sms;
-    const provider = canonicalProvider(sms.provider);
-    if (!provider) throw new Error(`Unknown SMS provider. Allowed: ${SMS_PROVIDERS.join(', ')}.`);
-    next.sms = {
-      provider,
-      senderId: typeof sms.senderId === 'string' ? sms.senderId.trim().slice(0, 11) : current.sms.senderId,
-      templateId: typeof sms.templateId === 'string' ? sms.templateId.trim().slice(0, 64) : current.sms.templateId,
-      endpoint: typeof sms.endpoint === 'string' ? sms.endpoint.trim().slice(0, 200) : current.sms.endpoint
-    };
+    if (typeof sms.enabled === 'boolean') next.sms.enabled = sms.enabled;
+    if (sms.provider) {
+      const provider = canonicalProvider(sms.provider);
+      if (!provider) throw new Error(`Unknown SMS provider. Allowed: ${SMS_PROVIDERS.join(', ')}.`);
+      next.sms.provider = provider;
+    }
+    if (typeof sms.senderId === 'string') next.sms.senderId = sms.senderId.trim().slice(0, 11);
+    if (typeof sms.templateId === 'string') next.sms.templateId = sms.templateId.trim().slice(0, 64);
+    if (typeof sms.endpoint === 'string') next.sms.endpoint = sms.endpoint.trim().slice(0, 200);
   }
+
   if (input && input.whatsapp) {
     const wa = input.whatsapp;
-    const provider = canonicalWaProvider(wa.provider);
-    if (!provider) throw new Error(`Unknown WhatsApp provider. Allowed: ${WA_PROVIDERS.join(', ')}.`);
-    next.whatsapp = {
-      provider,
-      templateName: typeof wa.templateName === 'string' ? wa.templateName.trim().slice(0, 64) : current.whatsapp.templateName,
-      templateLang: typeof wa.templateLang === 'string' ? wa.templateLang.trim().slice(0, 10) : current.whatsapp.templateLang
-    };
+    if (typeof wa.enabled === 'boolean') next.whatsapp.enabled = wa.enabled;
+    if (wa.provider) {
+      const provider = canonicalWaProvider(wa.provider);
+      if (!provider) throw new Error(`Unknown WhatsApp provider. Allowed: ${WA_PROVIDERS.join(', ')}.`);
+      next.whatsapp.provider = provider;
+    }
+    if (typeof wa.apiUrl === 'string') next.whatsapp.apiUrl = wa.apiUrl.trim().slice(0, 200);
+    if (typeof wa.businessNumber === 'string') next.whatsapp.businessNumber = wa.businessNumber.trim().slice(0, 30);
+    if (typeof wa.templateName === 'string') next.whatsapp.templateName = wa.templateName.trim().slice(0, 64);
+    if (typeof wa.templateLang === 'string') next.whatsapp.templateLang = wa.templateLang.trim().slice(0, 10);
   }
+
+  if (input && input.email) {
+    const em = input.email;
+    if (typeof em.enabled === 'boolean') next.email.enabled = em.enabled;
+    if (typeof em.provider === 'string') next.email.provider = em.provider.trim().slice(0, 50);
+    if (typeof em.senderEmail === 'string') next.email.senderEmail = em.senderEmail.trim().slice(0, 100);
+    if (typeof em.senderName === 'string') next.email.senderName = em.senderName.trim().slice(0, 100);
+    if (typeof em.host === 'string') next.email.host = em.host.trim().slice(0, 100);
+    if (typeof em.port === 'string' || typeof em.port === 'number') next.email.port = String(em.port).trim().slice(0, 10);
+    if (typeof em.username === 'string') next.email.username = em.username.trim().slice(0, 100);
+  }
+
   memorySettings = next;
   let persisted = false;
   try {
+    if (!fs.existsSync(CONFIG_DIR)) {
+      fs.mkdirSync(CONFIG_DIR, { recursive: true });
+    }
     fs.writeFileSync(SETTINGS_FILE, JSON.stringify(next, null, 2), 'utf8');
     persisted = true;
   } catch (e) { /* read-only FS (e.g. serverless) — kept in memory */ }

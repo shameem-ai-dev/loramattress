@@ -31,8 +31,8 @@ module.exports = async function handler(req, res) {
 
     const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const rawAmount = Number(payload.amount);
-    if (!rawAmount || rawAmount <= 0) {
-      return res.status(400).json({ success: false, message: 'Valid payment amount is required.' });
+    if (!rawAmount || isNaN(rawAmount) || rawAmount < 500 || rawAmount > 500000) {
+      return res.status(400).json({ success: false, message: 'Valid payment amount between ₹500 and ₹5,00,000 is required.' });
     }
 
     // Checkout phone verification enforced server-side before any payment order is created
@@ -46,13 +46,20 @@ module.exports = async function handler(req, res) {
 
     const amountInPaise = Math.round(rawAmount * 100);
     const currency = (payload.currency || 'INR').toUpperCase();
-    const receipt = String(payload.receipt || ('rcpt_' + Date.now())).slice(0, 40);
+    const receipt = String(payload.receipt || ('rcpt_' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
+
+    const safeNotes = {};
+    if (payload.notes && typeof payload.notes === 'object') {
+      ['order_id', 'customer_name', 'customer_phone', 'product_name', 'specs'].forEach(k => {
+        if (payload.notes[k]) safeNotes[k] = String(payload.notes[k]).slice(0, 150);
+      });
+    }
 
     const postData = JSON.stringify({
       amount: amountInPaise,
       currency: currency,
       receipt: receipt,
-      notes: payload.notes || {}
+      notes: safeNotes
     });
 
     const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');

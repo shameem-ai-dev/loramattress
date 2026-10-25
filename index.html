@@ -14,7 +14,7 @@
   <script src="assets/lora-ads.js?v=1"></script>
   <link rel="stylesheet" href="assets/base.css?v=20260917v5">
   <link rel="stylesheet" href="assets/lumi.css?v=20261025v3">
-  <link rel="stylesheet" href="assets/lora-float.css?v=11">
+  <link rel="stylesheet" href="assets/lora-float.css?v=12">
   <link rel="stylesheet" href="assets/lora-polish.css?v=1">
   <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -1643,7 +1643,7 @@
   </div>
 </section>
 
-<script src="assets/lora-float.js?v=11" defer></script>
+<script src="assets/lora-float.js?v=12" defer></script>
 <script src="assets/lora-polish.js?v=1" defer></script>
 
 
@@ -5934,7 +5934,7 @@
         <div style="text-align: center; margin-bottom: 1.5rem;">
           <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA" style="height: 28px; margin-bottom: 0.75rem;">
           <h3 style="font-size: 1.35rem; font-weight: 800; color: #FFFFFF; margin: 0 0 0.35rem 0;">Customer Login & Sign Up</h3>
-          <p style="font-size: 0.82rem; color: #94A3B8; margin: 0;">Passwordless verification via WhatsApp, SMS, or Email OTP</p>
+          <p style="font-size: 0.82rem; color: #94A3B8; margin: 0;" id="cust-auth-subtitle">Passwordless verification via SMS or Email OTP</p>
         </div>
 
         <form id="form-cust-send-otp" onsubmit="window.handleSendCustomerOtp(event); return false;">
@@ -5952,32 +5952,14 @@
               Receive OTP via
             </label>
             <div id="cust-channels-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label class="otp-channel-pill selected" data-channel="whatsapp" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(2, 132, 199, 0.1); border: 1.5px solid #0284C7;">
-                <input type="radio" name="cust_selected_channel" value="whatsapp" class="otp-channel-radio" checked style="accent-color: #0284C7;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-                <div style="flex: 1;">
-                  <strong style="font-size: 0.88rem; color: #FFFFFF; display: block;">WhatsApp OTP</strong>
-                  <span style="font-size: 0.72rem; color: #94A3B8;">Receive 6-digit code via WhatsApp</span>
-                </div>
-                <span style="font-size: 0.7rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">Instant &amp; Free</span>
-              </label>
-              <label class="otp-channel-pill" data-channel="sms" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <input type="radio" name="cust_selected_channel" value="sms" class="otp-channel-radio" style="accent-color: #00B4D8;">
+              <label class="otp-channel-pill selected" data-channel="sms" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(0, 180, 216, 0.1); border: 1.5px solid #00B4D8;">
+                <input type="radio" name="cust_selected_channel" value="sms" class="otp-channel-radio" checked style="accent-color: #00B4D8;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 <div style="flex: 1;">
                   <strong style="font-size: 0.88rem; color: #FFFFFF; display: block;">SMS OTP</strong>
                   <span style="font-size: 0.72rem; color: #94A3B8;">Receive 6-digit code via SMS</span>
                 </div>
                 <span style="font-size: 0.7rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">Carrier SMS</span>
-              </label>
-              <label class="otp-channel-pill" data-channel="email" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <input type="radio" name="cust_selected_channel" value="email" class="otp-channel-radio" style="accent-color: #00B4D8;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <div style="flex: 1;">
-                  <strong style="font-size: 0.88rem; color: #FFFFFF; display: block;">Email OTP</strong>
-                  <span style="font-size: 0.72rem; color: #94A3B8;">Receive 6-digit code via Email</span>
-                </div>
-                <span style="font-size: 0.7rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">Inbox Verification</span>
               </label>
             </div>
           </div>
@@ -8607,6 +8589,154 @@
       const chkSumSpecs = document.querySelector('#chk-summary-specs');
       const chkSumPrice = document.querySelector('#chk-summary-price');
 
+      // Server-Synchronized Payment & COD Availability Engine (Desktop & Mobile Unified)
+      window._loraServerPaymentSettings = null;
+      let isFetchingPaymentSettings = false;
+
+      function getEffectivePaymentSettings() {
+        let codEnabled = true;
+        let codMaxAmount = 50000;
+        let codNotice = 'Cash or UPI accepted upon delivery arrival.';
+        let razorpayEnabled = true;
+        let storeKeeperPhone = '+919876543210';
+        let storeKeeperEmail = 'dispatch@loramattress.com';
+        let webhookUrl = '';
+        let webhookToken = '';
+
+        // 1. Authoritative live server settings (highest priority)
+        if (window._loraServerPaymentSettings) {
+          const s = window._loraServerPaymentSettings;
+          if (typeof s.cod_enabled === 'boolean') codEnabled = s.cod_enabled;
+          if (s.cod_max_amount !== undefined) codMaxAmount = Number(s.cod_max_amount) || 50000;
+          if (s.cod_notice) codNotice = s.cod_notice;
+          if (typeof s.razorpay_enabled === 'boolean') razorpayEnabled = s.razorpay_enabled;
+          if (s.storeKeeperPhone) storeKeeperPhone = s.storeKeeperPhone;
+          if (s.storeKeeperEmail) storeKeeperEmail = s.storeKeeperEmail;
+          if (s.webhookUrl !== undefined) webhookUrl = s.webhookUrl;
+          if (s.webhookToken !== undefined) webhookToken = s.webhookToken;
+        } else {
+          // 2. Locally cached settings (fallback for immediate rendering / offline)
+          try {
+            const raw = localStorage.getItem('lora_dispatch_settings_v1');
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              if (parsed.codEnabled !== undefined) codEnabled = parsed.codEnabled;
+              if (parsed.codMaxAmount !== undefined) codMaxAmount = Number(parsed.codMaxAmount) || 50000;
+              if (parsed.codNotice) codNotice = parsed.codNotice;
+              if (parsed.razorpayEnabled !== undefined) razorpayEnabled = parsed.razorpayEnabled;
+              if (parsed.storeKeeperPhone) storeKeeperPhone = parsed.storeKeeperPhone;
+              if (parsed.storeKeeperEmail) storeKeeperEmail = parsed.storeKeeperEmail;
+              if (parsed.webhookUrl !== undefined) webhookUrl = parsed.webhookUrl;
+              if (parsed.webhookToken !== undefined) webhookToken = parsed.webhookToken;
+            }
+          } catch (e) {}
+        }
+
+        return { codEnabled, codMaxAmount, codNotice, razorpayEnabled, storeKeeperPhone, storeKeeperEmail, webhookUrl, webhookToken };
+      }
+
+      function applyCodAvailabilityUI() {
+        const settings = getEffectivePaymentSettings();
+        const optPayCod = document.querySelector('#opt-pay-cod');
+        const chkPaymentMethod = document.querySelector('#chk-payment-method');
+        const codIndicator = document.querySelector('#chk-cod-indicator');
+        const codWarning = document.querySelector('#cod-disabled-warning');
+        const codPolicyHint = document.querySelector('#cod-policy-hint');
+
+        const orderPrice = Number(currentCheckoutOrder?.price) || 21999;
+        const isExceedsMax = orderPrice > settings.codMaxAmount;
+        const isCodAvailable = Boolean(settings.codEnabled && !isExceedsMax);
+
+        if (!isCodAvailable) {
+          if (optPayCod) {
+            optPayCod.disabled = true;
+            optPayCod.textContent = !settings.codEnabled 
+              ? 'Pay on Delivery (Disabled by Merchant - Prepaid Only)' 
+              : `Pay on Delivery (Disabled for orders > ₹${settings.codMaxAmount.toLocaleString('en-IN')})`;
+          }
+          if (chkPaymentMethod && chkPaymentMethod.value.includes('COD')) {
+            chkPaymentMethod.value = 'Pay Online';
+          }
+          if (codIndicator) {
+            codIndicator.textContent = '○ COD Disabled';
+            codIndicator.style.color = '#DC2626';
+          }
+          if (codWarning) {
+            codWarning.style.display = 'block';
+            codWarning.innerHTML = !settings.codEnabled
+              ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" style="vertical-align:-2px; margin-right:4px;"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg> <strong>Cash on Delivery is currently disabled by merchant.</strong> All orders must be placed via 100% Insured Razorpay (UPI / Card / NetBanking).'
+              : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" style="vertical-align:-2px; margin-right:3px;"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg> <strong>Cash on Delivery is limited to orders up to ₹${settings.codMaxAmount.toLocaleString('en-IN')}.</strong> Please proceed with 100% Insured Razorpay.`;
+          }
+          if (codPolicyHint) codPolicyHint.style.display = 'none';
+        } else {
+          if (optPayCod) {
+            optPayCod.disabled = false;
+            optPayCod.textContent = 'Cash on Delivery (Cash / UPI at Delivery)';
+          }
+          if (codIndicator) {
+            codIndicator.textContent = '● COD Available';
+            codIndicator.style.color = '#059669';
+          }
+          if (codWarning) codWarning.style.display = 'none';
+          if (codPolicyHint) {
+            const val = chkPaymentMethod ? chkPaymentMethod.value : '';
+            codPolicyHint.style.display = val.includes('COD') ? 'block' : 'none';
+            const span = codPolicyHint.querySelector('span');
+            if (span) span.textContent = settings.codNotice || 'Cash or UPI accepted upon delivery arrival.';
+          }
+        }
+
+        if (typeof updateCheckoutPaymentUI === 'function') {
+          updateCheckoutPaymentUI();
+        }
+      }
+
+      async function syncServerPaymentSettings(force) {
+        if (isFetchingPaymentSettings && !force) return;
+        isFetchingPaymentSettings = true;
+        try {
+          const res = await fetch('/api/payment-settings', {
+            method: 'GET',
+            cache: 'no-store',
+            headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.settings) {
+              window._loraServerPaymentSettings = data.settings;
+              try {
+                const existing = JSON.parse(localStorage.getItem('lora_dispatch_settings_v1') || '{}');
+                const merged = {
+                  ...existing,
+                  codEnabled: data.settings.cod_enabled !== false,
+                  codMaxAmount: Number(data.settings.cod_max_amount) || 50000,
+                  codNotice: data.settings.cod_notice || 'Cash or UPI accepted upon delivery arrival.',
+                  razorpayEnabled: data.settings.razorpay_enabled !== false,
+                  storeKeeperPhone: data.settings.storeKeeperPhone || existing.storeKeeperPhone,
+                  storeKeeperEmail: data.settings.storeKeeperEmail || existing.storeKeeperEmail,
+                  webhookUrl: data.settings.webhookUrl !== undefined ? data.settings.webhookUrl : existing.webhookUrl,
+                  webhookToken: data.settings.webhookToken !== undefined ? data.settings.webhookToken : existing.webhookToken
+                };
+                localStorage.setItem('lora_dispatch_settings_v1', JSON.stringify(merged));
+              } catch (e) {}
+
+              applyCodAvailabilityUI();
+            }
+          }
+        } catch (err) {
+          console.warn('[STOREFRONT] Payment settings sync notice:', err.message);
+        } finally {
+          isFetchingPaymentSettings = false;
+        }
+      }
+
+      // Initial cross-device sync & background refresh
+      syncServerPaymentSettings();
+      window.addEventListener('focus', () => syncServerPaymentSettings(true));
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') syncServerPaymentSettings(true);
+      });
+
       function renderCheckoutItemsList(items, totalAmount) {
         const container = document.querySelector('#chk-items-list');
         const countBadge = document.querySelector('#chk-items-count-badge');
@@ -9069,69 +9199,9 @@
           // Render minimal level visibility of each individual product above address area
           renderCheckoutItemsList(itemsList, safePrice);
 
-          // Check dynamic COD availability from admin settings
-          let codEnabled = true;
-          let codMaxAmount = 50000;
-          let codNotice = 'Cash or UPI accepted upon delivery arrival.';
-
-          try {
-            const rawSettings = localStorage.getItem('lora_dispatch_settings_v1');
-            if (rawSettings) {
-              const parsed = JSON.parse(rawSettings);
-              if (parsed.codEnabled !== undefined) codEnabled = parsed.codEnabled;
-              if (parsed.codMaxAmount !== undefined) codMaxAmount = parsed.codMaxAmount;
-              if (parsed.codNotice) codNotice = parsed.codNotice;
-            }
-          } catch (e) {}
-
-          const optPayCod = document.querySelector('#opt-pay-cod');
-          const chkPaymentMethod = document.querySelector('#chk-payment-method');
-          const codIndicator = document.querySelector('#chk-cod-indicator');
-          const codWarning = document.querySelector('#cod-disabled-warning');
-          const codPolicyHint = document.querySelector('#cod-policy-hint');
-
-          const orderPrice = currentCheckoutOrder.price || 21999;
-          const isExceedsMax = orderPrice > codMaxAmount;
-
-          if (!codEnabled || isExceedsMax) {
-            if (optPayCod) {
-              optPayCod.disabled = true;
-              optPayCod.textContent = isExceedsMax 
-                ? `Pay on Delivery (Disabled for orders > ₹${codMaxAmount.toLocaleString('en-IN')})` 
-                : 'Pay on Delivery (Disabled by Merchant - Prepaid Only)';
-            }
-            if (chkPaymentMethod && chkPaymentMethod.value.includes('COD')) {
-              chkPaymentMethod.value = 'Razorpay (UPI / Card / NetBanking / EMI)';
-            }
-            if (codIndicator) {
-              codIndicator.textContent = '○ COD Disabled';
-              codIndicator.style.color = '#DC2626';
-            }
-            if (codWarning) {
-              codWarning.style.display = 'block';
-              codWarning.innerHTML = isExceedsMax
-                ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" style="vertical-align:-2px; margin-right:3px;"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg> <strong>Cash on Delivery is limited to orders up to ₹${codMaxAmount.toLocaleString('en-IN')}.</strong> Please proceed with 100% Insured Razorpay.`
-                : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" style="vertical-align:-2px; margin-right:4px;"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg> <strong>Cash on Delivery is currently disabled by merchant.</strong> All orders must be placed via 100% Insured Razorpay (UPI / Card / NetBanking).';
-            }
-            if (codPolicyHint) codPolicyHint.style.display = 'none';
-          } else {
-            if (optPayCod) {
-              optPayCod.disabled = false;
-              optPayCod.textContent = 'Pay on Delivery (Cash / UPI at Delivery)';
-            }
-            if (codIndicator) {
-              codIndicator.textContent = '● COD Available';
-              codIndicator.style.color = '#059669';
-            }
-            if (codWarning) codWarning.style.display = 'none';
-            if (codPolicyHint) {
-              codPolicyHint.style.display = 'block';
-              const span = codPolicyHint.querySelector('span');
-              if (span) span.textContent = codNotice;
-            }
-          }
-
-          updateCheckoutPaymentUI();
+          // Check dynamic COD availability from server & synced settings (Unified Desktop & Mobile)
+          applyCodAvailabilityUI();
+          syncServerPaymentSettings(true);
 
           // Customer Pre-fill & Auth Banner
           const authCard = document.querySelector('#checkout-auth-banner');
@@ -9246,18 +9316,15 @@
       window.addEventListener('focus', flushOrderOutbox);
       setTimeout(flushOrderOutbox, 2000);
 
-      // Listen for COD toggles from Admin Portal in real time
+      // Listen for COD toggles from Admin Portal in real time across tabs and devices
       window.addEventListener('storage', function (e) {
-        if (e.key === 'lora_dispatch_settings_v1' && checkoutModal && checkoutModal.style.display === 'flex') {
-          openCheckoutModal();
+        if (e.key === 'lora_dispatch_settings_v1') {
+          syncServerPaymentSettings(true);
         }
       });
       document.addEventListener('lora:cod_toggled', function () {
-        if (checkoutModal && checkoutModal.style.display === 'flex') {
-          openCheckoutModal();
-        }
+        syncServerPaymentSettings(true);
       });
-
 
       // Razorpay, COD & Bajaj EMI Payment UI Synchronization
       function updateCheckoutPaymentUI() {
@@ -9275,7 +9342,12 @@
             btnSubmit.disabled = false;
           }
           if (badges) badges.style.display = 'none';
-          if (policyHint) policyHint.style.display = 'block';
+          if (policyHint) {
+            policyHint.style.display = 'block';
+            const s = getEffectivePaymentSettings();
+            const span = policyHint.querySelector('span');
+            if (span) span.textContent = s.codNotice || 'Cash or UPI accepted upon delivery arrival.';
+          }
           if (emiBox) emiBox.style.display = 'none';
         } else if (val.includes('Bajaj EMI') || val.includes('EMI')) {
           if (btnSubmit) {
@@ -9355,18 +9427,10 @@
           ? `Bajaj EMI Financing Request\nRequest ID: ${newOrder.id}\nCustomer Name: ${newOrder.customerName}\nPhone Number: ${newOrder.phone}${newOrder.altPhone ? '\nAlt Contact: ' + newOrder.altPhone : ''}\nProduct(s):\n${itemsSummaryText}\nTotal Amount: ₹${Number(newOrder.totalPrice || 0).toLocaleString('en-IN')}\nPayment Status: Payment Pending\nDelivery Address: ${newOrder.address}\nStatus: EMI requested — awaiting approval\nNotes: Our team will contact you to check EMI eligibility, explain applicable charges and arrange the next steps. Approval is subject to Bajaj Finance.`
           : `New LORA Order\nOrder ID: ${newOrder.id}\nCustomer Name: ${newOrder.customerName}\nPhone Number: ${newOrder.phone}${newOrder.altPhone ? '\nAlt Contact: ' + newOrder.altPhone : ''}\nProduct(s):\n${itemsSummaryText}\nTotal Amount: ₹${Number(newOrder.totalPrice || 0).toLocaleString('en-IN')}\nPayment Status: ${newOrder.paymentStatus}${paymentId ? '\nRazorpay Payment ID: ' + paymentId : ''}\nDelivery Address: ${newOrder.address}\nOrder Notes: ${newOrder.orderNotes || 'None'}`;
 
-        let targetPhone = '+919876543210';
-        let webhookUrl = '';
-        let webhookToken = '';
-        try {
-          const rawSettings = localStorage.getItem('lora_dispatch_settings_v1');
-          if (rawSettings) {
-            const parsed = JSON.parse(rawSettings);
-            if (parsed.storeKeeperPhone) targetPhone = parsed.storeKeeperPhone;
-            if (parsed.webhookUrl) webhookUrl = parsed.webhookUrl;
-            if (parsed.webhookToken) webhookToken = parsed.webhookToken;
-          }
-        } catch (e) {}
+        const effectiveSettings = getEffectivePaymentSettings();
+        const targetPhone = effectiveSettings.storeKeeperPhone || '+919876543210';
+        const webhookUrl = effectiveSettings.webhookUrl || '';
+        const webhookToken = effectiveSettings.webhookToken || '';
 
         const cleanTargetPhone = targetPhone.replace(/[^0-9]/g, '');
 
@@ -9488,30 +9552,22 @@
           const isCod = paymentMethod.includes('COD');
           const isEmi = paymentMethod.includes('Bajaj EMI') || paymentMethod.includes('EMI');
 
-          // Check if COD is disabled
+          // Check if COD is disabled across all devices via authoritative server settings
           if (isCod) {
-            let currentCodActive = true;
-            let codMaxAmount = 50000;
-            try {
-              const rawSettings = localStorage.getItem('lora_dispatch_settings_v1');
-              if (rawSettings) {
-                const parsed = JSON.parse(rawSettings);
-                if (parsed.codEnabled === false) currentCodActive = false;
-                if (parsed.codMaxAmount !== undefined) codMaxAmount = parsed.codMaxAmount;
-              }
-            } catch (e) {}
-
+            const s = getEffectivePaymentSettings();
             const orderPrice = Number(currentCheckoutOrder?.price) || 21999;
-            if (!currentCodActive) {
+            if (!s.codEnabled) {
               alert('Cash on Delivery is currently disabled by the merchant. Please pay via Razorpay to proceed.');
-              document.querySelector('#chk-payment-method').value = 'Razorpay (UPI / Card / NetBanking / EMI)';
-              updateCheckoutPaymentUI();
+              const chkMethod = document.querySelector('#chk-payment-method');
+              if (chkMethod) chkMethod.value = 'Pay Online';
+              applyCodAvailabilityUI();
               return;
             }
-            if (orderPrice > codMaxAmount) {
-              alert(`Cash on Delivery is limited to orders up to ₹${codMaxAmount.toLocaleString('en-IN')}. Please pay via Razorpay.`);
-              document.querySelector('#chk-payment-method').value = 'Razorpay (UPI / Card / NetBanking / EMI)';
-              updateCheckoutPaymentUI();
+            if (orderPrice > s.codMaxAmount) {
+              alert(`Cash on Delivery is limited to orders up to ₹${s.codMaxAmount.toLocaleString('en-IN')}. Please pay via Razorpay.`);
+              const chkMethod = document.querySelector('#chk-payment-method');
+              if (chkMethod) chkMethod.value = 'Pay Online';
+              applyCodAvailabilityUI();
               return;
             }
           }
@@ -10518,18 +10574,24 @@
       }
 
       // Render Available OTP Channels from Admin Configuration
-      // Only channels the SERVER reports as configured are offered (avoids failed/paid retries).
+      // Only channels the SERVER reports as configured and enabled are offered (avoids failed/paid retries).
       let serverOtpChannels = null;
       let serverOtpChannelsFetching = false;
       let serverPreferredChannel = null;
-      async function refreshServerOtpChannels() {
-        if (serverOtpChannels || serverOtpChannelsFetching) return;
+      async function refreshServerOtpChannels(force) {
+        if (!force && (serverOtpChannels || serverOtpChannelsFetching)) return;
         serverOtpChannelsFetching = true;
         try {
           const res = await fetch('/api/otp/send', { method: 'GET', cache: 'no-store' });
           const data = await res.json();
           if (data && data.channels) {
             serverOtpChannels = data.channels;
+            if (typeof data.customerCanChoose === 'boolean') {
+              serverOtpChannels.customerCanChoose = data.customerCanChoose;
+            }
+            if (data.defaultMethod) {
+              serverOtpChannels.defaultMethod = data.defaultMethod;
+            }
             serverPreferredChannel = data.preferredChannel || null;
             renderAuthChannels();
           }
@@ -10546,27 +10608,37 @@
           defaultMethod: 'sms',
           customerCanChoose: true,
           sms: { enabled: true },
-          whatsapp: { enabled: true },
+          whatsapp: { enabled: false }, // Never default WhatsApp on without confirmation
           email: { enabled: true }
         };
         cfg = JSON.parse(JSON.stringify(cfg));
         if (serverOtpChannels) {
           ['sms', 'whatsapp', 'email'].forEach(k => {
             cfg[k] = cfg[k] || {};
-            if (!(serverOtpChannels[k] && serverOtpChannels[k].configured)) cfg[k].enabled = false;
+            const sc = serverOtpChannels[k];
+            // Channel is active ONLY if it is both enabled by admin AND configured on server
+            if (!sc || sc.enabled === false || !sc.configured) {
+              cfg[k].enabled = false;
+            } else if (sc.enabled === true && sc.configured) {
+              cfg[k].enabled = true;
+            }
           });
-          // Server knows which provider actually works — prefer it over any locally cached default
+          if (serverOtpChannels.customerCanChoose !== undefined) {
+            cfg.customerCanChoose = serverOtpChannels.customerCanChoose;
+          }
           if (serverPreferredChannel && cfg[serverPreferredChannel] && cfg[serverPreferredChannel].enabled) {
             cfg.defaultMethod = serverPreferredChannel;
+          } else if (serverOtpChannels.defaultMethod && cfg[serverOtpChannels.defaultMethod] && cfg[serverOtpChannels.defaultMethod].enabled) {
+            cfg.defaultMethod = serverOtpChannels.defaultMethod;
           }
           if (!(cfg[cfg.defaultMethod] && cfg[cfg.defaultMethod].enabled)) {
-            cfg.defaultMethod = ['sms', 'whatsapp', 'email'].find(k => cfg[k] && cfg[k].enabled) || cfg.defaultMethod;
+            cfg.defaultMethod = ['sms', 'whatsapp', 'email'].find(k => cfg[k] && cfg[k].enabled) || 'sms';
           }
         }
         // Checkout requires PHONE verification — never offer email there
         if (window._reopenCheckoutAfterLogin) {
           cfg.email = Object.assign({}, cfg.email, { enabled: false });
-          if (cfg.defaultMethod === 'email') cfg.defaultMethod = (cfg.sms && cfg.sms.enabled) ? 'sms' : 'whatsapp';
+          if (cfg.defaultMethod === 'email') cfg.defaultMethod = (cfg.sms && cfg.sms.enabled) ? 'sms' : (cfg.whatsapp && cfg.whatsapp.enabled ? 'whatsapp' : 'sms');
         }
         return cfg;
       }
@@ -10579,13 +10651,19 @@
         const cfg = getActiveOtpConfig();
         const enabledMethods = [];
 
-        if (cfg.whatsapp && cfg.whatsapp.enabled) enabledMethods.push({ key: 'whatsapp', name: 'WhatsApp OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>', badge: 'WhatsApp Message' });
         if (cfg.sms && cfg.sms.enabled) enabledMethods.push({ key: 'sms', name: 'SMS OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>', badge: 'Carrier SMS' });
+        if (cfg.whatsapp && cfg.whatsapp.enabled) enabledMethods.push({ key: 'whatsapp', name: 'WhatsApp OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>', badge: 'WhatsApp Message' });
         if (cfg.email && cfg.email.enabled) enabledMethods.push({ key: 'email', name: 'Email OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>', badge: 'Inbox Verification' });
 
         // Fallback if none enabled
         if (enabledMethods.length === 0) {
-          enabledMethods.push({ key: 'whatsapp', name: 'WhatsApp OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>', badge: 'Default' });
+          enabledMethods.push({ key: 'sms', name: 'SMS OTP', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>', badge: 'Default' });
+        }
+
+        const elSub = document.querySelector('#cust-auth-subtitle');
+        if (elSub && enabledMethods.length > 0) {
+          const names = enabledMethods.map(m => m.name.replace(' OTP', '')).join(' or ');
+          elSub.textContent = `Passwordless verification via ${names} OTP`;
         }
 
         // Check if admin allows customer choice
@@ -10593,7 +10671,7 @@
 
         if (!customerCanChoose) {
           // Automatic default method
-          const defaultKey = cfg.defaultMethod || enabledMethods[0].key;
+          const defaultKey = (cfg.defaultMethod && enabledMethods.some(m => m.key === cfg.defaultMethod)) ? cfg.defaultMethod : enabledMethods[0].key;
           const chosen = enabledMethods.find(m => m.key === defaultKey) || enabledMethods[0];
           container.innerHTML = `
             <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between;">
@@ -10609,7 +10687,10 @@
         }
 
         // Customer chooses from enabled methods
-        const defaultMethod = cfg.defaultMethod || 'whatsapp';
+        const defaultMethod = (cfg.defaultMethod && enabledMethods.some(m => m.key === cfg.defaultMethod))
+          ? cfg.defaultMethod
+          : enabledMethods[0].key;
+
         container.innerHTML = enabledMethods.map(method => {
           const isSelected = method.key === defaultMethod;
           return `
@@ -10634,6 +10715,12 @@
             if (radio) radio.checked = true;
           });
         });
+      }
+
+      // Proactively pre-fetch server OTP channel configuration on page load
+      refreshServerOtpChannels();
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => { refreshServerOtpChannels(); });
       }
 
       // Step 1: Send OTP (only ever triggered by an explicit customer click/submit)
@@ -11066,7 +11153,7 @@
             id: 'AUDIT-' + Date.now(),
             timestamp: new Date().toISOString(),
             identifier: identifier,
-            channel: activeOtpSession ? activeOtpSession.channel : 'whatsapp',
+            channel: activeOtpSession ? activeOtpSession.channel : 'sms',
             provider: 'Storefront Gateway',
             status: 'verified',
             details: `Customer ${customer.name} (${customer.id}) successfully verified OTP and logged in.`
@@ -11208,36 +11295,45 @@
       async function syncCustomerOrdersFromServer() {
         if (!currentCustomer) return;
         try {
-          const res = await fetch('/api/orders');
+          const sessionHeaders = { 'Content-Type': 'application/json' };
+          if (currentCustomer.phone) {
+            sessionHeaders['x-customer-session'] = currentCustomer.phone;
+            sessionHeaders['x-customer-phone'] = currentCustomer.phone;
+          }
+          const res = await fetch('/api/orders', {
+            headers: sessionHeaders,
+            cache: 'no-store'
+          });
           if (res.ok) {
             const data = await res.json();
             const serverOrders = data.orders || [];
-            if (serverOrders.length > 0) {
-              let localOrders = [];
-              try {
-                const raw = localStorage.getItem('lora_orders_v1');
-                if (raw) localOrders = JSON.parse(raw);
-              } catch (e) {}
+            let localOrders = [];
+            try {
+              const raw = localStorage.getItem('lora_orders_v1');
+              if (raw) localOrders = JSON.parse(raw);
+            } catch (e) {}
 
-              const orderMap = new Map();
-              // Server orders hold authoritative dispatch & delivery status updates
-              serverOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
-              // Merge any un-synced offline local orders
-              localOrders.forEach(o => {
-                if (o && o.id) {
-                  if (orderMap.has(o.id)) {
-                    const serverO = orderMap.get(o.id);
-                    orderMap.set(o.id, { ...o, ...serverO });
-                  } else {
-                    orderMap.set(o.id, o);
-                  }
+            const DUMMY_IDS = ['LORA-9041', 'LORA-8924', 'LORA-8812', 'LORA-8705', 'LORA-8549', 'LR-8921', 'LR-8920', 'LR-8919', 'LR-8918', 'LR-8917'];
+            localOrders = localOrders.filter(o => o && o.id && !DUMMY_IDS.includes(o.id));
+
+            const orderMap = new Map();
+            // Server orders hold authoritative dispatch & delivery status updates
+            serverOrders.forEach(o => { if (o && o.id && !DUMMY_IDS.includes(o.id)) orderMap.set(o.id, o); });
+            // Merge any un-synced offline local orders
+            localOrders.forEach(o => {
+              if (o && o.id && !DUMMY_IDS.includes(o.id)) {
+                if (orderMap.has(o.id)) {
+                  const serverO = orderMap.get(o.id);
+                  orderMap.set(o.id, { ...o, ...serverO });
+                } else {
+                  orderMap.set(o.id, o);
                 }
-              });
+              }
+            });
 
-              const merged = Array.from(orderMap.values()).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-              localStorage.setItem('lora_orders_v1', JSON.stringify(merged));
-              renderCustomerOrdersUI(merged);
-            }
+            const merged = Array.from(orderMap.values()).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            localStorage.setItem('lora_orders_v1', JSON.stringify(merged));
+            renderCustomerOrdersUI(merged);
           }
         } catch (err) {
           console.warn('[CUSTOMER ORDERS] Backend sync offline, using local cache:', err);

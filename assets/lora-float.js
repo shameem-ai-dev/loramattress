@@ -189,32 +189,46 @@
   }
 
   var tagsShown = true;
-  function placeTags(es) {
+  var lastTagMeasureSp = -1;
+  var cachedTagRects = null;
+
+  function placeTags(es, spVal) {
     var any = false;
-    for (var q = 0; q < es.length; q++) if (es[q] > .55) { any = true; break; }
+    for (var q = 0; q < es.length; q++) {
+      if (es[q] > 0.40) { any = true; break; }
+    }
     if (!any) {
-      // no layout reads while tags are hidden (most of the scroll)
-      if (tagsShown) { tags.forEach(function (t) { t.style.opacity = '0'; }); tagsShown = false; }
+      if (tagsShown) {
+        tags.forEach(function (t) { t.style.opacity = '0'; });
+        tagsShown = false;
+        cachedTagRects = null;
+      }
       return;
     }
     tagsShown = true;
     var mob = isMobile();
-    // batch all reads first, then all writes (avoids layout thrashing)
-    var rects = [];
-    for (var j = 0; j < tags.length; j++) {
-      var slab = slabs[slabs.length - 1 - j];
-      var face = slab && slab.querySelector(j % 2 === 1 ? '.fl' : '.fr');
-      rects.push(face ? face.getBoundingClientRect() : null);
+
+    // Cache rects and only re-query getBoundingClientRect() when scroll position shifted noticeably
+    // Eliminates 6 synchronous forced reflows on every 16ms animation frame
+    if (!cachedTagRects || Math.abs(spVal - lastTagMeasureSp) > 0.008) {
+      lastTagMeasureSp = spVal;
+      cachedTagRects = [];
+      for (var j = 0; j < tags.length; j++) {
+        var slab = slabs[slabs.length - 1 - j];
+        var face = slab && slab.querySelector(j % 2 === 1 ? '.fl' : '.fr');
+        cachedTagRects.push(face ? face.getBoundingClientRect() : null);
+      }
     }
+
     for (var k = 0; k < tags.length; k++) {
-      var r = rects[k];
+      var r = cachedTagRects[k];
       if (!r) continue;
       var idx = slabs.length - 1 - k;
       var left = k % 2 === 1;
-      var op = clamp((es[idx] - .55) / .35, 0, 1);
+      var op = clamp((es[idx] - 0.40) / 0.35, 0, 1);
       var off = mob ? 6 : 18;
       var x = left ? r.left - off : r.right + off;
-      var y = r.top + r.height * .5;
+      var y = r.top + r.height * 0.5;
       var slide = (1 - op) * (left ? 10 : -10);
       tags[k].style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) translate(' + (left ? '-100%' : '0') + ', -50%) translateX(' + slide.toFixed(1) + 'px)';
       tags[k].style.opacity = op.toFixed(3);
@@ -231,35 +245,45 @@
     // scroll position from cached geometry: no layout read per frame
     var y = window.pageYOffset || document.documentElement.scrollTop;
     var p = clamp((y - secTop) / range, 0, 1);
-    // frame-rate independent easing (same feel at 30, 60 or 120 Hz)
-    var k = reduce ? 1 : 1 - Math.pow(1 - (isMobile() ? .2 : .14), dt / 16.67);
-    var kp = 1 - Math.pow(1 - .06, dt / 16.67);
+
+    // High-responsiveness adaptive easing:
+    // When actively scrolling, k scales up to 0.75 - 0.88 for instant, synchronous response without delay.
+    // When settling, k maintains a smooth 0.36 - 0.42 for silky deceleration.
+    var delta = Math.abs(p - sp);
+    var baseRate = isMobile() ? 0.44 : 0.38;
+    var targetResponsiveness = Math.min(0.88, baseRate + delta * 2.8);
+    var k = reduce ? 1 : 1 - Math.pow(1 - targetResponsiveness, dt / 16.67);
+    var kp = 1 - Math.pow(1 - 0.12, dt / 16.67);
     sp += (p - sp) * k;
-    if (Math.abs(p - sp) < .0004) sp = p;
+    if (delta < 0.0003) sp = p;
     px += (tpx - px) * kp;
     py += (tpy - py) * kp;
 
-    var introRaw = ready ? clamp((now - t0 - 300) / 1800, 0, 1) : 0;
+    var introRaw = ready ? clamp((now - t0) / 700, 0, 1) : 0;
     var intro = reduce ? 1 : easeOut(introRaw);
     var m, ex, out, ins;
     if (reduce) { m = 0; ex = 0; out = 0; ins = 0; }
     else {
-      m = easeInOut(seg(sp, .06, .28));                       // glide to centre (stays centred)
-      ex = seg(sp, .24, .52) * (1 - seg(sp, .74, .9));       // explode, hold, reassemble
-      out = easeInOut(seg(sp, .88, .98));                    // outro
-      ins = clamp(seg(sp, .3, .4) * (1 - seg(sp, .72, .8)), 0, 1);
+      // Immediate response: movement begins as soon as user touches/scrolls (sp > 0.002)
+      m = easeInOut(seg(sp, 0.005, 0.20));
+      // Seamless layer explosion as mattress enters centre
+      ex = seg(sp, 0.16, 0.45) * (1 - seg(sp, 0.72, 0.88));
+      // Outro CTA reveal
+      out = easeInOut(seg(sp, 0.85, 0.98));
+      // Inside title
+      ins = clamp(seg(sp, 0.20, 0.32) * (1 - seg(sp, 0.68, 0.76)), 0, 1);
     }
     curM = m; curOut = out;
-    var cop = clamp(1 - seg(sp, .04, .18), 0, 1);
+    var cop = clamp(1 - seg(sp, 0.002, 0.14), 0, 1);
     var es = [];
     // cascade: top layer leads, base follows
     for (var i = 0; i < 6; i++) {
-      var ei = easeInOut(clamp(ex * 1.5 - (5 - i) * .1, 0, 1));
+      var ei = easeInOut(clamp(ex * 1.5 - (5 - i) * 0.1, 0, 1));
       es.push(ei);
       setVar('--e' + i, ei.toFixed(3));
     }
     var exE = easeInOut(ex);
-    var spin = reduce ? 0 : seg(sp, .3, .9) * 14;            // slow turntable across act 2-3
+    var spin = reduce ? 0 : seg(sp, 0.25, 0.88) * 14;            // smooth turntable across act 2-3
     setVar('--ex', exE.toFixed(3));
     setVar('--m', m.toFixed(3));
     setVar('--out', out.toFixed(3));
@@ -271,14 +295,17 @@
     setVar('--rx', (-21 + 4 * exE + py * 3).toFixed(1));
     setVar('--px', px.toFixed(2));
     setVar('--py', py.toFixed(2));
-    root.classList.toggle('is-act2', cop < .5);
-    root.classList.toggle('is-outro', out > .5);
+    root.classList.toggle('is-act2', cop < 0.5);
+    root.classList.toggle('is-outro', out > 0.5);
 
-    placeTags(es);
-    // ambient light lines: 30fps on mobile is visually identical and halves the cost
-    if (!reduce && (!isMobile() || frame % 2 === 0)) drawLines(now);
+    placeTags(es, sp);
+    // ambient light lines: during active scroll on mobile, throttle to ensure buttery 60/120fps CSS 3D transforms
+    var isActivelyScrolling = delta > 0.005;
+    if (!reduce && (!isMobile() || !isActivelyScrolling || frame % 3 === 0)) {
+      drawLines(now);
+    }
 
-    var settled = sp === p && Math.abs(tpx - px) < .002 && Math.abs(tpy - py) < .002 && introRaw >= 1;
+    var settled = sp === p && Math.abs(tpx - px) < 0.002 && Math.abs(tpy - py) < 0.002 && introRaw >= 1;
     var inView = y < secTop + range + vh;
     if (!running || (settled && (reduce || !inView))) { looping = false; return; }
     requestAnimationFrame(tick);

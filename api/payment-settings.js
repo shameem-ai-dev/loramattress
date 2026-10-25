@@ -28,6 +28,9 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -45,11 +48,15 @@ module.exports = async function handler(req, res) {
       razorpay_key_id: envStatus.key_id_preview || '',
       razorpay_key_id_preview: envStatus.key_id_preview || 'Not configured in GoDaddy',
       razorpay_secret_status: envStatus.secret_configured ? 'Configured in GoDaddy Environment' : 'Not configured in GoDaddy Environment',
-      razorpay_mode: envStatus.mode,
+      razorpay_mode: diskSettings.razorpay_mode || envStatus.mode,
       razorpay_theme_color: diskSettings.razorpay_theme_color || envStatus.theme_color || '#00B4D8',
       cod_enabled: diskSettings.cod_enabled !== false,
       cod_max_amount: Number(diskSettings.cod_max_amount) || 50000,
-      cod_notice: diskSettings.cod_notice || 'Cash or UPI accepted upon delivery arrival.'
+      cod_notice: diskSettings.cod_notice || 'Cash or UPI accepted upon delivery arrival.',
+      storeKeeperPhone: diskSettings.storeKeeperPhone || '+919876543210',
+      storeKeeperEmail: diskSettings.storeKeeperEmail || 'dispatch@loramattress.com',
+      webhookUrl: diskSettings.webhookUrl || '',
+      webhookToken: diskSettings.webhookToken || ''
     };
     return res.status(200).json({
       success: true,
@@ -70,7 +77,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // POST: Update non-secret payment settings (Admin Only)
+  // POST: Update non-secret payment and dispatch settings (Admin Only)
   if (req.method === 'POST') {
     if (!verifyAdminAuth(req)) {
       return res.status(401).json({
@@ -82,14 +89,34 @@ module.exports = async function handler(req, res) {
     try {
       const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
 
-      // Only persist non-secret preferences to shared disk storage
+      // Safely merge incoming preferences with existing disk storage to avoid clobbering
       const updated = {
-        razorpay_enabled: typeof payload.razorpay_enabled === 'boolean' ? payload.razorpay_enabled : true,
-        razorpay_mode: payload.razorpay_mode || envStatus.mode,
-        razorpay_theme_color: payload.razorpay_theme_color || '#00B4D8',
-        cod_enabled: payload.cod_enabled !== false,
-        cod_max_amount: Number(payload.cod_max_amount) || 50000,
-        cod_notice: String(payload.cod_notice || 'Cash or UPI accepted upon delivery arrival.').trim()
+        razorpay_enabled: typeof payload.razorpay_enabled === 'boolean'
+          ? payload.razorpay_enabled
+          : (typeof diskSettings.razorpay_enabled === 'boolean' ? diskSettings.razorpay_enabled : true),
+        razorpay_mode: payload.razorpay_mode || diskSettings.razorpay_mode || envStatus.mode,
+        razorpay_theme_color: payload.razorpay_theme_color || diskSettings.razorpay_theme_color || '#00B4D8',
+        cod_enabled: typeof payload.cod_enabled === 'boolean'
+          ? payload.cod_enabled
+          : (diskSettings.cod_enabled !== false),
+        cod_max_amount: payload.cod_max_amount !== undefined
+          ? Number(payload.cod_max_amount)
+          : (Number(diskSettings.cod_max_amount) || 50000),
+        cod_notice: payload.cod_notice !== undefined
+          ? String(payload.cod_notice).trim()
+          : (diskSettings.cod_notice || 'Cash or UPI accepted upon delivery arrival.'),
+        storeKeeperPhone: payload.storeKeeperPhone !== undefined
+          ? String(payload.storeKeeperPhone).trim()
+          : (diskSettings.storeKeeperPhone || '+919876543210'),
+        storeKeeperEmail: payload.storeKeeperEmail !== undefined
+          ? String(payload.storeKeeperEmail).trim()
+          : (diskSettings.storeKeeperEmail || 'dispatch@loramattress.com'),
+        webhookUrl: payload.webhookUrl !== undefined
+          ? String(payload.webhookUrl).trim()
+          : (diskSettings.webhookUrl || ''),
+        webhookToken: payload.webhookToken !== undefined
+          ? String(payload.webhookToken).trim()
+          : (diskSettings.webhookToken || '')
       };
 
       try {
@@ -100,7 +127,7 @@ module.exports = async function handler(req, res) {
 
       return res.status(200).json({
         success: true,
-        message: 'Payment configuration saved. (Note: Secret credentials must be configured in GoDaddy environment variables: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET).',
+        message: 'Payment and dispatch configuration saved and synchronized server-wide.',
         settings: {
           ...updated,
           razorpay_configured: envStatus.configured,

@@ -1,0 +1,33 @@
+{
+  "sms": {
+    "enabled": true,
+    "provider": "Fast2SMS",
+    "senderId": "LORAMT",
+    "templateId": "",
+    "endpoint": "https://control.msg91.com/api/v5/otp"
+  },
+  "whatsapp": {
+    "enabled": false,
+    "provider": "Meta WhatsApp Cloud API",
+    "apiUrl": "",
+    "businessNumber": "",
+    "templateName": "lora_auth_otp",
+    "templateLang": "en"
+  },
+  "email": {
+    "enabled": true,
+    "provider": "SendGrid",
+    "senderEmail": "auth@loramattress.com",
+    "senderName": "LORA Sleepworks Security",
+    "host": "smtp.sendgrid.net",
+    "port": "587",
+    "username": "apikey",
+    "template": ""
+  },
+  "defaultMethod": "sms",
+  "customerCanChoose": true,
+  "expiryMinutes": 5,
+  "resendCooldown": 30,
+  "maxAttempts": 3,
+  "updatedAt": "2026-10-25T15:11:43.813Z"
+}

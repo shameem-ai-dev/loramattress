@@ -43,6 +43,7 @@ const otpSettingsHandler = require('../api/otp/settings.js');
 const otpSessionHandler = require('../api/otp/session.js');
 const otpLib = require('../api/otp/_lib.js');
 const { verifyAdminAuth } = require('../api/auth.js');
+const ordersHandler = require('../api/orders.js');
 const marketingHandler = require('../api/marketing.js');
 function withSeo(html, page, req) {
   try { return marketingHandler.renderSeoHead(html, page, req); } catch (e) { console.warn('[SEO] head injection skipped:', e.message); return html; }
@@ -233,6 +234,12 @@ function hashOtp(otp) {
 const server = http.createServer((req, res) => {
   const parsedUrl = new URL(req.url, `http://localhost:${PORT}`);
   let pathname = parsedUrl.pathname;
+
+  // Enforce standard production HTTP security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   // JSON helper
   const sendJson = (statusCode, data) => {
@@ -647,8 +654,8 @@ const server = http.createServer((req, res) => {
     return callApiHandler(marketingHandler, req, res, null);
   }
 
-  // Customer leads contain personal data: never serve the raw JSON files statically
-  if (/^\/config\/store_leads/i.test(pathname)) {
+  // Security: sensitive config, database JSONs, and environment files must never be served statically
+  if (/^\/config\//i.test(pathname) || /^\/\.env/i.test(pathname) || /^\/\.git/i.test(pathname)) {
     res.writeHead(403, { 'Content-Type': 'application/json; charset=UTF-8' });
     res.end(JSON.stringify({ success: false, message: 'Forbidden' }));
     return;
@@ -685,127 +692,19 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Handle Customer Orders API (Zero Order Loss Guaranteed Server Backend)
+  // Handle Customer Orders API (Delegated to api/orders.js with authorization and audit protection)
   if (pathname === '/api/orders' || pathname.startsWith('/api/orders/')) {
-    const ordersFilePath = path.join(CONFIG_DIR, 'orders_data.json');
-
-    const getOrders = () => {
-      if (fs.existsSync(ordersFilePath)) {
-        try {
-          const raw = fs.readFileSync(ordersFilePath, 'utf8');
-          const data = JSON.parse(raw);
-          if (Array.isArray(data)) return data;
-        } catch (e) {}
-      }
-      return [];
-    };
-
-    if (req.method === 'GET') {
-      const orders = getOrders();
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-cache' });
-      res.end(JSON.stringify({ success: true, orders }));
-      return;
+    if (req.method === 'GET' || req.method === 'DELETE') {
+      return callApiHandler(ordersHandler, req, res, null);
     }
-
-    if (req.method === 'POST') {
-      let body = '';
-      req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
-        try {
-          const payload = JSON.parse(body);
-          const currentOrders = getOrders();
-          const orderMap = new Map();
-
-          // Index existing orders
-          currentOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
-
-          // Support single order or batch of orders (sync from offline clients)
-          const toAdd = Array.isArray(payload.orders) ? payload.orders : (payload.order ? [payload.order] : [payload]);
-
-          // Checkout verification enforced server-side: brand-new orders need a verified phone session
-          const newOrders = toAdd.filter(o => o && o.id && !orderMap.has(o.id));
-          const denied = otpLib.authorizeNewOrders(req, newOrders, verifyAdminAuth(req));
-          if (denied) {
-            return sendJson(denied.status, { success: false, code: denied.code, message: denied.message });
-          }
-
-          toAdd.forEach(newO => {
-            if (newO && newO.id) {
-              if (orderMap.has(newO.id)) {
-                // Merge if existing, keeping newer status or updates
-                orderMap.set(newO.id, { ...orderMap.get(newO.id), ...newO });
-              } else {
-                orderMap.set(newO.id, newO);
-              }
-            }
-          });
-
-          const updatedOrders = Array.from(orderMap.values()).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-          fs.writeFileSync(ordersFilePath, JSON.stringify(updatedOrders, null, 2), 'utf8');
-
-          console.log(`[ORDERS API] Successfully synchronized ${toAdd.length} order(s). Total database: ${updatedOrders.length}`);
-          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: true, orders: updatedOrders }));
-        } catch (e) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: false, message: e.message }));
-        }
-      });
-      return;
-    }
-
-    if (req.method === 'PUT') {
-      let body = '';
-      req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
-        try {
-          const updateData = JSON.parse(body);
-          const urlParts = pathname.split('/');
-          const targetId = (urlParts.length > 3 && urlParts[3]) ? decodeURIComponent(urlParts[3]) : updateData.id;
-          const currentOrders = getOrders();
-          const index = currentOrders.findIndex(o => o.id === targetId || o.id === updateData.id);
-
-          if (index !== -1) {
-            currentOrders[index] = { ...currentOrders[index], ...updateData };
-            fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf8');
-            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-            res.end(JSON.stringify({ success: true, order: currentOrders[index], orders: currentOrders }));
-          } else if (updateData && updateData.id) {
-            const denied = otpLib.authorizeNewOrders(req, [updateData], verifyAdminAuth(req));
-            if (denied) {
-              return sendJson(denied.status, { success: false, code: denied.code, message: denied.message });
-            }
-            currentOrders.unshift(updateData);
-            fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf8');
-            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-            res.end(JSON.stringify({ success: true, order: updateData, orders: currentOrders }));
-          } else {
-            res.writeHead(404, { 'Content-Type': 'application/json; charset=UTF-8' });
-            res.end(JSON.stringify({ success: false, message: 'Order not found' }));
-          }
-        } catch (e) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: false, message: e.message }));
-        }
-      });
-      return;
-    }
-
-    if (req.method === 'DELETE') {
-      const urlParts = pathname.split('/');
-      const targetId = urlParts.length > 3 ? urlParts[3] : null;
-      let currentOrders = getOrders();
-      if (targetId) {
-        currentOrders = currentOrders.filter(o => o.id !== targetId);
-        fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf8');
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-        res.end(JSON.stringify({ success: true, message: 'Order deleted', orders: currentOrders }));
-      } else {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
-        res.end(JSON.stringify({ success: false, message: 'Order ID required' }));
-      }
-      return;
-    }
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      let payload = {};
+      try { if (body) payload = JSON.parse(body); } catch (e) {}
+      return callApiHandler(ordersHandler, req, res, payload);
+    });
+    return;
   }
 
   // Handle static assets (including uploads and subfolders)
