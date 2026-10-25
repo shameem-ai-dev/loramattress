@@ -43,6 +43,10 @@ const otpSettingsHandler = require('../api/otp/settings.js');
 const otpSessionHandler = require('../api/otp/session.js');
 const otpLib = require('../api/otp/_lib.js');
 const { verifyAdminAuth } = require('../api/auth.js');
+const marketingHandler = require('../api/marketing.js');
+function withSeo(html, page, req) {
+  try { return marketingHandler.renderSeoHead(html, page, req); } catch (e) { console.warn('[SEO] head injection skipped:', e.message); return html; }
+}
 
 function callApiHandler(handler, req, res, bodyData) {
   req.body = bodyData;
@@ -628,109 +632,57 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Handle Customer Store Locator Leads API
-  if (pathname === '/api/store-leads' || pathname.startsWith('/api/store-leads/')) {
-    const leadsFilePath = path.join(CONFIG_DIR, 'store_leads.json');
-
-    const getLeads = () => {
-      if (fs.existsSync(leadsFilePath)) {
-        try {
-          return JSON.parse(fs.readFileSync(leadsFilePath, 'utf8')) || [];
-        } catch (e) {
-          return [];
-        }
-      }
-      return [];
-    };
-
-    if (req.method === 'GET') {
-      const leads = getLeads();
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-cache' });
-      res.end(JSON.stringify({ success: true, leads }));
-      return;
-    }
-
+  // Meta Ads (Conversions API relay, catalog feed) + SEO (robots, sitemap)
+  if (marketingHandler.isMarketingPath(pathname)) {
     if (req.method === 'POST') {
       let body = '';
-      req.on('data', chunk => { body += chunk; });
+      req.on('data', chunk => { body += chunk; if (body.length > 64 * 1024) req.destroy(); });
       req.on('end', () => {
-        try {
-          const newLeadData = JSON.parse(body);
-          const leads = getLeads();
-          const lead = {
-            id: newLeadData.id || ('lead-' + Date.now()),
-            name: (newLeadData.name || 'Storefront Customer').trim(),
-            phone: (newLeadData.phone || '').trim(),
-            pincode: (newLeadData.pincode || '').trim(),
-            place: (newLeadData.place || '').trim(),
-            preferredMattress: newLeadData.preferredMattress || null,
-            preferredSize: newLeadData.preferredSize || null,
-            preferredThickness: newLeadData.preferredThickness || null,
-            summary: newLeadData.summary || newLeadData.notes || 'Inquiry via Lumi AI',
-            source: newLeadData.source || 'Lumi AI Sleep Assistant',
-            resultType: newLeadData.resultType || 'lumi_consultation',
-            studioId: newLeadData.studioId || null,
-            studioName: newLeadData.studioName || '',
-            distanceKm: typeof newLeadData.distanceKm === 'number' ? newLeadData.distanceKm : null,
-            status: newLeadData.status || 'New',
-            createdAt: newLeadData.createdAt || new Date().toISOString(),
-            notes: newLeadData.notes || newLeadData.summary || ''
-          };
-          leads.unshift(lead);
-          fs.writeFileSync(leadsFilePath, JSON.stringify(leads, null, 2), 'utf8');
-          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: true, lead, leads }));
-        } catch (e) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: false, message: e.message }));
-        }
+        let payload = {};
+        try { if (body) payload = JSON.parse(body); } catch (e) {}
+        callApiHandler(marketingHandler, req, res, payload);
       });
       return;
     }
+    return callApiHandler(marketingHandler, req, res, null);
+  }
 
-    if (req.method === 'PUT') {
-      let body = '';
-      req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
-        try {
-          const updateData = JSON.parse(body);
-          const urlParts = pathname.split('/');
-          const targetId = urlParts.length > 3 ? urlParts[3] : updateData.id;
-          const leads = getLeads();
-          const index = leads.findIndex(l => l.id === targetId);
-          if (index !== -1) {
-            if (updateData.status) leads[index].status = updateData.status;
-            if (updateData.notes !== undefined) leads[index].notes = updateData.notes;
-            fs.writeFileSync(leadsFilePath, JSON.stringify(leads, null, 2), 'utf8');
-            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-            res.end(JSON.stringify({ success: true, lead: leads[index], leads }));
-          } else {
-            res.writeHead(404, { 'Content-Type': 'application/json; charset=UTF-8' });
-            res.end(JSON.stringify({ success: false, message: 'Lead not found' }));
-          }
-        } catch (e) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: false, message: e.message }));
-        }
-      });
-      return;
-    }
+  // Customer leads contain personal data: never serve the raw JSON files statically
+  if (/^\/config\/store_leads/i.test(pathname)) {
+    res.writeHead(403, { 'Content-Type': 'application/json; charset=UTF-8' });
+    res.end(JSON.stringify({ success: false, message: 'Forbidden' }));
+    return;
+  }
 
-    if (req.method === 'DELETE') {
-      const urlParts = pathname.split('/');
-      const targetId = urlParts.length > 3 ? urlParts[3] : null;
-      let leads = getLeads();
-      if (targetId) {
-        leads = leads.filter(l => l.id !== targetId);
-        fs.writeFileSync(leadsFilePath, JSON.stringify(leads, null, 2), 'utf8');
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-        res.end(JSON.stringify({ success: true, message: 'Lead deleted', leads }));
-      } else {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
-        res.end(JSON.stringify({ success: false, message: 'Lead ID required' }));
+  // Handle Customer Leads API (+ recycle bin) — delegated to api/store-leads.js
+  if (pathname === '/api/store-leads' || pathname.startsWith('/api/store-leads/')) {
+    const apiPath = path.join(ROOT_DIR, 'api', 'store-leads.js');
+    try { delete require.cache[require.resolve(apiPath)]; } catch (e) {}
+    const leadsHandler = require(apiPath);
+    let body = '';
+    req.on('data', chunk => { body += chunk; if (body.length > 1e6) req.destroy(); });
+    req.on('end', async () => {
+      let parsed = {};
+      try { parsed = body ? JSON.parse(body) : {}; } catch (e) { parsed = {}; }
+      const mockReq = { method: req.method, headers: req.headers, url: req.url, body: parsed };
+      const mockRes = {
+        statusCode: 200,
+        setHeader: (k, v) => res.setHeader(k, v),
+        status(code) { this.statusCode = code; return this; },
+        json(data) {
+          res.writeHead(this.statusCode, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify(data));
+        },
+        end() { res.writeHead(this.statusCode); res.end(); }
+      };
+      try {
+        await leadsHandler(mockReq, mockRes);
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ success: false, message: err.message }));
       }
-      return;
-    }
+    });
+    return;
   }
 
   // Handle Customer Orders API (Zero Order Loss Guaranteed Server Backend)
@@ -892,7 +844,7 @@ const server = http.createServer((req, res) => {
   if (pathname === '/product.html' || pathname.startsWith('/products/')) {
     const productPath = path.join(ROOT_DIR, 'product.html');
     if (fs.existsSync(productPath)) {
-      const html = fs.readFileSync(productPath, 'utf8');
+      const html = withSeo(fs.readFileSync(productPath, 'utf8'), 'product', req);
       res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
       res.end(html);
       return;
@@ -907,7 +859,7 @@ const server = http.createServer((req, res) => {
   if (pathname === '/' || pathname === '/index.html') {
     const indexPath = path.join(ROOT_DIR, 'index.html');
     if (fs.existsSync(indexPath)) {
-      const html = fs.readFileSync(indexPath, 'utf8');
+      const html = withSeo(fs.readFileSync(indexPath, 'utf8'), 'home', req);
       res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
       res.end(html);
       return;

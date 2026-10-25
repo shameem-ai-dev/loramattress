@@ -3207,55 +3207,131 @@
         <div class="tab-pane" id="tab-pixels">
           <div class="stage-header">
             <div class="stage-title">
-              <h2>Meta Pixel & Performance Advertising Tracking</h2>
-              <p>Directly inject Meta Ads Pixel, Google Tag Manager (GTM), GA4, and custom conversion scripts.</p>
+              <h2>Meta Ads, Tracking &amp; SEO</h2>
+              <p>Meta Pixel + Conversions API (server-side), product catalog feed for Advantage+ ads, attribution reports and search-engine settings.</p>
             </div>
+            <button type="button" class="btn-action-primary" id="btn-save-marketing">Save Settings</button>
+          </div>
+
+          <!-- Live status -->
+          <div class="kpi-grid" id="mkt-status-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+            <div class="kpi-card"><div class="kpi-label">Meta Pixel</div><div class="kpi-val" id="mkt-st-pixel" style="font-size:1.05rem;">—</div><div class="kpi-sub">Browser events</div></div>
+            <div class="kpi-card"><div class="kpi-label">Conversions API</div><div class="kpi-val" id="mkt-st-capi" style="font-size:1.05rem;">—</div><div class="kpi-sub">Server events (better match, lower CPA)</div></div>
+            <div class="kpi-card"><div class="kpi-label">Catalog Products</div><div class="kpi-val" id="mkt-st-products" style="font-size:1.05rem;">—</div><div class="kpi-sub">× 4 sizes in feed</div></div>
+            <div class="kpi-card"><div class="kpi-label">Ad-attributed Revenue</div><div class="kpi-val" id="mkt-st-revenue" style="font-size:1.05rem; color:#34D399;">—</div><div class="kpi-sub" id="mkt-st-orders">from Meta clicks</div></div>
           </div>
 
           <div class="admin-card">
             <div class="admin-card-header">
-              <h3 class="admin-card-title">Meta (Facebook) Pixel Configuration</h3>
-              <span class="pulse-status" id="pixel-status-badge">Pixel Active & Injecting</span>
+              <h3 class="admin-card-title">Meta Pixel &amp; Conversions API</h3>
+              <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; color:var(--text-muted);">
+                <input type="checkbox" id="mkt-enabled" checked> Tracking enabled
+              </label>
             </div>
             <div class="field-grid-2">
               <div class="input-block">
-                <label>Meta Pixel ID</label>
-                <input type="text" id="admin-meta-pixel-id" class="admin-input" placeholder="e.g. 182940192837465" value="182940192837465">
+                <label for="admin-meta-pixel-id">Meta Pixel (Dataset) ID</label>
+                <input type="text" id="admin-meta-pixel-id" class="admin-input" inputmode="numeric" placeholder="15–16 digit ID from Events Manager">
               </div>
               <div class="input-block">
-                <label>Google Analytics 4 Measurement ID</label>
-                <input type="text" id="admin-ga4-id" class="admin-input" placeholder="e.g. G-LR98765432" value="G-LR98765432">
+                <label for="mkt-test-code">Test Event Code (optional)</label>
+                <input type="text" id="mkt-test-code" class="admin-input" placeholder="e.g. TEST12345 — clear it after testing">
+              </div>
+              <div class="input-block">
+                <label for="mkt-domain-verify">Facebook Domain Verification code</label>
+                <input type="text" id="mkt-domain-verify" class="admin-input" placeholder="content value of facebook-domain-verification meta tag">
+              </div>
+              <div class="input-block">
+                <label for="admin-ga4-id">Google Analytics 4 Measurement ID (optional)</label>
+                <input type="text" id="admin-ga4-id" class="admin-input" placeholder="G-XXXXXXXXXX">
               </div>
             </div>
-            <div class="input-block" style="margin-top: 1rem;">
-              <label>Full Meta Pixel Code Snippet (Auto Generated or Paste Custom)</label>
-              <textarea id="admin-meta-pixel-snippet" class="admin-textarea" style="font-family: monospace; font-size: 0.78rem; min-height: 120px;">
-&lt;!-- Meta Pixel Code --&gt;
-&lt;script&gt;
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '182940192837465');
-fbq('track', 'PageView');
-&lt;/script&gt;
-&lt;!-- End Meta Pixel Code --&gt;
-              </textarea>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.82rem; margin-top:0.9rem; color:var(--text-muted);">
+              <input type="checkbox" id="mkt-capi-enabled" checked> Send events through the Conversions API as well (recommended)
+            </label>
+            <div style="margin-top:1rem; padding:0.85rem 1rem; border-radius:10px; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); font-size:0.8rem; line-height:1.55; color:#CBD5E1;">
+              🔐 The Conversions API <strong>access token is never entered here</strong>. Add it on the server as the environment variable
+              <code>META_CAPI_TOKEN</code> (cPanel → Setup Node.js App → Environment variables), then restart the app.
+              Also set <code>SITE_URL</code> (e.g. <code>https://loramattress.com</code>) so feeds and canonical URLs use your real domain.
+            </div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:1rem;">
+              <button type="button" class="btn-action-secondary" id="btn-mkt-test">Send Test Server Event</button>
+              <button type="button" class="btn-action-secondary" id="btn-mkt-refresh">Refresh Status</button>
+              <span id="mkt-test-result" style="font-size:0.8rem; align-self:center;"></span>
+            </div>
+            <div style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted); line-height:1.6;">
+              Events sent automatically: <strong>PageView, ViewContent, AddToCart, InitiateCheckout, Purchase, Lead</strong> (store locator &amp; Lumi AI)
+              + custom <strong>EngagedVisitor</strong>. Browser and server copies share one <code>event_id</code>, so Meta counts each event once.
             </div>
           </div>
 
           <div class="admin-card">
             <div class="admin-card-header">
-              <h3 class="admin-card-title">Custom Header / Body Scripts Injection (Head Scripts)</h3>
+              <h3 class="admin-card-title">Product Catalog Feed (Advantage+ Catalog &amp; Retargeting Ads)</h3>
             </div>
-            <div class="input-block">
-              <label>Additional &lt;head&gt; Scripts (e.g. TikTok Pixel, Pinterest Tag, Criteo)</label>
-              <textarea id="admin-custom-head-scripts" class="admin-textarea" placeholder="&lt;script&gt;...&lt;/script&gt;" style="font-family: monospace; font-size: 0.78rem; min-height: 100px;"></textarea>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin:0 0 0.9rem;">
+              In Commerce Manager → Catalog → Data sources → <em>Data feed</em> → <em>Scheduled feed</em>, paste one URL below and schedule it <strong>daily</strong>. Prices, images and sizes update automatically from the product editor.
+            </p>
+            <div class="field-grid-2">
+              <div class="input-block">
+                <label>CSV feed URL</label>
+                <div style="display:flex; gap:0.4rem;"><input type="text" id="mkt-feed-csv" class="admin-input" readonly><button type="button" class="btn-action-secondary" data-copy="#mkt-feed-csv">Copy</button></div>
+              </div>
+              <div class="input-block">
+                <label>XML (RSS) feed URL</label>
+                <div style="display:flex; gap:0.4rem;"><input type="text" id="mkt-feed-xml" class="admin-input" readonly><button type="button" class="btn-action-secondary" data-copy="#mkt-feed-xml">Copy</button></div>
+              </div>
             </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Ad Attribution — Orders by Campaign</h3>
+              <button type="button" class="btn-action-secondary" id="btn-mkt-attr-refresh">Refresh</button>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin:0 0 0.75rem;">Uses the <code>utm_*</code> / <code>fbclid</code> captured when the visitor first landed. Add <code>?utm_source=facebook&amp;utm_medium=paid&amp;utm_campaign=YOUR_CAMPAIGN&amp;utm_content={{ad.name}}</code> to every ad URL.</p>
+            <div style="overflow-x:auto;">
+              <table class="admin-table" style="width:100%;">
+                <thead><tr><th>Source / Medium</th><th>Campaign</th><th>Orders</th><th>Revenue</th><th>Avg. Order</th></tr></thead>
+                <tbody id="mkt-attr-tbody"><tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:1.5rem;">Loading…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Search Engine Optimisation</h3>
+            </div>
+            <div class="field-grid-2">
+              <div class="input-block">
+                <label for="mkt-google-verify">Google Search Console verification code</label>
+                <input type="text" id="mkt-google-verify" class="admin-input" placeholder="content value of google-site-verification">
+              </div>
+              <div class="input-block">
+                <label>Sitemap URL (submit in Search Console)</label>
+                <div style="display:flex; gap:0.4rem;"><input type="text" id="mkt-sitemap" class="admin-input" readonly><button type="button" class="btn-action-secondary" data-copy="#mkt-sitemap">Copy</button></div>
+              </div>
+            </div>
+            <div style="margin-top:0.9rem; font-size:0.78rem; color:var(--text-muted); line-height:1.6;">
+              Built in: server-rendered titles &amp; descriptions per product, canonical URLs, Open Graph / product price tags (rich link previews on Facebook, Instagram &amp; WhatsApp), Twitter cards,
+              JSON-LD <em>Organization, WebSite, Product (AggregateOffer), BreadcrumbList</em>, <code>/robots.txt</code> and an image sitemap.
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">💡 Lower-Cost Meta Ads Playbook</h3>
+            </div>
+            <ol style="font-size:0.82rem; line-height:1.75; color:#CBD5E1; padding-left:1.2rem; margin:0;">
+              <li><strong>Turn on the Conversions API</strong> (token in env). Aim for an Event Match Quality of 7+ in Events Manager; better matching usually lowers cost per purchase.</li>
+              <li><strong>Verify your domain</strong> (code above) and set <em>Purchase</em> as the top-priority event in Aggregated Event Measurement.</li>
+              <li>Run <strong>Advantage+ Catalog ads</strong> from the feed. Retarget <em>ViewContent / AddToCart</em> visitors from the last 7–30 days without a Purchase.</li>
+              <li>While Purchases are under ~50 a week, optimise for <strong>Lead</strong> or <strong>InitiateCheckout</strong> so the ad set can leave the learning phase.</li>
+              <li>Build <strong>Lookalike audiences</strong> (1–3% India) from Purchasers, Leads and <em>EngagedVisitor</em>.</li>
+              <li>Use <strong>Click-to-WhatsApp</strong> ads for high-ticket models. Enquiries feed the Lumi lead flow.</li>
+              <li>Use <code>custom_label_2</code> (value/mid/premium) in the feed to give premium models a separate budget.</li>
+              <li>Tag every ad URL with UTMs (see above). Pause campaigns whose average order value is below your target ROAS in the attribution table.</li>
+            </ol>
           </div>
         </div>
 
@@ -3877,9 +3953,17 @@ fbq('track', 'PageView');
                     Customer consultations collected by Lumi with preferred mattress model, size, and contact details.
                   </p>
                 </div>
-                <button type="button" class="btn-op-action btn-op-secondary" id="btn-export-lumi-leads" style="font-size: 0.78rem;">
-                  Export CSV 📥
-                </button>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" class="btn-op-action btn-op-secondary" id="btn-export-lumi-leads" style="font-size: 0.78rem;">
+                    Export CSV 📥
+                  </button>
+                  <button type="button" class="btn-op-action btn-op-secondary" id="btn-open-lumi-trash" onclick="window.openLeadsTrash()" style="font-size: 0.78rem;">
+                    🗑️ Recycle Bin <span id="lumi-trash-count" style="opacity: 0.8;"></span>
+                  </button>
+                  <button type="button" class="btn-op-action" id="btn-reset-lumi-leads" onclick="window.resetLeadsAdmin('lumi')" style="font-size: 0.78rem; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.4);">
+                    Reset Enquiries
+                  </button>
+                </div>
               </div>
 
               <div class="table-responsive">
@@ -3894,6 +3978,7 @@ fbq('track', 'PageView');
                       <th>Requirements Summary</th>
                       <th>Date</th>
                       <th>Status</th>
+                      <th style="text-align: right;">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="lumi-leads-tbody">
@@ -4200,6 +4285,10 @@ Order Notes: [Customer Instructions]</pre>
               <span>🏬 Experience Studios & Pincodes</span>
               <span class="badge-pill" id="subtab-studios-count">0</span>
             </button>
+            <button type="button" class="subtab-btn" id="subtab-btn-trash" onclick="window.switchStudiosSubTab('trash')">
+              <span>🗑️ Recycle Bin</span>
+              <span class="badge-pill" id="subtab-trash-count">0</span>
+            </button>
           </div>
 
           <!-- SUB-VIEW 1: CUSTOMER LEADS CRM -->
@@ -4230,7 +4319,7 @@ Order Notes: [Customer Instructions]</pre>
 
             <!-- Leads Toolbar: Search, Filters & Bulk Actions -->
             <div class="admin-card" style="padding: 1.25rem; margin-bottom: 1.5rem;">
-              <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: center;">
+              <div class="leads-toolbar-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto auto; gap: 1rem; align-items: center;">
                 <div class="input-block" style="margin-bottom: 0;">
                   <input type="text" id="leads-search-input" class="admin-input" placeholder="Search by customer name, phone number, pincode, or studio...">
                 </div>
@@ -4253,6 +4342,9 @@ Order Notes: [Customer Instructions]</pre>
                 </div>
                 <button type="button" class="btn-action-secondary" id="btn-refresh-store-leads" style="height: 40px; padding: 0 1rem;">
                   🔄 Refresh
+                </button>
+                <button type="button" class="btn-action-secondary" id="btn-reset-store-leads" onclick="window.resetLeadsAdmin('store')" style="height: 40px; padding: 0 1rem; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.4);" title="Move leads to the Recycle Bin">
+                  🗑️ Reset Leads
                 </button>
               </div>
             </div>
@@ -4293,6 +4385,43 @@ Order Notes: [Customer Instructions]</pre>
             <!-- Studios Grid -->
             <div class="studios-admin-grid" id="studios-admin-grid-container">
               <!-- Dynamically populated via JavaScript -->
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 3: RECYCLE BIN (deleted customer leads, restorable for 30 days) -->
+          <div id="subview-trash" style="display: none;">
+            <div class="admin-card" style="border-left: 4px solid #F59E0B; padding: 1.25rem; margin-bottom: 1.5rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                <div>
+                  <div style="font-weight: 800; color: #FFFFFF; font-size: 0.92rem; margin-bottom: 0.25rem;">🗑️ Recycle Bin — Deleted Customer Details</div>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                    Deleted or reset leads are kept here for <strong>30 days</strong>. Restore them anytime, or delete permanently. Items older than 30 days are removed automatically.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                  <button type="button" class="btn-action-secondary" id="btn-trash-refresh" onclick="window.loadLeadsTrash()" style="height: 38px; padding: 0 0.9rem;">🔄 Refresh</button>
+                  <button type="button" class="btn-action-secondary" id="btn-trash-restore-all" onclick="window.restoreLeadsFromTrash(null)" style="height: 38px; padding: 0 0.9rem; color: #86EFAC; border-color: rgba(34, 197, 94, 0.4);">↩ Restore All</button>
+                  <button type="button" class="btn-action-secondary" id="btn-trash-empty" onclick="window.emptyLeadsTrash()" style="height: 38px; padding: 0 0.9rem; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.4);">✖ Empty Bin</button>
+                </div>
+              </div>
+            </div>
+            <div class="matrix-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 150px;">Deleted On</th>
+                    <th>Customer</th>
+                    <th style="width: 160px;">Contact Number</th>
+                    <th style="width: 90px;">Pincode</th>
+                    <th>Source</th>
+                    <th style="width: 120px;">Auto-delete In</th>
+                    <th style="width: 200px; text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="leads-trash-table-body">
+                  <tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading…</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -5725,14 +5854,7 @@ Order Notes: [Customer Instructions]</pre>
           updateStudioToolbar(activeModel);
           window.dispatchEvent(new CustomEvent('lora:catalog_updated', { detail: catalog }));
 
-          // Save Marketing Pixels
-          const pixelConfig = {
-            metaPixelId: document.querySelector('#admin-meta-pixel-id')?.value.trim() || '',
-            ga4Id: document.querySelector('#admin-ga4-id')?.value.trim() || '',
-            pixelSnippet: document.querySelector('#admin-meta-pixel-snippet')?.value || '',
-            customHeadScripts: document.querySelector('#admin-custom-head-scripts')?.value || ''
-          };
-          localStorage.setItem(PIXEL_KEY, JSON.stringify(pixelConfig));
+          // Marketing pixel / SEO settings are saved server-side from the Meta Ads tab (initMarketingAdmin)
 
           saveBtn.disabled = false;
           saveBtn.textContent = origText;
@@ -8666,65 +8788,92 @@ Order Notes: [Customer Instructions]</pre>
 
       window.switchStudiosSubTab = function (tab) {
         currentStudiosSubTab = tab;
-        const subviewLeads = document.getElementById('subview-leads');
-        const subviewStudios = document.getElementById('subview-studios');
-        const btnLeads = document.getElementById('subtab-btn-leads');
-        const btnStudios = document.getElementById('subtab-btn-studios');
-
-        if (tab === 'leads') {
-          if (subviewLeads) subviewLeads.style.display = 'block';
-          if (subviewStudios) subviewStudios.style.display = 'none';
-          if (btnLeads) btnLeads.classList.add('active');
-          if (btnStudios) btnStudios.classList.remove('active');
-          renderStoreLeadsTable();
-        } else {
-          if (subviewLeads) subviewLeads.style.display = 'none';
-          if (subviewStudios) subviewStudios.style.display = 'block';
-          if (btnLeads) btnLeads.classList.remove('active');
-          if (btnStudios) btnStudios.classList.add('active');
-          renderStudiosAdminGrid();
-        }
+        const views = { leads: 'subview-leads', studios: 'subview-studios', trash: 'subview-trash' };
+        Object.keys(views).forEach(k => {
+          const v = document.getElementById(views[k]);
+          const b = document.getElementById('subtab-btn-' + k);
+          if (v) v.style.display = k === tab ? 'block' : 'none';
+          if (b) b.classList.toggle('active', k === tab);
+        });
+        if (tab === 'leads') renderStoreLeadsTable();
+        else if (tab === 'studios') renderStudiosAdminGrid();
+        else if (tab === 'trash') window.loadLeadsTrash();
       };
 
-      async function loadStoreLeads() {
-        let serverLeads = [];
-        try {
-          const res = await fetch('/api/store-leads');
-          if (res.ok) {
-            const data = await res.json();
-            serverLeads = Array.isArray(data) ? data : (data.leads || []);
-          } else {
-            const fallbackRes = await fetch('config/store_leads.json');
-            if (fallbackRes.ok) {
-              const data = await fallbackRes.json();
-              serverLeads = Array.isArray(data) ? data : (data.leads || []);
-            }
-          }
-        } catch (e) {
-          try {
-            const fallbackRes = await fetch('config/store_leads.json');
-            if (fallbackRes.ok) {
-              const data = await fallbackRes.json();
-              serverLeads = Array.isArray(data) ? data : (data.leads || []);
-            }
-          } catch (err) {}
-          console.warn('API /api/store-leads unavailable, falling back to static config/local storage', e);
-        }
-
-        let localLeads = [];
-        try {
-          localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]');
-        } catch (e) {}
-
-        // Merge & deduplicate by ID
-        const leadMap = new Map();
-        [...serverLeads, ...localLeads].forEach(l => {
-          if (l && l.id && !leadMap.has(l.id)) {
-            leadMap.set(l.id, l);
-          }
+      // Reusable warning/confirmation modal. Resolves true when confirmed.
+      window.adminConfirm = function ({ title = 'Are you sure?', message = '', confirmText = 'Confirm', danger = true, requireText = '' } = {}) {
+        return new Promise(resolve => {
+          const overlay = document.createElement('div');
+          overlay.style.cssText = 'position:fixed;inset:0;background:rgba(2,6,23,0.75);backdrop-filter:blur(4px);z-index:100000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+          const accent = danger ? '#F87171' : '#38BDF8';
+          overlay.innerHTML = `
+            <div role="alertdialog" aria-modal="true" style="background:#0F172A;border:1px solid ${danger ? 'rgba(239,68,68,0.4)' : 'rgba(56,189,248,0.4)'};border-radius:14px;max-width:440px;width:100%;padding:1.4rem;box-shadow:0 20px 60px rgba(0,0,0,0.5);color:#E2E8F0;">
+              <div style="font-size:1.6rem;margin-bottom:0.4rem;">${danger ? '⚠️' : 'ℹ️'}</div>
+              <h3 style="margin:0 0 0.5rem;color:${accent};font-size:1.05rem;">${escapeHtml(title)}</h3>
+              <div style="font-size:0.85rem;line-height:1.5;color:#CBD5E1;">${message}</div>
+              ${requireText ? `<label style="display:block;margin-top:0.9rem;font-size:0.78rem;color:#94A3B8;">Type <strong style="color:${accent};">${escapeHtml(requireText)}</strong> to confirm</label>
+              <input type="text" data-confirm-input autocomplete="off" style="width:100%;margin-top:0.35rem;padding:0.55rem 0.7rem;border-radius:8px;border:1px solid rgba(148,163,184,0.3);background:#020617;color:#fff;font-size:0.9rem;box-sizing:border-box;">` : ''}
+              <div style="display:flex;gap:0.6rem;justify-content:flex-end;margin-top:1.2rem;flex-wrap:wrap;">
+                <button type="button" data-cancel class="btn-op-action" style="padding:0.5rem 1rem;">Cancel</button>
+                <button type="button" data-ok class="btn-op-action" style="padding:0.5rem 1rem;color:#fff;background:${danger ? '#DC2626' : '#0284C7'};border-color:transparent;">${escapeHtml(confirmText)}</button>
+              </div>
+            </div>`;
+          document.body.appendChild(overlay);
+          const ok = overlay.querySelector('[data-ok]');
+          const input = overlay.querySelector('[data-confirm-input]');
+          const sync = () => { if (input) { const m = input.value.trim().toUpperCase() === requireText.toUpperCase(); ok.disabled = !m; ok.style.opacity = m ? '1' : '0.45'; } };
+          sync();
+          const close = (val) => { document.removeEventListener('keydown', onKey); overlay.remove(); resolve(val); };
+          const onKey = (e) => { if (e.key === 'Escape') close(false); if (e.key === 'Enter' && !ok.disabled) close(true); };
+          document.addEventListener('keydown', onKey);
+          if (input) { input.addEventListener('input', sync); setTimeout(() => input.focus(), 30); } else setTimeout(() => ok.focus(), 30);
+          ok.addEventListener('click', () => { if (!ok.disabled) close(true); });
+          overlay.querySelector('[data-cancel]').addEventListener('click', () => close(false));
+          overlay.addEventListener('click', e => { if (e.target === overlay) close(false); });
         });
+      };
 
-        storeLeads = Array.from(leadMap.values()).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      function setTrashCount(n) {
+        ['subtab-trash-count', 'lumi-trash-count'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = Number(n) || 0;
+        });
+      }
+
+      function applyServerLeads(list) {
+        storeLeads = (Array.isArray(list) ? list : []).slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        try { localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(storeLeads)); } catch (e) {}
+        updateStoreLeadsKPIs();
+        renderStoreLeadsTable();
+        if (typeof renderLumiLeadsTable === 'function') renderLumiLeadsTable();
+      }
+
+      async function leadsApi(path, method = 'GET', body) {
+        const res = await fetch('/api/store-leads' + path, {
+          method,
+          headers: getAdminAuthHeaders(),
+          body: body ? JSON.stringify(body) : undefined
+        });
+        let data = {};
+        try { data = await res.json(); } catch (e) {}
+        if (!res.ok || data.success === false) throw new Error(data.message || ('Request failed (' + res.status + ')'));
+        return data;
+      }
+
+      async function loadStoreLeads() {
+        // The server is the single source of truth. The local cache is only
+        // used when the server is unreachable, so deleted leads never come back.
+        try {
+          const data = await leadsApi('');
+          applyServerLeads(Array.isArray(data) ? data : (data.leads || []));
+          if (data.trashCount != null) setTrashCount(data.trashCount);
+          return;
+        } catch (e) {
+          console.warn('API /api/store-leads unavailable, using cached leads', e.message);
+        }
+        let localLeads = [];
+        try { localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]'); } catch (e) {}
+        storeLeads = localLeads.filter(l => l && l.id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         updateStoreLeadsKPIs();
         renderStoreLeadsTable();
         if (typeof renderLumiLeadsTable === 'function') renderLumiLeadsTable();
@@ -8762,10 +8911,7 @@ Order Notes: [Customer Instructions]</pre>
         }
       }
 
-      function renderStoreLeadsTable() {
-        const tbody = document.getElementById('store-leads-table-body');
-        if (!tbody) return;
-
+      function getFilteredStoreLeads() {
         const searchInput = document.getElementById('leads-search-input');
         const statusFilter = document.getElementById('leads-filter-status');
         const resultFilter = document.getElementById('leads-filter-result');
@@ -8774,7 +8920,7 @@ Order Notes: [Customer Instructions]</pre>
         const selStatus = statusFilter ? statusFilter.value : 'all';
         const selResult = resultFilter ? resultFilter.value : 'all';
 
-        const filtered = storeLeads.filter(lead => {
+        return storeLeads.filter(lead => {
           if (selStatus !== 'all' && (lead.status || 'New') !== selStatus) return false;
           if (selResult === 'matched' && lead.resultType !== 'matched') return false;
           if (selResult === 'fallback' && lead.resultType !== 'fallback') return false;
@@ -8789,6 +8935,20 @@ Order Notes: [Customer Instructions]</pre>
           }
           return true;
         });
+      }
+
+      function renderStoreLeadsTable() {
+        const tbody = document.getElementById('store-leads-table-body');
+        if (!tbody) return;
+
+        const searchInput = document.getElementById('leads-search-input');
+        const statusFilter = document.getElementById('leads-filter-status');
+        const resultFilter = document.getElementById('leads-filter-result');
+        const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+        const selStatus = statusFilter ? statusFilter.value : 'all';
+        const selResult = resultFilter ? resultFilter.value : 'all';
+
+        const filtered = getFilteredStoreLeads();
 
         if (filtered.length === 0) {
           tbody.innerHTML = `
@@ -8882,7 +9042,7 @@ Order Notes: [Customer Instructions]</pre>
         try {
           await fetch(`/api/store-leads/${encodeURIComponent(leadId)}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAdminAuthHeaders(),
             body: JSON.stringify({ status: newStatus })
           });
         } catch (e) {
@@ -8891,20 +9051,128 @@ Order Notes: [Customer Instructions]</pre>
       };
 
       window.deleteLeadAdmin = async function (leadId) {
-        if (!confirm('Are you sure you want to delete this customer inquiry lead?')) return;
-
-        storeLeads = storeLeads.filter(l => l.id !== leadId);
-        localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(storeLeads));
-        updateStoreLeadsKPIs();
-        renderStoreLeadsTable();
-
+        const lead = storeLeads.find(l => l.id === leadId) || {};
+        const ok = await window.adminConfirm({
+          title: 'Delete this customer?',
+          message: `<strong>${escapeHtml(lead.name || 'Customer')}</strong> (${escapeHtml(lead.phone || '—')}) will be moved to the <strong>Recycle Bin</strong>. You can restore it within 30 days.`,
+          confirmText: 'Move to Recycle Bin'
+        });
+        if (!ok) return;
         try {
-          await fetch(`/api/store-leads/${encodeURIComponent(leadId)}`, {
-            method: 'DELETE'
-          });
+          const data = await leadsApi('/' + encodeURIComponent(leadId), 'DELETE');
+          applyServerLeads(data.leads);
+          setTrashCount(data.trashCount);
         } catch (e) {
-          console.warn('Failed to delete lead on server', e);
+          alert('Could not delete lead: ' + e.message);
         }
+      };
+
+      // Reset = bulk-move customer details to the Recycle Bin (with typed confirmation)
+      window.resetLeadsAdmin = async function (scope) {
+        let targets;
+        if (scope === 'lumi') {
+          targets = storeLeads.filter(l => l.source === 'Lumi AI Sleep Assistant' || l.resultType === 'lumi_consultation');
+        } else {
+          targets = typeof getFilteredStoreLeads === 'function' ? getFilteredStoreLeads() : storeLeads;
+        }
+        if (!targets.length) { alert('There are no customer details to reset.'); return; }
+        const isAll = targets.length === storeLeads.length;
+        const label = scope === 'lumi' ? 'Lumi AI enquiries' : (isAll ? 'customer leads' : 'filtered customer leads');
+        const ok = await window.adminConfirm({
+          title: 'Reset customer details?',
+          message: `This will remove <strong>${targets.length}</strong> ${label} (names, phone numbers, PIN codes) from the list.<br><br>They will be kept in the <strong>Recycle Bin for 30 days</strong> and can be restored. After that they are deleted permanently.`,
+          confirmText: 'Reset ' + targets.length + ' record' + (targets.length > 1 ? 's' : ''),
+          requireText: 'RESET'
+        });
+        if (!ok) return;
+        try {
+          const data = await leadsApi('/bulk-delete', 'POST', { ids: targets.map(l => l.id), reason: 'Reset by admin' });
+          applyServerLeads(data.leads);
+          setTrashCount(data.trashCount);
+          alert(`${data.moved} record(s) moved to the Recycle Bin.`);
+        } catch (e) {
+          alert('Reset failed: ' + e.message);
+        }
+      };
+
+      // ---------------- RECYCLE BIN ----------------
+      let leadsTrash = [];
+      window.loadLeadsTrash = async function () {
+        const tbody = document.getElementById('leads-trash-table-body');
+        try {
+          const data = await leadsApi('/trash');
+          leadsTrash = data.trash || [];
+          const days = data.retentionDays || 30;
+          setTrashCount(leadsTrash.length);
+          if (!tbody) return;
+          if (!leadsTrash.length) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:3rem 1.5rem;color:var(--text-muted);"><div style="font-size:2rem;margin-bottom:0.5rem;">♻️</div><div style="font-weight:700;color:#fff;">Recycle Bin is empty</div><div style="font-size:0.78rem;">Deleted or reset customer details appear here for ${days} days.</div></td></tr>`;
+            return;
+          }
+          tbody.innerHTML = leadsTrash.map(l => {
+            const del = l.deletedAt ? new Date(l.deletedAt) : null;
+            const left = del ? Math.max(0, Math.ceil(days - (Date.now() - del.getTime()) / 86400000)) : days;
+            const id = escapeHtml(l.id);
+            return `<tr>
+              <td><div style="font-size:0.78rem;font-weight:700;color:#fff;">${del ? del.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}</div><div style="font-size:0.68rem;color:var(--text-muted);">${escapeHtml(l.deleteReason || '')}</div></td>
+              <td><strong style="color:#fff;">${escapeHtml(l.name || 'Customer')}</strong></td>
+              <td style="font-family:monospace;">${escapeHtml(l.phone || '—')}</td>
+              <td>${escapeHtml(l.pincode || l.place || '—')}</td>
+              <td style="font-size:0.75rem;color:var(--text-muted);">${escapeHtml(l.source || (l.resultType === 'lumi_consultation' ? 'Lumi AI' : 'Store Locator'))}</td>
+              <td><span style="color:${left <= 3 ? '#F87171' : '#FBBF24'};font-weight:700;font-size:0.78rem;">${left} day${left === 1 ? '' : 's'}</span></td>
+              <td style="text-align:right;white-space:nowrap;">
+                <button type="button" class="btn-op-action" onclick="window.restoreLeadsFromTrash(['${id}'])" style="color:#34D399;border-color:rgba(52,211,153,0.35);padding:0.25rem 0.55rem;font-size:0.74rem;">↩ Restore</button>
+                <button type="button" class="btn-op-action" onclick="window.deleteLeadForever('${id}')" style="color:#F87171;border-color:rgba(239,68,68,0.3);padding:0.25rem 0.55rem;font-size:0.74rem;">Delete forever</button>
+              </td></tr>`;
+          }).join('');
+        } catch (e) {
+          if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:#F87171;">Could not load Recycle Bin: ${escapeHtml(e.message)}</td></tr>`;
+        }
+      };
+
+      window.restoreLeadsFromTrash = async function (ids) {
+        if (!ids) {
+          if (!leadsTrash.length) { alert('Recycle Bin is empty.'); return; }
+          const ok = await window.adminConfirm({ title: 'Restore all?', message: `Restore all <strong>${leadsTrash.length}</strong> records back to the customer list?`, confirmText: 'Restore all', danger: false });
+          if (!ok) return;
+        }
+        try {
+          const data = await leadsApi('/trash/restore', 'POST', ids ? { ids } : { all: true });
+          applyServerLeads(data.leads);
+          await window.loadLeadsTrash();
+        } catch (e) {
+          alert('Restore failed: ' + e.message);
+        }
+      };
+
+      window.deleteLeadForever = async function (id) {
+        const l = leadsTrash.find(x => x.id === id) || {};
+        const ok = await window.adminConfirm({ title: 'Delete permanently?', message: `<strong>${escapeHtml(l.name || 'This record')}</strong> will be permanently erased. This cannot be undone.`, confirmText: 'Delete forever' });
+        if (!ok) return;
+        try {
+          await leadsApi('/trash/' + encodeURIComponent(id), 'DELETE');
+          await window.loadLeadsTrash();
+        } catch (e) {
+          alert('Delete failed: ' + e.message);
+        }
+      };
+
+      window.emptyLeadsTrash = async function () {
+        if (!leadsTrash.length) { alert('Recycle Bin is already empty.'); return; }
+        const ok = await window.adminConfirm({ title: 'Empty Recycle Bin?', message: `All <strong>${leadsTrash.length}</strong> records will be permanently erased. This cannot be undone.`, confirmText: 'Empty Recycle Bin', requireText: 'DELETE' });
+        if (!ok) return;
+        try {
+          await leadsApi('/trash', 'DELETE');
+          await window.loadLeadsTrash();
+        } catch (e) {
+          alert('Could not empty Recycle Bin: ' + e.message);
+        }
+      };
+
+      window.openLeadsTrash = function () {
+        const tabBtn = document.querySelector('[data-tab="tab-studios-leads"]');
+        if (tabBtn) tabBtn.click();
+        window.switchStudiosSubTab('trash');
       };
 
       window.exportStoreLeadsCSV = function () {
@@ -9360,7 +9628,7 @@ Order Notes: [Customer Instructions]</pre>
         }
 
         if (lumiLeads.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 2rem;">No customer consultations recorded from Lumi yet.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 2rem;">No customer consultations recorded from Lumi yet.</td></tr>`;
           return;
         }
 
@@ -9376,6 +9644,7 @@ Order Notes: [Customer Instructions]</pre>
               <td style="max-width: 250px; font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(lead.summary || lead.notes || '—')}</td>
               <td style="font-size: 0.75rem; color: var(--text-muted);">${dateStr}</td>
               <td><span class="status-badge status-delivered">${escapeHtml(lead.status || 'New')}</span></td>
+              <td style="text-align: right;"><button type="button" class="btn-op-action" onclick="window.deleteLeadAdmin('${escapeHtml(lead.id)}')" title="Move to Recycle Bin" style="color: #F87171; border-color: rgba(239, 68, 68, 0.3); padding: 0.25rem 0.55rem; font-size: 0.74rem;">🗑️</button></td>
             </tr>
           `;
         }).join('');
@@ -9419,6 +9688,122 @@ Order Notes: [Customer Instructions]</pre>
           document.body.removeChild(link);
         });
       }
+
+      // =========================================================
+      // META ADS, TRACKING & SEO (server-side settings)
+      // =========================================================
+      (function initMarketingAdmin() {
+        const $ = (s) => document.querySelector(s);
+        const fields = {
+          metaPixelId: '#admin-meta-pixel-id', ga4Id: '#admin-ga4-id', testEventCode: '#mkt-test-code',
+          domainVerification: '#mkt-domain-verify', googleVerification: '#mkt-google-verify'
+        };
+        const setText = (sel, txt, color) => { const el = $(sel); if (el) { el.textContent = txt; if (color) el.style.color = color; } };
+
+        async function loadSettings() {
+          try {
+            const r = await fetch('/api/marketing-settings', { cache: 'no-store' });
+            const d = await r.json();
+            if ($(fields.metaPixelId)) $(fields.metaPixelId).value = d.metaPixelId || '';
+            if ($(fields.ga4Id)) $(fields.ga4Id).value = d.ga4Id || '';
+            if ($('#mkt-enabled')) $('#mkt-enabled').checked = d.enabled !== false;
+          } catch (e) {}
+        }
+
+        async function loadStatus(test) {
+          try {
+            const r = await fetch('/api/meta-status' + (test ? '?test=1' : ''), { headers: getAdminAuthHeaders(), cache: 'no-store' });
+            const d = await r.json();
+            if (!r.ok) throw new Error(d.message || 'Status unavailable');
+            setText('#mkt-st-pixel', d.pixelConfigured ? '● Active' : '○ Not set', d.pixelConfigured ? '#34D399' : '#F87171');
+            setText('#mkt-st-capi', d.capiActive ? '● Active' : (d.capiTokenConfigured ? '○ Disabled' : '○ Token missing'), d.capiActive ? '#34D399' : '#FBBF24');
+            setText('#mkt-st-products', String(d.products || 0));
+            if ($('#mkt-feed-csv')) $('#mkt-feed-csv').value = d.feeds.csv;
+            if ($('#mkt-feed-xml')) $('#mkt-feed-xml').value = d.feeds.xml;
+            if ($('#mkt-sitemap')) $('#mkt-sitemap').value = d.sitemap;
+            if ($(fields.testEventCode) && d.testEventCode != null) $(fields.testEventCode).value = d.testEventCode || '';
+            if (test) {
+              const t = d.test;
+              if (!t) setText('#mkt-test-result', 'Set the Pixel ID and META_CAPI_TOKEN first.', '#FBBF24');
+              else if (t.ok) setText('#mkt-test-result', `✓ Meta received ${t.received} event. Check Events Manager → Test events.`, '#34D399');
+              else setText('#mkt-test-result', '✗ ' + t.message, '#F87171');
+            }
+          } catch (e) {
+            if (test) setText('#mkt-test-result', '✗ ' + e.message, '#F87171');
+          }
+        }
+
+        async function saveSettings() {
+          const btn = $('#btn-save-marketing');
+          const body = {
+            enabled: $('#mkt-enabled') ? $('#mkt-enabled').checked : true,
+            capiEnabled: $('#mkt-capi-enabled') ? $('#mkt-capi-enabled').checked : true
+          };
+          Object.keys(fields).forEach(k => { body[k] = ($(fields[k]) && $(fields[k]).value.trim()) || ''; });
+          if (body.metaPixelId && !/^\d{10,20}$/.test(body.metaPixelId)) { alert('Meta Pixel ID must be digits only (from Events Manager).'); return; }
+          if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+          try {
+            const r = await fetch('/api/marketing-settings', { method: 'POST', headers: getAdminAuthHeaders(), body: JSON.stringify(body) });
+            const d = await r.json();
+            if (!r.ok || !d.success) throw new Error(d.message || 'Save failed');
+            if (typeof showToast === 'function') showToast('✓ Marketing & SEO settings saved — live for all visitors.');
+            if ($('#mkt-capi-enabled')) $('#mkt-capi-enabled').checked = d.settings.capiEnabled !== false;
+            loadStatus(false);
+          } catch (e) {
+            alert('Could not save: ' + e.message);
+          } finally {
+            if (btn) { btn.disabled = false; btn.textContent = 'Save Settings'; }
+          }
+        }
+
+        async function loadAttribution() {
+          const tbody = $('#mkt-attr-tbody');
+          if (!tbody) return;
+          let orders = [];
+          try {
+            const r = await fetch('/api/orders', { headers: getAdminAuthHeaders(), cache: 'no-store' });
+            const d = await r.json();
+            orders = d.orders || (Array.isArray(d) ? d : []);
+          } catch (e) {}
+          const groups = {};
+          let metaRev = 0, metaOrders = 0;
+          orders.forEach(o => {
+            if (/declined|cancel|failed/i.test(o.status || '')) return;
+            const a = (o.attribution && (o.attribution.last || o.attribution.first)) || {};
+            const src = a.utm_source || (a.fbclid || (o.attribution && o.attribution.fbc) ? 'facebook' : (o.attribution && o.attribution.referrer ? 'referral' : 'direct'));
+            const key = `${src} / ${a.utm_medium || (a.fbclid ? 'paid' : '—')}||${a.utm_campaign || '—'}`;
+            const g = groups[key] || (groups[key] = { n: 0, rev: 0 });
+            const val = Number(String(o.totalPrice || 0).replace(/[^\d.]/g, '')) || 0;
+            g.n++; g.rev += val;
+            if (/facebook|instagram|fb|ig|meta/i.test(src)) { metaRev += val; metaOrders++; }
+          });
+          setText('#mkt-st-revenue', '₹' + Math.round(metaRev).toLocaleString('en-IN'));
+          setText('#mkt-st-orders', `${metaOrders} order${metaOrders === 1 ? '' : 's'} from Meta clicks`);
+          const rows = Object.entries(groups).sort((a, b) => b[1].rev - a[1].rev);
+          tbody.innerHTML = rows.length ? rows.map(([k, g]) => {
+            const [sm, camp] = k.split('||');
+            return `<tr><td>${escapeHtml(sm)}</td><td>${escapeHtml(camp)}</td><td>${g.n}</td><td>₹${Math.round(g.rev).toLocaleString('en-IN')}</td><td>₹${Math.round(g.rev / g.n).toLocaleString('en-IN')}</td></tr>`;
+          }).join('') : '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:1.5rem;">No orders yet.</td></tr>';
+        }
+
+        const saveBtn = $('#btn-save-marketing');
+        if (saveBtn) saveBtn.addEventListener('click', saveSettings);
+        const testBtn = $('#btn-mkt-test');
+        if (testBtn) testBtn.addEventListener('click', () => { setText('#mkt-test-result', 'Sending…', '#94A3B8'); loadStatus(true); });
+        const refBtn = $('#btn-mkt-refresh');
+        if (refBtn) refBtn.addEventListener('click', () => loadStatus(false));
+        const attrBtn = $('#btn-mkt-attr-refresh');
+        if (attrBtn) attrBtn.addEventListener('click', loadAttribution);
+        document.querySelectorAll('#tab-pixels [data-copy]').forEach(b => b.addEventListener('click', () => {
+          const inp = $(b.getAttribute('data-copy'));
+          if (!inp || !inp.value) return;
+          (navigator.clipboard ? navigator.clipboard.writeText(inp.value) : Promise.reject()).then(() => { b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy', 1500); }).catch(() => { inp.select(); document.execCommand('copy'); });
+        }));
+        const navBtn = document.getElementById('nav-tab-pixels');
+        if (navBtn) navBtn.addEventListener('click', () => { loadStatus(false); loadAttribution(); });
+        loadSettings();
+        loadStatus(false);
+      })();
 
       // =========================================================
       // 3D ROTATING OFFER RIBBON ADMIN MANAGER & SPELL-CHECK ENGINE

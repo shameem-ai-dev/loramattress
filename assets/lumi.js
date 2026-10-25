@@ -31,7 +31,11 @@
     isThinking: false,
     history: [],
     currentLang: localStorage.getItem(LUMI_LANG_KEY) || 'en', // 'en', 'ml', 'manglish'
-    leadStep: 0, // 0 = idle, 1 = awaiting name, 2 = awaiting place/pin, 3 = awaiting phone
+    leadStep: null, // null = idle, 'phone' = awaiting mobile number, 'pin' = awaiting PIN code
+    pinPurpose: null, // 'delivery' when the customer only wants a delivery check (no callback)
+    leadSubmitted: false,
+    lastSubmittedKey: '',
+    pendingLeadCardId: null,
     leadData: {
       name: '',
       place: '',
@@ -43,6 +47,127 @@
       summary: ''
     }
   };
+
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
+  const SUPPORT_PHONE = '9567684770'; // Lora's own support line — never treat it as a customer's number
+  const LEAD_SESSION_KEY = 'lora_lumi_lead_v1';
+  const DEFAULT_PILLS = ['Which is best for back pain?', 'Zero motion for couples?', 'Check Prices', 'Request Specialist Call'];
+  const MODEL_NAME_ALIASES = [
+    ['cloud ortho', '02'], ['cloudortho', '02'], ['cloud 7', '01'], ['cloud7', '01'], ['cloud-7', '01'],
+    ['ortho hybrid', '04'], ['ortho latex', '05'], ['comfort core', '06'], ['pocket luxe', '07'],
+    ['hybrid fusion', '08'], ['plush', '03']
+  ];
+
+  // Local intents (handled instantly in the browser so quick-reply pills can never loop)
+  const RE_DIRECT_CALL = /^(call\s*\+?\s*91|support contact|നേരിട്ട് വിളിക്കുക)/i;
+  const RE_LEAD = /(share (contact|phone|my number|number)|enter (phone|mobile)|request (a )?(specialist )?call|request callback|call ?back|call me|talk to (a )?(specialist|team|someone|human|expert)|speak to|consult(ation)? (team|call)|team callback|specialist call|lora team|സ്പെഷ്യലിസ്റ്റ് കോൾ|ഫോൺ (നമ്പർ )?നൽകുക|കൺസൾട്ടേഷൻ കോൾ|ടീം വിളിക്കണോ|\bvilik|വിളിക്കാമോ|വിളിക്കുമോ)/i;
+  const RE_PIN = /^(check( my)? pin ?code( delivery)?|enter pin ?code|pin ?code|check delivery|പിൻകോഡ് നൽകുക)/i;
+  const RE_UPDATE = /^update my (number|details)/i;
+  const RE_SKIP = /^(skip|no|cancel|venda|not now|no thanks|chat with lumi|സ്കിപ്പ് ചെയ്യുക)$/i;
+  const RE_ORDER = /^(order|buy|view)\s+(.+)/i;
+  const RE_ALL_MODELS = /^((view|explore|see)( all)?( 8)? (models|mattresses)|എല്ലാ മോഡലുകളും കാണുക)$/i;
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function resolveModelId(input) {
+    if (!input) return null;
+    if (typeof input === 'object') {
+      if (input.id && PRODUCTS_2_0[input.id]) return input.id;
+      input = input.name || '';
+    }
+    const lower = String(input).toLowerCase();
+    for (const [alias, id] of MODEL_NAME_ALIASES) {
+      if (lower.includes(alias)) return id;
+    }
+    return null;
+  }
+
+  function productUrl(id) {
+    return 'product.html?model=' + encodeURIComponent(id);
+  }
+
+  function currentModelId() {
+    try {
+      const m = new URLSearchParams(window.location.search).get('model');
+      if (m && PRODUCTS_2_0[m] && /product/i.test(window.location.pathname)) return m;
+    } catch (e) {}
+    return null;
+  }
+
+  function isHomePage() {
+    return !!document.getElementById('the-collection');
+  }
+
+  // Navigate to a product page (or just reveal it if the customer is already on it)
+  function goToProduct(id) {
+    if (!id || !PRODUCTS_2_0[id]) return false;
+    if (currentModelId() === id) {
+      toggleChat(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return true;
+    }
+    window.location.href = productUrl(id);
+    return true;
+  }
+
+  function goToCollection() {
+    const section = document.getElementById('the-collection');
+    if (section) {
+      toggleChat(false);
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.href = 'index.html#the-collection';
+    }
+  }
+
+  function loadLeadSession() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(LEAD_SESSION_KEY) || 'null');
+      if (saved) {
+        state.leadData.phone = saved.phone || '';
+        state.leadData.pincode = saved.pincode || '';
+        state.leadSubmitted = !!saved.submitted;
+        state.lastSubmittedKey = saved.key || '';
+      }
+    } catch (e) {}
+  }
+
+  function saveLeadSession() {
+    try {
+      sessionStorage.setItem(LEAD_SESSION_KEY, JSON.stringify({
+        phone: state.leadData.phone,
+        pincode: state.leadData.pincode,
+        submitted: state.leadSubmitted,
+        key: state.lastSubmittedKey
+      }));
+    } catch (e) {}
+  }
+
+  function normalizePhone(raw) {
+    let d = String(raw || '').replace(/\D/g, '');
+    if (d.length === 12 && d.startsWith('91')) d = d.slice(2);
+    if (d.length === 11 && d.startsWith('0')) d = d.slice(1);
+    return /^[6-9]\d{9}$/.test(d) && d !== SUPPORT_PHONE ? d : null;
+  }
+
+  function pincodeDelivery(pin) {
+    const p2 = String(pin).slice(0, 2);
+    let hub = 'our Pan-India delivery network';
+    let days = '3 to 5 business days';
+    if (p2 === '56') { hub = 'our Bengaluru Hub'; days = '1 to 2 business days'; }
+    else if (p2 >= '67' && p2 <= '69') { hub = 'our Kerala & Kochi Hub'; days = '2 to 3 business days'; }
+    else if (p2 === '40' || p2 === '41') { hub = 'our Mumbai & Pune Hub'; days = '2 to 3 business days'; }
+    else if (['11', '12', '20'].includes(p2)) { hub = 'our Delhi NCR Hub'; days = '2 to 4 business days'; }
+    else if (p2 === '60') { hub = 'our Chennai Hub'; days = '2 to 3 business days'; }
+    else if (p2 === '50') { hub = 'our Hyderabad Hub'; days = '2 to 3 business days'; }
+    return { hub, days };
+  }
+
+  loadLeadSession();
 
   // Helper to extract currently viewed mattress context from PDP
   function getPageContext() {
@@ -387,99 +512,131 @@
     if (state.currentLang === 'ml') {
       appendMessage(
         'assistant',
-        `നമസ്കാരം! ഞാൻ ലൂമി, ലോറയുടെ സ്ലീപ്പ് ഗൈഡ് \n\nനിങ്ങൾക്ക് ഏറ്റവും അനുയോജ്യമായ മെത്ത കണ്ടെത്താനും വാറന്റി, അളവുകൾ, ഡെലിവറി എന്നിവ പരിശോധിക്കാനും സഹായിക്കാം. നിങ്ങൾ ഇപ്പോൾ കാണുന്നത് **${ctx.productName}** ആണ്.`
+        `നമസ്കാരം! ഞാൻ ലൂമി, ലോറയുടെ സ്ലീപ്പ് ഗൈഡ് \n\nനിങ്ങൾക്ക് ഏറ്റവും അനുയോജ്യമായ മെത്ത കണ്ടെത്താനും വാറന്റി, അളവുകൾ, ഡെലിവറി എന്നിവ പരിശോധിക്കാനും സഹായിക്കാം.${ctx.productName ? ` നിങ്ങൾ ഇപ്പോൾ കാണുന്നത് **${ctx.productName}** ആണ്.` : ''}`
       );
       renderQuickOptions(['നടുവേദനയ്ക്ക് ഏതാണ് നല്ലത്?', 'കപ്പിൾസ് മെത്ത (Zero Motion)', 'ക്ലൗഡ് 7 vs ക്ലൗഡ് ഓർത്തോ', 'ഫ്ലാറ്റ് ഡെലിവറി എന്തുകൊണ്ട്?', 'സ്പെഷ്യലിസ്റ്റ് കോൾ']);
     } else if (state.currentLang === 'manglish') {
       appendMessage(
         'assistant',
-        `Namaskaram! Njan Lumi, Lora's Sleep Guide \n\nNingalkku perfect mattress find cheyyaan, warranty, size and flat delivery check cheyyaan njan help cheyyam. You are currently exploring **${ctx.productName}**.`
+        `Namaskaram! Njan Lumi, Lora's Sleep Guide \n\nNingalkku perfect mattress find cheyyaan, warranty, size and flat delivery check cheyyaan njan help cheyyam. ${ctx.productName ? ` You are currently exploring **${ctx.productName}**.` : ''}`
       );
       renderQuickOptions(['Best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Why flat delivery?', 'Request Specialist Call']);
     } else {
       appendMessage(
         'assistant',
-        `Hello! I’m Lumi, your personal Lora sleep guide \n\nI can help you explore our 8 handcrafted models, compare firmness feels, check warranties, review bed sizing, or arrange a direct factory consultation. You're currently exploring **${ctx.productName}**.`
+        `Hello! I’m Lumi, your personal Lora sleep guide \n\nI can help you explore our 8 handcrafted models, compare firmness feels, check warranties, review bed sizing, or arrange a direct factory consultation.${ctx.productName ? ` You're currently exploring **${ctx.productName}**.` : ''}`
       );
       renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Compare Cloud 7 vs Cloud Ortho', 'Why flat delivery?', 'Request Specialist Call']);
     }
   }
 
-  // Append a message bubble (supports optional interactive product card)
+  // Append a message bubble (supports optional interactive product card / lead card)
   function appendMessage(sender, text, card) {
     const messagesEl = document.getElementById('lumi-messages');
     if (!messagesEl) return;
 
-    state.history.push({ sender, text, card });
+    state.history.push({ sender, text, card: card && card.name ? { id: card.id, name: card.name } : null });
 
     const row = document.createElement('div');
     row.className = `lumi-msg-row ${sender}`;
 
-    let formattedText = (text || '')
+    // Escape first (user text and server text are untrusted), then apply the tiny markdown subset
+    const formattedText = escapeHtml(text || '')
       .replace(/\n\n/g, '<br><br>')
       .replace(/\n/g, '<br>')
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
     let cardHtml = '';
     if (card && card.name) {
+      const pid = resolveModelId(card);
+      const shortName = escapeHtml(String(card.name).replace(/^LORA\s+/i, ''));
+      const onThisPage = pid && pid === currentModelId();
+      const actions = pid
+        ? `<div class="lumi-card-actions">
+            <a class="lumi-card-btn" href="${productUrl(pid)}" data-lumi-action="open-product" data-model="${pid}">
+              ${onThisPage ? 'You’re viewing this — see details ↑' : `Explore ${shortName} →`}
+            </a>
+            <button type="button" class="lumi-card-btn-ghost" data-lumi-action="ask" data-q="${escapeHtml('Price for ' + String(card.name).replace(/^LORA\s+/i, ''))}">Check price</button>
+          </div>`
+        : `<button type="button" class="lumi-card-btn" data-lumi-action="ask" data-q="${escapeHtml('Tell me more about ' + card.name)}">Explore ${shortName} →</button>`;
       cardHtml = `
         <div class="lumi-product-card-embed">
           <div class="lumi-card-header">
-            <span class="lumi-card-tag">${card.type || 'Mattress'}</span>
-            ${card.warranty ? `<span class="lumi-card-warranty"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> ${card.warranty} Warranty</span>` : ''}
+            <span class="lumi-card-tag">${escapeHtml(card.type || 'Mattress')}</span>
+            ${card.warranty ? `<span class="lumi-card-warranty"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> ${escapeHtml(card.warranty)} Warranty</span>` : ''}
           </div>
-          <h5 class="lumi-card-title">${card.name}</h5>
+          <h5 class="lumi-card-title">${escapeHtml(card.name)}</h5>
           <div class="lumi-card-specs">
-            <span class="lumi-spec-pill">Feel: <strong>${card.feel || 'Balanced'}</strong></span>
-            ${card.height && card.height !== 'Unconfirmed' ? `<span class="lumi-spec-pill">Height: <strong>${card.height}</strong></span>` : ''}
-            ${card.price ? `<span class="lumi-spec-pill lumi-spec-price">Price: <strong>${card.price}</strong></span>` : ''}
+            <span class="lumi-spec-pill">Feel: <strong>${escapeHtml(card.feel || 'Balanced')}</strong></span>
+            ${card.height && card.height !== 'Unconfirmed' ? `<span class="lumi-spec-pill">Height: <strong>${escapeHtml(card.height)}</strong></span>` : ''}
+            ${card.price ? `<span class="lumi-spec-pill lumi-spec-price">Price: <strong>${escapeHtml(card.price)}</strong></span>` : ''}
           </div>
-          <button type="button" class="lumi-card-btn" onclick="window.LoraLumi.ask('Tell me more about ${card.name}')">
-            Explore ${card.name.replace('LORA ', '')} →
-          </button>
+          ${actions}
         </div>
       `;
     }
 
-    // 2-Column Structured Lead Capture Card Embed
-    let leadCardHtml = '';
-    if (card && (card.showLeadCard || card.suggestLead)) {
-      const cardId = 'lead-card-' + Math.random().toString(36).substr(2, 7);
-      leadCardHtml = `
-        <div class="lumi-lead-card" id="${cardId}">
-          <div class="lumi-lead-card-header">
-            <span class="lumi-lead-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-            <div>
-              <h5 class="lumi-lead-card-title">Share Contact & PIN for Direct Callback</h5>
-              <p class="lumi-lead-card-sub">Instant factory pricing, pincode delivery timeline & senior sleep consultation.</p>
-            </div>
-          </div>
-          <div class="lumi-lead-cols">
-            <div class="lumi-lead-col">
-              <label class="lumi-lead-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Mobile Number</label>
-              <div class="lumi-lead-input-wrap">
-                <span class="lumi-lead-prefix">+91</span>
-                <input type="tel" class="lumi-lead-input" id="${cardId}-phone" placeholder="10-digit mobile" maxlength="10" value="${state.leadData.phone || ''}">
-              </div>
-            </div>
-            <div class="lumi-lead-col">
-              <label class="lumi-lead-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Delivery PIN Code</label>
-              <div class="lumi-lead-input-wrap">
-                <input type="text" class="lumi-lead-input" id="${cardId}-pin" placeholder="6-digit PIN" maxlength="6" value="${state.leadData.pincode || ''}" style="padding-left: 8px;">
-              </div>
-            </div>
-          </div>
-          <button type="button" class="lumi-lead-btn" onclick="window.LoraLumi.submitLeadCard(this, '${cardId}')">
-            Share Details & Request Callback →
-          </button>
-          <div class="lumi-lead-privacy"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your contact details are strictly private & only used to verify delivery & call you.</div>
-        </div>
-      `;
-    }
+    const leadCardHtml = (card && (card.showLeadCard || card.suggestLead)) ? buildLeadCardHtml(card.leadMode || nextLeadMode()) : '';
 
     row.innerHTML = `<div class="lumi-msg-bubble">${formattedText}${cardHtml}${leadCardHtml}</div>`;
     messagesEl.appendChild(row);
     messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    if (leadCardHtml && window.innerWidth > 768) {
+      const first = row.querySelector('.lumi-lead-input');
+      if (first) setTimeout(() => first.focus(), 150);
+    }
+  }
+
+  // Which single detail should we ask for next? (one question at a time)
+  function nextLeadMode() {
+    if (!state.leadData.phone) return 'phone';
+    if (!state.leadData.pincode) return 'pin';
+    return 'phone';
+  }
+
+  // Compact one-field lead card. Only one active card exists at a time.
+  function buildLeadCardHtml(mode) {
+    retirePendingCard(null);
+    const cardId = 'lead-card-' + Math.random().toString(36).slice(2, 9);
+    state.pendingLeadCardId = cardId;
+    const isPin = mode === 'pin';
+    const title = isPin ? 'Delivery PIN code' : 'Mobile number for a callback';
+    const label = isPin ? 'PIN Code' : 'Mobile Number';
+    const field = isPin
+      ? `<input type="text" inputmode="numeric" autocomplete="postal-code" class="lumi-lead-input" id="${cardId}-pin" placeholder="6-digit PIN (e.g. 682001)" maxlength="6" value="${escapeHtml(state.leadData.pincode || '')}" style="padding-left: 10px;">`
+      : `<span class="lumi-lead-prefix">+91</span><input type="tel" inputmode="numeric" autocomplete="tel-national" class="lumi-lead-input" id="${cardId}-phone" placeholder="10-digit mobile" maxlength="14" value="${escapeHtml(state.leadData.phone || '')}">`;
+    return `
+      <div class="lumi-lead-card" id="${cardId}" data-mode="${isPin ? 'pin' : 'phone'}">
+        <div class="lumi-lead-card-header">
+          <span class="lumi-lead-card-icon">${isPin
+            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>'}</span>
+          <div>
+            <h5 class="lumi-lead-card-title">${title}</h5>
+            <p class="lumi-lead-card-sub">${isPin ? 'Used only to confirm delivery timelines.' : 'Used only by our sleep specialist to call you.'}</p>
+          </div>
+        </div>
+        <div class="lumi-lead-col">
+          <label class="lumi-lead-label" for="${cardId}-${isPin ? 'pin' : 'phone'}">${label}</label>
+          <div class="lumi-lead-input-wrap">${field}</div>
+          <div class="lumi-lead-error" id="${cardId}-error" role="alert" style="display:none;"></div>
+        </div>
+        <button type="button" class="lumi-lead-btn" data-lumi-action="submit-lead" data-card-id="${cardId}">${isPin ? 'Continue →' : 'Continue →'}</button>
+        <div class="lumi-lead-privacy"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Private &amp; never shared.</div>
+      </div>
+    `;
+  }
+
+  // Replace the active lead card (if any) so stale forms never pile up in the chat
+  function retirePendingCard(replacementHtml) {
+    const id = state.pendingLeadCardId;
+    state.pendingLeadCardId = null;
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (replacementHtml) el.outerHTML = replacementHtml;
+    else el.remove();
   }
 
   // Typing indicator
@@ -543,6 +700,8 @@
       }
     }
 
+    if (phone === SUPPORT_PHONE) phone = null;
+
     const pinPattern = /\b([1-9][0-9]{5})\b/g;
     const pinMatches = str.match(pinPattern);
     if (pinMatches) {
@@ -563,115 +722,231 @@
     return { phone, pincode, name };
   }
 
-  // Lead Collection State Machine (Customer First & Direct)
+  // ---------------------------------------------------------------------------
+  // Lead collection — ONE question at a time (mobile first, then PIN), no loops
+  // ---------------------------------------------------------------------------
+  function clearLeadPrompt() {
+    state.leadStep = null;
+    state.pinPurpose = null;
+  }
+
+  function filterPills(options) {
+    const lastUser = [...state.history].reverse().find(m => m.sender === 'user');
+    const lastText = lastUser ? String(lastUser.text).trim().toLowerCase() : '';
+    const seen = new Set();
+    return (options || []).filter(opt => {
+      const key = String(opt).trim().toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      if (key === lastText) return false; // never offer the exact pill the customer just tapped
+      if (state.leadSubmitted && RE_LEAD.test(opt)) return false; // lead already captured
+      return true;
+    }).slice(0, 4);
+  }
+
+  function askForPhone(intro) {
+    state.leadStep = 'phone';
+    state.pinPurpose = null;
+    appendMessage('assistant', intro || "Happy to arrange that! 😊 Our senior sleep specialist will call you for a free, no-obligation consultation.\n\nWhat's the best **mobile number** to reach you?", { showLeadCard: true, leadMode: 'phone' });
+    renderQuickOptions(['Skip', 'Call +91 95676 84770']);
+  }
+
+  function askForPin() {
+    state.leadStep = 'pin';
+    state.pinPurpose = null;
+    appendMessage('assistant', `Thanks! 📱 **+91 ${state.leadData.phone}** noted.\n\nOne last thing — which **6-digit PIN code** should we deliver to? It lets our specialist confirm delivery timelines for your area.`, { showLeadCard: true, leadMode: 'pin' });
+    renderQuickOptions(['Skip']);
+  }
+
+  function startLead() {
+    if (state.leadSubmitted && state.leadData.phone) {
+      clearLeadPrompt();
+      appendMessage('assistant', `You're all set ✓ Our sleep specialist will call you at **+91 ${state.leadData.phone}**${state.leadData.pincode ? ` (PIN ${state.leadData.pincode})` : ''} shortly.\n\nWould you like to use a different number, or can I help with anything else meanwhile?`);
+      renderQuickOptions(['Update my number', 'Call +91 95676 84770', 'Which is best for back pain?', 'Check Prices']);
+      return;
+    }
+    if (state.leadData.phone && state.leadData.pincode) { submitLead(); return; }
+    if (state.leadData.phone) { askForPin(); return; }
+    if (state.leadData.pincode) {
+      askForPhone(`Sure! I already have your PIN **${state.leadData.pincode}**. What's the best **mobile number** for our specialist to call?`);
+      return;
+    }
+    askForPhone();
+  }
+
+  function askDeliveryPin() {
+    state.pinPurpose = 'delivery';
+    state.leadStep = null;
+    appendMessage('assistant', "Sure! Type your **6-digit PIN code** and I'll check delivery timelines for your area.", { showLeadCard: true, leadMode: 'pin' });
+    renderQuickOptions(state.leadData.pincode ? [state.leadData.pincode, 'Skip'] : ['Skip']);
+  }
+
+  function replyDelivery(pin) {
+    const d = pincodeDelivery(pin);
+    state.pinPurpose = null;
+    let text = `✓ PIN **${pin}** is serviceable via ${d.hub} — delivery usually takes **${d.days}**, 100% full-size and flat (never rolled).`;
+    if (state.leadStep === 'phone' && !state.leadData.phone) {
+      text += "\n\nAnd what's your **mobile number** so our specialist can call you?";
+      appendMessage('assistant', text, { showLeadCard: true, leadMode: 'phone' });
+      renderQuickOptions(['Skip']);
+      return;
+    }
+    state.leadStep = null;
+    saveLeadSession();
+    appendMessage('assistant', text);
+    renderQuickOptions(filterPills(state.leadSubmitted
+      ? ['Which is best for back pain?', 'Check Prices', 'Size Guide']
+      : ['Request Specialist Call', 'Check Prices', 'Which is best for back pain?']));
+  }
+
   function handleLeadFlow(userInput) {
     const val = (userInput || '').trim();
-    const lower = val.toLowerCase();
+    const info = extractContactInfo(val) || {};
+    const active = state.leadStep || state.pinPurpose;
 
-    // User opts out of lead collection
-    if (state.leadStep > 0 && (lower === 'skip' || lower === 'no' || lower === 'cancel' || lower === 'venda')) {
-      state.leadStep = 0;
-      appendMessage('assistant', "No problem at all! Feel free to ask anything else about our 8 handcrafted mattresses, feel, or sizing.");
-      renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Why flat delivery?']);
+    if (active && RE_SKIP.test(val)) {
+      clearLeadPrompt();
+      retirePendingCard(null);
+      appendMessage('assistant', "No problem at all! Ask me anything about our 8 mattresses — feel, sizes, prices or delivery.");
+      renderQuickOptions(DEFAULT_PILLS.filter(p => !RE_LEAD.test(p)));
       return true;
     }
 
-    const info = extractContactInfo(val);
+    if (info.name) state.leadData.name = info.name;
 
-    // If phone number is provided anywhere in text
-    if (info && info.phone) {
+    if (info.phone) {
       state.leadData.phone = info.phone;
       if (info.pincode) state.leadData.pincode = info.pincode;
-      if (info.name) state.leadData.name = info.name;
-
-      if (state.leadData.pincode) {
-        state.leadStep = 0;
-        submitLeadToAdmin();
-        return true;
-      } else {
-        state.leadStep = 2;
-        appendMessage(
-          'assistant',
-          `Got your number: **+91 ${state.leadData.phone}**! What is your 6-digit delivery **pincode** so our sleep specialist can verify exact delivery timelines for your area?`,
-          { showLeadCard: true }
-        );
-        renderQuickOptions(['Skip']);
-        return true;
-      }
-    }
-
-    // If waiting for PIN code and user entered a 6-digit pin
-    if (state.leadStep === 2 && info && info.pincode) {
-      state.leadData.pincode = info.pincode;
-      state.leadStep = 0;
-      submitLeadToAdmin();
+      saveLeadSession();
+      if (state.leadData.pincode) submitLead();
+      else askForPin(); // a DIFFERENT follow-up question, not the same prompt again
       return true;
     }
 
-    // If prompt asked for lead and user enters just PIN code
-    if (state.leadStep === 1 && /^\d{6}$/.test(val)) {
-      state.leadData.pincode = val;
-      state.leadStep = 3;
-      appendMessage(
-        'assistant',
-        `PIN code ${val} noted! What **contact number** should our sleep specialist call you on?`,
-        { showLeadCard: true }
-      );
+    if (info.pincode && (active || /^\D*\d{6}\D*$/.test(val))) {
+      state.leadData.pincode = info.pincode;
+      saveLeadSession();
+      if (state.leadStep === 'pin' && state.leadData.phone) { submitLead(); return true; }
+      retirePendingCard(null);
+      replyDelivery(info.pincode);
+      return true;
+    }
+
+    if (active && /\d{5,}/.test(val.replace(/[\s-]/g, ''))) {
+      const askingPin = state.leadStep === 'pin' || state.pinPurpose === 'delivery';
+      appendMessage('assistant', askingPin
+        ? "Hmm, that doesn't look like a valid 6-digit PIN code. Could you re-check it? (e.g. 682001)"
+        : "That doesn't look like a valid 10-digit Indian mobile number. Could you re-check it? (e.g. 98765 43210)");
       renderQuickOptions(['Skip']);
       return true;
     }
 
-    // If user asked a new question while leadStep was open, reset leadStep and let question proceed
-    if (state.leadStep > 0 && !info.phone && !info.pincode) {
-      state.leadStep = 0;
-      return false;
-    }
-
+    // Customer asked something else — leave the card in place but stop waiting for it
+    if (active) clearLeadPrompt();
     return false;
   }
 
-  // Save Lead securely to Admin API & LocalStorage
-  async function submitLeadToAdmin() {
+  // Quick-reply actions that must never be sent to the server (they caused the loops)
+  function handleLocalIntent(text) {
+    const val = (text || '').trim();
+    const lower = val.toLowerCase();
+
+    if (RE_DIRECT_CALL.test(val)) {
+      appendMessage('assistant', "Calling our sleep team at **+91 95676 84770** 📞 (Mon–Sat, 9 AM – 8 PM). If the call doesn't start, just dial the number from your phone.");
+      renderQuickOptions(filterPills(['Request Specialist Call', 'Which is best for back pain?', 'Check Prices']));
+      try { window.location.href = 'tel:+919567684770'; } catch (e) {}
+      return true;
+    }
+    if (RE_UPDATE.test(val)) {
+      state.leadSubmitted = false;
+      state.leadData.phone = '';
+      state.lastSubmittedKey = '';
+      saveLeadSession();
+      askForPhone("Sure — what's the new **mobile number** we should call?");
+      return true;
+    }
+    if (RE_SKIP.test(val)) {
+      clearLeadPrompt();
+      appendMessage('assistant', "Sure! Ask me anything — back pain, couples, cooling, sizes, prices or delivery.");
+      renderQuickOptions(DEFAULT_PILLS.filter(p => !RE_LEAD.test(p)));
+      return true;
+    }
+    if (RE_PIN.test(val)) { askDeliveryPin(); return true; }
+    if (RE_LEAD.test(val)) { startLead(); return true; }
+    if (RE_ALL_MODELS.test(val)) {
+      appendMessage('assistant', isHomePage() ? 'Taking you to the full collection of 8 mattresses ↓' : 'Opening the full collection of 8 mattresses…');
+      setTimeout(goToCollection, 350);
+      return true;
+    }
+    const orderMatch = val.match(RE_ORDER);
+    if (orderMatch) {
+      const id = resolveModelId(orderMatch[2]);
+      if (id) {
+        appendMessage('assistant', currentModelId() === id
+          ? `You're already on **${PRODUCTS_2_0[id].name}** — pick your size and thickness above to see the exact price.`
+          : `Opening **${PRODUCTS_2_0[id].name}** for you…`);
+        setTimeout(() => goToProduct(id), 350);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Save Lead securely to Admin API & LocalStorage (deduplicated per session)
+  async function submitLead() {
+    const phone = state.leadData.phone;
+    const pin = state.leadData.pincode;
+    clearLeadPrompt();
+    const key = `${phone}|${pin}`;
+    if (state.leadSubmitted && state.lastSubmittedKey === key) {
+      retirePendingCard(null);
+      appendMessage('assistant', `You're already registered ✓ Our specialist will call **+91 ${phone}** shortly.`);
+      renderQuickOptions(filterPills(['Which is best for back pain?', 'Check Prices', 'View All 8 Models']));
+      return;
+    }
+
     const ctx = getPageContext();
+    const lastModel = [...state.history].reverse().find(m => m.card && m.card.name);
     const payload = {
       id: 'lumi-' + Date.now(),
       name: state.leadData.name || 'Storefront Customer',
-      phone: state.leadData.phone || '',
-      pincode: state.leadData.pincode || '',
+      phone,
+      pincode: pin,
       place: state.leadData.place || '',
-      preferredMattress: ctx.productName || 'LORA Mattress Consultation',
+      preferredMattress: ctx.productName || (lastModel ? lastModel.card.name : 'LORA Mattress Consultation'),
       preferredSize: ctx.size || 'Standard Size',
       preferredThickness: ctx.thickness || 'Standard Thickness',
-      summary: `Customer consultation for ${ctx.productName || 'Mattress selection'}. Contact: ${state.leadData.phone}, PIN: ${state.leadData.pincode}`,
-      source: 'Lumi AI Sleep Assistant (Realtime Chatbot)',
+      summary: `Callback via Lumi for ${ctx.productName || (lastModel ? lastModel.card.name : 'mattress selection')}. Phone: ${phone}, PIN: ${pin}`,
+      source: 'Lumi AI Sleep Assistant',
       resultType: 'lumi_consultation',
       status: 'New',
       createdAt: new Date().toISOString()
     };
 
-    let serverSuccess = false;
+    state.leadSubmitted = true;
+    state.lastSubmittedKey = key;
+    saveLeadSession();
+    retirePendingCard('<div class="lumi-lead-confirmed-card"><div class="lumi-confirmed-title">✓ Details received</div></div>');
 
     try {
-      const res = await fetch('/api/store-leads', {
+      await fetch('/api/store-leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (res.ok) serverSuccess = true;
     } catch (e) {}
-
     try {
       const localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]');
       localLeads.unshift(payload);
-      localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(localLeads));
-      serverSuccess = true;
+      localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(localLeads.slice(0, 50)));
     } catch (e) {}
 
+    const d = pincodeDelivery(pin);
     appendMessage(
       'assistant',
-      `✓ **Consultation Request Confirmed!**\n\nThank you! Your inquiry has been registered with our senior sleep team for PIN **${state.leadData.pincode || 'your area'}**. A specialist will call you shortly at **+91 ${state.leadData.phone}** to assist you personally with mattress selection and factory-direct pricing.`
+      `✓ **Callback request confirmed!**\n\nOur senior sleep specialist will call you at **+91 ${phone}** shortly. Delivery to PIN **${pin}** usually takes ${d.days}.\n\nMeanwhile, shall I help you compare models or check prices?`
     );
-    renderQuickOptions(['View All 8 Models', 'Check EMI Options', 'Size Guide']);
+    renderQuickOptions(['Which is best for back pain?', 'Check Prices', 'View All 8 Models']);
   }
 
   // Client-side fallback intelligence engine (Synchronized with 8 LORA Mattresses)
@@ -689,14 +964,9 @@
       return;
     }
 
-    // 2. Call / Callback / Contact / Phone request
-    if (lower.includes('call') || lower.includes('callback') || lower.includes('contact') || lower.includes('talk to team') || lower.includes('speak to') || lower.includes('vilikumo') || lower.includes('വിളിക്കാമോ') || lower.includes('phone') || lower.includes('number')) {
-      appendMessage(
-        'assistant',
-        "Certainly! Our senior sleep consultants provide one-on-one guidance on mattress thickness, customized sizes, and factory direct savings.\n\nPlease share your **mobile number** and **pincode** in the columns below so we can verify delivery and call you directly:",
-        { showLeadCard: true }
-      );
-      renderQuickOptions(['Which is best for back pain?', 'Why flat delivery?', 'Compare Cloud 7 vs Cloud Ortho']);
+    // 2. Call / Callback / Contact request -> one-question-at-a-time lead flow
+    if (RE_LEAD.test(lower) || /\b(call|contact|phone|callback)\b/.test(lower)) {
+      startLead();
       return;
     }
 
@@ -770,7 +1040,7 @@
       appendMessage(
         'assistant',
         "**LORA Factory-Direct Pricing Overview:**\n\n• **Cloud 7™**: Starting at ₹22,999 (Queen 78\"×60\")\n• **Cloud Ortho™**: Starting at ₹25,999\n• **Lora Plush™**: Starting at ₹24,999\n• **Ortho Hybrid™**: Starting at ₹27,999\n• **Ortho Latex™**: Starting at ₹29,999\n• **Comfort Core™**: Starting at ₹26,999\n• **Pocket Luxe™**: Starting at ₹28,999\n• **Hybrid Fusion™**: Starting at ₹34,999\n\n*All models eligible for Bajaj EMI assistance and complimentary premium sleep kit during launch!*",
-        { showLeadCard: true }
+        null
       );
       renderQuickOptions(['Check EMI Options', 'Measure Bed Dimensions', 'Request Specialist Call']);
       return;
@@ -781,7 +1051,7 @@
       appendMessage(
         'assistant',
         "**Standard & Custom Sizes Available:**\n\n• **King**: 78\" × 72\" | 75\" × 72\" | 72\" × 72\" | 84\" × 72\"\n• **Queen**: 78\" × 60\" | 75\" × 60\" | 72\" × 60\" | 78\" × 66\"\n• **Double**: 78\" × 48\" | 75\" × 48\" | 72\" × 48\"\n• **Single**: 78\" × 36\" | 75\" × 36\" | 72\" × 36\"\n\n**Custom Frame Dimensions**: Have an antique teak bed or non-standard frame? We custom-craft any length and width down to the exact millimeter at no extra delay!",
-        { showLeadCard: true }
+        null
       );
       renderQuickOptions(['Which is best for back pain?', 'Check Pincode', 'Request Specialist Call']);
       return;
@@ -804,36 +1074,16 @@
 
   // Send query to Lumi server API
   async function handleUserInput(userInput) {
+    userInput = String(userInput || '').trim();
     if (!userInput || state.isThinking) return;
 
     appendMessage('user', userInput);
     renderQuickOptions([]);
 
-    // Check if in active lead collection flow or if user supplied contact info
-    if (handleLeadFlow(userInput)) {
-      return;
-    }
-
-    // Check if user requested a call directly
-    const lower = userInput.toLowerCase();
-    if (
-      lower.includes('call') ||
-      lower.includes('callback') ||
-      lower.includes('contact') ||
-      lower.includes('talk to team') ||
-      lower.includes('speak to human') ||
-      lower.includes('speak to someone') ||
-      lower.includes('vilikumo') ||
-      lower.includes('വിളിക്കാമോ')
-    ) {
-      state.leadStep = 1;
-      appendMessage(
-        'assistant',
-        "Certainly! Our senior sleep specialists would be happy to give you a personalized consultation call.\n\nPlease share your **contact number** and **pincode** below so we can reach out with accurate advice and delivery options:"
-      );
-      renderQuickOptions(['Share Contact & PIN', 'Call +91 95676 84770']);
-      return;
-    }
+    // 1. Contact / PIN answers and lead-flow control
+    if (handleLeadFlow(userInput)) return;
+    // 2. Pill actions handled locally (callback, pincode check, open product, call us)
+    if (handleLocalIntent(userInput)) return;
 
     state.isThinking = true;
     showTypingIndicator();
@@ -848,34 +1098,46 @@
         body: JSON.stringify({
           message: userInput,
           context: ctx,
-          history: state.history.slice(-6)
+          history: state.history.slice(-8, -1),
+          lead: { hasPhone: !!state.leadData.phone, hasPin: !!state.leadData.pincode, submitted: state.leadSubmitted }
         })
       });
 
       hideTypingIndicator();
       state.isThinking = false;
 
-      if (res.ok) {
-        const data = await res.json();
-        appendMessage('assistant', data.reply, data.card);
-        renderQuickOptions(data.quickOptions || ['Help me choose', 'Find my size', 'Compare mattresses']);
+      if (!res.ok) throw new Error('API returned status ' + res.status);
+      const data = await res.json();
+      let reply = data.reply || '';
+      let card = data.card || null;
+      let pills = data.quickOptions || ['Help me choose', 'Find my size', 'Compare mattresses'];
 
-        if (data.suggestLead) {
-          state.leadStep = 1;
-        }
-        if (data.leadRegistered) {
-          state.leadStep = 0;
-          if (data.lead) {
-            try {
-              const localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]');
-              localLeads.unshift(data.lead);
-              localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(localLeads));
-            } catch (e) {}
-          }
-        }
-      } else {
-        throw new Error('API returned status ' + res.status);
+      // Never print the exact same answer twice in a row
+      const lastAssistant = [...state.history].reverse().find(m => m.sender === 'assistant');
+      if (lastAssistant && lastAssistant.text === reply) {
+        reply = "I've covered that just above ☝️ Would you like to look at it from a different angle — exact price, size, or a comparison with another model?";
+        card = null;
+        pills = ['Check Prices', 'Compare mattresses', 'Size Guide', 'Request Specialist Call'];
       }
+
+      if (data.leadRegistered && data.lead && data.lead.phone) {
+        state.leadData.phone = String(data.lead.phone).slice(-10);
+        if (data.lead.pincode) {
+          state.leadData.pincode = data.lead.pincode;
+          state.leadSubmitted = true;
+          state.lastSubmittedKey = `${state.leadData.phone}|${state.leadData.pincode}`;
+        }
+        saveLeadSession();
+      }
+
+      if (data.suggestLead && !state.leadSubmitted) {
+        const mode = nextLeadMode();
+        card = Object.assign({}, card || {}, { showLeadCard: true, leadMode: mode });
+        state.leadStep = mode;
+      }
+
+      appendMessage('assistant', reply, card);
+      renderQuickOptions(filterPills(pills));
     } catch (err) {
       hideTypingIndicator();
       state.isThinking = false;
@@ -886,7 +1148,8 @@
   // Clear / Reset chat
   function resetChat() {
     state.history = [];
-    state.leadStep = 0;
+    clearLeadPrompt();
+    state.pendingLeadCardId = null;
     const messagesEl = document.getElementById('lumi-messages');
     if (messagesEl) messagesEl.innerHTML = '';
     sendWelcomeMessage();
@@ -986,6 +1249,44 @@
       };
     }
 
+    // Context strip "Check Pincode" button
+    if (checkPinBtn) {
+      checkPinBtn.onclick = (e) => {
+        e.preventDefault();
+        toggleChat(true);
+        askDeliveryPin();
+      };
+    }
+
+    // Delegated actions inside messages (product links, ask buttons, lead cards)
+    const messagesBox = document.getElementById('lumi-messages');
+    if (messagesBox) {
+      messagesBox.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-lumi-action]');
+        if (!el) return;
+        const action = el.getAttribute('data-lumi-action');
+        if (action === 'open-product') {
+          // Allow ctrl/cmd/middle-click to open in a new tab normally
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+          e.preventDefault();
+          goToProduct(el.getAttribute('data-model'));
+        } else if (action === 'ask') {
+          e.preventDefault();
+          handleUserInput(el.getAttribute('data-q'));
+        } else if (action === 'submit-lead') {
+          e.preventDefault();
+          window.LoraLumi.submitLeadCard(el, el.getAttribute('data-card-id'));
+        }
+      });
+      messagesBox.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' || !e.target.classList.contains('lumi-lead-input')) return;
+        e.preventDefault();
+        const cardEl = e.target.closest('.lumi-lead-card');
+        const btn = cardEl && cardEl.querySelector('[data-lumi-action="submit-lead"]');
+        if (btn) btn.click();
+      });
+    }
+
     // Language switcher buttons
     document.querySelectorAll('.lumi-lang-btn').forEach(btn => {
       btn.onclick = () => {
@@ -1022,86 +1323,42 @@
     },
     requestLeadCard: () => {
       toggleChat(true);
-      appendMessage(
-        'assistant',
-        "Certainly! Please share your contact number and delivery pincode below so our senior sleep specialist can check factory availability and call you directly:",
-        { showLeadCard: true }
-      );
+      startLead();
     },
-    submitLeadCard: async function (btn, cardId) {
-      const phoneEl = document.getElementById(`${cardId}-phone`);
-      const pinEl = document.getElementById(`${cardId}-pin`);
-      const phoneVal = (phoneEl ? phoneEl.value : '').replace(/\D/g, '');
-      const pinVal = (pinEl ? pinEl.value : '').replace(/\D/g, '');
-
-      if (!phoneVal || phoneVal.length < 10) {
-        if (phoneEl) {
-          phoneEl.focus();
-          phoneEl.style.borderColor = '#EF4444';
-        }
-        alert('Please enter a valid 10-digit mobile number.');
-        return;
-      }
-      if (!pinVal || pinVal.length !== 6) {
-        if (pinEl) {
-          pinEl.focus();
-          pinEl.style.borderColor = '#EF4444';
-        }
-        alert('Please enter a valid 6-digit delivery PIN code.');
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = '⏳ Registering Request...';
-
-      state.leadData.phone = phoneVal.slice(-10);
-      state.leadData.pincode = pinVal;
-
-      const ctx = getPageContext();
-      const payload = {
-        id: 'lumi-' + Date.now(),
-        name: state.leadData.name || 'Storefront Customer',
-        phone: state.leadData.phone,
-        pincode: state.leadData.pincode,
-        place: '',
-        preferredMattress: ctx.productName || 'LORA Mattress Consultation',
-        preferredSize: ctx.size || 'Standard Size',
-        preferredThickness: ctx.thickness || 'Standard Thickness',
-        summary: `Customer callback request for ${ctx.productName || 'Mattress selection'}. Phone: ${state.leadData.phone}, PIN: ${state.leadData.pincode}`,
-        source: 'Lumi Sleep Guide (Structured 2-Column Lead Card)',
-        resultType: 'lumi_consultation',
-        status: 'New',
-        createdAt: new Date().toISOString()
+    submitLeadCard: function (btn, cardId) {
+      const cardEl = document.getElementById(cardId);
+      if (!cardEl) return;
+      const mode = cardEl.getAttribute('data-mode') || 'phone';
+      const errEl = document.getElementById(`${cardId}-error`);
+      const showErr = (msg, input) => {
+        if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+        if (input) { input.focus(); input.closest('.lumi-lead-input-wrap').style.borderColor = '#EF4444'; }
       };
 
-      try {
-        await fetch('/api/store-leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {}
-
-      try {
-        const localLeads = JSON.parse(localStorage.getItem(STORE_LEADS_STORAGE_KEY) || '[]');
-        localLeads.unshift(payload);
-        localStorage.setItem(STORE_LEADS_STORAGE_KEY, JSON.stringify(localLeads));
-      } catch (e) {}
-
-      const cardContainer = document.getElementById(cardId);
-      if (cardContainer) {
-        cardContainer.outerHTML = `
-          <div class="lumi-lead-confirmed-card">
-            <div class="lumi-confirmed-title">✓ Callback Request Registered!</div>
-            <div class="lumi-confirmed-details">
-              Thank you! Our senior sleep consultant will call you at <strong>+91 ${state.leadData.phone}</strong> for PIN <strong>${state.leadData.pincode}</strong> with verified factory-direct pricing and delivery timings.
-            </div>
-          </div>
-        `;
+      if (mode === 'phone') {
+        const input = document.getElementById(`${cardId}-phone`);
+        const phone = normalizePhone(input ? input.value : '');
+        if (!phone) return showErr('Please enter a valid 10-digit Indian mobile number.', input);
+        state.leadData.phone = phone;
+        saveLeadSession();
+        appendMessage('user', `+91 ${phone}`);
+        if (state.leadData.pincode) submitLead();
+        else { retirePendingCard(null); askForPin(); }
+        return;
       }
 
-      state.leadStep = 0;
-      renderQuickOptions(['Which is best for back pain?', 'Zero motion for couples?', 'Why flat delivery?']);
+      const input = document.getElementById(`${cardId}-pin`);
+      const pin = String(input ? input.value : '').replace(/\D/g, '');
+      if (!/^[1-9]\d{5}$/.test(pin)) return showErr('Please enter a valid 6-digit PIN code.', input);
+      state.leadData.pincode = pin;
+      saveLeadSession();
+      appendMessage('user', pin);
+      if (state.pinPurpose !== 'delivery' && state.leadData.phone && !state.leadSubmitted) {
+        submitLead();
+      } else {
+        retirePendingCard(null);
+        replyDelivery(pin);
+      }
     }
   };
 

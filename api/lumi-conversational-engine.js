@@ -192,6 +192,8 @@ function extractContactInfo(text) {
     }
   }
 
+  if (phone === '9567684770') phone = null; // Lora support line (appears in quick replies)
+
   // 2. PIN code matching: 6 digits starting with 1-9
   const pinPattern = /\b([1-9][0-9]{5})\b/g;
   const pinMatches = str.match(pinPattern);
@@ -305,6 +307,101 @@ function getDynamicPrice(modelId, sizeStr, thickStr) {
 
   const finalVal = Math.round(base * mult + offset);
   return '₹' + finalVal.toLocaleString('en-IN');
+}
+
+// Find every model mentioned in a text, in order of appearance
+function findModelIds(text) {
+  const lower = String(text || '').toLowerCase();
+  const found = [];
+  for (const [alias, id] of Object.entries(MODEL_ALIASES)) {
+    const idx = lower.indexOf(alias);
+    if (idx !== -1) found.push([idx, id]);
+  }
+  found.sort((a, b) => a[0] - b[0]);
+  return [...new Set(found.map(f => f[1]))];
+}
+
+function shortName(id) {
+  return PRODUCTS_MAP[id].name.replace(/^LORA\s+/, '');
+}
+
+const FIRMNESS = { 'Plush / Soft': 1, 'Medium-Soft': 2, 'Medium': 3, 'Medium-Firm': 4 };
+
+function priceReply(id, size) {
+  const p = PRODUCTS_MAP[id];
+  const requestedSize = size ? size.charAt(0).toUpperCase() + size.slice(1).toLowerCase() : 'Queen';
+  const requestedPrice = getDynamicPrice(id, requestedSize.toLowerCase(), '8');
+  const qPrice = getDynamicPrice(id, 'queen', '8');
+  const kPrice = getDynamicPrice(id, 'king', '8');
+  const sizeLine = requestedSize !== 'Queen'
+    ? `• **${requestedSize} Size**: **${requestedPrice}** (Queen: ${qPrice}, King: ${kPrice})`
+    : `• **Queen Size (78"×60")**: **${qPrice}**\n• **King Size (78"×72")**: **${kPrice}**`;
+  return {
+    reply: `Factory-direct pricing for **${p.name}** (${p.feel}, ${p.warranty} warranty):\n\n${sizeLine}\n\n✓ Factory-direct savings (no showroom markup)\n✓ 0% No-Cost EMI with Bajaj Finserv\n✓ Complimentary 5-Piece Bedding Kit\n✓ 100% Full-Size Flat Doorstep Delivery\n\nExact price depends on thickness — you can pick it on the product page.`,
+    card: { ...p, price: requestedPrice },
+    quickOptions: [`Order ${shortName(id)}`, requestedSize === 'King' ? 'Queen Price' : 'King Price', 'Check Pincode', 'Compare with Another']
+  };
+}
+
+function compareReply(a, b) {
+  const A = PRODUCTS_MAP[a];
+  const B = PRODUCTS_MAP[b];
+  const fa = FIRMNESS[A.feel] || 3;
+  const fb = FIRMNESS[B.feel] || 3;
+  let verdict;
+  if (fa !== fb) {
+    const softer = fa < fb ? A : B;
+    const firmer = fa < fb ? B : A;
+    verdict = `Choose **${softer.name}** if you love softer cushioning (great for side sleepers). Choose **${firmer.name}** for firmer, more supportive comfort (back/stomach sleepers or back pain).`;
+  } else {
+    const wa = parseInt(A.warranty, 10) || 0;
+    const wb = parseInt(B.warranty, 10) || 0;
+    const longer = wa >= wb ? A : B;
+    const cheaper = A.basePrice <= B.basePrice ? A : B;
+    verdict = `Both share a **${A.feel}** feel. **${longer.name}** gives you the longer ${longer.warranty} warranty, while **${cheaper.name}** is the more budget-friendly pick.`;
+  }
+  const pick = (parseInt(A.warranty, 10) || 0) >= (parseInt(B.warranty, 10) || 0) ? A : B;
+  return {
+    reply: `**${A.name} vs ${B.name}**\n\n• **Feel**: ${A.feel} vs ${B.feel}\n• **Build**: ${A.type} vs ${B.type}\n• **Height**: ${A.height} vs ${B.height}\n• **Warranty**: ${A.warranty} vs ${B.warranty}\n• **Starts from**: ₹${A.basePrice.toLocaleString('en-IN')} vs ₹${B.basePrice.toLocaleString('en-IN')}\n\n**My take:** ${verdict}`,
+    card: pick,
+    quickOptions: [`Price for ${shortName(a)}`, `Price for ${shortName(b)}`, 'Which suits back pain?', 'Request Specialist Call']
+  };
+}
+
+function modelDetailsReply(id, lower) {
+  const p = PRODUCTS_MAP[id];
+  let note = '';
+  if (/\b(back ?pain|spine|spinal|lower back|backache)\b/.test(lower)) {
+    note = (FIRMNESS[p.feel] || 3) >= 4
+      ? `\n\n✓ **Good for back pain** — its ${p.feel} support keeps the spine aligned.`
+      : `\n\nFor back pain, a firmer option such as **LORA ORTHO HYBRID™** (Medium-Firm) usually gives better spinal support than this ${p.feel} feel.`;
+  } else if (/\b(couple|partner|motion)\b/.test(lower) && id !== '07') {
+    note = '\n\nFor zero partner disturbance, **LORA POCKET LUXE™** (independent pocket springs) is our top pick.';
+  }
+  return {
+    reply: `**${p.name}**\n• **Feel**: ${p.feel}\n• **Design**: ${p.type}\n• **Height Profile**: ${p.height}\n• **Factory Warranty**: ${p.warranty}\n• **Highlights**: ${p.description}${note}\n\nPrices start from around **₹${p.basePrice.toLocaleString('en-IN')}** (Queen), including the Complimentary 5-Piece Bedding Kit.`,
+    card: p,
+    quickOptions: [`Price for ${shortName(id)}`, 'King Price', 'Compare with Another', 'Request Specialist Call']
+  };
+}
+
+function feelGroupReply(group) {
+  const groups = {
+    soft: { title: 'Plush & Soft', ids: ['03', '01'], why: 'deep cushioning that cradles shoulders and hips — ideal for side sleepers' },
+    medium: { title: 'Balanced Medium', ids: ['02', '06', '07'], why: 'the sweet spot of cushioning and support for most sleepers and couples' },
+    firm: { title: 'Medium-Firm & Orthopedic', ids: ['04', '05', '08'], why: 'firmer support that keeps the spine neutral — best for back pain, back and stomach sleepers' }
+  };
+  const g = groups[group];
+  const lines = g.ids.map(id => `• **${PRODUCTS_MAP[id].name}** — ${PRODUCTS_MAP[id].feel}, ${PRODUCTS_MAP[id].warranty} warranty, from ₹${PRODUCTS_MAP[id].basePrice.toLocaleString('en-IN')}`).join('\n');
+  return {
+    reply: `**${g.title}** mattresses give ${g.why}:\n\n${lines}\n\nWhich one would you like to explore?`,
+    card: PRODUCTS_MAP[g.ids[0]],
+    quickOptions: g.ids.map(id => shortName(id)).concat(['Compare ' + shortName(g.ids[0]) + ' vs ' + shortName(g.ids[1])]).slice(0, 4)
+  };
+}
+
+function isPricingQueryEarly(lower) {
+  return /\b(price|prices|pricing|cost|rates?|how much|discount|offers?|emi|bajaj|ethra)\b|വില/.test(lower);
 }
 
 /**
@@ -437,10 +534,10 @@ function processConversationalQuery(message, context, history) {
   // 2. CALL / CALLBACK / SPECIALIST CONSULTATION REQUEST
   // =========================================================================
   const isCallRequest =
-    lower.includes('call') ||
+    /\bcall/.test(lower) ||
     lower.includes('callback') ||
-    lower.includes('contact') ||
-    lower.includes('phone') ||
+    /\bcontact\b/.test(lower) ||
+    /\bphone\b/.test(lower) ||
     lower.includes('talk to team') ||
     lower.includes('speak to human') ||
     lower.includes('speak to someone') ||
@@ -453,6 +550,14 @@ function processConversationalQuery(message, context, history) {
     lower.includes('vilikkoo') ||
     lower.includes('വിളിക്കാമോ') ||
     lower.includes('വിളിക്കുമോ');
+
+  const alreadyRegistered = Array.isArray(history) && history.some(h => h.sender === 'assistant' && /callback request confirmed|consultation request confirmed|already registered|details received/i.test(h.text || ''));
+  if (isCallRequest && alreadyRegistered) {
+    return {
+      reply: "You're already registered ✓ Our sleep specialist will call you shortly. Meanwhile, I can compare models, check prices or confirm delivery for you.",
+      quickOptions: ['Which is best for back pain?', 'Check Prices', 'View All 8 Models']
+    };
+  }
 
   if (isCallRequest) {
     if (lang === 'ml') {
@@ -476,14 +581,85 @@ function processConversationalQuery(message, context, history) {
     };
   }
 
+  // =========================================================================
+  // 2b. CONTEXT-AWARE REASONING (compare, specific model, feel groups, follow-ups)
+  // =========================================================================
+  const histArr = Array.isArray(history) ? history : [];
+  const mentionedIds = findModelIds(lower);
+  const recentIds = [];
+  for (let i = histArr.length - 1; i >= 0 && recentIds.length < 3; i--) {
+    const h = histArr[i];
+    if (h && h.card && h.card.id && PRODUCTS_MAP[h.card.id] && !recentIds.includes(h.card.id)) recentIds.push(h.card.id);
+  }
+  const lastAssistant = [...histArr].reverse().find(h => h && h.sender === 'assistant');
+  const lastAssistantIds = lastAssistant ? findModelIds(lastAssistant.text) : [];
+  const pageId = ctx.productName ? (findModelIds(ctx.productName)[0] || null) : null;
+  const refersToThis = /\b(this|this one|it|ithu|ithinte|current)\b/.test(lower);
+  const focusId = mentionedIds[0] || recentIds[0] || (refersToThis ? pageId : null);
+  const sizeWord = (lower.match(/\b(king|queen|single|double)\b/) || [])[1] || null;
+
+  // Comparisons ("Compare A vs B", "Compare with Another", "Compare Both")
+  if (/\b(compare|vs|versus|difference|differ)\b/.test(lower) || /\bboth\b/.test(lower)) {
+    const ids = mentionedIds.slice(0, 2);
+    if (ids.length < 2) {
+      for (const id of [...lastAssistantIds, ...recentIds, pageId]) {
+        if (ids.length >= 2) break;
+        if (id && !ids.includes(id)) ids.push(id);
+      }
+    }
+    if (ids.length >= 2) return compareReply(ids[0], ids[1]);
+    if (ids.length === 1) {
+      const others = Object.keys(PRODUCTS_MAP).filter(id => id !== ids[0]);
+      const p = PRODUCTS_MAP[ids[0]];
+      const firmer = others.filter(id => (FIRMNESS[PRODUCTS_MAP[id].feel] || 3) !== (FIRMNESS[p.feel] || 3)).slice(0, 2);
+      const similar = others.filter(id => PRODUCTS_MAP[id].feel === p.feel).slice(0, 1);
+      return {
+        reply: `Which model would you like to compare **${p.name}** with?`,
+        quickOptions: [...similar, ...firmer].slice(0, 3).map(id => `Compare ${shortName(ids[0])} vs ${shortName(id)}`)
+      };
+    }
+  }
+
+  // Feel groups
+  if (/plush\s*(&|and|\/)?\s*soft|soft\s*(\/|&|and)\s*plush|^soft$|soft (feel|mattress)/.test(lower)) return feelGroupReply('soft');
+  if (/medium[- ]firm|^firm\b|firm (feel|mattress|support)/.test(lower) && mentionedIds.length === 0) return feelGroupReply('firm');
+  if (/balanced medium|^medium( feel)?$|medium (feel|mattress)/.test(lower) && mentionedIds.length === 0) return feelGroupReply('medium');
+
+  // Warranty overview
+  if (/\bwarrant(y|ies)|guarantee/.test(lower) && mentionedIds.length === 0 && !/\bclaim\b/.test(lower)) {
+    const lines = Object.values(PRODUCTS_MAP).map(p => `• **${p.name}** — ${p.warranty}`).join('\n');
+    return {
+      reply: `Every LORA mattress carries a direct factory warranty:\n\n${lines}\n\nLonger warranties come with our hybrid and latex builds. Which one interests you?`,
+      quickOptions: ['Hybrid Fusion (15y)', 'Ortho Latex (12y)', 'Ortho Hybrid (10y)', 'Check Prices']
+    };
+  }
+
+  // Size follow-ups ("King Price", "Queen (78"×60")") -> price for the model being discussed
+  if (sizeWord && !/\bcustom\b/.test(lower) && !isPricingQueryEarly(lower)) {
+    if (focusId) return priceReply(focusId, sizeWord);
+    if (/^\s*(king|queen|single|double)\b/.test(lower)) {
+      const label = sizeWord.charAt(0).toUpperCase() + sizeWord.slice(1);
+      const lines = Object.keys(PRODUCTS_MAP).map(id => `• **${shortName(id)}** (${PRODUCTS_MAP[id].feel}) — ${getDynamicPrice(id, sizeWord, '8')}`).join('\n');
+      return {
+        reply: `**${label} size** starting prices (8" thickness):\n\n${lines}\n\nTell me your preferred feel or sleep concern and I'll narrow it down.`,
+        quickOptions: ['Which is best for back pain?', 'Zero motion for couples?', 'Plush & Soft', 'Custom Size Quote']
+      };
+    }
+  }
+
+  // A specific model is named -> answer about THAT model (even if words like ortho/cool/soft appear)
+  if (mentionedIds.length === 1 && !isPricingQueryEarly(lower)) {
+    return modelDetailsReply(mentionedIds[0], lower);
+  }
+
   const isPricingQuery =
     lower.includes('price') ||
     lower.includes('cost') ||
-    lower.includes('rate') ||
+    /\brates?\b/.test(lower) ||
     lower.includes('how much') ||
     lower.includes('discount') ||
-    lower.includes('offer') ||
-    lower.includes('emi') ||
+    /\boffers?\b/.test(lower) ||
+    /\bemi\b/.test(lower) ||
     lower.includes('bajaj') ||
     lower.includes('ethra') ||
     lower.includes('വില');
@@ -497,7 +673,7 @@ function processConversationalQuery(message, context, history) {
       lower.includes('lower back') ||
       lower.includes('spine') ||
       lower.includes('spinal') ||
-      lower.includes('disc') ||
+      /\bdiscs?\b/.test(lower) ||
       lower.includes('sciatica') ||
       lower.includes('neck pain') ||
       lower.includes('stiff') ||
@@ -609,7 +785,7 @@ function processConversationalQuery(message, context, history) {
   // =========================================================================
   // 6. SLEEP POSITIONS (Side, Back, Stomach)
   // =========================================================================
-  if (lower.includes('side sleep') || lower.includes('side-sleep') || lower.includes('shoulder') || lower.includes('hip') || lower.includes('വശം ചരിഞ്ഞ്')) {
+  if (lower.includes('side sleep') || lower.includes('side-sleep') || lower.includes('shoulder') || /\bhips?\b/.test(lower) || lower.includes('വശം ചരിഞ്ഞ്')) {
     return {
       reply: "For side sleepers, contouring pressure relief around your shoulders and hips is essential to avoid numbness and pinched nerves.\n\n• **Top Pick**: **LORA PLUSH™** (Pillow Top, Soft) — deep cushioning that cradles side contours.\n• **Balanced Pick**: **LORA CLOUD 7™** (Medium-Soft Eurotop, 7-inch) or **LORA POCKET LUXE™** (Medium pocket springs).\n\nDo you prefer a deeper plush sink-in feel, or a slightly more balanced medium contour?",
       card: PRODUCTS_MAP['03'],
@@ -628,7 +804,7 @@ function processConversationalQuery(message, context, history) {
   // =========================================================================
   // 7. COOLING / HOT SLEEPERS / BREATHABILITY
   // =========================================================================
-  if (lower.includes('cool') || lower.includes('hot') || lower.includes('sweat') || lower.includes('warm') || lower.includes('heat') || lower.includes('breathable') || lower.includes('temperature') || lower.includes('ചൂട്')) {
+  if (/\b(cool|cooler|coolest|cooling|hot|sweat\w*|warm|heat|breathable|temperature)\b/.test(lower) || lower.includes('ചൂട്')) {
     return {
       reply: "For hot sleepers, natural airflow and open-cell structure are critical:\n\n• **LORA ORTHO LATEX™**: Features 100% natural pin-core Dunlop latex. Its open-cell structure dissipates body heat continuously, sleeping naturally cool without synthetic cooling gels.\n• **LORA POCKET LUXE™**: Pocket coil interior allows massive air circulation through the mattress core.\n• **LORA HYBRID FUSION™**: Combines natural latex with breathable micro-knit surface fabrics.\n\nWould you like to explore Ortho Latex or Pocket Luxe?",
       card: PRODUCTS_MAP['05'],
@@ -649,15 +825,11 @@ function processConversationalQuery(message, context, history) {
   // =========================================================================
   // 9. PRICING, DISCOUNTS, FACTORY DIRECT & EMI
   // =========================================================================
-  if (lower.includes('price') || lower.includes('cost') || lower.includes('rate') || lower.includes('how much') || lower.includes('discount') || lower.includes('offer') || lower.includes('emi') || lower.includes('bajaj') || lower.includes('ethra') || lower.includes('വില')) {
+  if (isPricingQueryEarly(lower)) {
     // Check if user named a specific model
-    let targetModelId = null;
-    for (const [alias, id] of Object.entries(MODEL_ALIASES)) {
-      if (lower.includes(alias)) {
-        targetModelId = id;
-        break;
-      }
-    }
+    // Named model, else the model we were just discussing ("King Price", "Check Price"), else "this" page model
+    let targetModelId = mentionedIds[0] || null;
+    if (!targetModelId && !/\bprices\b|all|every|range|list/.test(lower)) targetModelId = recentIds[0] || (refersToThis ? pageId : null) || null;
 
     if (targetModelId) {
       const p = PRODUCTS_MAP[targetModelId];
@@ -690,8 +862,8 @@ function processConversationalQuery(message, context, history) {
   // =========================================================================
   // 10. SIZING, DIMENSIONS & CUSTOM MEASUREMENTS
   // =========================================================================
-  if (lower.includes('size') || lower.includes('dimension') || lower.includes('king') || lower.includes('queen') || lower.includes('single') || lower.includes('double') || lower.includes('length') || lower.includes('width') || lower.includes('feet') || lower.includes('inch') || lower.includes('custom')) {
-    if (lower.includes('custom') || lower.includes('odd size') || lower.includes('special size')) {
+  if (lower.includes('size') || lower.includes('dimension') || lower.includes('king') || lower.includes('queen') || lower.includes('single') || lower.includes('double') || lower.includes('length') || lower.includes('width') || lower.includes('feet') || lower.includes('inch') || /\bcustom\b/.test(lower)) {
+    if (/\bcustom\b/.test(lower) || lower.includes('odd size') || lower.includes('special size')) {
       return {
         reply: "Yes! Because LORA is a 100% direct-from-factory manufacturer, we craft **Custom Bed Dimensions** to the exact inch for any wooden, metal, or antique cot!\n\nPlease share your **contact number** and **pincode** along with your required Length × Width in inches. Our production team will quote you the exact factory-direct price.",
         quickOptions: ['Share Contact & PIN', 'Standard Sizing Guide'],
@@ -717,7 +889,7 @@ function processConversationalQuery(message, context, history) {
   // =========================================================================
   // 12. SHOWROOMS & STORES
   // =========================================================================
-  if (lower.includes('showroom') || lower.includes('store') || lower.includes('centre') || lower.includes('visit') || lower.includes('kochi') || lower.includes('bengaluru') || lower.includes('mumbai') || lower.includes('കട')) {
+  if (lower.includes('showroom') || /\bstores?\b/.test(lower) || lower.includes('centre') || lower.includes('visit') || lower.includes('kochi') || lower.includes('bengaluru') || lower.includes('mumbai') || lower.includes('കട')) {
     return {
       reply: "LORA operates flagship **Experience Studios** in:\n• **Kochi, Kerala**: Experience Center & Direct Factory Dispatch\n• **Bengaluru, Karnataka**: Flagship Sleep Experience Zone\n• **Mumbai, Maharashtra**: Regional Display & Metro Logistics Hub\n\nWe also provide **100% Flat Doorstep Delivery across India**. Share your **PIN code** to find your nearest showroom or verify home delivery timelines!",
       quickOptions: ['Check My Pincode', 'Request Callback', 'Explore Models']
@@ -741,7 +913,7 @@ function processConversationalQuery(message, context, history) {
   // =========================================================================
   // 14. ALL MODELS LIST / CATALOG OVERVIEW
   // =========================================================================
-  if (lower.includes('all model') || lower.includes('all mattress') || lower.includes('all 8') || lower.includes('list') || lower.includes('catalog') || lower.includes('options') || lower.includes('എല്ലാ')) {
+  if (lower.includes('all model') || lower.includes('all mattress') || lower.includes('all 8') || /\b(list|catalog|options|explore|models|mattresses)\b/.test(lower) || lower.includes('എല്ലാ')) {
     return {
       reply: "LORA crafts 8 handcrafted mattress models across 3 distinct comfort zones:\n\n• **Plush & Soft**: Lora Plush (Pillow Top, Soft) & Cloud 7 (Eurotop 7\", Medium-Soft)\n• **Balanced Medium**: Cloud Ortho (Eurotop 9\"), Comfort Core (Pillow Top, 10-Yr), & Pocket Luxe (Pocket Spring, Zero Disturbance)\n• **Medium-Firm & Orthopedic**: Ortho Hybrid (10-Yr), Ortho Latex (Breathable Dunlop Latex, 12-Yr), & Hybrid Fusion (Flagship Latex+Memory Foam, 15-Yr)\n\nWhich comfort zone matches your sleep preference?",
       quickOptions: ['Plush & Soft', 'Balanced Medium', 'Medium-Firm Ortho', 'Request Specialist Call']
@@ -753,25 +925,9 @@ function processConversationalQuery(message, context, history) {
   // ("if anything ask which dont know ask thier contact and pincode , and move in to lead section")
   // =========================================================================
   const isSpecializedUnknown =
-    lower.includes('round') ||
-    lower.includes('triangle') ||
-    lower.includes('boat') ||
-    lower.includes('rv') ||
-    lower.includes('caravan') ||
-    lower.includes('bulk') ||
-    lower.includes('hotel') ||
-    lower.includes('resort') ||
-    lower.includes('hospital') ||
-    lower.includes('wholesale') ||
-    lower.includes('export') ||
-    lower.includes('carpenter') ||
-    lower.includes('headboard') ||
-    lower.includes('scoliosis surgery') ||
+    /\b(round|triangle|boat|rv|caravan|bulk|hotel|resort|hospital|wholesale|export|carpenter|headboard|cod|international|dubai|uae)\b/.test(lower) ||
     lower.includes('cash on delivery') ||
-    lower.includes('cod') ||
-    lower.includes('international') ||
-    lower.includes('dubai') ||
-    lower.includes('uae');
+    lower.includes('scoliosis surgery');
 
   if (isSpecializedUnknown) {
     if (lang === 'ml') {
