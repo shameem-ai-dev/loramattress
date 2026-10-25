@@ -136,7 +136,7 @@
         "type": "text",
         "id": "whatsapp_number",
         "label": "WhatsApp Concierge Number (with country code)",
-        "default": "+919876543210"
+        "default": "+919072616423"
       },
       {
         "type": "text",
@@ -154,7 +154,7 @@
         "type": "text",
         "id": "support_phone",
         "label": "Customer Support Phone",
-        "default": "1800-200-5672 (Mon-Sat, 9am - 8pm IST)"
+        "default": "+91 90726 16423 (Mon-Sat, 9am - 8pm IST)"
       }
     ]
   },

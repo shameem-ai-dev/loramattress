@@ -52,7 +52,7 @@ Click **Customize** next to the LORA Mattress theme in **Online Store** > **Them
 
 ### C. WhatsApp Concierge Integration
 - **Theme Settings** > **Customer Care & WhatsApp**:
-  - Enter your official WhatsApp business phone number with country code (e.g. `+919876543210`).
+  - Enter your official WhatsApp business phone number with country code (e.g. `+919072616423`).
   - Enter your default inquiry message text.
 
 ### D. Showroom & Sleep Studio Locations

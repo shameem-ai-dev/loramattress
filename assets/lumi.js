@@ -51,7 +51,7 @@
   // ---------------------------------------------------------------------------
   // Helpers
   // ---------------------------------------------------------------------------
-  const SUPPORT_PHONE = '9567684770'; // Lora's own support line — never treat it as a customer's number
+  const SUPPORT_PHONE = '9072616423'; // Lora's own support line — never treat it as a customer's number
   const LEAD_SESSION_KEY = 'lora_lumi_lead_v1';
   const DEFAULT_PILLS = ['Which is best for back pain?', 'Zero motion for couples?', 'Check Prices', 'Request Specialist Call'];
   const MODEL_NAME_ALIASES = [
@@ -748,7 +748,7 @@
     state.leadStep = 'phone';
     state.pinPurpose = null;
     appendMessage('assistant', intro || "Happy to arrange that! 😊 Our senior sleep specialist will call you for a free, no-obligation consultation.\n\nWhat's the best **mobile number** to reach you?", { showLeadCard: true, leadMode: 'phone' });
-    renderQuickOptions(['Skip', 'Call +91 95676 84770']);
+    renderQuickOptions(['Skip', 'Call +91 90726 16423']);
   }
 
   function askForPin() {
@@ -762,7 +762,7 @@
     if (state.leadSubmitted && state.leadData.phone) {
       clearLeadPrompt();
       appendMessage('assistant', `You're all set ✓ Our sleep specialist will call you at **+91 ${state.leadData.phone}**${state.leadData.pincode ? ` (PIN ${state.leadData.pincode})` : ''} shortly.\n\nWould you like to use a different number, or can I help with anything else meanwhile?`);
-      renderQuickOptions(['Update my number', 'Call +91 95676 84770', 'Which is best for back pain?', 'Check Prices']);
+      renderQuickOptions(['Update my number', 'Call +91 90726 16423', 'Which is best for back pain?', 'Check Prices']);
       return;
     }
     if (state.leadData.phone && state.leadData.pincode) { submitLead(); return; }
@@ -852,9 +852,9 @@
     const lower = val.toLowerCase();
 
     if (RE_DIRECT_CALL.test(val)) {
-      appendMessage('assistant', "Calling our sleep team at **+91 95676 84770** 📞 (Mon–Sat, 9 AM – 8 PM). If the call doesn't start, just dial the number from your phone.");
+      appendMessage('assistant', "Calling our sleep team at **+91 90726 16423** 📞 (Mon–Sat, 9 AM – 8 PM). If the call doesn't start, just dial the number from your phone.");
       renderQuickOptions(filterPills(['Request Specialist Call', 'Which is best for back pain?', 'Check Prices']));
-      try { window.location.href = 'tel:+919567684770'; } catch (e) {}
+      try { window.location.href = 'tel:+919072616423'; } catch (e) {}
       return true;
     }
     if (RE_UPDATE.test(val)) {

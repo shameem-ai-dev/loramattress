@@ -192,7 +192,7 @@ function extractContactInfo(text) {
     }
   }
 
-  if (phone === '9567684770') phone = null; // Lora support line (appears in quick replies)
+  if (phone === '9072616423') phone = null; // Lora support line (appears in quick replies)
 
   // 2. PIN code matching: 6 digits starting with 1-9
   const pinPattern = /\b([1-9][0-9]{5})\b/g;
@@ -563,20 +563,20 @@ function processConversationalQuery(message, context, history) {
     if (lang === 'ml') {
       return {
         reply: "തീർച്ചയായും! ലോറയുടെ സീനിയർ സ്ലീപ്പ് സ്പെഷ്യലിസ്റ്റിന്റെ നേരിട്ടുള്ള ഫോൺ കൺസൾട്ടേഷൻ ലഭ്യമാക്കാം.\n\nനിങ്ങളെ തിരിച്ചുവിളിക്കാൻ നിങ്ങളുടെ **ഫോൺ നമ്പറും** **പിൻകോഡും** നൽകുമോ? ഞങ്ങളുടെ വിദഗ്ദ്ധൻ അനുയോജ്യമായ മോഡലും കൃത്യമായ വിലയും പറഞ്ഞുതരുന്നതാണ്.",
-        quickOptions: ['ഫോൺ നൽകുക', 'നേരിട്ട് വിളിക്കുക (+91 95676 84770)'],
+        quickOptions: ['ഫോൺ നൽകുക', 'നേരിട്ട് വിളിക്കുക (+91 90726 16423)'],
         suggestLead: true
       };
     }
     if (lang === 'manglish') {
       return {
         reply: "Sure! Lora-ude senior sleep specialist ningale direct vilichu correct mattress advise cheyyam.\n\nNingale reach cheyyan **Contact Number**-um **PIN code**-um share cheyyamo? Accurate price and details udan parayam.",
-        quickOptions: ['Share Contact & PIN', 'Call +91 95676 84770'],
+        quickOptions: ['Share Contact & PIN', 'Call +91 90726 16423'],
         suggestLead: true
       };
     }
     return {
       reply: "Certainly! Our senior sleep specialists would be happy to give you a personalized consultation call.\n\nPlease share your **contact number** and **pincode** below so we can reach out with accurate advice and delivery timelines for your location:",
-      quickOptions: ['Share Contact & PIN', 'Call +91 95676 84770', 'Chat with Lumi'],
+      quickOptions: ['Share Contact & PIN', 'Call +91 90726 16423', 'Chat with Lumi'],
       suggestLead: true
     };
   }
@@ -933,20 +933,20 @@ function processConversationalQuery(message, context, history) {
     if (lang === 'ml') {
       return {
         reply: "കസ്റ്റം ആകൃതിയിലുള്ള മെത്തകൾ (Custom shapes), ഹോട്ടൽ/റിസോർട്ട് ബൾക്ക് ഓർഡറുകൾ, അല്ലെങ്കിൽ പ്രത്യേക ആവശ്യങ്ങൾ എന്നിവ ഞങ്ങളുടെ ഫാക്ടറി മാസ്റ്റർ ക്രാഫ്റ്റ്‌സ്മാൻമാരും സ്ലീപ്പ് സ്പെഷ്യലിസ്റ്റുകളും നേരിട്ടാണ് പരിശോധിക്കുന്നത്.\n\nഇതിന്റെ കൃത്യമായ വിവരങ്ങളും ഫാക്ടറി വിലയും നേരിട്ട് അറിയിക്കാൻ നിങ്ങളുടെ **ഫോൺ നമ്പറും** **പിൻകോഡും** പങ്കുവെക്കാമോ?",
-        quickOptions: ['ഫോൺ നമ്പറും പിൻകോഡും നൽകുക', 'ഹെൽപ്പ്‌ലൈൻ (+91 95676 84770)'],
+        quickOptions: ['ഫോൺ നമ്പറും പിൻകോഡും നൽകുക', 'ഹെൽപ്പ്‌ലൈൻ (+91 90726 16423)'],
         suggestLead: true
       };
     }
     if (lang === 'manglish') {
       return {
         reply: "Custom dimensions, specialized bulk/resort orders, or unique specifications Lora production team direct aayittanu review cheyyunnathu.\n\nExact feasibility and factory quote parayan ningalude **Contact Number**-um **PIN code**-um share cheyyamo? Specialist direct vilichu details tharum.",
-        quickOptions: ['Share Contact & PIN', 'Call +91 95676 84770'],
+        quickOptions: ['Share Contact & PIN', 'Call +91 90726 16423'],
         suggestLead: true
       };
     }
     return {
       reply: "For custom dimensions, specialized bulk hotel/resort orders, or technical inquiries outside our standard catalog, our master production team and senior consultants review each requirement personally.\n\nPlease share your **contact number** and **pincode** below so our sleep specialist can check feasibility and call you directly with verified answers and quotations:",
-      quickOptions: ['Share Contact & PIN', 'Call +91 95676 84770'],
+      quickOptions: ['Share Contact & PIN', 'Call +91 90726 16423'],
       suggestLead: true
     };
   }

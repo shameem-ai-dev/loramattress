@@ -280,12 +280,12 @@ function generateLocalResponse(message, context, history, kb, catalog) {
     if (lang === 'manglish') {
       return {
         reply: "I'm really sorry—ithu frustrating aanu. Payment and order status udan check cheyyam. Order reference number undo? Card details or OTP ivide share cheyyaruthu.",
-        quickOptions: ['Enter Order ID', 'Call +91 95676 84770']
+        quickOptions: ['Enter Order ID', 'Call +91 90726 16423']
       };
     }
     return {
       reply: "I'm sorry—that's frustrating. Let's have the payment and order status checked right away. Do you have an order reference number? Please do not share card details, OTP, or UPI PIN in chat.",
-      quickOptions: ['Enter Order ID', 'Support Contact (+91 95676 84770)']
+      quickOptions: ['Enter Order ID', 'Support Contact (+91 90726 16423)']
     };
   }
 

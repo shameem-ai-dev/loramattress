@@ -3551,7 +3551,7 @@
             <div class="field-grid-3" data-wa-providers="Meta WhatsApp Cloud API,Fast2SMS,Gupshup,Interakt,WATI,Custom WhatsApp API" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
               <div class="input-block">
                 <label>WhatsApp Business Sender Number</label>
-                <input type="text" id="cfg-wa-biz-num" class="admin-input" value="+919876543210" placeholder="+919876543210">
+                <input type="text" id="cfg-wa-biz-num" class="admin-input" value="+919072616423" placeholder="+919072616423">
               </div>
 
               <div class="input-block">
@@ -4094,7 +4094,7 @@
             <div class="field-grid-2">
               <div class="input-block">
                 <label>Store Keeper / Dispatch WhatsApp Number (with country code)</label>
-                <input type="text" id="cfg-dispatch-phone" class="admin-input" placeholder="+919876543210" value="+919876543210">
+                <input type="text" id="cfg-dispatch-phone" class="admin-input" placeholder="+919072616423" value="+919072616423">
                 <span class="field-hint" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">The admin can update this receiving number at any time without changing any code.</span>
               </div>
               <div class="input-block">
@@ -4499,7 +4499,7 @@ Order Notes: [Customer Instructions]</pre>
         </div>
         <div class="input-block" style="margin-bottom: 0;">
           <label id="test-target-label" for="test-target-input">Recipient Phone Number (with +91)</label>
-          <input type="text" id="test-target-input" class="admin-input" placeholder="+919876543210">
+          <input type="text" id="test-target-input" class="admin-input" placeholder="+919072616423">
         </div>
         <label id="test-send-real-wrap" style="display:none; margin-top: 0.75rem; font-size: 0.78rem; color: #E2E8F0; align-items: center; gap: 0.5rem; cursor: pointer;">
           <input type="checkbox" id="test-send-real-otp">
@@ -5923,7 +5923,7 @@ Order Notes: [Customer Instructions]</pre>
 
       // 1. Dispatch Settings Configuration
       let dispatchSettings = {
-        storeKeeperPhone: '+919876543210',
+        storeKeeperPhone: '+919072616423',
         storeKeeperEmail: 'dispatch@loramattress.com',
         webhookUrl: '',
         webhookToken: '',
@@ -6278,7 +6278,7 @@ Order Notes: [Customer Instructions]</pre>
 
       if (btnSaveDispatchCfg) {
         btnSaveDispatchCfg.addEventListener('click', async function () {
-          dispatchSettings.storeKeeperPhone = inputDispatchPhone?.value.trim() || '+919876543210';
+          dispatchSettings.storeKeeperPhone = inputDispatchPhone?.value.trim() || '+919072616423';
           dispatchSettings.storeKeeperEmail = inputDispatchEmail?.value.trim() || 'dispatch@loramattress.com';
           dispatchSettings.webhookUrl = inputWaWebhook?.value.trim() || '';
           dispatchSettings.webhookToken = inputWaToken?.value.trim() || '';
@@ -6322,7 +6322,7 @@ Order Notes: [Customer Instructions]</pre>
 
       function dispatchWhatsAppNotification(order) {
         const message = buildWhatsAppMessage(order);
-        const targetPhone = (dispatchSettings.storeKeeperPhone || '+919876543210').replace(/[^0-9]/g, '');
+        const targetPhone = (dispatchSettings.storeKeeperPhone || '+919072616423').replace(/[^0-9]/g, '');
 
         // 1. Cloud Webhook / WhatsApp Business API trigger
         if (dispatchSettings.webhookUrl) {
@@ -6356,7 +6356,7 @@ Order Notes: [Customer Instructions]</pre>
           const sampleOrder = {
             id: 'LORA-9999',
             customerName: 'Test Customer (VIP Preview)',
-            phone: '+919876543210',
+            phone: '+919072616423',
             productName: '01. LORA CLOUD 7™',
             size: 'King Size • 78" × 72" • 10-inch Luxury EuroTop',
             quantity: 1,
@@ -7900,7 +7900,7 @@ Order Notes: [Customer Instructions]</pre>
           enabled: true,
           provider: 'Meta WhatsApp Cloud API',
           apiUrl: 'https://graph.facebook.com/v18.0/108429183429812/messages',
-          businessNumber: '+919876543210',
+          businessNumber: '+919072616423',
           phoneId: '108429183429812',
           templateName: 'lora_auth_otp',
           templateLang: 'en'
@@ -8220,7 +8220,7 @@ Order Notes: [Customer Instructions]</pre>
         updateWaCardUI();
         if (document.querySelector('#cfg-wa-provider')) document.querySelector('#cfg-wa-provider').value = otpConfig.whatsapp.provider || 'Meta WhatsApp Cloud API';
         if (document.querySelector('#cfg-wa-api-url')) document.querySelector('#cfg-wa-api-url').value = otpConfig.whatsapp.apiUrl || '';
-        if (document.querySelector('#cfg-wa-biz-num')) document.querySelector('#cfg-wa-biz-num').value = otpConfig.whatsapp.businessNumber || '+919876543210';
+        if (document.querySelector('#cfg-wa-biz-num')) document.querySelector('#cfg-wa-biz-num').value = otpConfig.whatsapp.businessNumber || '+919072616423';
         if (document.querySelector('#cfg-wa-template-name')) document.querySelector('#cfg-wa-template-name').value = otpConfig.whatsapp.templateName || 'lora_auth_otp';
         if (document.querySelector('#cfg-wa-template-lang')) document.querySelector('#cfg-wa-template-lang').value = otpConfig.whatsapp.templateLang || 'en';
         updateWaProviderFields(otpConfig.whatsapp.provider || 'Meta WhatsApp Cloud API');
@@ -8523,7 +8523,7 @@ Order Notes: [Customer Instructions]</pre>
             ? 'Provider: Twilio Verify | Checks credentials and the Verify service (no SMS sent unless you tick the box)'
             : `Provider: ${selProvider} | Sender: ${otpConfig.sms.senderId}`;
           testLabel.textContent = 'Recipient Mobile Number (+91)';
-          testInput.placeholder = '+919876543210';
+          testInput.placeholder = '+919072616423';
           testInput.value = '';
           if (realWrap && selProvider === 'Twilio') realWrap.style.display = 'flex';
         } else if (channel === 'whatsapp') {
@@ -8533,7 +8533,7 @@ Order Notes: [Customer Instructions]</pre>
             ? 'Provider: Twilio Verify (WhatsApp) | Checks credentials and the Verify service (nothing sent unless you tick the box)'
             : `Provider: ${selWa} | Template: ${otpConfig.whatsapp.templateName}`;
           testLabel.textContent = 'Recipient WhatsApp Number (+91)';
-          testInput.placeholder = '+919876543210';
+          testInput.placeholder = '+919072616423';
           testInput.value = '';
           if (realWrap && selWa === 'Twilio') realWrap.style.display = 'flex';
         } else {
@@ -8818,7 +8818,7 @@ Order Notes: [Customer Instructions]</pre>
               {
                 id: 'AUDIT-101',
                 timestamp: new Date(now - 1000 * 60 * 12).toISOString(),
-                identifier: '+919876543210',
+                identifier: '+919072616423',
                 channel: 'whatsapp',
                 provider: 'Meta WhatsApp Cloud API',
                 status: 'verified',

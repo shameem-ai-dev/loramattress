@@ -53,7 +53,7 @@ module.exports = async function handler(req, res) {
       cod_enabled: diskSettings.cod_enabled !== false,
       cod_max_amount: Number(diskSettings.cod_max_amount) || 50000,
       cod_notice: diskSettings.cod_notice || 'Cash or UPI accepted upon delivery arrival.',
-      storeKeeperPhone: diskSettings.storeKeeperPhone || '+919876543210',
+      storeKeeperPhone: diskSettings.storeKeeperPhone || '+919072616423',
       storeKeeperEmail: diskSettings.storeKeeperEmail || 'dispatch@loramattress.com',
       webhookUrl: diskSettings.webhookUrl || '',
       webhookToken: diskSettings.webhookToken || ''
@@ -107,7 +107,7 @@ module.exports = async function handler(req, res) {
           : (diskSettings.cod_notice || 'Cash or UPI accepted upon delivery arrival.'),
         storeKeeperPhone: payload.storeKeeperPhone !== undefined
           ? String(payload.storeKeeperPhone).trim()
-          : (diskSettings.storeKeeperPhone || '+919876543210'),
+          : (diskSettings.storeKeeperPhone || '+919072616423'),
         storeKeeperEmail: payload.storeKeeperEmail !== undefined
           ? String(payload.storeKeeperEmail).trim()
           : (diskSettings.storeKeeperEmail || 'dispatch@loramattress.com'),
