@@ -22,8 +22,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "offer": {
@@ -104,7 +107,16 @@
     "meterPercent": "38%",
     "core": "Plush Eurotop comfort construction with balanced body support",
     "cover": "Cushioned sleeping surface with comfortable pressure distribution",
-    "motion": "Balanced pressure distribution & everyday durability"
+    "motion": "Balanced pressure distribution & everyday durability",
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
   },
   "02": {
     "id": "02",
@@ -138,8 +150,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -199,6 +214,15 @@
         "title": "Heavy-Duty Anti-Sag Perimeter Encasing",
         "desc": "Reinforces mattress boundaries so you can sit or sleep on the edge without roll-off sensation."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   },
   "03": {
@@ -233,8 +257,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -294,6 +321,15 @@
         "title": "Structural Zero-Vibration Foundation",
         "desc": "Durable reinforced base foam engineered to maintain height and stability indefinitely."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   },
   "04": {
@@ -328,8 +364,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -389,6 +428,15 @@
         "title": "Perimeter Foam Encasement",
         "desc": "High-density foam border surrounds the coil core, delivering edge-to-edge sleeping stability."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   },
   "05": {
@@ -423,8 +471,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -484,6 +535,15 @@
         "title": "Anti-Skid Organic Bottom Fabric",
         "desc": "Prevents mattress slippage on cot slats or box frames."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   },
   "06": {
@@ -518,8 +578,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -574,6 +637,15 @@
         "title": "High-Density Anti-Sag Foundation Base",
         "desc": "Internal stabilizer layer guaranteeing shape retention and preventing premature softness."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   },
   "07": {
@@ -608,8 +680,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -669,6 +744,15 @@
         "title": "EdgeGuard Reinforced Boundary Support",
         "desc": "Encased foam perimeter eliminates rolling off the bed when sleeping near the edge."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   },
   "08": {
@@ -703,8 +787,11 @@
     },
     "thicknessOffsets": {
       "6": -2500,
+      "7": -1200,
       "8": 0,
+      "9": 1900,
       "10": 3800,
+      "11": 5600,
       "12": 7500
     },
     "inchAddons": {
@@ -764,6 +851,15 @@
         "title": "Reinforced High-Density Foundation Core",
         "desc": "Heavy-duty base engineered to support up to 300 kg with zero loss of structural integrity over 15 years."
       }
+    ],
+    "availableThicknesses": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
     ]
   }
 }

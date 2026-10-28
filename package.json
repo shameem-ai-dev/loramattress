@@ -8,7 +8,9 @@
     "build": "echo build",
     "dev": "node server.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@vercel/blob": "^2.8.2"
+  },
   "engines": {
     "node": ">=18.0.0"
   }

@@ -32,7 +32,7 @@ To take full advantage of LORA's structured comfort badges, layer breakdowns, an
 | **Comfort Level** | `custom.comfort_level` | Single line text | e.g. `Balanced Medium-Firm (6.5 / 10)` or `Plush Cloud (4 / 10)` |
 | **Product Tagline** | `custom.tagline` | Single line text | e.g. `Natural Dunlop Latex & Zoned Titanium Pocket Springs` |
 | **Manufacturing Origin** | `custom.origin` | Single line text | e.g. `Direct from LORA Advanced Robotics Facility` |
-| **Warranty Terms** | `custom.warranty_terms` | Single line text | e.g. `10-Year Comprehensive Replacement Warranty` |
+| **Warranty Terms** | `custom.warranty_terms` | Single line text | e.g. `10-Year Comprehensive Warranty` |
 | **Layer Architecture** | `custom.layer_architecture`| Multi-line text | Bulleted summary of comfort and support layers |
 
 ---

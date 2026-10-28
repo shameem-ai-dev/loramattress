@@ -79,6 +79,36 @@ const LAYOUT_DIR = path.join(ROOT_DIR, 'layout');
 const TEMPLATES_DIR = path.join(ROOT_DIR, 'templates');
 const CONFIG_DIR = path.join(ROOT_DIR, 'config');
 
+// Persistent data directory OUTSIDE the app folder.
+// GoDaddy/cPanel redeploys (Git pull, re-upload, "Setup Node.js App" rebuilds) replace the app folder,
+// which wiped admin-uploaded photos (assets/uploads) and reset config/catalog_data.json to the repo copy.
+// Override with LORA_DATA_DIR env var if needed.
+const DATA_DIR = process.env.LORA_DATA_DIR || path.join(require('os').homedir(), 'lora-data');
+const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
+try { fs.mkdirSync(UPLOADS_DIR, { recursive: true }); } catch (e) { console.error('[DATA] Cannot create data dir', DATA_DIR, e.message); }
+
+// Returns path of a persistent data file; seeds it from the bundled config/ copy on first use.
+function dataFile(name) {
+  const target = path.join(DATA_DIR, name);
+  if (!fs.existsSync(target)) {
+    const seed = path.join(CONFIG_DIR, name);
+    try { if (fs.existsSync(seed)) fs.copyFileSync(seed, target); } catch (e) {}
+  }
+  return target;
+}
+
+// One-time migration: copy any photos still inside the app folder into persistent storage.
+try {
+  const legacyUploads = path.join(ASSETS_DIR, 'uploads');
+  if (fs.existsSync(legacyUploads)) {
+    for (const f of fs.readdirSync(legacyUploads)) {
+      const dest = path.join(UPLOADS_DIR, f);
+      if (!fs.existsSync(dest)) fs.copyFileSync(path.join(legacyUploads, f), dest);
+    }
+  }
+} catch (e) { console.warn('[DATA] Upload migration skipped:', e.message); }
+console.log('[DATA] Persistent data directory:', DATA_DIR);
+
 // Load settings data
 let settings = {};
 try {
@@ -96,6 +126,13 @@ const MIME_TYPES = {
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.avif': 'image/avif',
+  '.mp4': 'video/mp4',
+  '.m4v': 'video/mp4',
+  '.webm': 'video/webm',
+  '.mov': 'video/quicktime',
   '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2'
 };
@@ -314,7 +351,7 @@ const server = http.createServer((req, res) => {
   }
 
   // Ribbon Settings Helper
-  const ribbonSettingsPath = path.join(CONFIG_DIR, 'ribbon_settings.json');
+  const ribbonSettingsPath = dataFile('ribbon_settings.json');
   const getRibbonSettings = () => {
     if (fs.existsSync(ribbonSettingsPath)) {
       try {
@@ -340,9 +377,9 @@ const server = http.createServer((req, res) => {
         },
         {
           id: "ribbon_3",
-          tag: "BAJAJ FINANCING",
-          text: "Bajaj EMI assistance available starting ₹1,833/month • Verification on request",
-          link: "product.html"
+          tag: "15-YEAR WARRANTY",
+          text: "Direct Factory Craftsmanship with up to 15 Years Warranty",
+          link: "#the-collection"
         },
         {
           id: "ribbon_4",
@@ -461,7 +498,7 @@ const server = http.createServer((req, res) => {
 
   // Handle Catalog API (Storefront & Admin Sync)
   if (pathname === '/api/catalog') {
-    const catalogFilePath = path.join(CONFIG_DIR, 'catalog_data.json');
+    const catalogFilePath = dataFile('catalog_data.json');
 
     if (req.method === 'GET') {
       if (fs.existsSync(catalogFilePath)) {
@@ -531,7 +568,7 @@ const server = http.createServer((req, res) => {
             buffer = Buffer.from(rawImage, 'base64');
           }
 
-          const uploadsDir = path.join(ASSETS_DIR, 'uploads');
+          const uploadsDir = UPLOADS_DIR;
           if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir, { recursive: true });
           }
@@ -561,7 +598,7 @@ const server = http.createServer((req, res) => {
 
   // Handle Studios API (Store Locations & Manual Pincodes)
   if (pathname === '/api/studios') {
-    const studiosFilePath = path.join(CONFIG_DIR, 'studios_data.json');
+    const studiosFilePath = dataFile('studios_data.json');
 
     if (req.method === 'GET') {
       if (fs.existsSync(studiosFilePath)) {
@@ -707,16 +744,134 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Instagram Reels showcase config (GET public, POST admin)
+  if (pathname === '/api/instagram-reels') {
+    const reelsPath = dataFile('instagram_reels.json');
+    if (req.method === 'GET') {
+      let data = { enabled: true, title: 'Watch LORA', subtitle: '', profileUrl: '', reels: [] };
+      try { if (fs.existsSync(reelsPath)) data = Object.assign(data, JSON.parse(fs.readFileSync(reelsPath, 'utf8'))); } catch (e) {}
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-cache' });
+      res.end(JSON.stringify({ success: true, settings: data }));
+      return;
+    }
+    if (req.method === 'POST') {
+      if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
+      let body = '';
+      req.on('data', c => { body += c; if (body.length > 1e6) req.destroy(); });
+      req.on('end', () => {
+        try {
+          const p = JSON.parse(body || '{}');
+          const s = p.settings || p;
+          const igRe = /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels|tv)\/[A-Za-z0-9_-]+/i;
+          const localRe = /^\/assets\/uploads\/[A-Za-z0-9_\/.-]+$/;
+          const clean = {
+            enabled: s.enabled !== false,
+            title: String(s.title || 'Watch LORA').slice(0, 80),
+            subtitle: String(s.subtitle || '').slice(0, 200),
+            profileUrl: /^https:\/\/(www\.)?instagram\.com\//i.test(s.profileUrl || '') ? String(s.profileUrl) : '',
+            reels: (Array.isArray(s.reels) ? s.reels : []).slice(0, 30).map((r, i) => ({
+              id: String(r.id || `reel_${Date.now()}_${i}`).slice(0, 60),
+              instagramUrl: igRe.test(r.instagramUrl || '') ? String(r.instagramUrl).split('?')[0] : '',
+              videoUrl: localRe.test(r.videoUrl || '') ? String(r.videoUrl) : '',
+              posterUrl: localRe.test(r.posterUrl || '') ? String(r.posterUrl) : '',
+              caption: String(r.caption || '').slice(0, 140),
+              active: r.active !== false
+            })).filter(r => r.instagramUrl || r.videoUrl),
+            updatedAt: new Date().toISOString()
+          };
+          fs.writeFileSync(reelsPath, JSON.stringify(clean, null, 2), 'utf8');
+          return sendJson(200, { success: true, settings: clean });
+        } catch (e) {
+          return sendJson(400, { success: false, message: e.message });
+        }
+      });
+      return;
+    }
+  }
+
+  // Streamed video upload (raw binary body, admin only) — keeps original resolution untouched
+  if (pathname === '/api/upload-video' && req.method === 'POST') {
+    if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
+    const MAX_BYTES = 500 * 1024 * 1024;
+    const typeMap = { 'video/mp4': '.mp4', 'video/webm': '.webm', 'video/quicktime': '.mov', 'video/x-m4v': '.m4v' };
+    const ctype = String(req.headers['content-type'] || '').split(';')[0].trim().toLowerCase();
+    const ext = typeMap[ctype];
+    if (!ext) return sendJson(415, { success: false, message: 'Only MP4, WebM or MOV videos are supported' });
+    const declared = Number(req.headers['content-length'] || 0);
+    if (declared > MAX_BYTES) return sendJson(413, { success: false, message: 'Video exceeds 500 MB limit' });
+
+    const videosDir = path.join(UPLOADS_DIR, 'videos');
+    fs.mkdirSync(videosDir, { recursive: true });
+    const fileName = `reel_${Date.now()}_${crypto.randomBytes(4).toString('hex')}${ext}`;
+    const target = path.join(videosDir, fileName);
+    const tmp = target + '.part';
+    const out = fs.createWriteStream(tmp);
+    let received = 0;
+    let aborted = false;
+    const fail = (code, msg) => {
+      if (aborted) return;
+      aborted = true;
+      out.destroy();
+      fs.unlink(tmp, () => {});
+      sendJson(code, { success: false, message: msg });
+    };
+    req.on('data', chunk => {
+      received += chunk.length;
+      if (received > MAX_BYTES) { fail(413, 'Video exceeds 500 MB limit'); req.destroy(); }
+    });
+    req.on('error', () => fail(500, 'Upload interrupted'));
+    out.on('error', e => fail(500, 'Write failed: ' + e.message));
+    out.on('finish', () => {
+      if (aborted) return;
+      if (received === 0) return fail(400, 'Empty upload');
+      fs.renameSync(tmp, target);
+      console.log(`[VIDEO UPLOAD] Saved ${fileName} (${(received / 1048576).toFixed(1)} MB)`);
+      sendJson(200, { success: true, url: `/assets/uploads/videos/${fileName}`, size: received });
+    });
+    req.pipe(out);
+    return;
+  }
+
   // Handle static assets (including uploads and subfolders)
   if (pathname.startsWith('/assets/') || pathname.startsWith('/admin/assets/')) {
     const cleanPath = pathname.replace(/^\/admin/, '');
     const relAssetPath = cleanPath.replace(/^\/assets\//, '');
     const safePath = path.normalize(relAssetPath).replace(/^(\.\.[\/\\])+/, '');
-    const assetPath = path.join(ASSETS_DIR, safePath);
+    let assetPath = path.join(ASSETS_DIR, safePath);
+    if (/^uploads[\/\\]/.test(safePath)) {
+      const persisted = path.join(UPLOADS_DIR, safePath.replace(/^uploads[\/\\]/, ''));
+      if (fs.existsSync(persisted)) assetPath = persisted;
+    }
 
     if (fs.existsSync(assetPath) && fs.statSync(assetPath).isFile()) {
       const ext = path.extname(assetPath).toLowerCase();
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+
+      // Videos: stream with HTTP Range support (required by Safari/iOS, enables instant start + seeking)
+      if (contentType.startsWith('video/')) {
+        const size = fs.statSync(assetPath).size;
+        const baseHeaders = { 'Content-Type': contentType, 'Accept-Ranges': 'bytes', 'Cache-Control': 'public, max-age=31536000, immutable' };
+        const range = req.headers.range;
+        if (range) {
+          const m = /bytes=(\d*)-(\d*)/.exec(range);
+          let start = m && m[1] ? parseInt(m[1], 10) : 0;
+          let end = m && m[2] ? parseInt(m[2], 10) : size - 1;
+          if (m && !m[1] && m[2]) { start = Math.max(0, size - parseInt(m[2], 10)); end = size - 1; }
+          end = Math.min(end, size - 1);
+          if (isNaN(start) || start >= size || start > end) {
+            res.writeHead(416, { 'Content-Range': `bytes */${size}` });
+            res.end();
+            return;
+          }
+          res.writeHead(206, Object.assign({ 'Content-Range': `bytes ${start}-${end}/${size}`, 'Content-Length': end - start + 1 }, baseHeaders));
+          fs.createReadStream(assetPath, { start, end }).pipe(res);
+        } else {
+          res.writeHead(200, Object.assign({ 'Content-Length': size }, baseHeaders));
+          fs.createReadStream(assetPath).pipe(res);
+        }
+        return;
+      }
+
       const fileData = fs.readFileSync(assetPath);
       res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0' });
       res.end(fileData);

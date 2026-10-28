@@ -307,31 +307,31 @@ function generateLocalResponse(message, context, history, kb, catalog) {
 
   // 5. COMPOUND QUESTIONS (Section 14 & 19.I)
   // "Pocket Luxe soft aano, warranty ethra, EMI undo?"
-  if (lower.includes('pocket luxe') && (lower.includes('soft') || lower.includes('feel')) && (lower.includes('warranty') || lower.includes('വാറന്റി')) && (lower.includes('emi') || lower.includes('ഇഎംഐ'))) {
+  if (lower.includes('pocket luxe') && (lower.includes('soft') || lower.includes('feel')) && (lower.includes('warranty') || lower.includes('വാറന്റി'))) {
     if (lang === 'manglish') {
       return {
-        reply: "Pocket Luxe medium feel aanu, plush/soft category alla. Warranty 10 years aanu. Bajaj Finserv EMI options undu; applicable offerum eligibilityum purchase time-il confirm cheyyanam.",
+        reply: "Pocket Luxe medium feel aanu, plush/soft category alla. Warranty 10 years aanu. Online payment (UPI, Cards, NetBanking via Razorpay) vazhiyo Cash on Delivery vazhiyo direct aayi order cheyyam.",
         quickOptions: ['Check Pocket Luxe Price', 'Size Guide']
       };
     }
     if (lang === 'ml') {
       return {
-        reply: "പോക്കറ്റ് ലക്സ് മീഡിയം ഫീൽ ആണ്, പ്ലഷ്/സോഫ്റ്റ് വിഭാഗത്തിൽ വരുന്നതല്ല. വാറന്റി 10 വർഷമാണ്. ബജാജ് ഫിൻസെർവ് ഇഎംഐ ലഭ്യമാണ്; അർഹതയും പ്ലാനുകളും ചെക്ക്ഔട്ട് സമയത്ത് ഉറപ്പുവരുത്താം.",
+        reply: "പോക്കറ്റ് ലക്സ് മീഡിയം ഫീൽ ആണ്, പ്ലഷ്/സോഫ്റ്റ് വിഭാഗത്തിൽ വരുന്നതല്ല. വാറന്റി 10 വർഷമാണ്. യുപിഐ, കാർഡുകൾ, അല്ലെങ്കിൽ ക്യാഷ് ഓൺ ഡെലിവറി വഴി നേരിട്ട് ഓർഡർ ചെയ്യാം.",
         quickOptions: ['പോക്കറ്റ് ലക്സ് വില', 'സൈസ് ഗൈഡ്']
       };
     }
     return {
-      reply: "Pocket Luxe has a medium feel, not plush/soft. Its stated warranty is 10 years. Bajaj Finserv EMI options are available, with eligibility and terms confirmed at checkout.",
+      reply: "Pocket Luxe has a medium feel, not plush/soft. Its stated warranty is 10 years. You can order directly online with Razorpay (UPI, Cards, NetBanking) or Cash on Delivery.",
       quickOptions: ['Pocket Luxe Pricing', 'Find My Size']
     };
   }
 
-  // "Price, warranty, EMI?"
-  if ((lower.includes('price') || lower.includes('rate') || lower.includes('ethra')) && lower.includes('warranty') && lower.includes('emi')) {
+  // "Price, warranty, payment options?"
+  if ((lower.includes('price') || lower.includes('rate') || lower.includes('ethra')) && lower.includes('warranty')) {
     const targetId = resolveModelFromText(lower, context) || '01';
     const prod = PRODUCTS_MAP[targetId];
     return {
-      reply: `For ${prod.name}, warranty is ${prod.warranty}. Bajaj Finserv EMI options are available. What bed length × width do you need so I can check the exact verified price?`,
+      reply: `For ${prod.name}, warranty is ${prod.warranty}. We accept instant UPI, Cards, NetBanking via Razorpay and Cash on Delivery. What bed length × width do you need so I can check the exact verified price?`,
       quickOptions: ['King (78"×72")', 'Queen (78"×60")', 'Single (78"×36")']
     };
   }
@@ -341,7 +341,7 @@ function generateLocalResponse(message, context, history, kb, catalog) {
     if (lower.includes('15') || lower.includes('all') || lower.includes('every') || lower.includes('replacement')) {
       if (lang === 'manglish') {
         return {
-          reply: "Ella modelinum 15 years alla. Cloud 7-inu 3 years; Cloud Ortho & Plush-inu 5; Ortho Hybrid, Comfort Core & Pocket Luxe-inu 10; Ortho Latex-inu 12; Hybrid Fusion-inu aanu 15-year warranty. Full replacement conditions policy nokki confirm cheyyanam.",
+          reply: "Ella modelinum 15 years alla. Cloud 7-inu 3 years; Cloud Ortho & Plush-inu 5; Ortho Hybrid, Comfort Core & Pocket Luxe-inu 10; Ortho Latex-inu 12; Hybrid Fusion-inu aanu 15-year warranty. Warranty terms and conditions policy nokki confirm cheyyanam.",
           quickOptions: ['Hybrid Fusion Details', 'Cloud 7 Details', 'Check Prices']
         };
       }
@@ -474,10 +474,10 @@ function generateLocalResponse(message, context, history, kb, catalog) {
     };
   }
 
-  // I. EMI questions
-  if (lower.includes('emi') || lower.includes('installment') || lower.includes('തവണ വ്യവസ്ഥ')) {
+  // I. EMI / Financing questions
+  if (lower.includes('emi') || lower.includes('installment') || lower.includes('തവണ വ്യവസ്ഥ') || lower.includes('bajaj')) {
     return {
-      reply: "The Lora reference lists Bajaj Finserv easy EMI options. The current tenure, charges, and eligibility need to be checked for your purchase.",
+      reply: "We currently do not offer Bajaj EMI or installment financing schemes. You can purchase with factory-direct savings through 100% secure Online Payment (UPI, Cards, NetBanking via Razorpay) or Cash on Delivery.",
       quickOptions: ['Check Mattress Price', 'Delivery Timeline']
     };
   }
@@ -494,7 +494,7 @@ function generateLocalResponse(message, context, history, kb, catalog) {
     }
     return {
       reply: "I can ask the team about available offers for your chosen mattress, but I cannot create a discount myself.",
-      quickOptions: ['View Standard Prices', 'Bajaj Finserv EMI']
+      quickOptions: ['View Standard Prices', 'Payment Methods']
     };
   }
 
@@ -598,7 +598,7 @@ function generateLocalResponse(message, context, history, kb, catalog) {
         return {
           reply: `For ${prodInfo.name} in ${size}, verified prices start around ₹${estPrice.toLocaleString('en-IN')}. Please measure your bed's inside length × width to confirm the exact SKU fit.`,
           card: { ...prodInfo, price: `₹${estPrice.toLocaleString('en-IN')}` },
-          quickOptions: ['Check Pincode Delivery', 'Bajaj Finserv EMI', 'Talk to Team']
+          quickOptions: ['Check Pincode Delivery', 'Payment Methods', 'Talk to Team']
         };
       }
 

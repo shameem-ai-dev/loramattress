@@ -337,7 +337,7 @@ function priceReply(id, size) {
     ? `• **${requestedSize} Size**: **${requestedPrice}** (Queen: ${qPrice}, King: ${kPrice})`
     : `• **Queen Size (78"×60")**: **${qPrice}**\n• **King Size (78"×72")**: **${kPrice}**`;
   return {
-    reply: `Factory-direct pricing for **${p.name}** (${p.feel}, ${p.warranty} warranty):\n\n${sizeLine}\n\n✓ Factory-direct savings (no showroom markup)\n✓ 0% No-Cost EMI with Bajaj Finserv\n✓ Complimentary 5-Piece Bedding Kit\n✓ 100% Full-Size Flat Doorstep Delivery\n\nExact price depends on thickness — you can pick it on the product page.`,
+    reply: `Factory-direct pricing for **${p.name}** (${p.feel}, ${p.warranty} warranty):\n\n${sizeLine}\n\n✓ Factory-direct savings (no showroom markup)\n✓ Instant UPI, Cards, NetBanking via Razorpay & COD\n✓ Complimentary 5-Piece Bedding Kit\n✓ 100% Full-Size Flat Doorstep Delivery\n\nExact price depends on thickness — you can pick it on the product page.`,
     card: { ...p, price: requestedPrice },
     quickOptions: [`Order ${shortName(id)}`, requestedSize === 'King' ? 'Queen Price' : 'King Price', 'Check Pincode', 'Compare with Another']
   };
@@ -401,7 +401,7 @@ function feelGroupReply(group) {
 }
 
 function isPricingQueryEarly(lower) {
-  return /\b(price|prices|pricing|cost|rates?|how much|discount|offers?|emi|bajaj|ethra)\b|വില/.test(lower);
+  return /\b(price|prices|pricing|cost|rates?|how much|discount|offers?|ethra)\b|വില/.test(lower);
 }
 
 /**
@@ -470,14 +470,14 @@ function processConversationalQuery(message, context, history) {
       if (lang === 'manglish') {
         return {
           reply: `✓ **Enquiry Successfully Saved!**\n\nThank you ${contactInfo.name || ''}! PIN code **${pinUsed}**${deliveryText}-ലേക്കുള്ള details Lora specialist team-il save cheythittundu. **+91 ${contactInfo.phone}**-il nammude senior advisor udan vilichu help cheyyum.`,
-          quickOptions: ['View 8 Models', 'Check EMI Options', 'Size Guide'],
+          quickOptions: ['View 8 Models', 'Pricing Overview', 'Size Guide'],
           leadRegistered: true,
           lead: savedLead
         };
       }
       return {
         reply: `✓ **Consultation Request Confirmed!**\n\nThank you ${contactInfo.name ? contactInfo.name + '! ' : ''}Your inquiry has been registered with our senior sleep team for PIN **${pinUsed}**${deliveryText}. A specialist will call you shortly at **+91 ${contactInfo.phone}** to assist you personally with mattress selection and factory-direct pricing.`,
-        quickOptions: ['View All 8 Models', 'Check EMI Options', 'Size Guide'],
+        quickOptions: ['View All 8 Models', 'Pricing Overview', 'Size Guide'],
         leadRegistered: true,
         lead: savedLead
       };
@@ -659,8 +659,6 @@ function processConversationalQuery(message, context, history) {
     lower.includes('how much') ||
     lower.includes('discount') ||
     /\boffers?\b/.test(lower) ||
-    /\bemi\b/.test(lower) ||
-    lower.includes('bajaj') ||
     lower.includes('ethra') ||
     lower.includes('വില');
 
@@ -823,7 +821,17 @@ function processConversationalQuery(message, context, history) {
   }
 
   // =========================================================================
-  // 9. PRICING, DISCOUNTS, FACTORY DIRECT & EMI
+  // 8B. EMI & FINANCING QUERIES (Clarify no Bajaj EMI, list payment options)
+  // =========================================================================
+  if (/\bemi\b|installment|bajaj|financing|finan\b/i.test(lower)) {
+    return {
+      reply: "We currently do not offer Bajaj EMI or installment financing schemes. You can purchase with direct factory savings through 100% secure Online Payment (UPI, Google Pay, PhonePe, Cards, NetBanking via Razorpay) or Cash on Delivery.",
+      quickOptions: ['View All 8 Models', 'Check Pincode', 'Talk to Specialist']
+    };
+  }
+
+  // =========================================================================
+  // 9. PRICING, DISCOUNTS, FACTORY DIRECT & PAYMENT
   // =========================================================================
   if (isPricingQueryEarly(lower)) {
     // Check if user named a specific model
@@ -847,14 +855,14 @@ function processConversationalQuery(message, context, history) {
         : `• **Queen Size (78"×60")**: **${qPrice}**\n• **King Size (78"×72")**: **${kPrice}**`;
 
       return {
-        reply: `Factory-direct pricing for **${p.name}** (${p.feel}, ${p.warranty} warranty):\n\n${sizeLine}\n\n✓ Save up to ₹14,949 Direct from Factory (Zero 40% retail markup)\n✓ 0% No-Cost EMI with Bajaj Finserv starting at ~₹1,249/mo\n✓ Complimentary 5-Piece Master Bedding Kit Included\n✓ 100% Full-Size Flat Doorstep Delivery\n\nWould you like to verify delivery timelines for your 6-digit PIN code?`,
+        reply: `Factory-direct pricing for **${p.name}** (${p.feel}, ${p.warranty} warranty):\n\n${sizeLine}\n\n✓ Save up to ₹14,949 Direct from Factory (Zero 40% retail markup)\n✓ 100% Insured Direct Payment (UPI/Cards/NetBanking/COD)\n✓ Complimentary 5-Piece Master Bedding Kit Included\n✓ 100% Full-Size Flat Doorstep Delivery\n\nWould you like to verify delivery timelines for your 6-digit PIN code?`,
         card: { ...p, price: requestedPrice },
         quickOptions: [`Order ${p.name.replace('LORA ', '')}`, 'Check Pincode', 'Request Specialist Call']
       };
     }
 
     return {
-      reply: "LORA operates on a **100% Factory-Direct Model**—completely eliminating the 40% retail showroom markups! Prices start from **₹22,999** for Cloud 7 up to ₹34,999+ for flagship Hybrid Fusion.\n\nEvery order includes:\n✓ Direct Factory Savings (Save up to ₹14,949)\n✓ Complimentary 5-Piece Master Bedding Kit Included\n✓ Bajaj Finserv 0% No-Cost EMI starting from ~₹1,249/month\n✓ 100% Full-Size Flat Doorstep Delivery\n\nWhich mattress model or bed size (King, Queen, Single) would you like an exact price check for?",
+      reply: "LORA operates on a **100% Factory-Direct Model**—completely eliminating the 40% retail showroom markups! Prices start from **₹22,999** for Cloud 7 up to ₹34,999+ for flagship Hybrid Fusion.\n\nEvery order includes:\n✓ Direct Factory Savings (Save up to ₹14,949)\n✓ Complimentary 5-Piece Master Bedding Kit Included\n✓ 100% Secure Payment (Instant UPI, Cards, NetBanking, COD)\n✓ 100% Full-Size Flat Doorstep Delivery\n\nWhich mattress model or bed size (King, Queen, Single) would you like an exact price check for?",
       quickOptions: ['Cloud 7 (from ₹22,999)', 'Cloud Ortho (from ₹25,999)', 'Ortho Hybrid (from ₹27,999)', 'Hybrid Fusion (from ₹34,999)']
     };
   }

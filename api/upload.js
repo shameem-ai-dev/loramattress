@@ -90,6 +90,12 @@ module.exports = async function handler(req, res) {
     }
 
     // 3. Fallback: If on read-only serverless environment and no cloud token configured
+    if (process.env.VERCEL) {
+      return res.status(500).json({
+        success: false,
+        message: 'Permanent image storage is not configured. Connect a Vercel Blob store to this project (sets BLOB_READ_WRITE_TOKEN) and redeploy.'
+      });
+    }
     return res.status(200).json({
       success: true,
       url: rawImage,

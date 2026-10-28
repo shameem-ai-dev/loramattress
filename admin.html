@@ -2188,11 +2188,7 @@
           <span class="tab-badge purple" id="badge-dispatch-count">0</span>
         </button>
 
-        <button type="button" class="sidebar-tab-btn" data-tab="tab-bajaj-emi" id="nav-tab-bajaj-emi">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="15" rx="3"/><rect x="5" y="8" width="4" height="3" rx="0.6"/><path d="M13 8c.8.5 1.4 1.3 1.4 2.2s-.6 1.7-1.4 2.2"/></svg>
-          <span>Bajaj EMI Requests</span>
-          <span class="tab-badge cyan" id="badge-emi-count" style="display: none; background: #0284C7; color: #FFFFFF;">0</span>
-        </button>
+
 
         <button type="button" class="sidebar-tab-btn" data-tab="tab-all-orders" id="nav-tab-all-orders">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -2226,6 +2222,11 @@
         <button type="button" class="sidebar-tab-btn" data-tab="tab-offers" id="nav-tab-offers">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
           <span>5. Offers & Promo Codes</span>
+        </button>
+
+        <button type="button" class="sidebar-tab-btn" data-tab="tab-reels" id="nav-tab-reels">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          <span>6. Instagram Reels</span>
         </button>
 
         <div class="nav-category-title" id="nav-cat-systems">Marketing & Systems</div>
@@ -2376,66 +2377,7 @@
           </div>
         </div>
 
-        <!-- ==========================================
-             TAB: BAJAJ EMI FINANCING REQUESTS & APPROVAL
-             ========================================== -->
-        <div class="tab-pane" id="tab-bajaj-emi">
-          <div class="stage-header">
-            <div class="stage-title">
-              <h2>Bajaj EMI Financing Assistance Portal</h2>
-              <p>Review customer financing requests, check eligibility via Bajaj's approved merchant portal, and confirm financing before clearing for production & delivery. Approval is subject to Bajaj Finance.</p>
-            </div>
-            <div style="display: flex; gap: 0.75rem; align-items: center;">
-              <span class="status-badge" style="background: rgba(0, 180, 216, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.4); padding: 0.4rem 0.8rem; font-weight: 700; font-size: 0.78rem;">
-                🛡️ Authorised Merchant Verification
-              </span>
-            </div>
-          </div>
 
-          <!-- Merchant Process Policy Guidance Notice -->
-          <div class="admin-card" style="padding: 1rem 1.25rem; margin-bottom: 1.25rem; border-left: 4px solid #0284C7; background: rgba(2, 132, 199, 0.08);">
-            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-              <div style="font-size: 1.2rem; line-height: 1;">ℹ️</div>
-              <div style="font-size: 0.82rem; color: #CBD5E1; line-height: 1.5;">
-                <strong style="color: #38BDF8; display: block; margin-bottom: 0.2rem;">Mandatory Merchant Fulfillment Rule:</strong>
-                "Our team will contact you to check EMI eligibility, explain applicable charges and arrange the next steps. Approval is subject to Bajaj Finance."
-                <div style="margin-top: 0.35rem; color: #94A3B8; font-size: 0.78rem;">
-                  • <strong>Awaiting Approval:</strong> Mattress orders remain on payment pending and are NOT marked as paid, COD, or dispatched.<br>
-                  • <strong>On Bajaj Approval:</strong> Confirm with the Bajaj Loan Reference number. The order transitions to <em>Order Received</em> for factory picking and dispatch.<br>
-                  • <strong>On Bajaj Decline:</strong> Mark as declined. The customer is given the choice to complete online or cancel. <strong>Never automatically converted to COD.</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- EMI Filters Toolbar -->
-          <div class="admin-card" style="padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-              <div class="filter-pills-row" id="bajaj-emi-filters">
-                <button type="button" class="filter-pill-btn active" data-emi-filter="all">
-                  All Requests (<span id="emi-count-all">0</span>)
-                </button>
-                <button type="button" class="filter-pill-btn" data-emi-filter="awaiting">
-                  Awaiting Approval (<span id="emi-count-awaiting">0</span>)
-                </button>
-                <button type="button" class="filter-pill-btn" data-emi-filter="approved">
-                  Financing Approved (<span id="emi-count-approved">0</span>)
-                </button>
-                <button type="button" class="filter-pill-btn" data-emi-filter="declined">
-                  Financing Declined (<span id="emi-count-declined">0</span>)
-                </button>
-              </div>
-              <div style="font-size: 0.78rem; color: #94A3B8;">
-                Real-time synchronized with Central Database
-              </div>
-            </div>
-          </div>
-
-          <!-- EMI Requests List -->
-          <div id="bajaj-emi-orders-list" style="display: flex; flex-direction: column; gap: 1rem;">
-            <!-- Rendered dynamically by renderBajajEmiQueue() -->
-          </div>
-        </div>
 
         <!-- ==========================================
              TAB: ALL ORDERS & REPORTS (EXCEL / SHEETS)
@@ -2905,25 +2847,92 @@
           </div>
 
           <div class="admin-card">
-            <div class="admin-card-header">
-              <h3 class="admin-card-title">Thickness Price Adjustments (₹ Delta)</h3>
+            <div class="admin-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem;">
+              <div>
+                <h3 class="admin-card-title">Available Thicknesses & Price Adjustments</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                  Tick the thicknesses available for this mattress model. Only ticked thicknesses will be shown to customers in the website configurator.
+                </p>
+              </div>
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-thick-select-all" style="font-size: 0.74rem; padding: 0.3rem 0.65rem;">
+                  Select All (6"–12")
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-thick-select-std" style="font-size: 0.74rem; padding: 0.3rem 0.65rem;">
+                  Standard (6, 8, 10, 12)
+                </button>
+              </div>
             </div>
-            <div class="field-grid-4">
-              <div class="input-block">
-                <label>6-Inch Delta (₹)</label>
-                <input type="number" id="p-thick-6" class="admin-input" step="500">
+
+            <!-- Thickness Ticking Row (6, 7, 8, 9, 10, 11, 12 Inch) -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(0, 180, 216, 0.25); border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.65rem;">
+                ☑ Active Thickness Ticking Options (Check to show on website):
+              </span>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-6" class="thick-enable-cb" data-thick="6" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>6 Inch</span>
+                </label>
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-7" class="thick-enable-cb" data-thick="7" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>7 Inch</span>
+                </label>
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-8" class="thick-enable-cb" data-thick="8" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>8 Inch (Base)</span>
+                </label>
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-9" class="thick-enable-cb" data-thick="9" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>9 Inch</span>
+                </label>
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-10" class="thick-enable-cb" data-thick="10" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>10 Inch</span>
+                </label>
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-11" class="thick-enable-cb" data-thick="11" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>11 Inch</span>
+                </label>
+                <label class="thick-tick-label" style="display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; user-select: none;">
+                  <input type="checkbox" id="p-thick-enable-12" class="thick-enable-cb" data-thick="12" style="accent-color: #00B4D8; width: 16px; height: 16px;" checked>
+                  <span>12 Inch</span>
+                </label>
               </div>
-              <div class="input-block">
-                <label>8-Inch Delta (₹ Standard)</label>
-                <input type="number" id="p-thick-8" class="admin-input" step="500" value="0">
+            </div>
+
+            <!-- Thickness Price Deltas Grid (6 to 12 Inch) -->
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase;">
+              Thickness Price Offsets (₹ Delta relative to standard 8"):
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem;">
+              <div class="input-block" id="block-p-thick-6">
+                <label style="font-size: 0.75rem;">6-Inch Delta (₹)</label>
+                <input type="number" id="p-thick-6" class="admin-input" step="100">
               </div>
-              <div class="input-block">
-                <label>10-Inch Delta (₹ Eurotop)</label>
-                <input type="number" id="p-thick-10" class="admin-input" step="500">
+              <div class="input-block" id="block-p-thick-7">
+                <label style="font-size: 0.75rem;">7-Inch Delta (₹)</label>
+                <input type="number" id="p-thick-7" class="admin-input" step="100">
               </div>
-              <div class="input-block">
-                <label>12-Inch Delta (₹ Grand Luxe)</label>
-                <input type="number" id="p-thick-12" class="admin-input" step="500">
+              <div class="input-block" id="block-p-thick-8">
+                <label style="font-size: 0.75rem;">8-Inch (₹ Base: 0)</label>
+                <input type="number" id="p-thick-8" class="admin-input" step="100" value="0">
+              </div>
+              <div class="input-block" id="block-p-thick-9">
+                <label style="font-size: 0.75rem;">9-Inch Delta (₹)</label>
+                <input type="number" id="p-thick-9" class="admin-input" step="100">
+              </div>
+              <div class="input-block" id="block-p-thick-10">
+                <label style="font-size: 0.75rem;">10-Inch Delta (₹)</label>
+                <input type="number" id="p-thick-10" class="admin-input" step="100">
+              </div>
+              <div class="input-block" id="block-p-thick-11">
+                <label style="font-size: 0.75rem;">11-Inch Delta (₹)</label>
+                <input type="number" id="p-thick-11" class="admin-input" step="100">
+              </div>
+              <div class="input-block" id="block-p-thick-12">
+                <label style="font-size: 0.75rem;">12-Inch Delta (₹)</label>
+                <input type="number" id="p-thick-12" class="admin-input" step="100">
               </div>
             </div>
           </div>
@@ -2957,6 +2966,16 @@
         <!-- ==========================================
              TAB 5: OFFERS & PROMO CODES
              ========================================== -->
+        <div class="tab-pane" id="tab-reels">
+          <div class="stage-header">
+            <div class="stage-title">
+              <h2>Instagram Reels — Homepage "Watch LORA"</h2>
+              <p>Paste Instagram reel links and (recommended) upload the original MP4 for full-resolution autoplay on the homepage.</p>
+            </div>
+          </div>
+          <div id="reels-admin-root"></div>
+        </div>
+
         <div class="tab-pane" id="tab-offers">
           <div class="stage-header">
             <div class="stage-title">
@@ -3866,10 +3885,10 @@
 
               <div class="admin-card">
                 <div class="admin-card-header">
-                  <h3 class="admin-card-title">5. 0% No-Cost EMI & Payment Options</h3>
+                  <h3 class="admin-card-title">5. Payment Options & Direct Factory Savings</h3>
                 </div>
                 <div class="input-block">
-                  <label>EMI Terms & Razorpay Integration Info</label>
+                  <label>Payment Terms & Razorpay Integration Info</label>
                   <textarea id="cfg-lumi-emi" class="admin-input" style="height: 95px; font-size: 0.8rem; line-height: 1.4;"></textarea>
                 </div>
               </div>
@@ -3979,9 +3998,9 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <div>
-                <h3 class="admin-card-title">Razorpay Payment Gateway (UPI, Cards, NetBanking, 0% EMI)</h3>
+                <h3 class="admin-card-title">Razorpay Payment Gateway (UPI, Cards, NetBanking)</h3>
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
-                  Accept instant prepaid payments via Google Pay, PhonePe, Paytm, Debit/Credit Cards, NetBanking, and No-Cost EMI with 256-bit SSL encryption.
+                  Accept instant prepaid payments via Google Pay, PhonePe, Paytm, Debit/Credit Cards, and NetBanking with 256-bit SSL encryption.
                 </p>
               </div>
               <span id="settings-rzp-badge" class="status-badge status-delivered">● Razorpay Active (Test Mode)</span>
@@ -4842,7 +4861,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/lora-flat-luxury.jpg",
           basePrice: 21999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -4868,7 +4888,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/material-natural-latex.jpg",
           basePrice: 23499,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -4894,7 +4915,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/material-cashmere-linen.jpg",
           basePrice: 24999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -4920,7 +4942,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/material-pocket-springs.jpg",
           basePrice: 26999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -4946,7 +4969,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/complimentary-sleep-kit.jpg",
           basePrice: 28999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -4972,7 +4996,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/delivery-full-flat.jpg",
           basePrice: 20999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -4998,7 +5023,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/lora-flat-luxury.jpg",
           basePrice: 27999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -5024,7 +5050,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: "assets/material-cashmere-linen.jpg",
           basePrice: 32999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -5129,9 +5156,6 @@ Order Notes: [Customer Instructions]</pre>
             if (tabId === 'tab-lumi-kb') {
               if (typeof renderLumiLeadsTable === 'function') renderLumiLeadsTable();
               if (typeof loadLumiKB === 'function') loadLumiKB();
-            }
-            if (tabId === 'tab-bajaj-emi') {
-              if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
             }
           }
         });
@@ -5363,7 +5387,8 @@ Order Notes: [Customer Instructions]</pre>
           detailImg: detailUrl,
           basePrice: basePrice,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
-          thicknessOffsets: { "6": -2500, "8": 0, "10": 3800, "12": 7500 },
+          availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
+          thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
           inchAddons: {
             king: { "78x72": 0, "75x72": -800, "72x72": -1500, "84x72": 2500 },
             queen: { "78x60": 0, "75x60": -700, "72x60": -1400, "78x66": 1800 },
@@ -5446,10 +5471,23 @@ Order Notes: [Customer Instructions]</pre>
         document.querySelector('#p-mult-single').value = data.multipliers?.single || 0.68;
         document.querySelector('#p-mult-double').value = data.multipliers?.double || 0.82;
 
-        document.querySelector('#p-thick-6').value = data.thicknessOffsets?.['6'] || -2500;
-        document.querySelector('#p-thick-8').value = data.thicknessOffsets?.['8'] || 0;
-        document.querySelector('#p-thick-10').value = data.thicknessOffsets?.['10'] || 3800;
-        document.querySelector('#p-thick-12').value = data.thicknessOffsets?.['12'] || 7500;
+        const availThicks = (data.availableThicknesses && data.availableThicknesses.length)
+          ? data.availableThicknesses.map(Number)
+          : [6, 7, 8, 9, 10, 11, 12];
+        const defThickOffsets = { '6': -2500, '7': -1200, '8': 0, '9': 1900, '10': 3800, '11': 5600, '12': 7500 };
+
+        [6, 7, 8, 9, 10, 11, 12].forEach(th => {
+          const cb = document.querySelector('#p-thick-enable-' + th);
+          if (cb) cb.checked = availThicks.includes(th);
+          const inp = document.querySelector('#p-thick-' + th);
+          if (inp) {
+            inp.value = data.thicknessOffsets?.[String(th)] !== undefined ? data.thicknessOffsets[String(th)] : (defThickOffsets[String(th)] || 0);
+          }
+          const block = document.querySelector('#block-p-thick-' + th);
+          if (block) {
+            block.style.opacity = availThicks.includes(th) ? '1' : '0.45';
+          }
+        });
 
         // Offers
         const offer = data.offer || {};
@@ -5495,7 +5533,9 @@ Order Notes: [Customer Instructions]</pre>
         if (!tbody) return;
 
         const types = ['queen', 'king', 'single', 'double'];
-        const thicknesses = [6, 8, 10, 12];
+        const thicknesses = (data.availableThicknesses && data.availableThicknesses.length)
+          ? data.availableThicknesses.map(Number)
+          : [6, 7, 8, 9, 10, 11, 12];
         const base = parseInt(data.basePrice, 10) || 21999;
         let html = '';
 
@@ -5739,11 +5779,22 @@ Order Notes: [Customer Instructions]</pre>
             double: parseFloat(document.querySelector('#p-mult-double').value) || 0.82
           };
 
+          const availThicks = [];
+          [6, 7, 8, 9, 10, 11, 12].forEach(th => {
+            if (document.querySelector('#p-thick-enable-' + th)?.checked) {
+              availThicks.push(th);
+            }
+          });
+          d.availableThicknesses = availThicks.length ? availThicks : [8];
+
           d.thicknessOffsets = {
-            "6": parseInt(document.querySelector('#p-thick-6').value, 10) || -2500,
-            "8": parseInt(document.querySelector('#p-thick-8').value, 10) || 0,
-            "10": parseInt(document.querySelector('#p-thick-10').value, 10) || 3800,
-            "12": parseInt(document.querySelector('#p-thick-12').value, 10) || 7500
+            "6": parseInt(document.querySelector('#p-thick-6')?.value, 10) || -2500,
+            "7": parseInt(document.querySelector('#p-thick-7')?.value, 10) || -1200,
+            "8": parseInt(document.querySelector('#p-thick-8')?.value, 10) || 0,
+            "9": parseInt(document.querySelector('#p-thick-9')?.value, 10) || 1900,
+            "10": parseInt(document.querySelector('#p-thick-10')?.value, 10) || 3800,
+            "11": parseInt(document.querySelector('#p-thick-11')?.value, 10) || 5600,
+            "12": parseInt(document.querySelector('#p-thick-12')?.value, 10) || 7500
           };
 
           d.offer = {
@@ -5833,6 +5884,58 @@ Order Notes: [Customer Instructions]</pre>
                 saveFeedback.classList.remove('error');
               }, 6000);
             }
+          }
+        });
+      }
+
+      // Available Thickness Ticking Handlers
+      document.querySelectorAll('.thick-enable-cb').forEach(cb => {
+        cb.addEventListener('change', function () {
+          const th = this.getAttribute('data-thick');
+          const block = document.querySelector('#block-p-thick-' + th);
+          if (block) block.style.opacity = this.checked ? '1' : '0.45';
+
+          const curData = catalog[activeCatalogKey];
+          if (curData) {
+            const avail = [];
+            document.querySelectorAll('.thick-enable-cb:checked').forEach(c => avail.push(Number(c.getAttribute('data-thick'))));
+            curData.availableThicknesses = avail.length ? avail : [8];
+            renderMatrixTable(curData);
+          }
+        });
+      });
+
+      const btnThickSelectAll = document.querySelector('#btn-thick-select-all');
+      if (btnThickSelectAll) {
+        btnThickSelectAll.addEventListener('click', function () {
+          document.querySelectorAll('.thick-enable-cb').forEach(cb => {
+            cb.checked = true;
+            const th = cb.getAttribute('data-thick');
+            const block = document.querySelector('#block-p-thick-' + th);
+            if (block) block.style.opacity = '1';
+          });
+          const curData = catalog[activeCatalogKey];
+          if (curData) {
+            curData.availableThicknesses = [6, 7, 8, 9, 10, 11, 12];
+            renderMatrixTable(curData);
+          }
+        });
+      }
+
+      const btnThickSelectStd = document.querySelector('#btn-thick-select-std');
+      if (btnThickSelectStd) {
+        btnThickSelectStd.addEventListener('click', function () {
+          const std = [6, 8, 10, 12];
+          document.querySelectorAll('.thick-enable-cb').forEach(cb => {
+            const th = Number(cb.getAttribute('data-thick'));
+            cb.checked = std.includes(th);
+            const block = document.querySelector('#block-p-thick-' + th);
+            if (block) block.style.opacity = std.includes(th) ? '1' : '0.45';
+          });
+          const curData = catalog[activeCatalogKey];
+          if (curData) {
+            curData.availableThicknesses = [6, 8, 10, 12];
+            renderMatrixTable(curData);
           }
         });
       }
@@ -6548,8 +6651,7 @@ Order Notes: [Customer Instructions]</pre>
         renderAnalyticsTab();
         renderStoreKeeperQueue(activeStoreFilter);
         renderDispatcherQueue(activeDispatchFilter);
-        if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
-        renderAllOrdersTable();
+                renderAllOrdersTable();
       }
 
       function saveOrders(orderToUpdate) {
@@ -6587,8 +6689,7 @@ Order Notes: [Customer Instructions]</pre>
         renderAnalyticsTab();
         renderStoreKeeperQueue(activeStoreFilter);
         renderDispatcherQueue(activeDispatchFilter);
-        if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
-        renderAllOrdersTable();
+                renderAllOrdersTable();
       }
 
       // Production Launch Reset All Handler
@@ -6633,8 +6734,7 @@ Order Notes: [Customer Instructions]</pre>
             renderAnalyticsTab();
             renderStoreKeeperQueue(activeStoreFilter);
             renderDispatcherQueue(activeDispatchFilter);
-            if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
-            renderAllOrdersTable();
+                        renderAllOrdersTable();
             if (typeof loadStoreLeads === 'function') loadStoreLeads();
 
             if (launchResetFeedback) {
@@ -6662,25 +6762,10 @@ Order Notes: [Customer Instructions]</pre>
         const storeCount = orders.filter(o => ['Order Received', 'Picking', 'Packed'].includes(o.status)).length;
         const dispatchCount = orders.filter(o => ['Ready for Dispatch', 'Picked Up', 'Shipped', 'Out for Delivery'].includes(o.status)).length;
 
-        const emiOrders = orders.filter(o => 
-          o.paymentMethod === 'Request Bajaj EMI' || 
-          (o.status && o.status.includes('EMI')) || 
-          (o.paymentStatus && o.paymentStatus.includes('Financing')) ||
-          (o.paymentStatus && o.paymentStatus.includes('EMI'))
-        );
-        const emiAwaitingCount = orders.filter(o => o.status === 'EMI requested — awaiting approval').length;
-        const emiApprovedCount = orders.filter(o => o.paymentStatus && o.paymentStatus.includes('Financing Approved')).length;
-        const emiDeclinedCount = orders.filter(o => o.status === 'EMI Declined — Awaiting Customer Choice' || (o.paymentStatus && o.paymentStatus.includes('Declined'))).length;
-
         const elSkBadge = document.querySelector('#badge-storekeeper-count');
         const elDpBadge = document.querySelector('#badge-dispatch-count');
-        const elEmiBadge = document.querySelector('#badge-emi-count');
         if (elSkBadge) elSkBadge.textContent = storeCount;
         if (elDpBadge) elDpBadge.textContent = dispatchCount;
-        if (elEmiBadge) {
-          elEmiBadge.textContent = emiAwaitingCount;
-          elEmiBadge.style.display = emiAwaitingCount > 0 ? 'inline-block' : 'none';
-        }
 
         const elEmiAll = document.querySelector('#emi-count-all');
         const elEmiAwaiting = document.querySelector('#emi-count-awaiting');
@@ -7160,215 +7245,7 @@ Order Notes: [Customer Instructions]</pre>
       }
 
 
-      // =========================================================
-      // BAJAJ EMI FINANCING ASSISTANCE QUEUE & APPROVAL SYSTEM
-      // =========================================================
-      let activeEmiFilter = 'all';
-      const emiFiltersContainer = document.querySelector('#bajaj-emi-filters');
-      if (emiFiltersContainer) {
-        emiFiltersContainer.querySelectorAll('.filter-pill-btn').forEach(btn => {
-          btn.addEventListener('click', function () {
-            emiFiltersContainer.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            activeEmiFilter = this.getAttribute('data-emi-filter');
-            renderBajajEmiQueue(activeEmiFilter);
-          });
-        });
-      }
-
-      function renderBajajEmiQueue(filter = 'all') {
-        const listEl = document.querySelector('#bajaj-emi-orders-list');
-        if (!listEl) return;
-
-        let emiOrders = orders.filter(o => 
-          o.paymentMethod === 'Request Bajaj EMI' || 
-          (o.status && o.status.includes('EMI')) || 
-          (o.paymentStatus && o.paymentStatus.includes('Financing')) ||
-          (o.paymentStatus && o.paymentStatus.includes('EMI'))
-        );
-
-        if (filter === 'awaiting') {
-          emiOrders = emiOrders.filter(o => o.status === 'EMI requested — awaiting approval');
-        } else if (filter === 'approved') {
-          emiOrders = emiOrders.filter(o => o.paymentStatus && o.paymentStatus.includes('Financing Approved'));
-        } else if (filter === 'declined') {
-          emiOrders = emiOrders.filter(o => o.status === 'EMI Declined — Awaiting Customer Choice' || (o.paymentStatus && o.paymentStatus.includes('Declined')));
-        }
-
-        if (emiOrders.length === 0) {
-          listEl.innerHTML = `
-            <div style="background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: var(--radius-lg); padding: 3rem; text-align: center;">
-              <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛡️</div>
-              <h4 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 0.35rem;">No Bajaj EMI Requests in this Stage</h4>
-              <p style="font-size: 0.84rem; color: var(--text-muted); max-width: 460px; margin: 0 auto;">
-                All customer financing requests have been processed. New requests submitted via storefront checkout will appear here in real time.
-              </p>
-            </div>
-          `;
-          return;
-        }
-
-        listEl.innerHTML = emiOrders.map(order => {
-          const isAwaiting = order.status === 'EMI requested — awaiting approval';
-          const isDeclined = order.status === 'EMI Declined — Awaiting Customer Choice';
-          const isApproved = !isAwaiting && !isDeclined && ((order.paymentStatus && order.paymentStatus.includes('Financing Approved')) || (order.statusHistory && order.statusHistory.some(h => h.notes && h.notes.includes('Bajaj'))));
-          const cleanPhone = (order.phone || '').replace(/[^0-9]/g, '');
-
-          let actionButtons = '';
-          if (isAwaiting) {
-            actionButtons = `
-              <button type="button" class="btn-op-action btn-op-primary btn-confirm-bajaj-emi" data-id="${order.id}" style="background: #0284C7; color: #FFFFFF; font-weight: 700;">
-                ✓ Confirm Financing (Bajaj Approved)
-              </button>
-              <button type="button" class="btn-op-action btn-op-secondary btn-decline-bajaj-emi" data-id="${order.id}" style="border-color: rgba(239, 68, 68, 0.5); color: #FCA5A5;">
-                ✕ Decline Financing
-              </button>
-            `;
-          } else if (isApproved) {
-            actionButtons = `
-              <span style="font-size: 0.8rem; font-weight: 700; color: #34D399; background: rgba(16, 185, 129, 0.15); padding: 0.35rem 0.75rem; border-radius: var(--radius-pill); border: 1px solid rgba(16, 185, 129, 0.3);">
-                ✓ Financing Approved — Sent to Store Keeper
-              </span>
-            `;
-          } else if (isDeclined) {
-            actionButtons = `
-              <span style="font-size: 0.8rem; font-weight: 700; color: #FCA5A5; background: rgba(239, 68, 68, 0.15); padding: 0.35rem 0.75rem; border-radius: var(--radius-pill); border: 1px solid rgba(239, 68, 68, 0.3);">
-                ✕ Declined — Awaiting Customer Choice (Never COD)
-              </span>
-            `;
-          }
-
-          const waText = `Hello ${order.customerName},\nThis is from LORA Mattress regarding your Bajaj EMI request (Ref: ${order.id}) for ${order.productName} (${order.size}).\nOur team is reviewing your EMI eligibility with Bajaj Finance. Please let us know if you have any questions.`;
-
-          return `
-            <div class="order-item-card ${isAwaiting ? 'highlight-new' : ''}" data-order-id="${order.id}">
-              <div class="order-card-top">
-                <div class="order-ref-block">
-                  <span class="order-id-tag">${order.id}</span>
-                  <span class="order-date-tag">📅 Requested ${formatTimestamp(order.createdAt)}</span>
-                  ${getStatusBadgeHtml(order.status)}
-                  <span style="font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); font-weight: 700; background: ${isApproved ? 'rgba(16, 185, 129, 0.15); color: #6EE7B7;' : (isDeclined ? 'rgba(239, 68, 68, 0.15); color: #FCA5A5;' : 'rgba(245, 158, 11, 0.15); color: #FCD34D;')}">
-                    💳 ${order.paymentStatus || 'Payment Pending'}
-                  </span>
-                </div>
-                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                  ${actionButtons}
-                  <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(waText)}" target="_blank" class="btn-op-action btn-op-whatsapp" title="Contact customer regarding Bajaj EMI">
-                    💬 Contact Customer
-                  </a>
-                </div>
-              </div>
-
-              <!-- Customer & Mattress Details -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem;">
-                <div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.03em;">Customer & Contact</span>
-                  <div style="font-size: 0.95rem; font-weight: 700; color: #FFFFFF; margin-top: 0.2rem;">${order.customerName}</div>
-                  <div style="font-size: 0.84rem; color: #38BDF8; font-family: monospace; margin-top: 0.15rem;">${order.phone}</div>
-                  ${order.email ? `<div style="font-size: 0.8rem; color: var(--text-muted);">${order.email}</div>` : ''}
-                  <div style="font-size: 0.78rem; color: #CBD5E1; margin-top: 0.35rem; line-height: 1.4;">
-                    <strong>Delivery Address:</strong> ${order.address}
-                  </div>
-                </div>
-
-                <div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.03em;">Selected Product & Financing Value</span>
-                  <div style="font-size: 0.95rem; font-weight: 700; color: #FFFFFF; margin-top: 0.2rem;">${order.productName}</div>
-                  <div style="font-size: 0.82rem; color: #38BDF8;">${order.size} • Qty: ${order.quantity || 1}</div>
-                  <div style="font-size: 1.15rem; font-weight: 800; color: #34D399; margin-top: 0.35rem;">
-                    ₹${Number(order.totalPrice || order.price || 21999).toLocaleString('en-IN')}
-                  </div>
-                  <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 0.2rem;">
-                    Financing Scheme: Bajaj Finserv EMI Assistance
-                  </div>
-                </div>
-              </div>
-
-              <!-- Regulatory & Policy Banner -->
-              <div style="background: rgba(2, 132, 199, 0.06); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 6px; padding: 0.65rem 0.85rem; font-size: 0.76rem; color: #94A3B8;">
-                🛡️ <strong>Merchant Policy:</strong> "Our team will contact you to check EMI eligibility, explain applicable charges and arrange the next steps. Approval is subject to Bajaj Finance." (Direct Merchant Process — No financial documents, card numbers or OTPs collected through request form).
-              </div>
-
-              <!-- Order History Audit Log -->
-              ${order.statusHistory && order.statusHistory.length > 0 ? `
-                <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-subtle); font-size: 0.74rem; color: var(--text-muted);">
-                  <strong>Audit Log:</strong> ${order.statusHistory.map(h => `${formatTimestamp(h.timestamp)}: ${h.notes} (${h.staff || 'Staff'})`).join(' • ')}
-                </div>
-              ` : ''}
-            </div>
-          `;
-        }).join('');
-
-        // Wire Action Buttons: Confirm Financing
-        listEl.querySelectorAll('.btn-confirm-bajaj-emi').forEach(btn => {
-          btn.addEventListener('click', function () {
-            const orderId = this.getAttribute('data-id');
-            const target = orders.find(o => o.id === orderId);
-            if (!target) return;
-
-            const loanRef = prompt(`Enter Bajaj Finance Loan Approval Reference / Merchant Transaction ID for ${orderId}:`, `BAJAJ-${Math.floor(100000 + Math.random() * 900000)}`);
-            if (!loanRef || !loanRef.trim()) {
-              alert('Loan approval reference number is required to confirm financing through Bajaj merchant process.');
-              return;
-            }
-
-            const staffName = sessionStorage.getItem('lora_admin_user') || 'Authorized Merchant Admin';
-
-            // On Bajaj approval: status becomes 'Order Received' so it enters the Store Keeper fulfillment queue!
-            target.status = 'Order Received';
-            target.paymentStatus = `Financing Approved (Bajaj Ref: ${loanRef.trim()})`;
-            target.bajajLoanRef = loanRef.trim();
-            target.bajajApprovedAt = new Date().toISOString();
-            target.bajajApprovedBy = staffName;
-
-            if (!target.statusHistory) target.statusHistory = [];
-            target.statusHistory.push({
-              status: 'Order Received',
-              timestamp: new Date().toISOString(),
-              staff: staffName,
-              notes: `Financing officially confirmed through Bajaj Finance merchant process. Loan Reference: ${loanRef.trim()}. Order authorized for production & dispatch.`
-            });
-
-            saveOrders(target);
-            renderBajajEmiQueue(activeEmiFilter);
-            alert(`Financing confirmed for ${orderId}!\n\nOrder has been placed into the Store Keeper Queue for picking, packing and dispatch.`);
-          });
-        });
-
-        // Wire Action Buttons: Decline Financing
-        listEl.querySelectorAll('.btn-decline-bajaj-emi').forEach(btn => {
-          btn.addEventListener('click', function () {
-            const orderId = this.getAttribute('data-id');
-            const target = orders.find(o => o.id === orderId);
-            if (!target) return;
-
-            const reason = prompt(`Enter reason for Bajaj Finance decline (e.g. CIBIL eligibility, documentation pending, customer cancelled):`, 'Customer ineligible under Bajaj credit policy');
-            if (reason === null) return; // User pressed Cancel on prompt
-
-            const staffName = sessionStorage.getItem('lora_admin_user') || 'Authorized Merchant Admin';
-
-            // On decline: status becomes 'EMI Declined — Awaiting Customer Choice'. NEVER convert to COD.
-            target.status = 'EMI Declined — Awaiting Customer Choice';
-            target.paymentStatus = 'Financing Declined';
-            target.bajajDeclineReason = reason.trim() || 'Declined by Bajaj Finance';
-            target.bajajDeclinedAt = new Date().toISOString();
-            target.bajajDeclinedBy = staffName;
-
-            if (!target.statusHistory) target.statusHistory = [];
-            target.statusHistory.push({
-              status: 'EMI Declined — Awaiting Customer Choice',
-              timestamp: new Date().toISOString(),
-              staff: staffName,
-              notes: `Bajaj Finance financing declined: ${reason.trim() || 'Ineligible'}. Customer given choice to pay online or cancel. Strictly NOT converted to COD.`
-            });
-
-            saveOrders(target);
-            renderBajajEmiQueue(activeEmiFilter);
-            alert(`Financing request for ${orderId} marked as Declined.\n\nCustomer may choose to pay online or cancel. Note: This order will NEVER automatically convert to COD.`);
-          });
-        });
-      }
-
+      
       // 8. All Orders Table, Search, Multi-Filter & CSV Exporter
       const ordersSearchInput = document.querySelector('#orders-search-input');
       const ordersFilterStatus = document.querySelector('#orders-filter-status');
@@ -8878,8 +8755,7 @@ Order Notes: [Customer Instructions]</pre>
         updateOrderBadges();
         renderStoreKeeperQueue(activeStoreFilter);
         renderDispatcherQueue(activeDispatchFilter);
-        if (typeof renderBajajEmiQueue === 'function') renderBajajEmiQueue(activeEmiFilter);
-        renderAllOrdersTable();
+                renderAllOrdersTable();
       });
 
       // Initial Order Operations Boot
@@ -9952,9 +9828,9 @@ Order Notes: [Customer Instructions]</pre>
           },
           {
             id: "ribbon_3",
-            tag: "NO COST EMI",
-            text: "Zero Down Payment & 0% Interest EMI starting ₹1,833/month via Bajaj Finserv",
-            link: "product.html"
+            tag: "15-YEAR WARRANTY",
+            text: "Direct Factory Craftsmanship with up to 15 Years Warranty",
+            link: "#factory-direct"
           },
           {
             id: "ribbon_4",
@@ -10044,7 +9920,7 @@ Order Notes: [Customer Instructions]</pre>
 
       // Protected brands and regional names that must NEVER be modified or flagged
       const PROTECTED_PROPER_NOUNS = new Set([
-        'lora', 'spinealign', 'cloud', 'latexplus', 'bajaj', 'finserv',
+        'lora', 'spinealign', 'cloud', 'latexplus',
         'dunlop', 'talalay', 'lumi', 'kerala', 'calicut', 'kochi',
         'trivandrum', 'kannur', 'thrissur', 'malappuram', 'ernakulam',
         'kottayam', 'palakkad', 'india', 'emi', 'code', 'flat', 'free', 'off'
@@ -10554,5 +10430,6 @@ Order Notes: [Customer Instructions]</pre>
       }
     })();
   </script>
+<script src="/assets/admin-reels.js?v=1" defer></script>
 </body>
 </html>

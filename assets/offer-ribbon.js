@@ -27,9 +27,9 @@
       },
       {
         id: "ribbon_3",
-        tag: "BAJAJ FINANCING",
-        text: "Bajaj EMI Assistance Available starting ₹1,833/month • Verification on request",
-        link: "product.html"
+        tag: "15-YEAR WARRANTY",
+        text: "Direct Factory Craftsmanship with up to 15 Years Warranty",
+        link: "#the-collection"
       },
       {
         id: "ribbon_4",

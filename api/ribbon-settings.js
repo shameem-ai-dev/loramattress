@@ -42,9 +42,9 @@ function loadRibbonSettings() {
       },
       {
         id: "ribbon_3",
-        tag: "NO COST EMI",
-        text: "Zero Down Payment & 0% Interest EMI starting ₹1,833/month via Bajaj Finserv",
-        link: "product.html"
+        tag: "15-YEAR WARRANTY",
+        text: "Direct Factory Craftsmanship with up to 15 Years Warranty",
+        link: "#the-collection"
       },
       {
         id: "ribbon_4",
