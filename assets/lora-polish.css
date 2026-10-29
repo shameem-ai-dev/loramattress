@@ -1341,15 +1341,42 @@ body {
    Guarantees 100% crystal-clear readability across every viewport
    ========================================================= */
 
-/* Headings on light surfaces */
-body h1:not(.site-footer *),
-body h2:not(.site-footer *),
-body h3:not(.site-footer *),
-body h4:not(.site-footer *),
+/* Headings on light surfaces (excluding dark hero section & dark footer) */
+body h1:not(.site-footer *):not(.lf *):not(.lf-title):not(#the-hero *),
+body h2:not(.site-footer *):not(.lf *):not(#the-hero *),
+body h3:not(.site-footer *):not(.lf *):not(#the-hero *),
+body h4:not(.site-footer *):not(.lf *):not(#the-hero *),
 body .section-title,
 body .comfort-title {
   color: #1C1917 !important;
   font-weight: 800;
+}
+
+/* Hero Section: Enforce brilliant white visibility for "Sleep," heading */
+.lf .lf-title,
+h1.lf-title,
+.lf-title {
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.7) !important;
+}
+
+.lf .lf-title em,
+.lf-title em {
+  font-style: normal !important;
+  background: linear-gradient(100deg, #FFFFFF 0%, #FED7AA 45%, #F97316 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* Eyebrow Pill: Remove decorative dot indicator */
+.lf-eyebrow::before {
+  display: none !important;
+}
+.lf-eyebrow {
+  gap: 0 !important;
 }
 
 /* Eyebrows & Category Badges */
