@@ -1029,8 +1029,9 @@ button, input, select {
 }
 
 .eyebrow-gold {
-  color: #D4AF37 !important;
-  letter-spacing: 0.16em !important;
+  color: #A24B24 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
 }
 
 .comfort-title {
@@ -1038,14 +1039,15 @@ button, input, select {
   font-size: clamp(2.3rem, 4vw, 3.4rem);
   font-weight: 500;
   letter-spacing: -0.01em;
-  color: #FFFFFF;
+  color: #1C1917;
   margin: 0.5rem 0 1rem;
 }
 
 .comfort-subtext {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #94A3B8;
+  color: #44403C;
+  font-weight: 450;
 }
 
 .comfort-interactive-grid {

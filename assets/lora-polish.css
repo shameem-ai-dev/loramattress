@@ -387,21 +387,27 @@ body {
   margin: 0 auto 1.25rem !important;
   text-align: center;
 }
-.comfort-header-editorial .eyebrow {
+.comfort-header-editorial .eyebrow,
+.comfort-header-editorial .eyebrow-gold {
   margin-bottom: 0.25rem !important;
-  font-size: 0.72rem !important;
+  font-size: 0.74rem !important;
+  color: #A24B24 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
 }
 .comfort-title {
-  color: var(--lp-espresso) !important;
+  color: var(--lp-espresso, #1C1917) !important;
   font-size: clamp(1.7rem, 2.5vw, 2.2rem) !important;
   margin: 0.15rem 0 0.35rem !important;
   line-height: 1.2 !important;
 }
 .comfort-subtext {
-  color: #57534E !important;
-  font-size: 0.9rem !important;
-  line-height: 1.45 !important;
-  max-width: 640px !important;
+  color: #44403C !important;
+  font-size: 0.94rem !important;
+  line-height: 1.55 !important;
+  font-weight: 450 !important;
+  max-width: 680px !important;
   margin: 0 auto !important;
 }
 .comfort-interactive-grid {
@@ -463,41 +469,49 @@ body {
   gap: 0.45rem !important;
 }
 .tier-number {
-  color: var(--lp-terracotta) !important;
-  background: rgba(194, 97, 54, 0.1) !important;
-  font-size: 0.68rem !important;
-  padding: 0.1rem 0.4rem !important;
+  color: #A24B24 !important;
+  background: rgba(162, 75, 36, 0.12) !important;
+  font-size: 0.70rem !important;
+  font-weight: 800 !important;
+  padding: 0.12rem 0.45rem !important;
+  border-radius: 4px !important;
 }
 .tier-role {
-  color: #B85D30 !important;
-  font-size: 0.68rem !important;
+  color: #A24B24 !important;
+  font-size: 0.70rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
 }
 .tier-heading {
-  color: var(--lp-espresso) !important;
-  font-size: 0.95rem !important;
-  margin-bottom: 0.2rem !important;
-  font-weight: 700 !important;
+  color: #1C1917 !important;
+  font-size: 1rem !important;
+  margin-bottom: 0.25rem !important;
+  font-weight: 800 !important;
 }
 .tier-body {
-  color: #57534E !important;
-  font-size: 0.78rem !important;
-  line-height: 1.4 !important;
-  margin-bottom: 0.35rem !important;
+  color: #44403C !important;
+  font-size: 0.82rem !important;
+  line-height: 1.45 !important;
+  font-weight: 450 !important;
+  margin-bottom: 0.4rem !important;
 }
 .tier-pills {
-  gap: 0.35rem !important;
+  gap: 0.4rem !important;
 }
 .tpill {
   background: #FAF7F2 !important;
   border: 1px solid #E8DFD5 !important;
-  color: #57534E !important;
-  font-size: 0.66rem !important;
-  padding: 0.15rem 0.5rem !important;
+  color: #44403C !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  padding: 0.18rem 0.55rem !important;
+  border-radius: 6px !important;
 }
 .comfort-layer-card.active .tpill {
-  background: rgba(194, 97, 54, 0.1) !important;
-  border-color: rgba(194, 97, 54, 0.3) !important;
-  color: var(--lp-terracotta) !important;
+  background: rgba(194, 97, 54, 0.12) !important;
+  border-color: rgba(194, 97, 54, 0.35) !important;
+  color: #A24B24 !important;
+  font-weight: 700 !important;
 }
 
 /* ---------- trust / proof strip ---------- */
@@ -1320,6 +1334,202 @@ body {
   background: rgba(194, 97, 54, 0.08) !important;
   border-color: #C26136 !important;
   color: #C26136 !important;
+}
+
+/* =========================================================
+   GLOBAL TEXT CONTRAST & LEGIBILITY SAFEGUARD (WARM SANCTUARY)
+   Guarantees 100% crystal-clear readability across every viewport
+   ========================================================= */
+
+/* Headings on light surfaces */
+body h1:not(.site-footer *),
+body h2:not(.site-footer *),
+body h3:not(.site-footer *),
+body h4:not(.site-footer *),
+body .section-title,
+body .comfort-title {
+  color: #1C1917 !important;
+  font-weight: 800;
+}
+
+/* Eyebrows & Category Badges */
+.eyebrow,
+.eyebrow-gold,
+.eyebrow-pill,
+.section-eyebrow {
+  color: #A24B24 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+/* Subtitles, Descriptors & Body Paragraphs */
+.section-subtitle,
+.comfort-subtext,
+.hero-subtext,
+.section-head p,
+.feature-desc,
+.step-desc {
+  color: #44403C !important;
+  font-weight: 450 !important;
+  line-height: 1.6 !important;
+}
+
+/* Secondary hints and metadata */
+.text-muted,
+.meta-text,
+.card-meta,
+.spec-label {
+  color: #57534E !important;
+  font-weight: 500;
+}
+
+/* Sleep Match AI: Absolute legibility guarantee */
+.quiz-step-title-block h3 {
+  color: #1C1917 !important;
+  font-weight: 800 !important;
+}
+.quiz-step-title-block p {
+  color: #57534E !important;
+  font-weight: 500 !important;
+}
+.quiz-opt-title {
+  color: #1C1917 !important;
+  font-weight: 750 !important;
+}
+.quiz-opt-desc {
+  color: #57534E !important;
+  font-weight: 500 !important;
+}
+.quiz-opt-card {
+  background: #FAF7F2 !important;
+  border: 1.5px solid #E8DFD5 !important;
+}
+.quiz-opt-card:hover,
+.quiz-opt-card.selected {
+  background: #FFFFFF !important;
+  border-color: #C26136 !important;
+}
+.quiz-step-tag {
+  color: #A24B24 !important;
+  font-weight: 700 !important;
+}
+.quiz-step-counter {
+  color: #78716C !important;
+  font-weight: 700 !important;
+}
+
+/* Product Detail Page (product.html) Light-Theme Enforcement */
+.pdp-title {
+  color: #1C1917 !important;
+  font-weight: 800 !important;
+}
+.pdp-tagline {
+  color: #A24B24 !important;
+  font-weight: 600 !important;
+}
+.pdp-price-val {
+  color: #1C1917 !important;
+  font-weight: 800 !important;
+}
+.pdp-mrp-val {
+  color: #78716C !important;
+  font-weight: 500 !important;
+  text-decoration: line-through !important;
+}
+.pdp-pill-label {
+  color: #1C1917 !important;
+  font-weight: 750 !important;
+}
+.pdp-pill-btn {
+  background: #FAF7F2 !important;
+  border: 1.5px solid #E8DFD5 !important;
+  color: #1C1917 !important;
+  font-weight: 700 !important;
+}
+.pdp-pill-btn:hover {
+  background: #FFFFFF !important;
+  border-color: #C26136 !important;
+  color: #C26136 !important;
+}
+.pdp-pill-btn.active {
+  background: linear-gradient(135deg, #C26136 0%, #A24B24 100%) !important;
+  border-color: #C26136 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(194, 97, 54, 0.3) !important;
+}
+.pdp-quick-selector-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E8DFD5 !important;
+  box-shadow: 0 4px 20px rgba(60, 40, 20, 0.05) !important;
+}
+.pdp-custom-builder-compact {
+  background: #FAF7F2 !important;
+  border: 1.5px solid #E8DFD5 !important;
+}
+.pdp-custom-compact-top {
+  color: #1C1917 !important;
+  font-weight: 700 !important;
+}
+.pdp-custom-compact-col label {
+  color: #57534E !important;
+  font-weight: 600 !important;
+}
+.pdp-input-chip-group input {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E8DFD5 !important;
+  color: #1C1917 !important;
+}
+.pdp-preset-chip {
+  background: #FAF7F2 !important;
+  border: 1px solid #E8DFD5 !important;
+  color: #57534E !important;
+}
+.pdp-preset-chip.active {
+  background: rgba(194, 97, 54, 0.15) !important;
+  border-color: #C26136 !important;
+  color: #A24B24 !important;
+  font-weight: 700 !important;
+}
+.pdp-stage-expand-cue {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E8DFD5 !important;
+  color: #1C1917 !important;
+  box-shadow: 0 2px 8px rgba(60, 40, 20, 0.08) !important;
+}
+.pdp-stage-counter {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1C1917 !important;
+  border: 1px solid #E8DFD5 !important;
+  box-shadow: 0 2px 8px rgba(60, 40, 20, 0.08) !important;
+}
+
+/* Footer Safeguard: Preserves crisp ivory text on dark charcoal footer */
+.site-footer {
+  background: #0C0A09 !important;
+  color: #E7E5E4 !important;
+}
+.site-footer h1,
+.site-footer h2,
+.site-footer h3,
+.site-footer h4,
+.site-footer .footer-col-title {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+.site-footer p,
+.site-footer .footer-subtext,
+.site-footer .footer-legal-text {
+  color: #A8A29E !important;
+}
+.site-footer a.footer-link,
+.site-footer a:not(.btn) {
+  color: #A8A29E !important;
+  transition: color 0.15s ease !important;
+}
+.site-footer a.footer-link:hover,
+.site-footer a:not(.btn):hover {
+  color: #E87A48 !important;
 }
 
 
