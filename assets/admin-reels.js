@@ -6,7 +6,7 @@
   'use strict';
 
   var root;
-  var state = { enabled: true, title: 'Watch LORA', subtitle: '', profileUrl: '', reels: [] };
+  var state = { enabled: true, autoplay: true, title: 'Watch LORA', subtitle: '', profileUrl: '', reels: [] };
   var IG_RE = /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels|tv)\/[A-Za-z0-9_-]+/i;
 
   function token() { return localStorage.getItem('lora_admin_token') || 'admin-session-active'; }
@@ -25,7 +25,10 @@
     root.innerHTML =
       '<div class="admin-card" style="margin-bottom:1.5rem">' +
         '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;align-items:end">' +
-          '<label style="display:flex;align-items:center;gap:.5rem;color:#fff;font-weight:600;font-size:.88rem;cursor:pointer"><input type="checkbox" id="reels-enabled" ' + (state.enabled ? 'checked' : '') + ' style="accent-color:#DD2A7B;width:16px;height:16px"> Show section on homepage</label>' +
+          '<div style="display:flex;flex-direction:column;gap:.65rem">' +
+            '<label style="display:flex;align-items:center;gap:.5rem;color:#fff;font-weight:600;font-size:.88rem;cursor:pointer"><input type="checkbox" id="reels-enabled" ' + (state.enabled !== false ? 'checked' : '') + ' style="accent-color:#DD2A7B;width:16px;height:16px"> Show section on homepage</label>' +
+            '<label style="display:flex;align-items:center;gap:.5rem;color:#38BDF8;font-weight:600;font-size:.85rem;cursor:pointer"><input type="checkbox" id="reels-autoplay" ' + (state.autoplay !== false ? 'checked' : '') + ' style="accent-color:#00B4D8;width:16px;height:16px"> Autoplay videos (muted on scroll)</label>' +
+          '</div>' +
           '<div><span style="' + S.label + '">Section Title</span><input id="reels-title" style="' + S.input + '" value="' + esc(state.title) + '"></div>' +
           '<div><span style="' + S.label + '">Subtitle (optional)</span><input id="reels-subtitle" style="' + S.input + '" value="' + esc(state.subtitle) + '"></div>' +
           '<div><span style="' + S.label + '">Instagram Profile URL (Follow button)</span><input id="reels-profile" style="' + S.input + '" placeholder="https://www.instagram.com/loramattress/" value="' + esc(state.profileUrl) + '"></div>' +
@@ -102,10 +105,11 @@
   function syncTop() {
     var g = function (id) { var n = root.querySelector(id); return n ? n : null; };
     if (!g('#reels-title')) return;
-    state.enabled = g('#reels-enabled').checked;
-    state.title = g('#reels-title').value.trim() || 'Watch LORA';
-    state.subtitle = g('#reels-subtitle').value.trim();
-    state.profileUrl = g('#reels-profile').value.trim();
+    state.enabled = g('#reels-enabled') ? g('#reels-enabled').checked : true;
+    state.autoplay = g('#reels-autoplay') ? g('#reels-autoplay').checked : true;
+    state.title = g('#reels-title') ? g('#reels-title').value.trim() : 'Watch LORA';
+    state.subtitle = g('#reels-subtitle') ? g('#reels-subtitle').value.trim() : '';
+    state.profileUrl = g('#reels-profile') ? g('#reels-profile').value.trim() : '';
   }
 
   function uploadVideo(file, r, progressEl) {
@@ -188,7 +192,14 @@
     if (!root) return;
     render();
     fetch('/api/instagram-reels', { cache: 'no-store' }).then(function (r) { return r.json(); })
-      .then(function (d) { if (d && d.success && d.settings) { state = d.settings; state.reels = state.reels || []; render(); } })
+      .then(function (d) {
+        if (d && d.success && d.settings) {
+          state = d.settings;
+          state.reels = state.reels || [];
+          if (typeof state.autoplay !== 'boolean') state.autoplay = true;
+          render();
+        }
+      })
       .catch(function () {});
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

@@ -1,7 +1,7 @@
 {
   "sms": {
     "enabled": true,
-    "provider": "Fast2SMS",
+    "provider": "Twilio",
     "senderId": "LORAMT",
     "templateId": "",
     "endpoint": "https://control.msg91.com/api/v5/otp"

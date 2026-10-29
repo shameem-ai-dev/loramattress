@@ -175,24 +175,32 @@ module.exports = async function handler(req, res) {
     // 1. Channel: SMS (provider chosen in Admin → OTP settings, saved server-side)
     if (channel === 'sms') {
       smsProvider = otpSettings.sms.provider;
-      const status = otpLib.smsProviderStatus(smsProvider, otpSettings);
+      let status = otpLib.smsProviderStatus(smsProvider, otpSettings);
       if (!status.configured) {
-        return res.status(503).json({
-          success: false,
-          configured: false,
-          provider: smsProvider,
-          message: `SMS OTP is not available right now (${smsProvider}: ${status.message}) Please try again later or choose another method.`
-        });
+        const twStatus = otpLib.twilioEnvStatus();
+        if (twStatus.configured && smsProvider !== 'Twilio') {
+          console.warn(`[OTP] Provider ${smsProvider} unconfigured, auto-recovering with Twilio Verify.`);
+          smsProvider = 'Twilio';
+          status = twStatus;
+        } else {
+          return res.status(400).json({
+            success: false,
+            configured: false,
+            provider: smsProvider,
+            message: `SMS OTP is temporarily unavailable (${smsProvider}: ${status.message}). Please try again later or choose another method.`
+          });
+        }
       }
 
       if (smsProvider === 'Twilio') {
         // Twilio Verify generates, sends and stores the code itself
         const tw = await otpLib.twilioSendVerification(identifier);
         if (!tw.ok) {
-          return res.status(tw.code === 60203 || tw.code === 20429 ? 429 : 502).json({
+          return res.status(tw.code === 60203 || tw.code === 20429 ? 429 : 400).json({
             success: false,
             provider: 'Twilio',
-            message: tw.message
+            code: tw.code,
+            message: tw.message || 'Twilio was unable to dispatch the verification code. Please check the number and try again.'
           });
         }
         expiresAt = now + 10 * 60 * 1000; // Twilio Verify default code lifetime
@@ -203,7 +211,7 @@ module.exports = async function handler(req, res) {
         const ok = r.data ? r.data.return === true : false;
         if (!ok) {
           const msg = (r.data && (Array.isArray(r.data.message) ? r.data.message.join(', ') : r.data.message)) || r.error || 'Provider rejected request';
-          return res.status(502).json({ success: false, provider: 'Fast2SMS', message: `SMS could not be sent via Fast2SMS (${String(msg).slice(0, 200)}).` });
+          return res.status(400).json({ success: false, provider: 'Fast2SMS', message: `SMS could not be sent via Fast2SMS (${String(msg).slice(0, 200)}).` });
         }
       } else if (smsProvider === 'MSG91') {
         const apiKey = (process.env.SMS_API_KEY || '').trim();
@@ -217,7 +225,7 @@ module.exports = async function handler(req, res) {
         const ok = r.data && String(r.data.type).toLowerCase() === 'success';
         if (!ok) {
           const msg = (r.data && r.data.message) || r.error || `HTTP ${r.statusCode}`;
-          return res.status(502).json({ success: false, provider: 'MSG91', message: `SMS could not be sent via MSG91 (${String(msg).slice(0, 200)}).` });
+          return res.status(400).json({ success: false, provider: 'MSG91', message: `SMS could not be sent via MSG91 (${String(msg).slice(0, 200)}).` });
         }
       }
     }
@@ -228,7 +236,7 @@ module.exports = async function handler(req, res) {
       waProviderName = otpSettings.whatsapp.provider;
       const waStatus = otpLib.waProviderStatus(waProviderName, otpSettings);
       if (!['Twilio', 'Fast2SMS', 'Meta WhatsApp Cloud API'].includes(waProviderName) || (waProviderName === 'Twilio' && !waStatus.configured)) {
-        return res.status(503).json({
+        return res.status(400).json({
           success: false,
           configured: false,
           provider: waProviderName,
@@ -240,10 +248,11 @@ module.exports = async function handler(req, res) {
       if (waProviderName === 'Twilio') {
         const tw = await otpLib.twilioSendVerification(identifier, 'whatsapp');
         if (!tw.ok) {
-          return res.status(tw.code === 60203 || tw.code === 20429 ? 429 : 502).json({
+          return res.status(tw.code === 60203 || tw.code === 20429 ? 429 : 400).json({
             success: false,
             provider: 'Twilio',
-            message: tw.message
+            code: tw.code,
+            message: tw.message || 'Twilio could not dispatch the WhatsApp code.'
           });
         }
         expiresAt = now + 10 * 60 * 1000;

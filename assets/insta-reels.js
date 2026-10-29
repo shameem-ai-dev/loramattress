@@ -22,7 +22,9 @@
     return 'https://www.instagram.com/' + kind + '/' + m[2] + '/embed/';
   }
 
-  function buildCard(r, i) {
+  var canAutoplay = true;
+
+  function buildCard(r, i, autoplayEnabled) {
     var card = document.createElement('article');
     card.className = 'lr-card' + (r.videoUrl ? '' : ' lr-embed');
     card.style.animationDelay = (i * 70) + 'ms';
@@ -31,14 +33,23 @@
       : '';
 
     if (r.videoUrl) {
+      var autoAttr = autoplayEnabled ? ' autoplay' : '';
+      var preloadAttr = autoplayEnabled ? ' preload="metadata"' : ' preload="none"';
       card.innerHTML =
         (r.posterUrl ? '<img class="lr-poster" src="' + esc(r.posterUrl) + '" alt="" loading="lazy" decoding="async">' : '') +
-        '<video muted loop playsinline preload="none" disablepictureinpicture' +
+        '<video' + autoAttr + ' muted loop playsinline webkit-playsinline' + preloadAttr + ' disablepictureinpicture' +
         (r.posterUrl ? ' poster="' + esc(r.posterUrl) + '"' : '') + '>' +
         '<source src="' + esc(r.videoUrl) + '"></video>' +
         '<div class="lr-shade"></div><div class="lr-play">' + PLAY_ICON + '</div>' +
         '<button type="button" class="lr-hit" aria-label="Play video full screen' + (r.caption ? ': ' + esc(r.caption) : '') + '"></button>' +
         '<div class="lr-meta">' + (r.caption ? '<div class="lr-cap">' + esc(r.caption) + '</div>' : '') + igBtn + '</div>';
+
+      var vid = card.querySelector('video');
+      if (vid) {
+        vid.muted = true;
+        vid.defaultMuted = true;
+        vid.playsInline = true;
+      }
       card.querySelector('.lr-hit').addEventListener('click', function () { openLightbox(r); });
     } else {
       var src = embedUrl(r.instagramUrl);
@@ -55,22 +66,31 @@
     return card;
   }
 
-  /* Autoplay muted previews only while visible (saves bandwidth & battery) */
+  /* Autoplay muted previews while visible when autoplay is enabled */
   var observer = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    if (!canAutoplay) return;
     entries.forEach(function (e) {
       var v = e.target.querySelector('video');
       if (!v) return;
-      if (e.isIntersecting && e.intersectionRatio > 0.55) {
+      if (e.isIntersecting && e.intersectionRatio >= 0.25) {
+        v.muted = true;
+        v.defaultMuted = true;
+        v.playsInline = true;
         if (v.preload !== 'auto') v.preload = 'auto';
         var p = v.play();
-        if (p && p.catch) p.catch(function () {});
-        e.target.classList.add('is-playing');
+        if (p && p.then) {
+          p.then(function () {
+            e.target.classList.add('is-playing');
+          }).catch(function () {});
+        } else {
+          e.target.classList.add('is-playing');
+        }
       } else {
         v.pause();
         e.target.classList.remove('is-playing');
       }
     });
-  }, { threshold: [0, 0.55, 1] }) : null;
+  }, { threshold: [0, 0.25, 0.5, 1], rootMargin: '40px 0px' }) : null;
 
   /* Full-screen lightbox, original resolution with sound */
   var lb;
@@ -119,10 +139,12 @@
     var follow = section.querySelector('.lr-follow');
     if (settings.profileUrl) { follow.href = settings.profileUrl; follow.hidden = false; } else { follow.hidden = true; }
 
+    canAutoplay = settings.autoplay !== false;
+
     var track = section.querySelector('.lr-track');
     track.innerHTML = '';
     reels.forEach(function (r, i) {
-      var c = buildCard(r, i);
+      var c = buildCard(r, i, canAutoplay);
       track.appendChild(c);
       if (observer && r.videoUrl) observer.observe(c);
     });

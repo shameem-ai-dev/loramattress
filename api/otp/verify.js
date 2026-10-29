@@ -107,7 +107,7 @@ module.exports = async function handler(req, res) {
           global._loraOtpStore.delete(identifier);
           return res.status(429).json({ success: false, message: tw.message });
         }
-        return res.status(tw.configured === false ? 503 : 502).json({ success: false, message: tw.message });
+        return res.status(400).json({ success: false, message: tw.message });
       }
       isValid = tw.approved === true; // ONLY "approved" authenticates
     } else {

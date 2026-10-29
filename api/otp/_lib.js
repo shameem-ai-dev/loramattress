@@ -11,7 +11,12 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG_DIR = path.join(__dirname, '..', '..', 'config');
-const SETTINGS_FILE = path.join(CONFIG_DIR, 'otp_settings.json');
+const DATA_DIR = process.env.LORA_DATA_DIR || path.join(require('os').homedir(), 'lora-data');
+function getSettingsFilePath() {
+  const p = path.join(DATA_DIR, 'otp_settings.json');
+  if (fs.existsSync(p)) return p;
+  return path.join(CONFIG_DIR, 'otp_settings.json');
+}
 const SECRET_FILE = path.join(CONFIG_DIR, '.customer_session_secret');
 
 const SMS_PROVIDERS = ['Twilio', 'MSG91', 'Fast2SMS', 'Firebase', 'Custom API'];
@@ -77,8 +82,9 @@ let memorySettings = null;
 
 function readOtpSettings() {
   let saved = null;
+  const targetFile = getSettingsFilePath();
   try {
-    if (fs.existsSync(SETTINGS_FILE)) saved = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+    if (fs.existsSync(targetFile)) saved = JSON.parse(fs.readFileSync(targetFile, 'utf8'));
   } catch (e) { saved = null; }
   if (!saved && memorySettings) saved = memorySettings;
   saved = saved || {};
@@ -86,10 +92,17 @@ function readOtpSettings() {
   const wa = saved.whatsapp || {};
   const email = saved.email || {};
   const policy = saved.policy || {};
+  const twStatus = twilioEnvStatus();
+  let resolvedSmsProvider = canonicalProvider(sms.provider) || canonicalProvider(process.env.SMS_PROVIDER);
+  if ((!resolvedSmsProvider || resolvedSmsProvider === 'Fast2SMS') && !(env('SMS_API_KEY') || env('FAST2SMS_API_KEY')) && twStatus.configured) {
+    resolvedSmsProvider = 'Twilio';
+  } else if (!resolvedSmsProvider) {
+    resolvedSmsProvider = twStatus.configured ? 'Twilio' : 'Fast2SMS';
+  }
   return {
     sms: {
       enabled: typeof sms.enabled === 'boolean' ? sms.enabled : (process.env.SMS_OTP_ENABLED !== 'false'),
-      provider: canonicalProvider(sms.provider) || canonicalProvider(process.env.SMS_PROVIDER) || 'Fast2SMS',
+      provider: resolvedSmsProvider,
       senderId: String(sms.senderId || process.env.SMS_SENDER_ID || 'LORAMT').slice(0, 11),
       templateId: String(sms.templateId || process.env.MSG91_TEMPLATE_ID || process.env.SMS_TEMPLATE_ID || '').slice(0, 64),
       endpoint: String(sms.endpoint || 'https://control.msg91.com/api/v5/otp').slice(0, 200)
@@ -199,9 +212,18 @@ function saveOtpSettings(input) {
     if (!fs.existsSync(CONFIG_DIR)) {
       fs.mkdirSync(CONFIG_DIR, { recursive: true });
     }
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(next, null, 2), 'utf8');
+    fs.writeFileSync(path.join(CONFIG_DIR, 'otp_settings.json'), JSON.stringify(next, null, 2), 'utf8');
     persisted = true;
-  } catch (e) { /* read-only FS (e.g. serverless) — kept in memory */ }
+  } catch (e) { /* read-only FS */ }
+
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(path.join(DATA_DIR, 'otp_settings.json'), JSON.stringify(next, null, 2), 'utf8');
+    persisted = true;
+  } catch (e) { /* persistent dir error */ }
+
   return { settings: readOtpSettings(), persisted };
 }
 

@@ -748,8 +748,15 @@ const server = http.createServer((req, res) => {
   if (pathname === '/api/instagram-reels') {
     const reelsPath = dataFile('instagram_reels.json');
     if (req.method === 'GET') {
-      let data = { enabled: true, title: 'Watch LORA', subtitle: '', profileUrl: '', reels: [] };
-      try { if (fs.existsSync(reelsPath)) data = Object.assign(data, JSON.parse(fs.readFileSync(reelsPath, 'utf8'))); } catch (e) {}
+      let data = { enabled: true, autoplay: true, title: 'Watch LORA', subtitle: '', profileUrl: '', reels: [] };
+      try {
+        if (fs.existsSync(reelsPath)) data = Object.assign(data, JSON.parse(fs.readFileSync(reelsPath, 'utf8')));
+        else {
+          const fallback = path.join(CONFIG_DIR, 'instagram_reels.json');
+          if (fs.existsSync(fallback)) data = Object.assign(data, JSON.parse(fs.readFileSync(fallback, 'utf8')));
+        }
+      } catch (e) {}
+      if (typeof data.autoplay !== 'boolean') data.autoplay = true;
       res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-cache' });
       res.end(JSON.stringify({ success: true, settings: data }));
       return;
@@ -766,6 +773,7 @@ const server = http.createServer((req, res) => {
           const localRe = /^\/assets\/uploads\/[A-Za-z0-9_\/.-]+$/;
           const clean = {
             enabled: s.enabled !== false,
+            autoplay: s.autoplay !== false,
             title: String(s.title || 'Watch LORA').slice(0, 80),
             subtitle: String(s.subtitle || '').slice(0, 200),
             profileUrl: /^https:\/\/(www\.)?instagram\.com\//i.test(s.profileUrl || '') ? String(s.profileUrl) : '',
@@ -780,6 +788,10 @@ const server = http.createServer((req, res) => {
             updatedAt: new Date().toISOString()
           };
           fs.writeFileSync(reelsPath, JSON.stringify(clean, null, 2), 'utf8');
+          try {
+            const bundled = path.join(CONFIG_DIR, 'instagram_reels.json');
+            fs.writeFileSync(bundled, JSON.stringify(clean, null, 2), 'utf8');
+          } catch (e) {}
           return sendJson(200, { success: true, settings: clean });
         } catch (e) {
           return sendJson(400, { success: false, message: e.message });
