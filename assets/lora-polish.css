@@ -84,6 +84,30 @@ body {
   border-color: var(--lp-terracotta) !important;
   color: var(--lp-terracotta) !important;
 }
+.header-auth-btn.is-logged-in {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E8DFD5 !important;
+  color: #1C1917 !important;
+  box-shadow: 0 2px 8px rgba(60, 40, 20, 0.08) !important;
+}
+.header-auth-btn.is-logged-in:hover {
+  background: #FAF7F2 !important;
+  border-color: var(--lp-terracotta) !important;
+  color: var(--lp-terracotta) !important;
+}
+.header-auth-avatar {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #C26136 0%, #A24B24 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 6px rgba(194, 97, 54, 0.25) !important;
+}
 #header-auth-icon {
   stroke: var(--lp-terracotta) !important;
 }
@@ -478,33 +502,38 @@ body {
 
 /* ---------- trust / proof strip ---------- */
 .proof-strip {
-  background: var(--lp-warm-canvas) !important;
+  background: var(--lp-warm-canvas, #FAF7F2) !important;
   border-top: 1px solid #E8DFD5 !important;
   border-bottom: 1px solid #E8DFD5 !important;
   box-shadow: none !important;
 }
 .proof-item {
   transition: transform .45s var(--lp-ease);
-  border-right: 1px solid #E8DFD5 !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E8DFD5 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(60, 40, 20, 0.05) !important;
 }
 @media (hover: hover) { .proof-item:hover { transform: translateY(-4px); } }
 .proof-title {
-  color: var(--lp-espresso) !important;
+  color: #1C1917 !important;
+  font-weight: 700 !important;
 }
 .proof-subtext {
-  color: #78716C !important;
+  color: #57534E !important;
+  font-weight: 500 !important;
 }
 .proof-icon-box {
-  background: radial-gradient(circle at 30% 25%, rgba(217, 119, 70, .18), rgba(250, 247, 242, .95) 70%) !important;
-  box-shadow: inset 0 0 0 1px rgba(194, 97, 54, .25), 0 4px 12px rgba(194, 97, 54, 0.1) !important;
-  border: 1px solid rgba(194, 97, 54, 0.3) !important;
+  background: #FAF7F2 !important;
+  box-shadow: inset 0 0 0 1px rgba(194, 97, 54, .2), 0 2px 6px rgba(60, 40, 20, 0.06) !important;
+  border: 1px solid #E8DFD5 !important;
 }
 .proof-item-emerald .proof-icon-box {
-  background: radial-gradient(circle at 35% 35%, rgba(16, 185, 129, 0.18), rgba(250, 247, 242, 0.95) 80%) !important;
+  background: #FAF7F2 !important;
   border-color: rgba(16, 185, 129, 0.4) !important;
 }
 .proof-item-gold .proof-icon-box {
-  background: radial-gradient(circle at 35% 35%, rgba(245, 158, 11, 0.18), rgba(250, 247, 242, 0.95) 80%) !important;
+  background: #FAF7F2 !important;
   border-color: rgba(245, 158, 11, 0.4) !important;
 }
 
