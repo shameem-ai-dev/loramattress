@@ -177,9 +177,9 @@
   height: 580px;
   max-height: calc(100vh - 120px);
   background: linear-gradient(175deg, #0D1629 0%, #080E1C 100%);
-  border: 1px solid rgba(0, 180, 216, 0.35);
+  border: 1px solid rgba(194, 97, 54, 0.35);
   border-radius: 22px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 180, 216, 0.16);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 35px rgba(194, 97, 54, 0.16);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -216,11 +216,11 @@
   height: 34px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #E0F2FE 70%, #BAE6FD 100%);
-  border: 1.5px solid rgba(56, 189, 248, 0.6);
+  border: 1.5px solid rgba(194, 97, 54, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 10px rgba(194, 97, 54, 0.3);
   position: relative;
 }
 .lumi-avatar-mini svg {
@@ -250,9 +250,9 @@
   font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
-  background: rgba(0, 180, 216, 0.18);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: #38BDF8;
+  background: rgba(194, 97, 54, 0.18);
+  border: 1px solid rgba(194, 97, 54, 0.4);
+  color: #C26136;
   padding: 1px 6px;
   border-radius: 9999px;
   letter-spacing: 0.04em;
@@ -291,7 +291,7 @@
   transition: all 0.15s ease;
 }
 .lumi-lang-btn.active {
-  background: #0284C7;
+  background: #A24B24;
   color: #FFFFFF;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
@@ -310,9 +310,9 @@
   transition: all 0.15s ease;
 }
 .lumi-chat-reset-btn:hover {
-  background: rgba(56, 189, 248, 0.2);
-  color: #38BDF8;
-  border-color: #38BDF8;
+  background: rgba(194, 97, 54, 0.2);
+  color: #C26136;
+  border-color: #C26136;
 }
 .lumi-chat-close-btn {
   background: rgba(255, 255, 255, 0.06);
@@ -427,7 +427,7 @@
   font-size: 0.68rem;
 }
 .lumi-card-tag {
-  color: #38BDF8;
+  color: #C26136;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -457,13 +457,13 @@
   color: #CBD5E1;
 }
 .lumi-spec-pill strong {
-  color: #38BDF8;
+  color: #C26136;
 }
 .lumi-spec-price strong {
   color: #34D399;
 }
 .lumi-card-btn {
-  background: linear-gradient(135deg, #0284C7 0%, #00B4D8 100%);
+  background: linear-gradient(135deg, #A24B24 0%, #C26136 100%);
   border: none;
   color: #FFFFFF;
   font-size: 0.74rem;
@@ -494,7 +494,7 @@
 .lumi-typing-dot {
   width: 5px;
   height: 5px;
-  background: #38BDF8;
+  background: #C26136;
   border-radius: 50%;
   animation: lumiDotPulse 1.2s infinite ease-in-out;
 }
@@ -509,8 +509,8 @@
   padding: 2px 2px 4px 2px;
 }
 .lumi-quick-pill {
-  background: rgba(2, 132, 199, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: rgba(162, 75, 36, 0.12);
+  border: 1px solid rgba(194, 97, 54, 0.3);
   color: #E0F2FE;
   font-size: 0.76rem;
   font-weight: 600;
@@ -522,8 +522,8 @@
   font-family: inherit;
 }
 .lumi-quick-pill:hover {
-  background: rgba(2, 132, 199, 0.28);
-  border-color: #38BDF8;
+  background: rgba(162, 75, 36, 0.28);
+  border-color: #C26136;
   transform: translateY(-1px);
 }
 
@@ -550,9 +550,9 @@
   box-sizing: border-box;
 }
 .lumi-input-field:focus {
-  border-color: #00B4D8;
+  border-color: #C26136;
   background: rgba(16, 25, 46, 0.98);
-  box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.2);
+  box-shadow: 0 0 0 2px rgba(194, 97, 54, 0.2);
 }
 .lumi-input-field::placeholder {
   color: #64748B;
@@ -562,7 +562,7 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #0284C7 0%, #00B4D8 100%);
+  background: linear-gradient(135deg, #A24B24 0%, #C26136 100%);
   border: none;
   color: #FFFFFF;
   display: flex;
@@ -762,10 +762,10 @@ body.lightbox-open .lumi-widget-container {
 .lumi-lead-card {
   margin-top: 10px;
   background: linear-gradient(135deg, rgba(10, 22, 48, 0.98) 0%, rgba(7, 13, 27, 0.98) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  border: 1px solid rgba(194, 97, 54, 0.4);
   border-radius: 14px;
   padding: 12px 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(194, 97, 54, 0.15);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -782,8 +782,8 @@ body.lightbox-open .lumi-widget-container {
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: rgba(56, 189, 248, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: rgba(194, 97, 54, 0.15);
+  border: 1px solid rgba(194, 97, 54, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -822,7 +822,7 @@ body.lightbox-open .lumi-widget-container {
 .lumi-lead-label {
   font-size: 0.7rem;
   font-weight: 700;
-  color: #38BDF8;
+  color: #C26136;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   display: flex;
@@ -841,8 +841,8 @@ body.lightbox-open .lumi-widget-container {
 }
 
 .lumi-lead-input-wrap:focus-within {
-  border-color: #38BDF8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+  border-color: #C26136;
+  box-shadow: 0 0 0 2px rgba(194, 97, 54, 0.25);
   background: rgba(15, 23, 42, 1);
 }
 
@@ -876,7 +876,7 @@ body.lightbox-open .lumi-widget-container {
 .lumi-lead-btn {
   width: 100%;
   padding: 9px 12px;
-  background: linear-gradient(135deg, #0284C7 0%, #00B4D8 100%);
+  background: linear-gradient(135deg, #A24B24 0%, #C26136 100%);
   border: none;
   border-radius: 8px;
   color: #FFFFFF;
@@ -889,7 +889,7 @@ body.lightbox-open .lumi-widget-container {
   gap: 6px;
   transition: all 0.18s ease;
   font-family: inherit;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 4px 12px rgba(162, 75, 36, 0.35);
 }
 
 .lumi-lead-btn:hover {
@@ -945,9 +945,9 @@ body.lightbox-open .lumi-widget-container {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  color: #38BDF8;
+  background: rgba(194, 97, 54, 0.12);
+  border: 1px solid rgba(194, 97, 54, 0.3);
+  color: #C26136;
   font-size: 0.72rem;
   font-weight: 700;
   padding: 3px 8px;
@@ -958,12 +958,12 @@ body.lightbox-open .lumi-widget-container {
 }
 
 .lumi-questions-toggle-btn:hover {
-  background: rgba(56, 189, 248, 0.22);
-  border-color: #38BDF8;
+  background: rgba(194, 97, 54, 0.22);
+  border-color: #C26136;
 }
 
 .lumi-questions-tray {
-  background: rgba(11, 19, 43, 0.98);
+  background: rgba(28, 25, 23, 0.98);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: 8px 12px;
@@ -992,7 +992,7 @@ body.lightbox-open .lumi-widget-container {
 
 .lumi-q-chip {
   background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  border: 1px solid rgba(194, 97, 54, 0.25);
   color: #F1F5F9;
   font-size: 0.72rem;
   padding: 4px 9px;
@@ -1004,8 +1004,8 @@ body.lightbox-open .lumi-widget-container {
 }
 
 .lumi-q-chip:hover {
-  background: rgba(2, 132, 199, 0.35);
-  border-color: #38BDF8;
+  background: rgba(162, 75, 36, 0.35);
+  border-color: #C26136;
   color: #FFFFFF;
   transform: translateY(-1px);
 }
@@ -1030,7 +1030,7 @@ a.lumi-card-btn {
 }
 .lumi-card-btn-ghost {
   background: transparent;
-  border: 1px solid rgba(56, 189, 248, 0.45);
+  border: 1px solid rgba(194, 97, 54, 0.45);
   color: #7DD3FC;
   font-size: 0.74rem;
   font-weight: 700;
@@ -1041,7 +1041,7 @@ a.lumi-card-btn {
   transition: background 0.15s ease;
 }
 .lumi-card-btn-ghost:hover {
-  background: rgba(56, 189, 248, 0.15);
+  background: rgba(194, 97, 54, 0.15);
 }
 .lumi-lead-error {
   font-size: 0.72rem;

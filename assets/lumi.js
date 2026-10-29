@@ -235,7 +235,7 @@
             <path d="M16 58 L84 58 L82 66 L18 66 Z" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
 
             <!-- Luxury Upholstered Headboard -->
-            <rect x="20" y="10" width="60" height="34" rx="6" fill="url(#lumiHbGrad)" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.6"/>
+            <rect x="20" y="10" width="60" height="34" rx="6" fill="url(#lumiHbGrad)" stroke="#C26136" stroke-width="1" stroke-opacity="0.6"/>
             <!-- Headboard Channel Seams -->
             <line x1="35" y1="12" x2="35" y2="38" stroke="#0F172A" stroke-width="1.2"/>
             <line x1="50" y1="11" x2="50" y2="38" stroke="#0F172A" stroke-width="1.2"/>
@@ -256,16 +256,16 @@
             <!-- White Quilted Mattress Surface -->
             <path d="M22 34 L78 34 L85 54 L15 54 Z" fill="url(#lumiMatTop)" stroke="#E2E8F0" stroke-width="0.8"/>
             <!-- Gentle Tufting Accents -->
-            <circle cx="36" cy="42" r="1.1" fill="#0284C7" opacity="0.4"/>
-            <circle cx="50" cy="40" r="1.1" fill="#0284C7" opacity="0.4"/>
-            <circle cx="64" cy="42" r="1.1" fill="#0284C7" opacity="0.4"/>
+            <circle cx="36" cy="42" r="1.1" fill="#A24B24" opacity="0.4"/>
+            <circle cx="50" cy="40" r="1.1" fill="#A24B24" opacity="0.4"/>
+            <circle cx="64" cy="42" r="1.1" fill="#A24B24" opacity="0.4"/>
 
             <!-- Mattress Front Drop & Edge Piping -->
             <path d="M15 54 L85 54 L84 60 L16 60 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="0.8"/>
-            <line x1="15" y1="54" x2="85" y2="54" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.75"/>
+            <line x1="15" y1="54" x2="85" y2="54" stroke="#C26136" stroke-width="1" stroke-opacity="0.75"/>
 
             <!-- Cozy Duvet Runner Fold (Bottom Edge of Mattress) -->
-            <path d="M16 47 L84 47 L85 55 L15 55 Z" fill="url(#lumiDuvetGrad)" stroke="rgba(56, 189, 248, 0.35)" stroke-width="0.7"/>
+            <path d="M16 47 L84 47 L85 55 L15 55 Z" fill="url(#lumiDuvetGrad)" stroke="rgba(194, 97, 54, 0.35)" stroke-width="0.7"/>
 
             <defs>
               <linearGradient id="lumiHbGrad" x1="50" y1="10" x2="50" y2="44" gradientUnits="userSpaceOnUse">
@@ -277,8 +277,8 @@
                 <stop offset="100%" stop-color="#F1F5F9"/>
               </linearGradient>
               <linearGradient id="lumiDuvetGrad" x1="50" y1="47" x2="50" y2="55" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#0284C7" stop-opacity="0.85"/>
-                <stop offset="100%" stop-color="#0369A1" stop-opacity="0.95"/>
+                <stop offset="0%" stop-color="#A24B24" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#8A3D18" stop-opacity="0.95"/>
               </linearGradient>
             </defs>
           </svg>
@@ -289,7 +289,7 @@
           <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M30 6 C16 6, 8 16, 8 32 C8 46, 12 58, 16 62 C20 66, 26 58, 30 62 C34 58, 40 66, 44 62 C48 58, 52 46, 52 32 C52 16, 44 6, 30 6 Z"
                   fill="url(#lumiBodyGrad)"
-                  stroke="#38BDF8"
+                  stroke="#C26136"
                   stroke-width="1.6"
                   stroke-opacity="0.85"/>
             <!-- Sleep Cowlick Accent -->
@@ -297,10 +297,10 @@
             <!-- Expressive Friendly Eyes -->
             <ellipse cx="23" cy="28" rx="3.5" ry="4.5" fill="#0B132B"/>
             <circle cx="24.5" cy="26.5" r="1.5" fill="#FFFFFF"/>
-            <circle cx="22" cy="29.5" r="0.75" fill="#38BDF8"/>
+            <circle cx="22" cy="29.5" r="0.75" fill="#C26136"/>
             <ellipse cx="37" cy="28" rx="3.5" ry="4.5" fill="#0B132B"/>
             <circle cx="38.5" cy="26.5" r="1.5" fill="#FFFFFF"/>
-            <circle cx="36" cy="29.5" r="0.75" fill="#38BDF8"/>
+            <circle cx="36" cy="29.5" r="0.75" fill="#C26136"/>
             <!-- Warm Smile -->
             <path d="M25 35.5 C27.5 39.5, 32.5 39.5, 35 35.5" stroke="#0B132B" stroke-width="2" stroke-linecap="round"/>
             <!-- Soft Rosy Cheeks -->

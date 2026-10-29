@@ -253,7 +253,7 @@
 .lf-springs .ft, .lf-springs .fb {
   background:
     radial-gradient(circle, #f4f7fc 0 34%, #c4cfdf 40%, #8e9db6 47%, rgba(0, 0, 0, 0) 50%) 0 0 / calc(var(--W) / 22) calc(var(--W) / 22),
-    linear-gradient(90deg, rgba(56, 189, 248, .08), rgba(56, 189, 248, 0) 50%, rgba(56, 189, 248, .08)),
+    linear-gradient(90deg, rgba(194, 97, 54, .08), rgba(194, 97, 54, 0) 50%, rgba(194, 97, 54, .08)),
     #66789a;
 }
 .lf-springs .ff .lf-badge {
@@ -293,7 +293,7 @@
 .lf-gel .lf-f, .lf-gel .ft {
   background:
     radial-gradient(circle, rgba(14, 165, 233, .55) 0 calc(var(--W) * .002), rgba(0, 0, 0, 0) calc(var(--W) * .003)) 0 0 / calc(var(--W) * .017) calc(var(--W) * .013),
-    radial-gradient(circle, rgba(56, 189, 248, .35) 0 calc(var(--W) * .0016), rgba(0, 0, 0, 0) calc(var(--W) * .0026)) calc(var(--W) * .008) calc(var(--W) * .006) / calc(var(--W) * .021) calc(var(--W) * .017),
+    radial-gradient(circle, rgba(194, 97, 54, .35) 0 calc(var(--W) * .0016), rgba(0, 0, 0, 0) calc(var(--W) * .0026)) calc(var(--W) * .008) calc(var(--W) * .006) / calc(var(--W) * .021) calc(var(--W) * .017),
     linear-gradient(180deg, #def1fc, #b6dcf3);
 }
 .lf-gel .ft { background-color: #d3ecfb; }

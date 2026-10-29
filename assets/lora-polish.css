@@ -1235,4 +1235,63 @@ body {
   box-shadow: 0 8px 24px rgba(60, 40, 20, 0.06) !important;
 }
 
+/* =========================================================
+   WARM SANCTUARY STRICT OVERRIDE ENGINE
+   Permanently replaces all legacy electric blue/cyan styles
+   ========================================================= */
+.pdp-pill-btn.active,
+.pdp-bed-card.active,
+.pdp-dim-pill.active,
+.pdp-thick-pill.active,
+.inner-cot-btn.active,
+.inner-inch-btn.active,
+.inner-thick-btn.active,
+.model-switch-btn.active,
+.inner-model-pill.active {
+  background: linear-gradient(135deg, #C26136 0%, #A24B24 100%) !important;
+  border-color: #C26136 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(194, 97, 54, 0.35) !important;
+}
+
+.pdp-pill-btn:hover,
+.pdp-bed-card:hover,
+.pdp-dim-pill:hover,
+.pdp-thick-pill:hover,
+.inner-cot-btn:hover,
+.inner-inch-btn:hover,
+.inner-thick-btn:hover {
+  border-color: #C26136 !important;
+  background: rgba(194, 97, 54, 0.08) !important;
+  color: #1C1917 !important;
+}
+
+.pdp-tagline,
+.inner-pdp-tagline {
+  color: #78716C !important;
+}
+
+.pdp-price-val,
+.inner-price-val {
+  color: #1C1917 !important;
+}
+
+.emi-hint,
+.pdp-emi-hint {
+  color: #C26136 !important;
+}
+
+.pdp-emi-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E8DFD5 !important;
+  box-shadow: 0 4px 16px rgba(60, 40, 20, 0.04) !important;
+}
+
+.pdp-back-btn:hover {
+  background: rgba(194, 97, 54, 0.08) !important;
+  border-color: #C26136 !important;
+  color: #C26136 !important;
+}
+
+
 
