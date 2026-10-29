@@ -25,31 +25,31 @@
       height: 48px;
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0, 180, 216, 0.15));
+      filter: drop-shadow(0 2px 8px rgba(194, 97, 54, 0.2));
     }
 
     .brand-logo-dark-img {
       height: 52px;
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 16px rgba(0, 180, 216, 0.4));
+      filter: drop-shadow(0 2px 10px rgba(194, 97, 54, 0.25));
     }
 
     /* Spine Wave Simulation Canvas */
     .spine-svg-line {
       fill: none;
-      stroke: url(#spine-cyan-grad);
+      stroke: #C26136;
       stroke-width: 3.5;
       stroke-linecap: round;
-      filter: drop-shadow(0 0 6px rgba(2, 132, 199, 0.4));
+      filter: drop-shadow(0 0 6px rgba(194, 97, 54, 0.4));
       transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .spine-node-dot {
-      fill: #0284C7;
+      fill: #C26136;
       stroke: #FFFFFF;
       stroke-width: 2;
-      filter: drop-shadow(0 0 4px #0284C7);
+      filter: drop-shadow(0 0 4px #C26136);
       transition: all 400ms ease;
     }
 
@@ -57,7 +57,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 15, 29, 0.85);
+      background: rgba(28, 22, 19, 0.7);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 99999;
@@ -74,9 +74,9 @@
     }
 
     .modal-dialog {
-      background: #0D1527;
-      color: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #FFFFFF;
+      color: #1C1917;
+      border: 1px solid #E8DFD5;
       border-radius: var(--radius-xl);
       max-width: 800px;
       width: 100%;
@@ -84,15 +84,15 @@
       overflow-y: auto;
       padding: 2.5rem;
       position: relative;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 25px rgba(2, 132, 199, 0.1);
+      box-shadow: 0 25px 60px rgba(60, 40, 20, 0.18), 0 0 25px rgba(194, 97, 54, 0.08);
     }
 
     .modal-close-btn {
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -101,21 +101,21 @@
       align-items: center;
       justify-content: center;
       font-size: 1.25rem;
-      color: #94A3B8;
+      color: #78716C;
       transition: all 200ms ease;
     }
 
     .modal-close-btn:hover {
-      background: rgba(0, 180, 216, 0.2);
-      color: #38BDF8;
-      border-color: #00B4D8;
+      background: rgba(194, 97, 54, 0.1);
+      color: #C26136;
+      border-color: #C26136;
     }
 
     /* Cart Drawer */
     .cart-drawer-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(6, 9, 19, 0.7);
+      background: rgba(28, 22, 19, 0.6);
       backdrop-filter: blur(8px);
       z-index: 1001;
       opacity: 0;
@@ -135,11 +135,11 @@
       bottom: 0;
       width: 100%;
       max-width: 440px;
-      background: #0A0F1D;
-      color: #FFFFFF;
-      border-left: 1px solid rgba(0, 180, 216, 0.25);
+      background: #FFFFFF;
+      color: #1C1917;
+      border-left: 1px solid #E8DFD5;
       z-index: 1002;
-      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.7);
+      box-shadow: -15px 0 50px rgba(60, 40, 20, 0.15);
       transform: translateX(100%);
       transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
@@ -152,7 +152,7 @@
 
     .cart-header {
       padding: 1.75rem 2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid #E8DFD5;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -171,7 +171,7 @@
       display: flex;
       gap: 1.25rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid #F0E9DF;
     }
 
     .cart-item-thumb {
@@ -179,14 +179,15 @@
       height: 80px;
       border-radius: var(--radius-sm);
       object-fit: cover;
-      background: #080D1A;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
     }
 
     .cart-footer-block {
       padding: 2rem;
-      background: #0D1629;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #FAF7F2;
+      border-top: 1px solid #E8DFD5;
+      color: #1C1917;
     }
 
     /* Checkout Modal Overlay & Form */
@@ -194,7 +195,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(6, 9, 19, 0.85);
+      background: rgba(28, 22, 19, 0.7);
       -webkit-backdrop-filter: blur(14px);
       backdrop-filter: blur(14px);
       z-index: 99999;
@@ -209,9 +210,9 @@
       display: flex !important;
     }
     .checkout-modal-card {
-      background: #0D1629;
-      color: #FFFFFF;
-      border: 1px solid rgba(0, 180, 216, 0.25);
+      background: #FFFFFF;
+      color: #1C1917;
+      border: 1px solid #E8DFD5;
       border-radius: var(--radius-lg);
       width: 100%;
       max-width: 580px;
@@ -219,7 +220,7 @@
       max-height: 96vh;
       overflow-y: auto;
       padding: 1.15rem 1.45rem;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 180, 216, 0.15);
+      box-shadow: 0 25px 60px rgba(60, 40, 20, 0.18);
       position: relative;
     }
     .checkout-modal-header {
@@ -227,13 +228,13 @@
       justify-content: space-between;
       align-items: center;
       padding-bottom: 0.85rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid #F0E9DF;
       margin-bottom: 1rem;
     }
     .checkout-close-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #94A3B8;
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
+      color: #78716C;
       width: 32px;
       height: 32px;
       border-radius: 50%;
@@ -245,9 +246,9 @@
       transition: all 150ms ease;
     }
     .checkout-close-btn:hover {
-      background: rgba(0, 180, 216, 0.2);
-      color: #38BDF8;
-      border-color: #00B4D8;
+      background: rgba(194, 97, 54, 0.1);
+      color: #C26136;
+      border-color: #C26136;
     }
     .checkout-input-block {
       margin-bottom: 0.5rem;
@@ -258,16 +259,16 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: #CBD5E1;
+      color: #44403C;
       margin-bottom: 0.25rem;
     }
     .checkout-input {
       width: 100%;
-      background: rgba(10, 15, 29, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
       border-radius: var(--radius-md);
       padding: 0.6rem 0.85rem;
-      color: #FFFFFF;
+      color: #1C1917;
       font-size: 0.85rem;
       font-family: inherit;
       outline: none;
@@ -275,9 +276,9 @@
       transition: all 150ms ease;
     }
     .checkout-input:focus {
-      border-color: #00B4D8;
-      background: rgba(10, 15, 29, 0.98);
-      box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.25);
+      border-color: #C26136;
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(194, 97, 54, 0.2);
     }
     .checkout-grid-2 {
       display: grid;
@@ -318,11 +319,13 @@
        SLEEP MATCH AI 2.0 ENHANCED DIAGNOSTIC SUITE
        ========================================================= */
     .quiz-section {
-      padding: 7rem 0;
-      background: radial-gradient(circle at 50% 10%, #0F2038 0%, #060B12 80%);
-      color: #FFFFFF;
+      padding: 6.5rem 0;
+      background: var(--lp-warm-canvas, #FAF7F2);
+      color: #1C1917;
       position: relative;
       overflow: hidden;
+      border-top: 1px solid #E8DFD5;
+      border-bottom: 1px solid #E8DFD5;
     }
 
     .quiz-section::before {
@@ -333,7 +336,7 @@
       transform: translateX(-50%);
       width: 800px;
       height: 400px;
-      background: radial-gradient(circle, rgba(0, 180, 216, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(194, 97, 54, 0.06) 0%, transparent 70%);
       pointer-events: none;
       filter: blur(50px);
     }
@@ -341,13 +344,11 @@
     .quiz-card-enhanced {
       max-width: 960px;
       margin: 0 auto;
-      background: rgba(13, 21, 34, 0.9);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(0, 180, 216, 0.35);
+      background: #FFFFFF;
+      border: 1px solid #E8DFD5;
       border-radius: 28px;
       padding: 3rem;
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.65), 0 0 40px rgba(0, 180, 216, 0.15);
+      box-shadow: 0 20px 60px rgba(90, 60, 30, 0.08);
       position: relative;
       overflow: hidden;
     }
@@ -359,7 +360,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, transparent, var(--brand-cyan), #0077B6, transparent);
+      background: linear-gradient(90deg, transparent, #C26136, #D97746, transparent);
     }
 
     /* Stepper Bar */
@@ -369,7 +370,7 @@
       gap: 0.85rem;
       margin-bottom: 2.5rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid #E8DFD5;
     }
 
     .quiz-stepper-meta {
@@ -381,7 +382,7 @@
     .quiz-step-tag {
       font-size: 0.78rem;
       font-weight: 800;
-      color: var(--brand-cyan);
+      color: #C26136;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       display: inline-flex;
@@ -394,21 +395,21 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--brand-cyan);
-      box-shadow: 0 0 10px var(--brand-cyan);
+      background: #C26136;
+      box-shadow: 0 0 8px rgba(194, 97, 54, 0.4);
     }
 
     .quiz-step-counter {
       font-size: 0.82rem;
       font-weight: 700;
-      color: #94A3B8;
+      color: #78716C;
       letter-spacing: 0.04em;
     }
 
     .quiz-progress-track {
       width: 100%;
       height: 6px;
-      background: rgba(255, 255, 255, 0.08);
+      background: #F3EDE4;
       border-radius: var(--radius-pill);
       overflow: hidden;
       position: relative;
@@ -417,10 +418,10 @@
     .quiz-progress-fill {
       height: 100%;
       width: 25%;
-      background: linear-gradient(90deg, #0077B6, var(--brand-cyan));
+      background: linear-gradient(90deg, #D97746, #C26136);
       border-radius: var(--radius-pill);
       transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 0 12px var(--brand-cyan);
+      box-shadow: 0 0 10px rgba(194, 97, 54, 0.3);
     }
 
     .quiz-stepper-pills {
@@ -433,18 +434,19 @@
     .quiz-step-pill {
       font-size: 0.72rem;
       font-weight: 700;
-      color: #64748B;
+      color: #A8A29E;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       transition: all 200ms ease;
     }
 
     .quiz-step-pill.active {
-      color: #FFFFFF;
+      color: #1C1917;
+      font-weight: 800;
     }
 
     .quiz-step-pill.completed {
-      color: var(--brand-cyan);
+      color: #C26136;
     }
 
     /* Step Heading */
@@ -455,13 +457,13 @@
     .quiz-step-title-block h3 {
       font-size: 1.65rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: #1C1917;
       letter-spacing: -0.02em;
       margin-bottom: 0.4rem;
     }
 
     .quiz-step-title-block p {
-      color: #94A3B8;
+      color: #57534E;
       font-size: 0.95rem;
       line-height: 1.5;
     }
@@ -474,8 +476,8 @@
     }
 
     .quiz-opt-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
       border-radius: 16px;
       padding: 1.35rem 1.4rem;
       cursor: pointer;
@@ -491,30 +493,31 @@
     }
 
     .quiz-opt-card:hover {
-      background: rgba(0, 180, 216, 0.08);
-      border-color: var(--brand-cyan);
+      background: #FFFFFF;
+      border-color: #C26136;
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0, 180, 216, 0.2);
+      box-shadow: 0 8px 24px rgba(194, 97, 54, 0.12);
     }
 
     .quiz-opt-card.selected {
-      background: rgba(0, 180, 216, 0.15);
-      border-color: var(--brand-cyan);
-      box-shadow: 0 0 25px rgba(0, 180, 216, 0.35);
+      background: #FFFFFF;
+      border-color: #C26136;
+      box-shadow: 0 0 0 2px rgba(194, 97, 54, 0.35), 0 8px 24px rgba(194, 97, 54, 0.12);
     }
 
     .quiz-opt-icon-wrap {
       width: 46px;
       height: 46px;
       border-radius: 12px;
-      background: rgba(0, 180, 216, 0.12);
-      border: 1px solid rgba(0, 180, 216, 0.25);
+      background: rgba(194, 97, 54, 0.08);
+      border: 1px solid rgba(194, 97, 54, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.45rem;
       flex-shrink: 0;
       transition: all 200ms ease;
+      color: #C26136;
     }
 
     .quiz-opt-icon-wrap svg {
@@ -522,20 +525,20 @@
       height: 22px;
       display: block;
       flex-shrink: 0;
-      color: #38BDF8;
+      color: #C26136;
       transition: all 200ms ease;
     }
 
     .quiz-opt-card:hover .quiz-opt-icon-wrap,
     .quiz-opt-card.selected .quiz-opt-icon-wrap {
-      background: var(--brand-cyan);
-      color: #060B12;
-      box-shadow: 0 0 15px var(--brand-cyan);
+      background: #C26136;
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(194, 97, 54, 0.3);
     }
 
     .quiz-opt-card:hover .quiz-opt-icon-wrap svg,
     .quiz-opt-card.selected .quiz-opt-icon-wrap svg {
-      color: #060B12 !important;
+      color: #FFFFFF !important;
     }
 
     .quiz-opt-content {
@@ -546,7 +549,7 @@
       display: block;
       font-size: 1.05rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #1C1917;
       margin-bottom: 0.35rem;
       letter-spacing: -0.01em;
     }
@@ -554,7 +557,7 @@
     .quiz-opt-desc {
       display: block;
       font-size: 0.84rem;
-      color: #94A3B8;
+      color: #57534E;
       line-height: 1.45;
     }
 
@@ -565,7 +568,7 @@
       align-items: center;
       margin-top: 2rem;
       padding-top: 1.25rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid #E8DFD5;
     }
 
     .btn-quiz-back {
@@ -573,8 +576,8 @@
       align-items: center;
       gap: 0.45rem;
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #94A3B8;
+      border: 1px solid #E8DFD5;
+      color: #57534E;
       padding: 0.6rem 1.25rem;
       border-radius: var(--radius-pill);
       font-size: 0.82rem;
@@ -584,9 +587,9 @@
     }
 
     .btn-quiz-back:hover {
-      border-color: #FFFFFF;
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.05);
+      border-color: #1C1917;
+      color: #1C1917;
+      background: #FAF7F2;
     }
 
     /* Step Pane Visibility */
@@ -625,7 +628,7 @@
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: 2px dashed rgba(0, 180, 216, 0.6);
+      border: 2px dashed rgba(194, 97, 54, 0.4);
       animation: spinClockwise 8s linear infinite;
     }
 
@@ -633,8 +636,8 @@
       position: absolute;
       inset: 15px;
       border-radius: 50%;
-      border: 2px solid var(--brand-cyan);
-      box-shadow: 0 0 25px var(--brand-cyan-glow);
+      border: 2px solid #C26136;
+      box-shadow: 0 0 25px rgba(194, 97, 54, 0.25);
       animation: pulseGlow 1.5s ease-in-out infinite alternate;
     }
 
@@ -648,8 +651,8 @@
     }
 
     @keyframes pulseGlow {
-      from { box-shadow: 0 0 10px rgba(0, 180, 216, 0.3); transform: scale(0.95); }
-      to { box-shadow: 0 0 35px rgba(0, 180, 216, 0.8); transform: scale(1.05); }
+      from { box-shadow: 0 0 10px rgba(194, 97, 54, 0.2); transform: scale(0.95); }
+      to { box-shadow: 0 0 35px rgba(194, 97, 54, 0.5); transform: scale(1.05); }
     }
 
     @keyframes floatBreath {
@@ -660,14 +663,14 @@
     .telemetry-title {
       font-size: 1.45rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: #1C1917;
       margin-bottom: 0.5rem;
     }
 
     .telemetry-log-live {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.86rem;
-      color: var(--brand-cyan);
+      color: #C26136;
       margin-bottom: 2rem;
       height: 24px;
       display: flex;
@@ -695,16 +698,16 @@
       max-width: 380px;
       margin: 0 auto;
       height: 8px;
-      background: rgba(255, 255, 255, 0.08);
+      background: #F3EDE4;
       border-radius: var(--radius-pill);
       overflow: hidden;
-      border: 1px solid rgba(0, 180, 216, 0.3);
+      border: 1px solid #E8DFD5;
     }
 
     .telemetry-bar-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #0077B6, var(--brand-cyan), #10B981);
+      background: linear-gradient(90deg, #D97746, #C26136, #10B981);
       border-radius: var(--radius-pill);
       transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -725,9 +728,9 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.45rem 1.15rem;
-      background: rgba(16, 185, 129, 0.15);
+      background: rgba(16, 185, 129, 0.12);
       border: 1px solid #10B981;
-      color: #6EE7B7;
+      color: #059669;
       font-size: 0.8rem;
       font-weight: 800;
       letter-spacing: 0.06em;
@@ -740,8 +743,8 @@
       display: grid;
       grid-template-columns: 340px 1fr;
       gap: 2.5rem;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(0, 180, 216, 0.25);
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
       border-radius: 20px;
       padding: 2rem;
       margin-bottom: 2rem;
@@ -752,8 +755,8 @@
       position: relative;
       border-radius: 14px;
       overflow: hidden;
-      background: #060B12;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #FFFFFF;
+      border: 1px solid #E8DFD5;
       aspect-ratio: 4 / 3;
     }
 
@@ -772,10 +775,10 @@
       position: absolute;
       top: 1rem;
       left: 1rem;
-      background: rgba(6, 11, 18, 0.85);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
-      border: 1px solid var(--brand-cyan);
-      color: var(--brand-cyan);
+      border: 1px solid #E8DFD5;
+      color: #C26136;
       font-size: 0.72rem;
       font-weight: 800;
       padding: 0.25rem 0.65rem;
@@ -793,14 +796,14 @@
     .dossier-title {
       font-size: 1.85rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: #1C1917;
       letter-spacing: -0.02em;
       line-height: 1.2;
     }
 
     .dossier-tagline {
       font-size: 0.95rem;
-      color: var(--brand-cyan);
+      color: #C26136;
       font-weight: 600;
     }
 
@@ -809,8 +812,8 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 0.85rem;
       margin: 0.5rem 0;
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: #FFFFFF;
+      border: 1px solid #E8DFD5;
       border-radius: 12px;
       padding: 1rem;
     }
@@ -825,21 +828,21 @@
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #94A3B8;
+      color: #78716C;
     }
 
     .dossier-metric-val {
       font-size: 0.95rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #1C1917;
       display: flex;
       align-items: center;
       gap: 0.35rem;
     }
 
     .dossier-prescription-box {
-      background: rgba(0, 180, 216, 0.06);
-      border-left: 3px solid var(--brand-cyan);
+      background: rgba(194, 97, 54, 0.06);
+      border-left: 3px solid #C26136;
       padding: 1.25rem;
       border-radius: 0 12px 12px 0;
       margin-bottom: 1.5rem;
@@ -848,7 +851,7 @@
     .dossier-prescription-box strong {
       display: block;
       font-size: 0.88rem;
-      color: #FFFFFF;
+      color: #1C1917;
       margin-bottom: 0.35rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -856,7 +859,7 @@
 
     .dossier-prescription-box p {
       font-size: 0.92rem;
-      color: #CBD5E1;
+      color: #57534E;
       line-height: 1.55;
     }
 
@@ -864,8 +867,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px dashed rgba(255, 255, 255, 0.15);
+      background: #FFFFFF;
+      border: 1px dashed #E8DFD5;
       border-radius: 14px;
       padding: 1rem 1.5rem;
       margin-bottom: 2rem;
@@ -881,8 +884,8 @@
 
     /* Highlight Pulse on matched card in catalog */
     .highlight-matched-card {
-      outline: 3px solid var(--brand-cyan) !important;
-      box-shadow: 0 0 45px var(--brand-cyan-glow) !important;
+      outline: 3px solid #C26136 !important;
+      box-shadow: 0 0 35px rgba(194, 97, 54, 0.3) !important;
       transform: translateY(-8px) !important;
       transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
@@ -1452,12 +1455,12 @@
         <stop offset="100%" stop-color="#92400E"/>
       </linearGradient>
 
-      <!-- Precision Cyan Zero-G Laser Gradient -->
+      <!-- Warm Terracotta Sunset Amber Gradient -->
       <linearGradient id="ps-cyan-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#E0F7FA"/>
-        <stop offset="30%" stop-color="#38BDF8"/>
-        <stop offset="70%" stop-color="#00F2FE"/>
-        <stop offset="100%" stop-color="#0284C7"/>
+        <stop offset="0%" stop-color="#FFEDD5"/>
+        <stop offset="30%" stop-color="#FB923C"/>
+        <stop offset="70%" stop-color="#EA580C"/>
+        <stop offset="100%" stop-color="#C26136"/>
       </linearGradient>
 
       <!-- Clinical Emerald Titanium Gradient -->
@@ -1674,7 +1677,7 @@
         <!-- Left: Interactive High-Res Cross-Section Stage -->
         <div class="comfort-stage-display">
           <div class="comfort-media-frame">
-            <img src="assets/hero-lora-exploded.jpg" alt="LORA 4-Tier Material Anatomy" class="comfort-stage-img" id="comfort-stage-img">
+            <img src="assets/hero-architecture-exploded.png" alt="LORA 4-Tier Material Anatomy" class="comfort-stage-img" id="comfort-stage-img">
             <div class="comfort-frame-glow"></div>
             <div class="comfort-badge-overlay" id="comfort-badge-overlay">
               <span class="badge-accent-line"></span>
@@ -1856,15 +1859,15 @@
       <div class="inner-pdp-suite" id="inner-product-suite">
         <div style="text-align: center; margin-bottom: 1.5rem; padding: 0 1rem;">
           <span class="eyebrow eyebrow-pill" style="margin-bottom: 0.5rem; display: inline-block;">Interactive Collection Explorer</span>
-          <h3 style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 0 0 0.4rem 0;">The 8 LORA Masterpieces</h3>
-          <p style="color: #94A3B8; font-size: 0.88rem; max-width: 620px; margin: 0 auto;">Select any model below to explore feel profiles, stated warranties, and dimensions.</p>
+          <h3 style="color: #1C1917; font-size: 1.6rem; font-weight: 800; margin: 0 0 0.4rem 0;">The 8 LORA Masterpieces</h3>
+          <p style="color: #57534E; font-size: 0.88rem; max-width: 620px; margin: 0 auto;">Select any model below to explore feel profiles, stated warranties, and dimensions.</p>
         </div>
 
         <div class="inner-pdp-top-nav">
           <button type="button" class="inner-pdp-back-btn" id="inner-close-btn">
             ← Return to All 8 Mattresses Grid
           </button>
-          <a href="product.html?model=01" class="inner-pdp-back-btn" id="inner-standalone-btn" style="background: rgba(0, 180, 216, 0.15); border-color: rgba(0, 180, 216, 0.4); color: #38BDF8; text-decoration: none;">
+          <a href="product.html?model=01" class="inner-pdp-back-btn" id="inner-standalone-btn" style="background: rgba(194, 97, 54, 0.08); border-color: rgba(194, 97, 54, 0.3); color: #C26136; text-decoration: none;">
             Dedicated Product Page ↗
           </a>
 
@@ -1885,7 +1888,7 @@
           <div class="inner-gallery-box">
             <div class="pdp-badge-floating">
               <span class="badge-verified">FACTORY DIRECT LUXURY</span>
-              <span class="badge-verified" style="background: rgba(0, 180, 216, 0.1); color: var(--brand-royal); border-color: rgba(0, 180, 216, 0.3);" id="inner-warr-badge">3 YEARS WARRANTY</span>
+              <span class="badge-verified" style="background: rgba(194, 97, 54, 0.1); color: var(--lp-terracotta); border-color: rgba(194, 97, 54, 0.3);" id="inner-warr-badge">3 YEARS WARRANTY</span>
             </div>
             <div class="inner-main-stage">
               <img loading="lazy" src="assets/comfort-plush.jpg" alt="LORA Mattress" class="inner-main-img" id="inner-active-img">
@@ -1918,8 +1921,8 @@
                 <span class="model-index-tag" id="inner-tag">01 / CLOUD SERIES</span>
                 <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem;">
                   <span style="color: #F59E0B; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ps-gold-grad)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 4.9 / 5.0</span>
-                  <span style="color: rgba(255,255,255,0.2);">•</span>
-                  <span style="color: var(--text-secondary);">Direct from Factory</span>
+                  <span style="color: rgba(28,25,23,0.25);">•</span>
+                  <span style="color: #57534E;">Direct from Factory</span>
                 </div>
               </div>
 
@@ -1927,9 +1930,9 @@
               <p class="inner-pdp-tagline" id="inner-tagline" style="margin-bottom: 0.85rem;">Super Soft 7-Zone Dual Comfort</p>
 
               <!-- Final Price Display immediately under Name -->
-              <div class="inner-price-row" style="margin-top: 0.5rem; margin-bottom: 1.25rem; padding: 0.75rem 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: baseline; gap: 0.85rem; flex-wrap: wrap;">
-                <span class="inner-price-val" id="inner-price" style="font-size: 2.2rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">₹21,999</span>
-                <span class="inner-mrp-val" id="inner-mrp" style="text-decoration: line-through; color: var(--text-muted); font-size: 1.15rem;">₹36,999</span>
+              <div class="inner-price-row" style="margin-top: 0.5rem; margin-bottom: 1.25rem; padding: 0.75rem 0; border-top: 1px solid #E8DFD5; border-bottom: 1px solid #E8DFD5; display: flex; align-items: baseline; gap: 0.85rem; flex-wrap: wrap;">
+                <span class="inner-price-val" id="inner-price" style="font-size: 2.2rem; font-weight: 800; color: #1C1917; letter-spacing: -0.02em;">₹21,999</span>
+                <span class="inner-mrp-val" id="inner-mrp" style="text-decoration: line-through; color: #78716C; font-size: 1.15rem;">₹36,999</span>
                 <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 6px;" id="inner-save">SAVE ₹15,000</span>
               </div>
             </div>
@@ -1939,7 +1942,7 @@
             <div class="inner-opt-group">
               <label class="inner-opt-label">
                 <span>1. Select Bed Type</span>
-                <span style="color: var(--brand-royal); font-weight: 700;" id="inner-cot-type-label">Queen</span>
+                <span style="color: var(--lp-terracotta); font-weight: 700;" id="inner-cot-type-label">Queen</span>
               </label>
               <div class="inner-bed-type-row">
                 <button type="button" class="inner-bed-type-btn active" data-type="queen">Queen</button>
@@ -1955,7 +1958,7 @@
               <label class="inner-opt-label">
                 <span>2. Select Size in Inches</span>
                 <div style="display:inline-flex; align-items:center; gap:0.5rem;">
-                  <span style="color: var(--brand-royal); font-weight: 700;" id="inner-inch-label">78" × 60"</span>
+                  <span style="color: var(--lp-terracotta); font-weight: 700;" id="inner-inch-label">78" × 60"</span>
                   <button type="button" class="pdp-measure-guide-link" id="inner-size-guide-toggle" onclick="toggleInnerSizeGuide(event)" aria-expanded="false" style="font-size:0.72rem; padding:0.18rem 0.55rem;">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:-1px; margin-right:3px;"><path d="M2 12h20M7 8v8M12 10v4M17 8v8"/></svg> Size Guide ▾
                   </button>
@@ -1969,7 +1972,7 @@
               <div class="pdp-inline-size-guide" id="inner-inline-size-guide" style="display: none;">
                 <div class="pdp-inline-sg-header">
                   <div class="pdp-inline-sg-title">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M2 12h20M7 8v8M12 10v4M17 8v8"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C26136" stroke-width="2"><path d="M2 12h20M7 8v8M12 10v4M17 8v8"/></svg>
                     <span>Standard Bed & Cot Sizing (Inches)</span>
                   </div>
                   <button type="button" class="pdp-inline-sg-close" onclick="toggleInnerSizeGuide(event)" aria-label="Close size guide">✕</button>
@@ -2032,7 +2035,7 @@
             <div class="inner-opt-group">
               <label class="inner-opt-label">
                 <span>3. Select Mattress Thickness</span>
-                <span style="color: var(--brand-royal); font-weight: 700;" id="inner-thick-label">8 Inch</span>
+                <span style="color: var(--lp-terracotta); font-weight: 700;" id="inner-thick-label">8 Inch</span>
               </label>
               <div class="inner-thickness-row" id="inner-thick-container">
                 <button type="button" class="inner-thick-pill-btn" data-thick="6">6 Inch</button>
@@ -2107,17 +2110,17 @@
                  BELOW BUYING BUTTONS: LARGE EMI BOX & DETAILED FIRMNESS EXPLANATION
                  ========================================== -->
               <!-- Direct Factory Assurance Guarantee Box -->
-              <div class="pdp-large-emi-box" id="inner-large-emi-box" style="background: rgba(14, 165, 233, 0.08); border-color: rgba(56, 189, 248, 0.28); margin-bottom: 1.25rem;">
+              <div class="pdp-large-emi-box" id="inner-large-emi-box" style="background: rgba(194, 97, 54, 0.06); border-color: rgba(194, 97, 54, 0.25); margin-bottom: 1.25rem;">
                 <div class="pdp-large-emi-top" style="align-items: center;">
-                  <div class="pdp-large-emi-icon" style="color: #38BDF8;">
+                  <div class="pdp-large-emi-icon" style="color: var(--lp-terracotta);">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 3.5v5.5c0 4.8-3 9.2-7 10.5-4-1.3-7-5.7-7-10.5V5.5L12 2z"/><path d="M9 12l2 2 4-4"/></svg>
                   </div>
                   <div style="flex: 1; min-width: 0;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-                      <strong class="pdp-large-emi-title" style="color: #FFFFFF;">100% Direct Factory Assurance • 15-Year Insured Warranty</strong>
-                      <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">DIRECT CRAFT</span>
+                      <strong class="pdp-large-emi-title" style="color: #1C1917;">100% Direct Factory Assurance • 15-Year Insured Warranty</strong>
+                      <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #059669; border-color: rgba(16, 185, 129, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">DIRECT CRAFT</span>
                     </div>
-                    <p class="pdp-large-emi-desc" style="color: #94A3B8; margin-top: 0.25rem;">
+                    <p class="pdp-large-emi-desc" style="color: #57534E; margin-top: 0.25rem;">
                       Delivered 100% full-size flat direct from factory to your bedroom • Zero compression foam breakdown
                     </p>
                   </div>
@@ -2128,19 +2131,19 @@
               <div class="pdp-detailed-firmness-box" id="inner-detailed-firmness-box">
                 <div class="pdp-firmness-box-header">
                   <div class="pdp-firmness-box-title">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 19 7"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C26136" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12 19 7"/></svg>
                     <span>Ergonomic Firmness Index & Posture Guide</span>
                   </div>
                   <span class="pdp-firmness-val-badge" id="inner-firm-val">SOFT ●●○○○ FIRM</span>
                 </div>
                 <div class="pdp-firmness-meter-wrapper">
-                  <div class="meter-labels" style="display:flex; justify-content:space-between; font-size:0.75rem; color:#94A3B8; margin-bottom:0.45rem;">
+                  <div class="meter-labels" style="display:flex; justify-content:space-between; font-size:0.75rem; color:#57534E; margin-bottom:0.45rem;">
                     <span>Plush Soft</span>
-                    <span style="color: #38BDF8; font-weight: 700;" id="inner-feel-label">Gentle Cloud Cushioning</span>
+                    <span style="color: #C26136; font-weight: 700;" id="inner-feel-label">Gentle Cloud Cushioning</span>
                     <span>Orthopedic Firm</span>
                   </div>
-                  <div class="meter-track-graphic" style="margin: 0; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden;">
-                    <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="inner-meter-fill" style="width: 38%; height: 100%; background: linear-gradient(90deg, #38BDF8, #0284C7); border-radius: 9999px;"></div></div>
+                  <div class="meter-track-graphic" style="margin: 0; height: 8px; background: #E8DFD5; border-radius: 9999px; overflow: hidden;">
+                    <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="inner-meter-fill" style="width: 38%; height: 100%; background: linear-gradient(90deg, #D97746, #C26136); border-radius: 9999px;"></div></div>
                   </div>
                   <p class="pdp-firmness-posture-text" id="inner-posture-rec">
                     <strong>Recommended for:</strong> Side sleepers seeking zero shoulder pinch and cloud-like joint cradling.
@@ -2184,14 +2187,14 @@
               <div class="comparison-table-desktop" style="overflow-x: auto; margin-top: 0.5rem; -webkit-overflow-scrolling: touch;">
                 <table class="specs-table" style="min-width: 780px; font-size: 0.82rem;">
                   <thead>
-                    <tr style="background: rgba(56, 189, 248, 0.1);">
-                      <th style="color: #38BDF8; font-weight: 700;">Model</th>
-                      <th style="color: #38BDF8; font-weight: 700;">Type</th>
-                      <th style="color: #38BDF8; font-weight: 700;">Feel</th>
-                      <th style="color: #38BDF8; font-weight: 700;">Stated Profile</th>
-                      <th style="color: #38BDF8; font-weight: 700;">Warranty</th>
-                      <th style="color: #38BDF8; font-weight: 700;">Key Documented Focus</th>
-                      <th style="color: #38BDF8; font-weight: 700; text-align: right;">Explore</th>
+                    <tr style="background: #F3EDE4; border-bottom: 2px solid #E8DFD5;">
+                      <th style="color: #1C1917; font-weight: 700;">Model</th>
+                      <th style="color: #1C1917; font-weight: 700;">Type</th>
+                      <th style="color: #1C1917; font-weight: 700;">Feel</th>
+                      <th style="color: #1C1917; font-weight: 700;">Stated Profile</th>
+                      <th style="color: #1C1917; font-weight: 700;">Warranty</th>
+                      <th style="color: #1C1917; font-weight: 700;">Key Documented Focus</th>
+                      <th style="color: #1C1917; font-weight: 700; text-align: right;">Explore</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2484,145 +2487,6 @@
             </div>
           </details>
 
-          <!-- =========================================================
-               PERMANENTLY VISIBLE FEATURE: FULL-SIZE FLAT vs ROLLED BOX
-               OPTIMIZED FOR MOBILE-FIRST VIEW & TOUCH
-               ========================================================= -->
-          <!-- =========================================================
-               PERMANENTLY VISIBLE FEATURE: FULL-SIZE FLAT vs ROLLED BOX
-               INTERACTIVE ANIMATED COMPARISON — SINGLE-VIEW MOBILE OPTIMIZED
-               ========================================================= -->
-          <div class="lora-delivery-showcase" id="flat-vs-rolled-delivery">
-            <div class="delivery-showcase-header">
-              <span class="delivery-eyebrow-pill">The LORA Delivery Philosophy</span>
-              <h3 class="delivery-showcase-title">YOU SLEEP FLAT.<br>WHY SHOULD YOUR COMFORT COME ROLLED?</h3>
-              <p class="delivery-showcase-subtitle">
-                At Lora, we don’t roll your comfort. <strong class="delivery-accent-text">We deliver it flat.</strong>
-              </p>
-            </div>
-
-            <!-- Clean 2-choice mobile switcher (50/50 split, zero wrapping or clipping) -->
-            <div class="delivery-mode-switcher" role="tablist" aria-label="Delivery comparison">
-              <button type="button" class="delivery-mode-btn is-active" data-delivery-view="flat" role="tab" aria-selected="true" onclick="switchDeliveryMode(this, 'flat')">
-                <span class="mode-icon">✓</span>
-                <span class="mode-text">LORA Flat</span>
-              </button>
-              <button type="button" class="delivery-mode-btn" data-delivery-view="rolled" role="tab" aria-selected="false" onclick="switchDeliveryMode(this, 'rolled')">
-                <span class="mode-icon">✕</span>
-                <span class="mode-text">Rolled Box</span>
-              </button>
-            </div>
-
-            <!-- Visual Cards Stage -->
-            <div class="delivery-visual-stage" data-active-view="flat" id="delivery-visual-stage">
-              
-              <!-- Flat Delivery Card (LORA Standard) -->
-              <div class="delivery-clean-card card-flat" id="delivery-card-flat">
-                <div class="clean-photo-frame">
-                  <img src="assets/delivery-full-flat.jpg" alt="LORA Full-Size Flat Mattress Delivery Uncompressed" loading="lazy" width="600" height="340">
-                  <span class="clean-photo-tag tag-lora">✓ 100% Full-Size Flat</span>
-                </div>
-
-                <div class="clean-card-content">
-                  <div class="clean-card-header">
-                    <span class="clean-card-badge badge-lora">THE LORA STANDARD</span>
-                    <span class="clean-card-lead">Ready for Sleep Tonight</span>
-                  </div>
-
-                  <ul class="clean-card-features">
-                    <li>
-                      <span class="feature-dot dot-lora">✓</span>
-                      <div>
-                        <strong>Zero Mechanical Strain:</strong> Pocket springs, natural latex, and foam layers arrive with 100% natural elasticity intact.
-                      </div>
-                    </li>
-                    <li>
-                      <span class="feature-dot dot-lora">✓</span>
-                      <div>
-                        <strong>Solid Reinforced Edges:</strong> Perimeter walls are never crushed, preventing edge collapse and roll-off.
-                      </div>
-                    </li>
-                    <li>
-                      <span class="feature-dot dot-lora">✓</span>
-                      <div>
-                        <strong>Zero Decompression Lag:</strong> Sleep on your mattress the moment it arrives—no 72-hour waiting lag or trapped chemical odors.
-                      </div>
-                    </li>
-                  </ul>
-
-                  <div class="clean-card-outcome outcome-lora">
-                    <span class="outcome-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="filter: drop-shadow(0 0 5px rgba(16,185,129,0.5));"><path d="M12 2l7 3.5v5.5c0 4.8-3 9.2-7 10.5-4-1.3-7-5.7-7-10.5V5.5L12 2z" fill="rgba(16,185,129,0.18)" stroke="#10B981" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 11.8l2.5 2.5 4.5-4.8" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <span><strong>Result:</strong> Factory-fresh spinal support and authentic 15-year durability.</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Rolled Box Shortcut Card -->
-              <div class="delivery-clean-card card-rolled" id="delivery-card-rolled">
-                <div class="clean-photo-frame">
-                  <img src="assets/delivery-rolled-box.jpg" alt="Compressed Rolled Bed in a Box Mattress" loading="lazy" width="600" height="340">
-                  <span class="clean-photo-tag tag-rolled">✕ 50-Ton Compression</span>
-                </div>
-
-                <div class="clean-card-content">
-                  <div class="clean-card-header">
-                    <span class="clean-card-badge badge-rolled">THE INDUSTRY SHORTCUT</span>
-                    <span class="clean-card-lead">Compressed for Courier Warehousing</span>
-                  </div>
-
-                  <ul class="clean-card-features">
-                    <li>
-                      <span class="feature-dot dot-rolled">✕</span>
-                      <div>
-                        <strong>Crushed Internal Core:</strong> 50-ton hydraulic compression bends pocket coils and fatigues adhesive foam bonds.
-                      </div>
-                    </li>
-                    <li>
-                      <span class="feature-dot dot-rolled">✕</span>
-                      <div>
-                        <strong>Weakened Perimeter Walls:</strong> Heavy flattening damages edge foam, creating permanent edge slope and roll-off.
-                      </div>
-                    </li>
-                    <li>
-                      <span class="feature-dot dot-rolled">✕</span>
-                      <div>
-                        <strong>48–72h Decompression Lag:</strong> Cannot be used immediately; requires days to expand while releasing trapped chemical odors.
-                      </div>
-                    </li>
-                  </ul>
-
-                  <div class="clean-card-outcome outcome-rolled">
-                    <span class="outcome-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="filter: drop-shadow(0 0 5px rgba(245,158,11,0.5));"><path d="M12 3l9.5 16.5H2.5L12 3z" fill="rgba(245,158,11,0.15)" stroke="#F59E0B" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v4.5M12 16.5h.01" stroke="#FDE68A" stroke-width="2" stroke-linecap="round"/></svg></span>
-                    <span><strong>Risk:</strong> Premature sagging, collapsed edge walls, and delayed first sleep.</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Single Authoritative Bottom Bar -->
-            <div class="delivery-guarantee-bar">
-              <div class="guarantee-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="filter: drop-shadow(0 0 6px rgba(0,242,254,0.45));"><rect x="2" y="5" width="13" height="11" rx="1.5" fill="rgba(0,229,255,0.12)" stroke="url(#ps-cyan-grad)" stroke-width="1.5"/><path d="M5 10.5h7" stroke="#00E5FF" stroke-width="1.5" stroke-linecap="round"/><path d="M15 8h3.5l3 4v4h-6.5V8z" fill="rgba(0,229,255,0.18)" stroke="url(#ps-cyan-grad)" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.5 9.5h2l2 2.5h-4v-2.5z" fill="#00E5FF" opacity="0.6"/><circle cx="6.5" cy="17.5" r="2.2" fill="#0A1326" stroke="#00E5FF" stroke-width="1.5"/><circle cx="6.5" cy="17.5" r="0.8" fill="#E0F7FA"/><circle cx="17.5" cy="17.5" r="2.2" fill="#0A1326" stroke="#00E5FF" stroke-width="1.5"/><circle cx="17.5" cy="17.5" r="0.8" fill="#E0F7FA"/></svg></div>
-              <div class="guarantee-text">
-                <strong>The LORA Flat-Delivery Promise:</strong> Handcrafted to order, sealed in 3-ply heavy-duty casing, and delivered flat into your home. Never rolled. Never crushed.
-              </div>
-            </div>
-          </div>
-          <script>
-            function switchDeliveryMode(btn, mode) {
-              const showcase = btn.closest('.lora-delivery-showcase');
-              if (!showcase) return;
-              const buttons = showcase.querySelectorAll('.delivery-mode-btn');
-              const stage = showcase.querySelector('.delivery-visual-stage');
-              buttons.forEach(b => {
-                const isActive = b === btn;
-                b.classList.toggle('is-active', isActive);
-                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-              });
-              if (stage) stage.setAttribute('data-active-view', mode);
-            }
-          </script>
-
           <!-- Accordion 5: Bed Measurement & Cot Sizing Guide -->
           <details class="lora-accordion" id="inner-how-to-measure">
             <summary class="lora-accordion-summary">
@@ -2638,23 +2502,23 @@
               <svg class="lora-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="lora-accordion-body">
-              <div style="background: rgba(10, 15, 29, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem;">
-                <h4 style="color: #FFFFFF; font-size: 1.05rem; margin-bottom: 0.75rem;">Standard Indian Bed Frame Sizing Chart</h4>
+              <div style="background: #F3EDE4; border-radius: var(--radius-md); border: 1px solid #E8DFD5; padding: 1.5rem;">
+                <h4 style="color: #1C1917; font-size: 1.05rem; margin-bottom: 0.75rem; font-weight: 700;">Standard Indian Bed Frame Sizing Chart</h4>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
-                  <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                    <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">Queen Size (5.0 ft)</strong>
-                    <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 60" or 75" × 60"<br>Standard Master Bedroom</span>
+                  <div style="padding: 1rem; background: #FFFFFF; border-radius: 8px; border: 1px solid #E8DFD5;">
+                    <strong style="color: #C26136; display: block; margin-bottom: 0.25rem; font-weight: 700;">Queen Size (5.0 ft)</strong>
+                    <span style="font-size: 0.84rem; color: #57534E;">78" × 60" or 75" × 60"<br>Standard Master Bedroom</span>
                   </div>
-                  <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                    <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">King Size (6.0 ft)</strong>
-                    <span style="font-size: 0.84rem; color: #CBD5E1;">78" × 72" or 75" × 72"<br>Spacious Luxury Master</span>
+                  <div style="padding: 1rem; background: #FFFFFF; border-radius: 8px; border: 1px solid #E8DFD5;">
+                    <strong style="color: #C26136; display: block; margin-bottom: 0.25rem; font-weight: 700;">King Size (6.0 ft)</strong>
+                    <span style="font-size: 0.84rem; color: #57534E;">78" × 72" or 75" × 72"<br>Spacious Luxury Master</span>
                   </div>
-                  <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);">
-                    <strong style="color: #38BDF8; display: block; margin-bottom: 0.25rem;">Double / Single</strong>
-                    <span style="font-size: 0.84rem; color: #CBD5E1;">75" × 48" or 72" × 36"<br>Guest / Compact Rooms</span>
+                  <div style="padding: 1rem; background: #FFFFFF; border-radius: 8px; border: 1px solid #E8DFD5;">
+                    <strong style="color: #C26136; display: block; margin-bottom: 0.25rem; font-weight: 700;">Double / Single</strong>
+                    <span style="font-size: 0.84rem; color: #57534E;">75" × 48" or 72" × 36"<br>Guest / Compact Rooms</span>
                   </div>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                <p style="font-size: 0.85rem; color: #57534E; line-height: 1.6; margin: 0;">
                   <strong>Pro Measurement Tip:</strong> Always use a steel tape measure along the inside perimeter of your bed frame (from inside left edge to inside right edge, and inside headboard to footboard). We manufacture each mattress with exact precision to seamlessly fit your frame.
                 </p>
               </div>
@@ -3709,34 +3573,34 @@
     <div class="container">
       <div class="simulator-container">
         <div>
-          <span class="eyebrow" style="color: var(--brand-cyan);">Inspired by the LORA Logo Wave</span>
-          <h2 style="font-size: clamp(2.2rem, 3.8vw, 3.4rem); margin-bottom: 1.25rem; color: #FFFFFF;">
+          <span class="eyebrow" style="color: var(--lp-terracotta, #C26136);">Inspired by the LORA Logo Wave</span>
+          <h2 style="font-size: clamp(2.2rem, 3.8vw, 3.4rem); margin-bottom: 1.25rem; color: #1C1917;">
             SpineAlign™ Ergonomic Simulator
           </h2>
-          <p style="color: #94A3B8; font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
+          <p style="color: #57534E; font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
             When you sleep, your spine shouldn’t fight the bed. Traditional foam sinks unevenly, causing shear force in your cervical and lumbar vertebrae. LORA’s 7-Zone system actively contours to your anatomy, keeping your spine in true neutral alignment.
           </p>
 
           <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem;">
             <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style="color: var(--brand-cyan); font-size: 1.25rem;">01</span>
+              <span style="color: #C26136; font-size: 1.25rem; font-weight: 700;">01</span>
               <div>
-                <strong style="color: #FFFFFF; display: block; font-size: 0.95rem;">Head & Cervical Zone</strong>
-                <span style="color: #94A3B8; font-size: 0.85rem;">Relieves neck tension and supports head weight without backward tilt.</span>
+                <strong style="color: #1C1917; display: block; font-size: 0.95rem;">Head & Cervical Zone</strong>
+                <span style="color: #57534E; font-size: 0.85rem;">Relieves neck tension and supports head weight without backward tilt.</span>
               </div>
             </div>
             <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style="color: var(--brand-cyan); font-size: 1.25rem;">02</span>
+              <span style="color: #C26136; font-size: 1.25rem; font-weight: 700;">02</span>
               <div>
-                <strong style="color: #FFFFFF; display: block; font-size: 0.95rem;">Shoulder & Thoracic Zone</strong>
-                <span style="color: #94A3B8; font-size: 0.85rem;">Soft adaptive cavity lets broad shoulders sink, preventing numbness.</span>
+                <strong style="color: #1C1917; display: block; font-size: 0.95rem;">Shoulder & Thoracic Zone</strong>
+                <span style="color: #57534E; font-size: 0.85rem;">Soft adaptive cavity lets broad shoulders sink, preventing numbness.</span>
               </div>
             </div>
             <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style="color: var(--brand-cyan); font-size: 1.25rem;">03</span>
+              <span style="color: #C26136; font-size: 1.25rem; font-weight: 700;">03</span>
               <div>
-                <strong style="color: #FFFFFF; display: block; font-size: 0.95rem;">Lumbar & Pelvic Bridge</strong>
-                <span style="color: #94A3B8; font-size: 0.85rem;">Firm ergonomic support cradles the lower back curve, preventing sagging.</span>
+                <strong style="color: #1C1917; display: block; font-size: 0.95rem;">Lumbar & Pelvic Bridge</strong>
+                <span style="color: #57534E; font-size: 0.85rem;">Firm ergonomic support cradles the lower back curve, preventing sagging.</span>
               </div>
             </div>
           </div>
@@ -3755,24 +3619,24 @@
 
           <div class="spine-canvas-box">
             <svg viewBox="0 0 400 120" style="width: 100%; height: 100%;">
-              <path id="sim-spine-path" d="M 30 60 Q 90 40, 160 55 T 260 62 T 370 58" fill="none" stroke="#0284C7" stroke-width="4" stroke-linecap="round" filter="drop-shadow(0 0 6px rgba(2, 132, 199, 0.5))" />
-              <circle id="node-1" cx="90" cy="48" r="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
-              <circle id="node-2" cx="160" cy="55" r="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
-              <circle id="node-3" cx="260" cy="62" r="5" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
+              <path id="sim-spine-path" d="M 30 60 Q 90 40, 160 55 T 260 62 T 370 58" fill="none" stroke="#C26136" stroke-width="4" stroke-linecap="round" filter="drop-shadow(0 0 6px rgba(194, 97, 54, 0.4))" />
+              <circle id="node-1" cx="90" cy="48" r="5" fill="#FFFFFF" stroke="#C26136" stroke-width="2" />
+              <circle id="node-2" cx="160" cy="55" r="5" fill="#FFFFFF" stroke="#C26136" stroke-width="2" />
+              <circle id="node-3" cx="260" cy="62" r="5" fill="#FFFFFF" stroke="#C26136" stroke-width="2" />
             </svg>
-            <div style="position: absolute; bottom: 0.85rem; left: 1.25rem; font-size: 0.76rem; color: #38BDF8; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
+            <div style="position: absolute; bottom: 0.85rem; left: 1.25rem; font-size: 0.76rem; color: #C26136; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
               ● LORA 7-Zone Dynamic Alignment: 100% Neutral
             </div>
           </div>
 
           <div class="comparison-toggle-bar">
             <div>
-              <span style="color: #94A3B8; font-size: 0.75rem; text-transform: uppercase;">Traditional Sagging</span>
-              <strong style="display: block; color: #EF4444;">-14.2° Misalignment</strong>
+              <span style="color: #78716C; font-size: 0.75rem; text-transform: uppercase;">Traditional Sagging</span>
+              <strong style="display: block; color: #DC2626;">-14.2° Misalignment</strong>
             </div>
             <div style="text-align: right;">
-              <span style="color: #94A3B8; font-size: 0.75rem; text-transform: uppercase;">LORA SpineAlign™</span>
-              <strong style="display: block; color: #10B981;">0.0° Anatomical Zero-Shear</strong>
+              <span style="color: #78716C; font-size: 0.75rem; text-transform: uppercase;">LORA SpineAlign™</span>
+              <strong style="display: block; color: #16A34A;">0.0° Anatomical Zero-Shear</strong>
             </div>
           </div>
         </div>
@@ -3865,11 +3729,11 @@
        ========================================================= -->
   <style>
     .measure-guide-section {
-      padding: 3.75rem 0 !important;
-      background: radial-gradient(circle at 50% 20%, #091224 0%, #050A14 60%, #020408 100%) !important;
-      color: #FFFFFF !important;
-      border-top: 1px solid rgba(0, 180, 216, 0.15) !important;
-      border-bottom: 1px solid rgba(0, 180, 216, 0.15) !important;
+      padding: 4.5rem 0 !important;
+      background: var(--lp-warm-secondary, #F3EDE4) !important;
+      color: #1C1917 !important;
+      border-top: 1px solid #E8DFD5 !important;
+      border-bottom: 1px solid #E8DFD5 !important;
       position: relative !important;
       overflow: hidden !important;
       box-sizing: border-box !important;
@@ -3900,9 +3764,9 @@
       font-weight: 700 !important;
       letter-spacing: 0.08em !important;
       text-transform: uppercase !important;
-      color: #38BDF8 !important;
-      background: rgba(0, 180, 216, 0.1) !important;
-      border: 1px solid rgba(0, 180, 216, 0.3) !important;
+      color: #C26136 !important;
+      background: rgba(194, 97, 54, 0.08) !important;
+      border: 1px solid rgba(194, 97, 54, 0.25) !important;
       padding: 0.3rem 0.9rem !important;
       border-radius: 9999px !important;
       margin-bottom: 0.6rem !important;
@@ -3912,7 +3776,7 @@
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: clamp(1.85rem, 3.4vw, 2.5rem) !important;
       font-weight: 800 !important;
-      color: #FFFFFF !important;
+      color: #1C1917 !important;
       letter-spacing: -0.025em !important;
       margin: 0 0 0.4rem 0 !important;
       line-height: 1.2 !important;
@@ -3922,7 +3786,7 @@
     .measure-subtitle {
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.96rem !important;
-      color: #94A3B8 !important;
+      color: #57534E !important;
       line-height: 1.55 !important;
       margin: 0 auto !important;
       max-width: 580px !important;
@@ -3937,18 +3801,18 @@
 
     .measure-step-tabs {
       display: inline-flex !important;
-      background: rgba(15, 23, 42, 0.85) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E8DFD5 !important;
       padding: 4px !important;
       border-radius: 9999px !important;
       gap: 4px !important;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+      box-shadow: 0 4px 15px rgba(90, 60, 30, 0.05) !important;
     }
 
     .measure-tab-btn {
       background: transparent !important;
       border: none !important;
-      color: #94A3B8 !important;
+      color: #78716C !important;
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.82rem !important;
       font-weight: 600 !important;
@@ -3964,13 +3828,13 @@
     }
 
     .measure-tab-btn:hover {
-      color: #FFFFFF !important;
+      color: #1C1917 !important;
     }
 
     .measure-tab-btn.active {
-      background: #00B4D8 !important;
+      background: #C26136 !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 16px rgba(0, 180, 216, 0.45) !important;
+      box-shadow: 0 4px 12px rgba(194, 97, 54, 0.3) !important;
     }
 
     .measure-tab-btn .tab-badge {
@@ -3980,12 +3844,12 @@
     }
 
     .measure-stage-card {
-      background: radial-gradient(circle at 50% 35%, #0E1A33 0%, #080E1C 65%, #040812 100%) !important;
-      border: 1px solid rgba(0, 180, 216, 0.25) !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E8DFD5 !important;
       border-radius: 20px !important;
       padding: 1.25rem !important;
       margin-bottom: 1.5rem !important;
-      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 180, 216, 0.08) !important;
+      box-shadow: 0 15px 35px -10px rgba(90, 60, 30, 0.08) !important;
       position: relative !important;
       overflow: hidden !important;
       box-sizing: border-box !important;
@@ -4040,12 +3904,10 @@
     }
 
     .measure-exp-card {
-      background: rgba(14, 23, 44, 0.6) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E8DFD5 !important;
       border-radius: 16px !important;
       padding: 1.35rem 1.2rem !important;
-      backdrop-filter: blur(10px) !important;
-      -webkit-backdrop-filter: blur(10px) !important;
       cursor: pointer !important;
       transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
       position: relative !important;
@@ -4058,15 +3920,15 @@
     }
 
     .measure-exp-card:hover {
-      border-color: rgba(0, 180, 216, 0.4) !important;
-      background: rgba(18, 30, 58, 0.75) !important;
+      border-color: #C26136 !important;
+      background: #FFFFFF !important;
       transform: translateY(-2px) !important;
     }
 
     .measure-exp-card.active {
-      border-color: #00B4D8 !important;
-      background: rgba(16, 31, 62, 0.92) !important;
-      box-shadow: 0 8px 24px -4px rgba(0, 180, 216, 0.3) !important;
+      border-color: #C26136 !important;
+      background: #FFFFFF !important;
+      box-shadow: 0 8px 24px -4px rgba(194, 97, 54, 0.15) !important;
       transform: translateY(-3px) !important;
     }
 
@@ -4084,27 +3946,27 @@
       font-weight: 700 !important;
       letter-spacing: 0.08em !important;
       text-transform: uppercase !important;
-      color: #38BDF8 !important;
+      color: #C26136 !important;
     }
 
     .exp-card-dot {
       width: 6px !important;
       height: 6px !important;
       border-radius: 50% !important;
-      background: rgba(255, 255, 255, 0.25) !important;
+      background: #E8DFD5 !important;
       transition: all 200ms ease !important;
     }
 
     .measure-exp-card.active .exp-card-dot {
-      background: #38BDF8 !important;
-      box-shadow: 0 0 8px #38BDF8 !important;
+      background: #C26136 !important;
+      box-shadow: 0 0 8px rgba(194, 97, 54, 0.4) !important;
     }
 
     .exp-card-title {
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 1.18rem !important;
       font-weight: 700 !important;
-      color: #FFFFFF !important;
+      color: #1C1917 !important;
       letter-spacing: -0.015em !important;
       margin: 0 0 0.4rem 0 !important;
     }
@@ -4113,9 +3975,9 @@
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.82rem !important;
       font-weight: 600 !important;
-      color: #38BDF8 !important;
-      background: rgba(0, 180, 216, 0.1) !important;
-      border: 1px solid rgba(0, 180, 216, 0.22) !important;
+      color: #C26136 !important;
+      background: rgba(194, 97, 54, 0.08) !important;
+      border: 1px solid rgba(194, 97, 54, 0.2) !important;
       padding: 0.22rem 0.7rem !important;
       border-radius: 9999px !important;
       margin-bottom: 0.6rem !important;
@@ -4126,7 +3988,7 @@
     .exp-card-desc {
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.84rem !important;
-      color: #94A3B8 !important;
+      color: #57534E !important;
       line-height: 1.5 !important;
       margin: 0 !important;
       max-width: 230px !important;
@@ -4138,8 +4000,8 @@
       align-items: center !important;
       justify-content: center !important;
       text-align: center !important;
-      background: rgba(11, 19, 36, 0.7) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E8DFD5 !important;
       border-radius: 16px !important;
       padding: 1.15rem 1.5rem !important;
       gap: 0.85rem !important;
@@ -4159,7 +4021,7 @@
       font-size: 0.76rem !important;
       font-weight: 700 !important;
       text-transform: uppercase !important;
-      color: #94A3B8 !important;
+      color: #78716C !important;
       letter-spacing: 0.06em !important;
     }
 
@@ -4167,9 +4029,9 @@
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.95rem !important;
       font-weight: 700 !important;
-      color: #FFFFFF !important;
-      background: rgba(0, 180, 216, 0.14) !important;
-      border: 1px solid rgba(0, 180, 216, 0.35) !important;
+      color: #1C1917 !important;
+      background: rgba(194, 97, 54, 0.08) !important;
+      border: 1px solid rgba(194, 97, 54, 0.25) !important;
       padding: 0.25rem 0.75rem !important;
       border-radius: 9999px !important;
       letter-spacing: 0.02em !important;
@@ -4184,9 +4046,9 @@
     }
 
     .preset-chip {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #94A3B8 !important;
+      background: #FAF7F2 !important;
+      border: 1px solid #E8DFD5 !important;
+      color: #57534E !important;
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.75rem !important;
       font-weight: 600 !important;
@@ -4197,14 +4059,14 @@
     }
 
     .preset-chip:hover {
-      background: rgba(255, 255, 255, 0.12) !important;
-      color: #FFFFFF !important;
+      background: #F3EDE4 !important;
+      color: #1C1917 !important;
     }
 
     .preset-chip.active {
-      background: rgba(0, 180, 216, 0.2) !important;
-      border-color: #00B4D8 !important;
-      color: #38BDF8 !important;
+      background: rgba(194, 97, 54, 0.12) !important;
+      border-color: #C26136 !important;
+      color: #C26136 !important;
     }
 
     .measure-advice-pill {
@@ -4214,11 +4076,11 @@
       gap: 0.45rem !important;
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
       font-size: 0.85rem !important;
-      color: #CBD5E1 !important;
+      color: #57534E !important;
     }
 
     .measure-advice-pill svg {
-      color: #38BDF8 !important;
+      color: #C26136 !important;
       flex-shrink: 0 !important;
     }
 
@@ -4368,11 +4230,11 @@
 
             <!-- Floating Measurement Badge -->
             <g class="tape-badge" transform="translate(300, 78)">
-              <rect x="-85" y="-18" width="170" height="36" rx="18" fill="rgba(11, 19, 36, 0.95)" stroke="#FACC15" stroke-width="1.5" filter="url(#tape-glow)"/>
-              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#FFFFFF">
-                Length : <tspan fill="#FACC15" id="svg-len-val">72"</tspan>
+              <rect x="-85" y="-18" width="170" height="36" rx="18" fill="#FFFFFF" stroke="#C26136" stroke-width="1.5" filter="url(#tape-glow)"/>
+              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#1C1917">
+                Length : <tspan fill="#C26136" id="svg-len-val">72"</tspan>
               </text>
-              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1">
+              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#57534E" letter-spacing="1">
                 HEAD TO FOOT
               </text>
             </g>
@@ -4384,8 +4246,8 @@
                ========================================== -->
           <g id="tape-step-2" class="tape-group">
             <!-- Extension Guide Projections -->
-            <line x1="190" y1="175" x2="165" y2="205" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="420" y1="270" x2="395" y2="300" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="190" y1="175" x2="165" y2="205" stroke="rgba(194, 97, 54, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="420" y1="270" x2="395" y2="300" stroke="rgba(194, 97, 54, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
 
             <!-- Measuring Tape Yellow Ribbon -->
             <path class="tape-ribbon" d="M 165 205 L 395 300" stroke="url(#tapeYellowGrad)" stroke-width="14" stroke-linecap="square" filter="url(#tape-glow)"/>
@@ -4397,11 +4259,11 @@
 
             <!-- Floating Measurement Badge -->
             <g class="tape-badge" transform="translate(280, 335)">
-              <rect x="-80" y="-18" width="160" height="36" rx="18" fill="rgba(11, 19, 36, 0.95)" stroke="#FACC15" stroke-width="1.5" filter="url(#tape-glow)"/>
-              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#FFFFFF">
-                Width : <tspan fill="#FACC15" id="svg-wid-val">60"</tspan>
+              <rect x="-80" y="-18" width="160" height="36" rx="18" fill="#FFFFFF" stroke="#C26136" stroke-width="1.5" filter="url(#tape-glow)"/>
+              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#1C1917">
+                Width : <tspan fill="#C26136" id="svg-wid-val">60"</tspan>
               </text>
-              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1">
+              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#57534E" letter-spacing="1">
                 SIDE TO SIDE
               </text>
             </g>
@@ -4413,8 +4275,8 @@
                ========================================== -->
           <g id="tape-step-3" class="tape-group">
             <!-- Extension Guide Projections -->
-            <line x1="420" y1="270" x2="450" y2="270" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="420" y1="330" x2="450" y2="330" stroke="rgba(250, 204, 21, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="420" y1="270" x2="450" y2="270" stroke="rgba(194, 97, 54, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="420" y1="330" x2="450" y2="330" stroke="rgba(194, 97, 54, 0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
 
             <!-- Measuring Tape Yellow Ribbon -->
             <path class="tape-ribbon" d="M 450 270 L 450 330" stroke="url(#tapeYellowGrad)" stroke-width="14" stroke-linecap="square" filter="url(#tape-glow)"/>
@@ -4426,11 +4288,11 @@
 
             <!-- Floating Measurement Badge -->
             <g class="tape-badge" transform="translate(565, 300)">
-              <rect x="-85" y="-18" width="170" height="36" rx="18" fill="rgba(11, 19, 36, 0.95)" stroke="#FACC15" stroke-width="1.5" filter="url(#tape-glow)"/>
-              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#FFFFFF">
-                Thickness : <tspan fill="#FACC15" id="svg-thk-val">6"</tspan>
+              <rect x="-85" y="-18" width="170" height="36" rx="18" fill="#FFFFFF" stroke="#C26136" stroke-width="1.5" filter="url(#tape-glow)"/>
+              <text x="0" y="-1" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" fill="#1C1917">
+                Thickness : <tspan fill="#C26136" id="svg-thk-val">6"</tspan>
               </text>
-              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1">
+              <text x="0" y="11.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#57534E" letter-spacing="1">
                 MATTRESS HEIGHT
               </text>
             </g>
@@ -4570,13 +4432,13 @@
   <section class="quiz-section" id="sleep-quiz">
     <div class="container">
       <div class="section-head-center">
-        <span class="eyebrow" style="color: var(--brand-cyan); background: rgba(0, 180, 216, 0.12); border: 1px solid rgba(0, 180, 216, 0.3); padding: 0.35rem 1rem; border-radius: var(--radius-pill); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">
+        <span class="eyebrow" style="color: #C26136; background: rgba(194, 97, 54, 0.08); border: 1px solid rgba(194, 97, 54, 0.25); padding: 0.35rem 1rem; border-radius: var(--radius-pill); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ps-gold-grad)" style="vertical-align:-2px; margin-right:4px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg> Clinical Sleep-Tech Diagnostic Engine
         </span>
-        <h2 style="font-size: clamp(2.2rem, 3.8vw, 3.4rem); color: #FFFFFF; margin: 1rem 0 0.75rem; letter-spacing: -0.02em;">
+        <h2 style="font-size: clamp(2.2rem, 3.8vw, 3.4rem); color: #1C1917; margin: 1rem 0 0.75rem; letter-spacing: -0.02em;">
           Sleep Match AI™ — Find Your Perfect LORA
         </h2>
-        <p style="color: #94A3B8; font-size: 1.05rem; max-width: 680px; margin: 0 auto;">
+        <p style="color: #57534E; font-size: 1.05rem; max-width: 680px; margin: 0 auto;">
           Answer 4 quick biomechanical questions. Our certified orthopedic sleep algorithm screens your spinal curvature, pressure points, and weight distribution across all 8 certified LORA models.
         </p>
       </div>
@@ -4939,11 +4801,11 @@
   <style>
     .store-locator-section {
       padding: 5rem 0;
-      background: radial-gradient(circle at 50% 20%, #0D1627 0%, #070C16 65%, #040810 100%);
-      color: #FFFFFF;
+      background: var(--lp-warm-secondary, #F3EDE4);
+      color: #1C1917;
       position: relative;
-      border-top: 1px solid rgba(0, 180, 216, 0.15);
-      border-bottom: 1px solid rgba(0, 180, 216, 0.15);
+      border-top: 1px solid #E8DFD5;
+      border-bottom: 1px solid #E8DFD5;
     }
     .store-locator-container {
       max-width: 1100px;
@@ -4963,9 +4825,9 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #38BDF8;
-      background: rgba(0, 180, 216, 0.12);
-      border: 1px solid rgba(0, 180, 216, 0.3);
+      color: #C26136;
+      background: rgba(194, 97, 54, 0.08);
+      border: 1px solid rgba(194, 97, 54, 0.25);
       padding: 0.3rem 0.9rem;
       border-radius: 9999px;
       margin-bottom: 0.75rem;
@@ -4973,25 +4835,23 @@
     .locator-title {
       font-size: clamp(2rem, 3.5vw, 2.7rem);
       font-weight: 800;
-      color: #FFFFFF;
+      color: #1C1917;
       letter-spacing: -0.025em;
       line-height: 1.2;
       margin-bottom: 0.6rem;
     }
     .locator-subtitle {
       font-size: 1rem;
-      color: #94A3B8;
+      color: #57534E;
       line-height: 1.55;
     }
     .locator-search-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(0, 180, 216, 0.3);
+      background: #FFFFFF;
+      border: 1px solid #E8DFD5;
       border-radius: 20px;
       padding: 2rem 2.5rem;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 180, 216, 0.1);
+      box-shadow: 0 20px 40px -15px rgba(90, 60, 30, 0.08);
       margin-bottom: 2.5rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
     }
     .locator-form-grid {
       display: grid;
@@ -5010,12 +4870,12 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #CBD5E1;
+      color: #57534E;
     }
     .locator-input {
-      background: rgba(8, 14, 26, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #FFFFFF;
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
+      color: #1C1917;
       font-family: inherit;
       font-size: 0.95rem;
       padding: 0.75rem 1rem;
@@ -5026,14 +4886,14 @@
       box-sizing: border-box;
     }
     .locator-input:focus {
-      border-color: #0284C7;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+      border-color: #C26136;
+      box-shadow: 0 0 0 3px rgba(194, 97, 54, 0.15);
     }
     .locator-input::placeholder {
-      color: #64748B;
+      color: #A8A29E;
     }
     .btn-locator-submit {
-      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+      background: linear-gradient(135deg, #D97746 0%, #C26136 100%);
       color: #FFFFFF;
       border: none;
       font-family: inherit;
@@ -5049,10 +4909,11 @@
       transition: all 200ms ease;
       white-space: nowrap;
       height: 46px;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+      box-shadow: 0 4px 15px rgba(194, 97, 54, 0.25);
     }
     .btn-locator-submit:hover {
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(194, 97, 54, 0.35);
     }
 
     /* Result Cards */
@@ -5067,11 +4928,11 @@
     }
 
     .studio-match-card {
-      background: linear-gradient(180deg, rgba(16, 31, 56, 0.95) 0%, rgba(10, 19, 36, 0.95) 100%);
-      border: 1px solid rgba(2, 132, 199, 0.4);
+      background: #FFFFFF;
+      border: 1px solid #E8DFD5;
       border-radius: 20px;
       padding: 2.25rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(2, 132, 199, 0.15);
+      box-shadow: 0 15px 35px rgba(90, 60, 30, 0.08);
       display: grid;
       grid-template-columns: 1.5fr 1fr;
       gap: 2rem;
@@ -5082,9 +4943,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: rgba(16, 185, 129, 0.18);
+      background: rgba(16, 185, 129, 0.12);
       border: 1px solid #10B981;
-      color: #34D399;
+      color: #059669;
       font-size: 0.78rem;
       font-weight: 700;
       padding: 0.3rem 0.8rem;
@@ -5094,12 +4955,12 @@
     .match-title {
       font-size: 1.6rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: #1C1917;
       margin-bottom: 0.5rem;
     }
     .match-address {
       font-size: 0.95rem;
-      color: #CBD5E1;
+      color: #57534E;
       line-height: 1.5;
       margin-bottom: 0.75rem;
     }
@@ -5108,7 +4969,7 @@
       align-items: center;
       gap: 0.5rem;
       font-size: 0.85rem;
-      color: #94A3B8;
+      color: #78716C;
       margin-bottom: 1rem;
     }
     .match-perks {
@@ -5117,9 +4978,9 @@
       flex-wrap: wrap;
     }
     .match-perk-pill {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #F1F5F9;
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
+      color: #1C1917;
       font-size: 0.75rem;
       font-weight: 600;
       padding: 0.25rem 0.65rem;
@@ -5131,7 +4992,7 @@
       gap: 0.75rem;
     }
     .btn-match-directions {
-      background: #00B4D8;
+      background: #C26136;
       color: #FFFFFF;
       font-weight: 700;
       font-size: 0.95rem;
@@ -5145,13 +5006,13 @@
       transition: all 200ms ease;
     }
     .btn-match-directions:hover {
-      background: #48CAE4;
+      background: #D97746;
       transform: translateY(-2px);
     }
     .btn-match-whatsapp {
-      background: rgba(37, 211, 102, 0.15);
+      background: rgba(37, 211, 102, 0.12);
       border: 1px solid rgba(37, 211, 102, 0.4);
-      color: #25D366;
+      color: #16A34A;
       font-weight: 700;
       font-size: 0.92rem;
       padding: 0.8rem 1.25rem;
@@ -5164,16 +5025,16 @@
       transition: all 200ms ease;
     }
     .btn-match-whatsapp:hover {
-      background: rgba(37, 211, 102, 0.25);
+      background: rgba(37, 211, 102, 0.2);
     }
 
     /* Fallback Doorstep Delivery Card (User Specified) */
     .fallback-delivery-card {
-      background: linear-gradient(135deg, rgba(23, 37, 68, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
-      border: 1.5px solid rgba(245, 158, 11, 0.45);
+      background: #FFFFFF;
+      border: 1.5px solid #E8DFD5;
       border-radius: 20px;
       padding: 2.5rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(245, 158, 11, 0.15);
+      box-shadow: 0 15px 35px rgba(90, 60, 30, 0.08);
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -5182,9 +5043,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: #FBBF24;
+      background: rgba(194, 97, 54, 0.08);
+      border: 1px solid rgba(194, 97, 54, 0.3);
+      color: #C26136;
       font-size: 0.78rem;
       font-weight: 700;
       padding: 0.3rem 0.9rem;
@@ -5196,13 +5057,13 @@
     .fallback-headline {
       font-size: clamp(1.6rem, 2.6vw, 2.1rem);
       font-weight: 800;
-      color: #FFFFFF;
+      color: #1C1917;
       margin-bottom: 0.75rem;
       letter-spacing: -0.02em;
     }
     .fallback-desc {
       font-size: 1rem;
-      color: #CBD5E1;
+      color: #57534E;
       max-width: 680px;
       margin: 0 auto 1.75rem;
       line-height: 1.6;
@@ -5220,10 +5081,10 @@
       gap: 0.45rem;
       font-size: 0.88rem;
       font-weight: 600;
-      color: #E2E8F0;
+      color: #1C1917;
     }
     .fallback-perk-item svg {
-      color: #38BDF8;
+      color: #C26136;
     }
     .fallback-actions {
       display: flex;
@@ -5232,7 +5093,7 @@
       flex-wrap: wrap;
     }
     .btn-fallback-browse {
-      background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+      background: linear-gradient(135deg, #D97746 0%, #C26136 100%);
       color: #FFFFFF;
       font-weight: 700;
       font-size: 0.98rem;
@@ -5242,17 +5103,17 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+      box-shadow: 0 4px 15px rgba(194, 97, 54, 0.25);
       transition: all 200ms ease;
     }
     .btn-fallback-browse:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 22px rgba(0, 180, 216, 0.6);
+      box-shadow: 0 6px 22px rgba(194, 97, 54, 0.35);
     }
     .btn-fallback-concierge {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #FFFFFF;
+      background: #FAF7F2;
+      border: 1px solid #E8DFD5;
+      color: #1C1917;
       font-weight: 600;
       font-size: 0.95rem;
       padding: 0.85rem 1.6rem;
@@ -5264,7 +5125,7 @@
       transition: all 200ms ease;
     }
     .btn-fallback-concierge:hover {
-      background: rgba(255, 255, 255, 0.15);
+      background: #F3EDE4;
     }
 
     @media (max-width: 900px) {
@@ -5657,12 +5518,12 @@
     </div>
 
     <!-- Direct Cart Auth Status & Login Banner -->
-    <div id="cart-auth-banner" style="background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-bottom: 1px solid #BAE6FD; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem;">
-      <div style="display: flex; align-items: center; gap: 0.5rem; color: #0284C7;">
+    <div id="cart-auth-banner" style="background: #FAF7F2; border-bottom: 1px solid #E8DFD5; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; color: #C26136;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span style="font-weight: 700;" id="cart-auth-status-text">Have a LORA account?</span>
       </div>
-      <button type="button" id="btn-cart-auth-link" onclick="handleCartAuthClick()" style="background: #0284C7; color: #FFFFFF; border: none; border-radius: var(--radius-pill); font-weight: 800; font-size: 0.76rem; padding: 0.35rem 0.85rem; cursor: pointer; transition: background 150ms ease;">
+      <button type="button" id="btn-cart-auth-link" onclick="handleCartAuthClick()" style="background: #C26136; color: #FFFFFF; border: none; border-radius: var(--radius-pill); font-weight: 800; font-size: 0.76rem; padding: 0.35rem 0.85rem; cursor: pointer; transition: background 150ms ease;">
         Login / Sign Up →
       </button>
     </div>
@@ -5700,8 +5561,8 @@
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA" style="height: 22px;">
           <div>
-            <h3 style="margin: 0; font-size: 1.12rem; font-weight: 800; color: #FFFFFF;">Direct Factory Order Checkout</h3>
-            <p style="margin: 0; font-size: 0.74rem; color: #94A3B8;">Insured White-Glove Dispatch directly from LORA Works</p>
+            <h3 style="margin: 0; font-size: 1.12rem; font-weight: 800; color: #1C1917;">Direct Factory Order Checkout</h3>
+            <p style="margin: 0; font-size: 0.74rem; color: #78716C;">Insured White-Glove Dispatch directly from LORA Works</p>
           </div>
         </div>
         <button type="button" class="checkout-close-btn" id="btn-close-checkout">✕</button>
@@ -5710,16 +5571,16 @@
       <!-- Checkout Form View -->
       <div id="checkout-form-view">
         <!-- Order Items Summary Box (Individual Minimal Visibility Above Address) -->
-        <div class="checkout-items-summary-card" id="chk-order-items-card" style="background: rgba(16, 25, 46, 0.75); border: 1px solid rgba(56, 189, 248, 0.22); border-radius: var(--radius-md); padding: 0.75rem 0.95rem; margin-bottom: 0.75rem; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);">
+        <div class="checkout-items-summary-card" id="chk-order-items-card" style="background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: var(--radius-md); padding: 0.75rem 0.95rem; margin-bottom: 0.75rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
           <!-- Minimal Top Header: Count & Total Price -->
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.45rem; margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.45rem; margin-bottom: 0.5rem; border-bottom: 1px solid #E8DFD5;">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span id="chk-items-count-badge" style="font-size: 0.75rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.04em;">Sleep Bag Items</span>
-              <button type="button" onclick="closeCheckoutModal(); if(typeof openCart === 'function') openCart();" style="background: none; border: none; color: #38BDF8; font-size: 0.72rem; cursor: pointer; text-decoration: underline; padding: 0; font-weight: 600;" title="Edit items in Sleep Bag">Edit Bag</button>
+              <span id="chk-items-count-badge" style="font-size: 0.75rem; font-weight: 700; color: #78716C; text-transform: uppercase; letter-spacing: 0.04em;">Sleep Bag Items</span>
+              <button type="button" onclick="closeCheckoutModal(); if(typeof openCart === 'function') openCart();" style="background: none; border: none; color: #C26136; font-size: 0.72rem; cursor: pointer; text-decoration: underline; padding: 0; font-weight: 600;" title="Edit items in Sleep Bag">Edit Bag</button>
             </div>
             <div style="text-align: right; display: flex; align-items: baseline; gap: 0.35rem;">
-              <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.04em;">Total</span>
-              <strong style="color: #34D399; font-size: 1.08rem; font-weight: 800;" id="chk-summary-price">₹21,999</strong>
+              <span style="font-size: 0.7rem; color: #78716C; text-transform: uppercase; letter-spacing: 0.04em;">Total</span>
+              <strong style="color: #1C1917; font-size: 1.08rem; font-weight: 800;" id="chk-summary-price">₹21,999</strong>
             </div>
           </div>
 
@@ -5734,12 +5595,12 @@
         </div>
 
         <!-- Direct In-Checkout Login Prompt (Shown only when NOT logged in) -->
-        <div id="checkout-auth-banner" style="background: rgba(2, 132, 199, 0.08); border: 1.5px dashed rgba(2, 132, 199, 0.35); border-radius: var(--radius-md); padding: 0.65rem 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+        <div id="checkout-auth-banner" style="background: rgba(194, 97, 54, 0.06); border: 1.5px dashed rgba(194, 97, 54, 0.35); border-radius: var(--radius-md); padding: 0.65rem 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
           <div>
-            <div style="font-size: 0.82rem; font-weight: 700; color: #FFFFFF;" id="checkout-auth-title">Have a LORA Account?</div>
-            <div style="font-size: 0.72rem; color: #94A3B8;" id="checkout-auth-subtitle">Login with OTP to auto-fill your saved address and speed up checkout.</div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: #1C1917;" id="checkout-auth-title">Have a LORA Account?</div>
+            <div style="font-size: 0.72rem; color: #78716C;" id="checkout-auth-subtitle">Login with OTP to auto-fill your saved address and speed up checkout.</div>
           </div>
-          <button type="button" id="btn-checkout-login-banner" onclick="handleCheckoutLoginClick()" style="background: #0A0F1D; color: #38BDF8; border: 1.5px solid #0284C7; border-radius: var(--radius-pill); font-size: 0.76rem; font-weight: 800; padding: 0.4rem 0.85rem; cursor: pointer; white-space: nowrap;">
+          <button type="button" id="btn-checkout-login-banner" onclick="handleCheckoutLoginClick()" style="background: #C26136; color: #FFFFFF; border: none; border-radius: var(--radius-pill); font-size: 0.76rem; font-weight: 800; padding: 0.4rem 0.85rem; cursor: pointer; white-space: nowrap;">
             Login with OTP →
           </button>
         </div>
@@ -5769,11 +5630,11 @@
                 <!-- Phone OTP Verification Trigger & Status Pill -->
                 <div class="checkout-phone-verify-container" id="chk-phone-verify-container" style="margin-top: 0.4rem;">
                   <!-- Unverified State Pill -->
-                  <div id="chk-phone-unverified-pill" style="display: flex; align-items: center; justify-content: space-between; background: rgba(2, 132, 199, 0.08); border: 1px dashed rgba(56, 189, 248, 0.35); border-radius: 6px; padding: 0.35rem 0.65rem;">
-                    <span style="font-size: 0.73rem; color: #94A3B8; display: flex; align-items: center; gap: 5px;" id="chk-phone-verify-hint">
-                      <span style="color: #38BDF8;">●</span> Required: Verify via OTP
+                  <div id="chk-phone-unverified-pill" style="display: flex; align-items: center; justify-content: space-between; background: rgba(194, 97, 54, 0.08); border: 1px dashed rgba(194, 97, 54, 0.35); border-radius: 6px; padding: 0.35rem 0.65rem;">
+                    <span style="font-size: 0.73rem; color: #78716C; display: flex; align-items: center; gap: 5px;" id="chk-phone-verify-hint">
+                      <span style="color: #C26136;">●</span> Required: Verify via OTP
                     </span>
-                    <button type="button" id="btn-chk-verify-phone" onclick="triggerCheckoutPhoneVerification()" style="background: #0284C7; color: #FFFFFF; border: none; border-radius: 4px; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: background 0.15s ease;">
+                    <button type="button" id="btn-chk-verify-phone" onclick="triggerCheckoutPhoneVerification()" style="background: #C26136; color: #FFFFFF; border: none; border-radius: 4px; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: background 0.15s ease;">
                       Verify Phone →
                     </button>
                   </div>
@@ -5997,45 +5858,45 @@
        CUSTOMER AUTHENTICATION MODAL (OTP LOGIN / SIGN UP)
        ========================================================= -->
   <div class="modal-overlay" id="modal-customer-auth">
-    <div class="modal-dialog" style="max-width: 480px; padding: 2.25rem; background: #0D1527; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(2, 132, 199, 0.15);">
+    <div class="modal-dialog" style="max-width: 480px; padding: 2.25rem; background: #FFFFFF; border: 1px solid #E8DFD5; box-shadow: 0 25px 60px rgba(90, 60, 30, 0.15);">
       <button type="button" class="modal-close-btn" id="btn-close-cust-auth" onclick="closeCustomerAuthModal()" aria-label="Close modal">✕</button>
 
       <!-- Step 1: Identifier Entry & OTP Channel Choice -->
       <div id="auth-step-identifier">
         <div style="text-align: center; margin-bottom: 1.5rem;">
           <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA" style="height: 28px; margin-bottom: 0.75rem;">
-          <h3 style="font-size: 1.35rem; font-weight: 800; color: #FFFFFF; margin: 0 0 0.35rem 0;">Customer Login & Sign Up</h3>
-          <p style="font-size: 0.82rem; color: #94A3B8; margin: 0;" id="cust-auth-subtitle">Passwordless verification via SMS or Email OTP</p>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #1C1917; margin: 0 0 0.35rem 0;">Customer Login & Sign Up</h3>
+          <p style="font-size: 0.82rem; color: #57534E; margin: 0;" id="cust-auth-subtitle">Passwordless verification via SMS or Email OTP</p>
         </div>
 
         <form id="form-cust-send-otp" onsubmit="window.handleSendCustomerOtp(event); return false;">
           <div style="margin-bottom: 1.25rem;">
-            <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #CBD5E1; margin-bottom: 0.4rem;">
+            <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #57534E; margin-bottom: 0.4rem;">
               Mobile Number or Email Address *
             </label>
-            <input type="text" id="cust-input-identifier" class="checkout-input" placeholder="e.g. 9072616423 or yourname@gmail.com" required style="height: 48px; font-size: 0.95rem; background: rgba(10, 15, 29, 0.9); border: 1px solid rgba(255, 255, 255, 0.18); color: #FFFFFF;">
-            <span style="font-size: 0.72rem; color: #94A3B8; margin-top: 0.35rem; display: block;">Indian 10-digit mobile number or standard email address.</span>
+            <input type="text" id="cust-input-identifier" class="checkout-input" placeholder="e.g. 9072616423 or yourname@gmail.com" required style="height: 48px; font-size: 0.95rem; background: #FAF7F2; border: 1px solid #E8DFD5; color: #1C1917;">
+            <span style="font-size: 0.72rem; color: #78716C; margin-top: 0.35rem; display: block;">Indian 10-digit mobile number or standard email address.</span>
           </div>
 
           <!-- Dynamic OTP Channel Selector -->
           <div id="cust-channel-selection-wrapper" style="margin-bottom: 1.25rem;">
-            <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #CBD5E1; margin-bottom: 0.4rem;">
+            <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #57534E; margin-bottom: 0.4rem;">
               Receive OTP via
             </label>
             <div id="cust-channels-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label class="otp-channel-pill selected" data-channel="sms" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(0, 180, 216, 0.1); border: 1.5px solid #00B4D8;">
-                <input type="radio" name="cust_selected_channel" value="sms" class="otp-channel-radio" checked style="accent-color: #00B4D8;">
+              <label class="otp-channel-pill selected" data-channel="sms" style="cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(194, 97, 54, 0.08); border: 1.5px solid #C26136;">
+                <input type="radio" name="cust_selected_channel" value="sms" class="otp-channel-radio" checked style="accent-color: #C26136;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 <div style="flex: 1;">
-                  <strong style="font-size: 0.88rem; color: #FFFFFF; display: block;">SMS OTP</strong>
-                  <span style="font-size: 0.72rem; color: #94A3B8;">Receive 6-digit code via SMS</span>
+                  <strong style="font-size: 0.88rem; color: #1C1917; display: block;">SMS OTP</strong>
+                  <span style="font-size: 0.72rem; color: #78716C;">Receive 6-digit code via SMS</span>
                 </div>
-                <span style="font-size: 0.7rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">Carrier SMS</span>
+                <span style="font-size: 0.7rem; color: #C26136; font-weight: 700; background: rgba(194, 97, 54, 0.1); border: 1px solid rgba(194, 97, 54, 0.25); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">Carrier SMS</span>
               </label>
             </div>
           </div>
 
-          <div id="cust-auth-error-msg" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #FCA5A5; padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.8rem; margin-bottom: 1rem; line-height: 1.4;">
+          <div id="cust-auth-error-msg" style="display: none; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #B91C1C; padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.8rem; margin-bottom: 1rem; line-height: 1.4;">
             <!-- Error messages -->
           </div>
 
@@ -6044,18 +5905,18 @@
           </button>
         </form>
 
-        <p style="font-size: 0.74rem; color: #94A3B8; text-align: center; margin-top: 1rem; line-height: 1.4;">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> New customer? Your account will be created automatically. No passwords required.
+        <p style="font-size: 0.74rem; color: #78716C; text-align: center; margin-top: 1rem; line-height: 1.4;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> New customer? Your account will be created automatically. No passwords required.
         </p>
       </div>
 
       <!-- Step 2: 6-Digit OTP Verification Screen -->
       <div id="auth-step-verify" style="display: none;">
         <div style="text-align: center; margin-bottom: 1.25rem;">
-          <div style="margin-bottom: 0.5rem;"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="url(#ps-cyan-grad)" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1"/><path d="M9 6h6"/></svg></div>
-          <h3 style="font-size: 1.35rem; font-weight: 800; color: #FFFFFF; margin: 0 0 0.35rem 0;">Enter Verification Code</h3>
-          <p style="font-size: 0.82rem; color: #94A3B8; margin: 0;" id="cust-verify-subtext">
-            We sent a 6-digit code to <strong id="cust-target-display" style="color: #38BDF8;">+91 ••••••••••</strong>
+          <div style="margin-bottom: 0.5rem;"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#C26136" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1"/><path d="M9 6h6"/></svg></div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #1C1917; margin: 0 0 0.35rem 0;">Enter Verification Code</h3>
+          <p style="font-size: 0.82rem; color: #57534E; margin: 0;" id="cust-verify-subtext">
+            We sent a 6-digit code to <strong id="cust-target-display" style="color: #C26136;">+91 ••••••••••</strong>
           </p>
         </div>
 
@@ -6070,7 +5931,7 @@
             <input type="text" class="otp-digit-box" maxlength="1" data-idx="5" inputmode="numeric">
           </div>
 
-          <div id="cust-verify-error-msg" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #FCA5A5; padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.8rem; margin-bottom: 1rem; line-height: 1.4; text-align: center;">
+          <div id="cust-verify-error-msg" style="display: none; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #B91C1C; padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.8rem; margin-bottom: 1rem; line-height: 1.4; text-align: center;">
             <!-- Verification Error -->
           </div>
 
@@ -6080,11 +5941,11 @@
         </form>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; font-size: 0.8rem;">
-          <button type="button" id="btn-cust-back-step1" style="background: none; border: none; color: #94A3B8; font-weight: 700; cursor: pointer; padding: 0;">
+          <button type="button" id="btn-cust-back-step1" style="background: none; border: none; color: #57534E; font-weight: 700; cursor: pointer; padding: 0;">
             ← Change Number / Email
           </button>
           <div id="cust-resend-container">
-            <button type="button" id="btn-cust-resend-otp" disabled style="background: none; border: none; color: #38BDF8; font-weight: 700; cursor: pointer; padding: 0;">
+            <button type="button" id="btn-cust-resend-otp" disabled style="background: none; border: none; color: #C26136; font-weight: 700; cursor: pointer; padding: 0;">
               Resend OTP in <span id="cust-resend-timer">30</span>s
             </button>
           </div>
@@ -6103,7 +5964,7 @@
       <!-- Dashboard Header -->
       <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.25rem; border-bottom: 1px solid #E2E8F0; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div style="display: flex; align-items: center; gap: 1rem;">
-          <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%); color: #FFFFFF; font-size: 1.35rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 180, 216, 0.35);" id="dash-avatar">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #D97746 0%, #C26136 100%); color: #FFFFFF; font-size: 1.35rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(194, 97, 54, 0.3);" id="dash-avatar">
             R
           </div>
           <div>
@@ -6159,21 +6020,21 @@
 
       <!-- Tab 3: Saved Delivery Addresses -->
       <div class="cust-dash-pane" id="tab-cust-address" style="display: none;">
-        <div style="background: rgba(16, 25, 46, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+        <div style="background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-            <strong style="color: #FFFFFF; font-size: 0.9rem;">Primary Delivery Residence (Default)</strong>
-            <span style="background: rgba(0, 180, 216, 0.2); color: #38BDF8; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">HOME</span>
+            <strong style="color: #1C1917; font-size: 0.9rem;">Primary Delivery Residence (Default)</strong>
+            <span style="background: rgba(194, 97, 54, 0.1); color: #C26136; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">HOME</span>
           </div>
-          <p style="font-size: 0.85rem; color: #CBD5E1; margin: 0 0 0.75rem 0;" id="dash-saved-address-text">
+          <p style="font-size: 0.85rem; color: #57534E; margin: 0 0 0.75rem 0;" id="dash-saved-address-text">
             Flat 302, Palm Heights, 12th Main Indiranagar, Bengaluru, Karnataka - 560038
           </p>
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-edit-saved-address" style="font-size: 0.76rem; border-color: rgba(255, 255, 255, 0.15); color: #FFFFFF;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-edit-saved-address" style="font-size: 0.76rem; border-color: #E8DFD5; color: #1C1917; background: #FFFFFF;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:3px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Update Address
           </button>
         </div>
 
-        <div id="box-edit-address-form" style="display: none; background: rgba(10, 15, 29, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1rem;">
-          <h5 style="margin: 0 0 1rem 0; font-size: 0.9rem; color: #FFFFFF;">Update Shipping Address</h5>
+        <div id="box-edit-address-form" style="display: none; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1rem;">
+          <h5 style="margin: 0 0 1rem 0; font-size: 0.9rem; color: #1C1917;">Update Shipping Address</h5>
           <div class="checkout-input-block">
             <label>Street Address</label>
             <input type="text" id="cust-edit-street" class="checkout-input" placeholder="Flat / House No., Street, Landmark">
@@ -6189,7 +6050,7 @@
             </div>
           </div>
           <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-address" style="border-color: rgba(255, 255, 255, 0.15); color: #94A3B8;">Cancel</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-address" style="border-color: #E8DFD5; color: #78716C;">Cancel</button>
             <button type="button" class="btn btn-primary btn-sm" id="btn-save-address">Save Address</button>
           </div>
         </div>
@@ -8103,10 +7964,10 @@
                   <div style="padding: 1.75rem; height: 100%; display: flex; flex-direction: column; justify-content: center;">
                     <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Standard Dimensions:</span>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem; font-size: 0.84rem;">
-                      <div style="padding: 0.5rem; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;"><strong>Queen:</strong> 78" × 60"</div>
-                      <div style="padding: 0.5rem; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;"><strong>King:</strong> 78" × 72"</div>
-                      <div style="padding: 0.5rem; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;"><strong>Single:</strong> 72" × 36"</div>
-                      <div style="padding: 0.5rem; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;"><strong>Custom:</strong> Any custom size on WhatsApp</div>
+                      <div style="padding: 0.5rem; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: 6px; color: #1C1917;"><strong style="color: #C26136;">Queen:</strong> 78" × 60"</div>
+                      <div style="padding: 0.5rem; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: 6px; color: #1C1917;"><strong style="color: #C26136;">King:</strong> 78" × 72"</div>
+                      <div style="padding: 0.5rem; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: 6px; color: #1C1917;"><strong style="color: #C26136;">Single:</strong> 72" × 36"</div>
+                      <div style="padding: 0.5rem; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: 6px; color: #1C1917;"><strong style="color: #C26136;">Custom:</strong> Any custom size on WhatsApp</div>
                     </div>
                   </div>
                 </div>
@@ -8474,10 +8335,10 @@
 
         if (totalItems === 0) {
           cartItemsContainer.innerHTML = `
-            <div class="cart-empty-view" style="text-align: center; padding: 3.5rem 1.25rem; color: #94A3B8;">
-              <div style="margin-bottom: 0.75rem;"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="url(#ps-cyan-grad)" stroke-width="1.6" style="filter: drop-shadow(0 0 14px rgba(0,242,254,0.45));"><path d="M2 4v16M22 4v16M2 10h20M2 16h20M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/></svg></div>
-              <h4 style="color: #FFFFFF; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Your Sleep Bag is Empty</h4>
-              <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.5rem; line-height: 1.5;">Choose from our 8 bespoke mattress collections handcrafted for regenerative sleep.</p>
+            <div class="cart-empty-view" style="text-align: center; padding: 3.5rem 1.25rem; color: #57534E;">
+              <div style="margin-bottom: 0.75rem;"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="url(#ps-gold-grad)" stroke-width="1.6" style="filter: drop-shadow(0 0 14px rgba(217,119,70,0.35));"><path d="M2 4v16M22 4v16M2 10h20M2 16h20M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/></svg></div>
+              <h4 style="color: #1C1917; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Your Sleep Bag is Empty</h4>
+              <p style="font-size: 0.85rem; color: #57534E; margin-bottom: 1.5rem; line-height: 1.5;">Choose from our 8 bespoke mattress collections handcrafted for regenerative sleep.</p>
               <button type="button" class="btn btn-secondary btn-sm" data-action="close-cart" style="border-radius: var(--radius-pill); padding: 0.65rem 1.4rem;">
                 Explore Mattresses →
               </button>
@@ -8500,13 +8361,13 @@
           const itemsHtml = currentCartItems.map((item, idx) => {
             subtotal += item.price || 0;
             return `
-              <div class="cart-item-card" data-item-idx="${idx}" style="display: flex; gap: 1rem; align-items: center; background: rgba(16, 25, 46, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 0.75rem;">
-                <img loading="lazy" src="${item.image || 'assets/comfort-plush.jpg'}" alt="${item.title}" class="cart-item-thumb" style="width: 64px; height: 64px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div class="cart-item-card" data-item-idx="${idx}" style="display: flex; gap: 1rem; align-items: center; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 0.75rem;">
+                <img loading="lazy" src="${item.image || 'assets/comfort-plush.jpg'}" alt="${item.title}" class="cart-item-thumb" style="width: 64px; height: 64px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid #E8DFD5;">
                 <div style="flex: 1;">
-                  <strong style="display: block; font-size: 0.92rem; color: #FFFFFF;">${item.title}</strong>
-                  <span style="font-size: 0.78rem; color: #94A3B8;">${item.specs || 'Standard Size'}</span>
+                  <strong style="display: block; font-size: 0.92rem; color: #1C1917;">${item.title}</strong>
+                  <span style="font-size: 0.78rem; color: #57534E;">${item.specs || 'Standard Size'}</span>
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.45rem;">
-                    <strong style="color: #38BDF8; font-size: 0.95rem;">₹${(item.price || 0).toLocaleString('en-IN')}</strong>
+                    <strong style="color: #C26136; font-size: 0.95rem; font-weight: 700;">₹${(item.price || 0).toLocaleString('en-IN')}</strong>
                     <button type="button" style="background: none; border: none; color: #EF4444; font-size: 0.78rem; font-weight: 600; cursor: pointer; padding: 0.2rem 0.4rem;" data-action="remove-item" data-index="${idx}">Remove</button>
                   </div>
                 </div>
@@ -8903,14 +8764,14 @@
           const itemPrice = Number(item.price) || 0;
 
           return `
-            <div class="checkout-mini-item" style="display: flex; align-items: center; gap: 0.7rem; background: rgba(10, 15, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 0.45rem 0.65rem; transition: border-color 0.15s ease;">
-              <img loading="lazy" src="${itemImg}" alt="${itemTitle}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.12); flex-shrink: 0;">
+            <div class="checkout-mini-item" style="display: flex; align-items: center; gap: 0.7rem; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: 8px; padding: 0.45rem 0.65rem; transition: border-color 0.15s ease;">
+              <img loading="lazy" src="${itemImg}" alt="${itemTitle}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid #E8DFD5; flex-shrink: 0;">
               <div style="flex: 1; min-width: 0;">
-                <div style="font-weight: 700; font-size: 0.83rem; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${itemTitle}">${itemTitle}</div>
-                <div style="font-size: 0.72rem; color: #94A3B8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;" title="${itemSpecs}">${itemSpecs}</div>
+                <div style="font-weight: 700; font-size: 0.83rem; color: #1C1917; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${itemTitle}">${itemTitle}</div>
+                <div style="font-size: 0.72rem; color: #57534E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;" title="${itemSpecs}">${itemSpecs}</div>
               </div>
               <div style="text-align: right; flex-shrink: 0; padding-left: 0.4rem;">
-                <strong style="color: #38BDF8; font-size: 0.88rem; font-weight: 700;">₹${itemPrice.toLocaleString('en-IN')}</strong>
+                <strong style="color: #C26136; font-size: 0.88rem; font-weight: 700;">₹${itemPrice.toLocaleString('en-IN')}</strong>
               </div>
             </div>
           `;
@@ -8918,18 +8779,18 @@
 
         // Complimentary Luxury Sleep Kit Line Item inside Checkout
         const giftCheckoutHtml = `
-          <div class="checkout-mini-item" style="display: flex; align-items: center; gap: 0.7rem; background: linear-gradient(135deg, rgba(6, 78, 59, 0.32) 0%, rgba(10, 15, 29, 0.85) 100%); border: 1.5px dashed rgba(52, 211, 153, 0.45); border-radius: 8px; padding: 0.45rem 0.65rem;">
-            <img loading="lazy" src="assets/complimentary-sleep-kit.jpg" alt="Complimentary Luxury Sleep Kit" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.4); flex-shrink: 0;">
+          <div class="checkout-mini-item" style="display: flex; align-items: center; gap: 0.7rem; background: rgba(16, 185, 129, 0.08); border: 1.5px dashed rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 0.45rem 0.65rem;">
+            <img loading="lazy" src="assets/complimentary-sleep-kit.jpg" alt="Complimentary Luxury Sleep Kit" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(16, 185, 129, 0.3); flex-shrink: 0;">
             <div style="flex: 1; min-width: 0;">
               <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
-                <span style="font-weight: 700; font-size: 0.83rem; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Complimentary Luxury Sleep Kit</span>
+                <span style="font-weight: 700; font-size: 0.83rem; color: #1C1917; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Complimentary Luxury Sleep Kit</span>
                 <span style="background: #059669; color: #FFFFFF; font-size: 0.62rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; text-transform: uppercase;">FREE GIFT</span>
               </div>
-              <div style="font-size: 0.71rem; color: #34D399; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">2× Cloud Pillows + 1× Bedsheet + 2× Pillow Covers</div>
+              <div style="font-size: 0.71rem; color: #059669; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">2× Cloud Pillows + 1× Bedsheet + 2× Pillow Covers</div>
             </div>
             <div style="text-align: right; flex-shrink: 0; padding-left: 0.4rem;">
-              <span style="font-size: 0.72rem; color: #94A3B8; text-decoration: line-through; display: block; line-height: 1.1;">₹4,497</span>
-              <strong style="color: #34D399; font-size: 0.88rem; font-weight: 800;">₹0 (FREE)</strong>
+              <span style="font-size: 0.72rem; color: #78716C; text-decoration: line-through; display: block; line-height: 1.1;">₹4,497</span>
+              <strong style="color: #059669; font-size: 0.88rem; font-weight: 800;">₹0 (FREE)</strong>
             </div>
           </div>
         `;
@@ -9866,7 +9727,7 @@
 
           let rzpOrderId = '';
           let rzpKeyId = 'rzp_test_51L0RA9876DEMO';
-          let rzpThemeColor = '#0284C7';
+          let rzpThemeColor = '#C26136';
 
           // 1. Instant hydration from admin-configured storage
           try {
@@ -9909,7 +9770,7 @@
             }
             rzpOrderId = rzpData.order_id;
             rzpKeyId = rzpData.key_id;
-            rzpThemeColor = rzpData.theme_color || '#00B4D8';
+            rzpThemeColor = rzpData.theme_color || '#C26136';
           } catch (netErr) {
             console.warn('[CHECKOUT] Backend Razorpay order create error:', netErr);
             alert('Unable to initialize payment gateway. Please select Cash on Delivery (COD) or try again.');
@@ -9975,7 +9836,7 @@
                 product: finalProductName
               },
               theme: {
-                color: rzpThemeColor || '#00B4D8'
+                color: rzpThemeColor || '#C26136'
               },
               modal: {
                 ondismiss: function () {
@@ -11318,20 +11179,20 @@
               ? '<span style="background:rgba(16,185,129,0.2);border:1px solid #10B981;color:#6EE7B7;">ACTIVE COVERAGE</span>'
               : '<span style="background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FCD34D;">ACTIVATES ON DELIVERY</span>';
           return `
-          <div style="background: linear-gradient(135deg, #0F2038 0%, #060B12 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: #FFFFFF; margin-bottom: 1.25rem; border: 1px solid rgba(0, 180, 216, 0.4);">
+          <div style="background: #FFFFFF; border-radius: var(--radius-lg); padding: 1.5rem; color: #1C1917; margin-bottom: 1.25rem; border: 1.5px solid #E8DFD5; box-shadow: 0 4px 16px rgba(60, 40, 20, 0.06);">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.1rem;">
               <div>
-                <span style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--brand-cyan); font-weight:800;">Official Factory Guarantee • Order ${esc(c.o.id)}</span>
-                <h4 style="font-size:1.2rem; font-weight:900; margin:0.25rem 0 0 0; color:#FFFFFF;">${esc(c.pname)}</h4>
-                <div style="font-size:0.82rem; color:#7DD3FC; font-weight:700; margin-top:0.2rem;">${esc(c.w.label)}${c.o.size ? ' • ' + esc(c.o.size) : ''}</div>
+                <span style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--lp-terracotta); font-weight:800;">Official Factory Guarantee • Order ${esc(c.o.id)}</span>
+                <h4 style="font-size:1.2rem; font-weight:900; margin:0.25rem 0 0 0; color:#1C1917;">${esc(c.pname)}</h4>
+                <div style="font-size:0.82rem; color:var(--lp-terracotta); font-weight:700; margin-top:0.2rem;">${esc(c.w.label)}${c.o.size ? ' • ' + esc(c.o.size) : ''}</div>
               </div>
               ${badge.replace('<span style="', '<span style="padding:0.35rem 0.85rem; border-radius:var(--radius-pill); font-size:0.72rem; font-weight:800; white-space:nowrap;')}
             </div>
-            <div class="cust-warranty-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:1rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:1.1rem; font-size:0.8rem;">
-              <div><span style="color:#94A3B8; display:block; margin-bottom:0.2rem;">Certificate ID</span><strong style="font-family:monospace; color:#38BDF8;">${esc(c.certId)}</strong></div>
-              <div><span style="color:#94A3B8; display:block; margin-bottom:0.2rem;">Coverage Period</span><strong>${c.w.years ? c.w.years + ' Full Calendar Years' : 'As per product policy'}</strong></div>
-              <div><span style="color:#94A3B8; display:block; margin-bottom:0.2rem;">Valid From</span><strong>${c.start ? fmt(c.start) : 'Delivery date'}</strong></div>
-              <div><span style="color:#94A3B8; display:block; margin-bottom:0.2rem;">Valid Until</span><strong>${c.end ? fmt(c.end) : (c.w.years ? c.w.years + ' yrs after delivery' : '—')}</strong></div>
+            <div class="cust-warranty-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:1rem; border-top:1px solid #E8DFD5; padding-top:1.1rem; font-size:0.8rem;">
+              <div><span style="color:#78716C; display:block; margin-bottom:0.2rem;">Certificate ID</span><strong style="font-family:monospace; color:var(--lp-terracotta);">${esc(c.certId)}</strong></div>
+              <div><span style="color:#78716C; display:block; margin-bottom:0.2rem;">Coverage Period</span><strong style="color:#1C1917;">${c.w.years ? c.w.years + ' Full Calendar Years' : 'As per product policy'}</strong></div>
+              <div><span style="color:#78716C; display:block; margin-bottom:0.2rem;">Valid From</span><strong style="color:#1C1917;">${c.start ? fmt(c.start) : 'Delivery date'}</strong></div>
+              <div><span style="color:#78716C; display:block; margin-bottom:0.2rem;">Valid Until</span><strong style="color:#1C1917;">${c.end ? fmt(c.end) : (c.w.years ? c.w.years + ' yrs after delivery' : '—')}</strong></div>
             </div>
           </div>`;
         }).join('');
@@ -11568,7 +11429,7 @@
               <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: var(--radius-md); padding: 1rem;">
                 <div style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; color: #0F172A; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
                   <span>Live Factory Dispatch Status</span>
-                  <span style="font-size: 0.7rem; font-weight: 700; color: #0284C7; background: #E0F2FE; padding: 0.15rem 0.5rem; border-radius: 4px;">Verified Synchronized</span>
+                  <span style="font-size: 0.7rem; font-weight: 700; color: #C26136; background: #FDF2E9; padding: 0.15rem 0.5rem; border-radius: 4px;">Verified Synchronized</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; position: relative; gap: 0.5rem; flex-wrap: wrap;">
                   ${steps.map((st, i) => {
@@ -11576,10 +11437,10 @@
                     const isCurrent = i === currentStepIdx;
                     return `
                       <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; min-width: 65px;">
-                        <div style="width: 24px; height: 24px; border-radius: 50%; background: ${isCurrent ? '#00B4D8' : (isDone ? '#10B981' : '#E2E8F0')}; color: ${isDone ? '#FFF' : '#64748B'}; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 0.35rem; box-shadow: ${isCurrent ? '0 0 10px rgba(0, 180, 216, 0.5)' : 'none'};">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: ${isCurrent ? '#C26136' : (isDone ? '#10B981' : '#E2E8F0')}; color: ${isDone ? '#FFF' : '#64748B'}; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 0.35rem; box-shadow: ${isCurrent ? '0 0 10px rgba(194, 97, 54, 0.4)' : 'none'};">
                           ${isDone && !isCurrent ? '✓' : (i + 1)}
                         </div>
-                        <span style="font-size: 0.68rem; font-weight: ${isCurrent ? '800' : '600'}; color: ${isCurrent ? '#0077B6' : (isDone ? '#0F172A' : '#94A3B8')}; line-height: 1.2;">
+                        <span style="font-size: 0.68rem; font-weight: ${isCurrent ? '800' : '600'}; color: ${isCurrent ? '#C26136' : (isDone ? '#0F172A' : '#94A3B8')}; line-height: 1.2;">
                           ${st}
                         </span>
                       </div>
@@ -11591,11 +11452,11 @@
                   <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed #CBD5E1; font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.35rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
                       <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:4px;"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Logistics Partner: <strong style="color: #0F172A;">${order.courier || 'LORA Factory Direct Express'}</strong></span>
-                      ${order.awb ? `<span>AWB / Docket: <strong style="font-family: monospace; color: #0284C7; background: #E0F2FE; padding: 0.15rem 0.45rem; border-radius: 4px;">${order.awb}</strong></span>` : ''}
+                      ${order.awb ? `<span>AWB / Docket: <strong style="font-family: inherit; font-weight: 700; color: #C26136; background: #FDF2E9; padding: 0.15rem 0.45rem; border-radius: 4px;">${order.awb}</strong></span>` : ''}
                     </div>
                     ${order.dispatchDate ? `<div style="color: #475569;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:4px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Dispatched on: <strong>${new Date(order.dispatchDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</strong></div>` : ''}
                     ${order.expectedDelivery ? `<div style="color: #059669; font-weight: 700;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:4px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Expected Delivery: <strong>${new Date(order.expectedDelivery).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</strong></div>` : ''}
-                    ${order.dispatchNotes ? `<div style="background: #F8FAFC; border-left: 3px solid #00B4D8; padding: 0.4rem 0.65rem; border-radius: 0 4px 4px 0; color: #475569; font-size: 0.74rem;"><em>"${order.dispatchNotes}"</em></div>` : ''}
+                    ${order.dispatchNotes ? `<div style="background: #FAF7F2; border-left: 3px solid #C26136; padding: 0.4rem 0.65rem; border-radius: 0 4px 4px 0; color: #475569; font-size: 0.74rem;"><em>"${order.dispatchNotes}"</em></div>` : ''}
                   </div>
                 ` : ''}
               </div>

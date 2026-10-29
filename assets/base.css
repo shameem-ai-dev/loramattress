@@ -7,56 +7,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Official Brand Colors — Standard Luxury Shopping Hierarchy */
-  --brand-cyan: #0284C7;
-  --brand-cyan-light: #38BDF8;
-  --brand-cyan-deep: #0369A1;
-  --brand-cyan-glow: rgba(2, 132, 199, 0.22);
-  --brand-cyan-soft: rgba(2, 132, 199, 0.08);
-  --brand-royal: #1D4ED8;
-  --brand-navy-dark: #0A192F;
-  --brand-midnight: #0A0F1D;
-  --brand-obsidian: #0D1527;
-  --brand-card-dark: #111C33;
-  --brand-card-border: rgba(255, 255, 255, 0.09);
-  --brand-gold: #D4AF37;
-  --brand-gold-soft: rgba(212, 175, 55, 0.12);
+  /* Official Brand Colors — Fresh Warm Luxury Sleep Sanctuary */
+  --brand-cyan: #C26136;              /* Warm Terracotta Signature */
+  --brand-cyan-light: #D97746;        /* Warm Sunset Peach / Amber */
+  --brand-cyan-deep: #9E461E;         /* Deep Roasted Terracotta */
+  --brand-cyan-glow: rgba(194, 97, 54, 0.22);
+  --brand-cyan-soft: rgba(194, 97, 54, 0.08);
+  --brand-royal: #8A3D18;             /* Rich Warm Auburn */
+  --brand-navy-dark: #2E2520;         /* Deep Warm Espresso Charcoal */
+  --brand-midnight: #1C1613;          /* Warm Midnight Espresso */
+  --brand-obsidian: #241D18;          /* Warm Roasted Cocoa */
+  --brand-card-dark: #FFFFFF;         /* Fresh Pure White Cards */
+  --brand-card-border: #E8DFD5;        /* Gentle Warm Cashmere Border */
+  --brand-gold: #D4AF37;              /* 24K Champagne Gold */
+  --brand-gold-soft: rgba(212, 175, 55, 0.14);
   
-  /* Brand Luxury Surfaces */
-  --bg-primary: #0A0F1D;
-  --bg-secondary: #0D1527;
-  --bg-tertiary: #111C33;
-  --bg-surface: #16233F;
-  --bg-card: rgba(17, 28, 51, 0.88);
-  --bg-glass-light: rgba(17, 28, 51, 0.72);
-  --bg-glass-dark: rgba(10, 15, 29, 0.92);
+  /* Brand Luxury Surfaces — Fresh Warm Sanctuary Canvas */
+  --bg-primary: #FAF7F2;              /* Warm Ivory Linen Canvas */
+  --bg-secondary: #F3EDE4;            /* Soft Cream / Oat Milk */
+  --bg-tertiary: #EAE2D6;             /* Warm Cashmere Linen */
+  --bg-surface: #FFFFFF;              /* Crisp White Surface */
+  --bg-card: #FFFFFF;                 /* Crisp White Cards */
+  --bg-glass-light: rgba(255, 255, 255, 0.94);
+  --bg-glass-dark: rgba(250, 247, 242, 0.96);
 
-  /* Semantic Typography Colors */
-  --text-primary: #FFFFFF;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-subtle: #64748B;
-  --text-inverse: #0A0F1D;
-  --text-inverse-muted: #64748B;
+  /* Semantic Typography Colors — Deep Warm Espresso on Warm Linen */
+  --text-primary: #1C1917;            /* Deep Warm Espresso / Highest Contrast */
+  --text-secondary: #44403C;          /* Warm Charcoal / Highly Legible */
+  --text-muted: #78716C;              /* Warm Stone Taupe */
+  --text-subtle: #A8A29E;             /* Soft Warm Sand */
+  --text-inverse: #FFFFFF;
+  --text-inverse-muted: #CBD5E1;
 
   /* Borders & Dividers */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(2, 132, 199, 0.25);
-  --border-strong: rgba(2, 132, 199, 0.45);
-  --border-glow: rgba(2, 132, 199, 0.35);
+  --border-subtle: #E8DFD5;
+  --border-medium: rgba(194, 97, 54, 0.25);
+  --border-strong: rgba(194, 97, 54, 0.45);
+  --border-glow: rgba(217, 119, 70, 0.25);
 
   /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #1D4ED8 100%);
-  --gradient-brand-cta: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-  --gradient-cyan-glow: radial-gradient(circle, rgba(2, 132, 199, 0.16) 0%, rgba(10, 15, 29, 0) 70%);
-  --gradient-dark-card: linear-gradient(180deg, #15223D 0%, #0D1527 100%);
-  --gradient-light-card: linear-gradient(180deg, #15223D 0%, #0A0F1D 100%);
-  --gradient-heading-cyan: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 40%, #7DD3FC 85%, #0284C7 100%);
-  --gradient-pill-active: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+  --gradient-brand: linear-gradient(135deg, #D97746 0%, #C26136 50%, #9E461E 100%);
+  --gradient-brand-cta: linear-gradient(135deg, #D97746 0%, #C26136 100%);
+  --gradient-cyan-glow: radial-gradient(circle, rgba(217, 119, 70, 0.15) 0%, rgba(250, 247, 242, 0) 70%);
+  --gradient-dark-card: linear-gradient(180deg, #FFFFFF 0%, #FAF7F2 100%);
+  --gradient-light-card: linear-gradient(180deg, #FFFFFF 0%, #F5EFEB 100%);
+  --gradient-heading-cyan: linear-gradient(135deg, #1C1917 0%, #44403C 45%, #C26136 100%);
+  --gradient-pill-active: linear-gradient(135deg, #D97746 0%, #C26136 100%);
 
   /* Typography */
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Spacing & Layout */
   --page-max-width: 1360px;
@@ -76,13 +76,13 @@
   --duration-normal: 350ms;
   --duration-slow: 600ms;
 
-  /* Shadows - Refined Luxury Elevation */
-  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-card: 0 12px 35px rgba(0, 0, 0, 0.45), 0 0 1px rgba(255, 255, 255, 0.08);
-  --shadow-card-luxury: 0 20px 45px rgba(0, 0, 0, 0.55), 0 1px 1px rgba(255, 255, 255, 0.1);
-  --shadow-float: 0 20px 45px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(2, 132, 199, 0.12);
-  --shadow-glow: 0 4px 20px rgba(2, 132, 199, 0.2);
-  --shadow-btn-primary: 0 4px 16px rgba(2, 132, 199, 0.32);
+  /* Shadows - Refined Warm Luxury Elevation */
+  --shadow-subtle: 0 4px 20px rgba(120, 80, 50, 0.06);
+  --shadow-card: 0 12px 35px -8px rgba(90, 60, 30, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card-luxury: 0 20px 45px -10px rgba(90, 60, 30, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-float: 0 20px 45px -10px rgba(90, 60, 30, 0.14), 0 4px 16px rgba(194, 97, 54, 0.12);
+  --shadow-glow: 0 4px 20px rgba(194, 97, 54, 0.22);
+  --shadow-btn-primary: 0 8px 24px -4px rgba(194, 97, 54, 0.4);
 }
 
 /* ==========================================================================
@@ -2379,9 +2379,9 @@ button, input, select {
    ========================================================================== */
 .inner-pdp-suite {
   display: none;
-  background: radial-gradient(circle at 50% 0%, #0C1527 0%, #060913 80%);
-  border-top: 2px solid var(--brand-cyan);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.15);
+  background: var(--lp-warm-secondary, #F3EDE4);
+  border-top: 1px solid #E8DFD5;
+  border-bottom: 1px solid #E8DFD5;
   padding: 3.5rem 0 6rem;
   position: relative;
   animation: innerPdpSlideIn 350ms cubic-bezier(0.16, 1, 0.3, 1);

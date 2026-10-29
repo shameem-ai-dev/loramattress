@@ -20,9 +20,9 @@
   bottom: 92px;
   right: 0;
   width: 275px;
-  background: rgba(11, 19, 43, 0.96);
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(2, 132, 199, 0.28);
+  background: rgba(28, 22, 19, 0.96);
+  border: 1px solid rgba(217, 119, 70, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 25px rgba(194, 97, 54, 0.28);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 18px;
@@ -37,8 +37,8 @@
 }
 .lumi-greeting-bubble:hover {
   transform: translateY(-3px) scale(1.02);
-  border-color: #38BDF8;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 35px rgba(56, 189, 248, 0.4);
+  border-color: #D97746;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55), 0 0 35px rgba(217, 119, 70, 0.4);
 }
 .lumi-greeting-bubble::after {
   content: '';
@@ -47,9 +47,9 @@
   right: 32px;
   width: 12px;
   height: 12px;
-  background: #0B132B;
-  border-right: 1px solid rgba(0, 180, 216, 0.4);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.4);
+  background: #1C1613;
+  border-right: 1px solid rgba(194, 97, 54, 0.4);
+  border-bottom: 1px solid rgba(194, 97, 54, 0.4);
   transform: rotate(45deg);
 }
 .lumi-greeting-text {

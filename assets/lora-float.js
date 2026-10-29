@@ -165,7 +165,7 @@
     for (var i = 0; i < n; i++) {
       var r = Wm * .6 + ((t * 14 + i * gap) % span);
       var a = (1 - (r - Wm * .6) / span) * .16;
-      ctx.strokeStyle = 'rgba(125,211,252,' + a.toFixed(3) + ')';
+      ctx.strokeStyle = 'rgba(230,160,90,' + a.toFixed(3) + ')';
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.stroke();
@@ -175,9 +175,9 @@
     for (var k = 0; k < lines; k++) {
       var base = ch * (.7 + k * .055);
       var g = ctx.createLinearGradient(0, 0, cw, 0);
-      g.addColorStop(0, 'rgba(56,189,248,0)');
-      g.addColorStop(.5, 'rgba(125,211,252,' + (.12 - k * .015).toFixed(3) + ')');
-      g.addColorStop(1, 'rgba(56,189,248,0)');
+      g.addColorStop(0, 'rgba(230,140,80,0)');
+      g.addColorStop(.5, 'rgba(240,180,110,' + (.12 - k * .015).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(230,140,80,0)');
       ctx.strokeStyle = g;
       ctx.beginPath();
       for (var x = 0; x <= cw; x += 16) {

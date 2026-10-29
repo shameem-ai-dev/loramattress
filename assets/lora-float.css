@@ -29,7 +29,7 @@
   --sy: calc(57% - var(--m) * 3% + var(--out) * -6%);
   position: relative;
   height: 280vh;
-  background: #060B1A;
+  background: linear-gradient(180deg, #1C1512 0%, #261D18 55%, #FAF7F2 100%);
   color: #fff;
   isolation: isolate;
 }
@@ -75,8 +75,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(6, 11, 26, .88) 0%, rgba(6, 11, 26, .55) 34%, rgba(6, 11, 26, 0) 62%),
-    linear-gradient(180deg, rgba(6, 11, 26, .55) 0%, rgba(6, 11, 26, 0) 22%, rgba(6, 11, 26, 0) 80%, rgba(6, 11, 26, .7) 100%);
+    linear-gradient(90deg, rgba(28, 21, 18, .92) 0%, rgba(28, 21, 18, .6) 35%, rgba(28, 21, 18, 0) 65%),
+    linear-gradient(180deg, rgba(28, 21, 18, .6) 0%, rgba(28, 21, 18, 0) 22%, rgba(28, 21, 18, 0) 75%, #FAF7F2 100%);
 }
 
 /* ---------- stage ---------- */
@@ -100,7 +100,7 @@
   width: calc(var(--W) * 1.9);
   height: calc(var(--W) * 1.4);
   transform: translate(-50%, -55%);
-  background: radial-gradient(closest-side, rgba(56, 189, 248, .22), rgba(29, 78, 216, .1) 55%, transparent 100%);
+  background: radial-gradient(closest-side, rgba(230, 140, 80, .32), rgba(212, 175, 55, .15) 55%, transparent 100%);
   /* no filter: blur here — it re-rasterized every frame while the stage scales */
   pointer-events: none;
 }
@@ -119,7 +119,7 @@
   left: 0;
   top: 0;
   transform: translate(-50%, -50%);
-  background: radial-gradient(closest-side, rgba(2, 6, 20, .75), rgba(2, 6, 20, .35) 55%, transparent);
+  background: radial-gradient(closest-side, rgba(20, 12, 8, .75), rgba(20, 12, 8, .35) 55%, transparent);
   animation: lfShadow 6s ease-in-out infinite;
 }
 .lf-ring {
@@ -129,8 +129,8 @@
   width: calc(var(--W) * 1.15);
   height: calc(var(--W) * .3);
   border-radius: 50%;
-  border: 1.5px solid rgba(125, 211, 252, .55);
-  box-shadow: 0 0 18px rgba(56, 189, 248, .25), inset 0 0 18px rgba(56, 189, 248, .12);
+  border: 1.5px solid rgba(230, 140, 80, .55);
+  box-shadow: 0 0 18px rgba(217, 119, 70, .28), inset 0 0 18px rgba(212, 175, 55, .15);
   transform: translate(-50%, -50%) scale(.45);
   opacity: 0;
   animation: lfRing 6s cubic-bezier(.2, .6, .3, 1) infinite;
@@ -362,18 +362,18 @@
   content: "";
   width: 34px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(125, 211, 252, 0), rgba(125, 211, 252, .9));
+  background: linear-gradient(90deg, rgba(230, 140, 80, 0), rgba(230, 140, 80, .9));
 }
 .lf-tag i {
   font-style: normal;
   font-size: .64rem;
   font-weight: 700;
   letter-spacing: .12em;
-  color: #7dd3fc;
+  color: #F97316;
 }
 .lf-tag .s { display: none; }
 .lf-tag.is-left { flex-direction: row-reverse; }
-.lf-tag.is-left::before { background: linear-gradient(90deg, rgba(125, 211, 252, .9), rgba(125, 211, 252, 0)); }
+.lf-tag.is-left::before { background: linear-gradient(90deg, rgba(230, 140, 80, .9), rgba(230, 140, 80, 0)); }
 
 /* act 2 — centred "inside" title */
 .lf-inside {
@@ -394,7 +394,7 @@
   font-weight: 600;
   letter-spacing: .3em;
   text-transform: uppercase;
-  color: #7dd3fc;
+  color: #F97316;
   margin-bottom: .6rem;
 }
 .lf-inside strong {
@@ -432,7 +432,7 @@
 }
 .lf-outro p em {
   font-style: normal;
-  background: linear-gradient(100deg, #ffffff 0%, #bae6fd 45%, #38bdf8 100%);
+  background: linear-gradient(100deg, #ffffff 0%, #fed7aa 45%, #f97316 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -477,7 +477,7 @@
   height: 6px;
   margin-left: -1.5px;
   border-radius: 2px;
-  background: #7dd3fc;
+  background: #f97316;
   animation: lfWheel 1.8s ease-in-out infinite;
 }
 @keyframes lfWheel { 0% { transform: translateY(0); opacity: 1; } 80% { transform: translateY(8px); opacity: 0; } 100% { opacity: 0; } }
@@ -512,12 +512,12 @@
   font-size: .76rem;
   font-weight: 500;
   letter-spacing: .14em;
-  color: rgba(205, 220, 245, .85);
+  color: rgba(254, 215, 170, .9);
   margin-bottom: 1.2rem;
   padding: .45rem .9rem;
-  border: 1px solid rgba(125, 211, 252, .25);
+  border: 1px solid rgba(230, 140, 80, .35);
   border-radius: 999px;
-  background: rgba(14, 30, 70, .35);
+  background: rgba(45, 25, 15, .45);
   backdrop-filter: blur(6px);
 }
 .lf-eyebrow::before {
@@ -525,8 +525,8 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #38bdf8;
-  box-shadow: 0 0 10px #38bdf8;
+  background: #f97316;
+  box-shadow: 0 0 10px #f97316;
 }
 .lf .lf-title {
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
@@ -537,11 +537,11 @@
   letter-spacing: -.035em;
   margin: 0 0 1.2rem;
   color: #fff;
-  text-shadow: 0 10px 40px rgba(2, 6, 20, .5);
+  text-shadow: 0 10px 40px rgba(20, 10, 5, .6);
 }
 .lf-title em {
   font-style: normal;
-  background: linear-gradient(100deg, #ffffff 0%, #bae6fd 45%, #38bdf8 100%);
+  background: linear-gradient(100deg, #ffffff 0%, #fed7aa 45%, #f97316 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -550,7 +550,7 @@
   font-family: 'Inter', sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.15rem);
   line-height: 1.6;
-  color: rgba(222, 232, 250, .82);
+  color: rgba(254, 215, 170, .85);
   margin: 0 0 2rem;
   max-width: 30em;
 }
@@ -569,13 +569,13 @@
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: .98rem;
-  color: #07142e;
+  color: #FFFFFF;
   text-decoration: none;
-  background: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 50%, #38bdf8 100%);
-  box-shadow: 0 12px 36px rgba(56, 189, 248, .35), inset 0 1px 0 rgba(255, 255, 255, .6);
+  background: linear-gradient(135deg, #FDBA74 0%, #F97316 50%, #EA580C 100%);
+  box-shadow: 0 12px 36px rgba(234, 88, 12, .45), inset 0 1px 0 rgba(255, 255, 255, .5);
   transition: transform .35s cubic-bezier(.16, 1, .3, 1), box-shadow .35s ease;
 }
-.lf-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 48px rgba(56, 189, 248, .5), inset 0 1px 0 rgba(255, 255, 255, .6); }
+.lf-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 48px rgba(234, 88, 12, .65), inset 0 1px 0 rgba(255, 255, 255, .5); }
 .lf-link {
   display: inline-flex;
   align-items: center;
