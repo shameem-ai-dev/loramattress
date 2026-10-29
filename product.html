@@ -1305,9 +1305,10 @@
     @media (max-width: 768px) {
       .pdp-header-nav {
         padding: 0.45rem 0 !important;
-        background: rgba(6, 9, 19, 0.98) !important;
+        background: rgba(255, 255, 255, 0.96) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid #E8DFD5 !important;
       }
       .pdp-nav-container {
         padding: 0 0.85rem !important;
@@ -1701,6 +1702,7 @@
       background: rgba(10, 15, 29, 0.95);
     }
   </style>
+  <link rel="stylesheet" href="assets/lora-polish.css?v=2">
 </head>
 <body class="pdp-page">
 
@@ -1844,12 +1846,26 @@
             </button>
           </div>
 
-          <!-- Main Image Stage (100% Zero-Crop, Proportional Fit) -->
-          <div class="pdp-main-stage" id="pdp-main-stage" onclick="window.openPdpLightbox()" role="button" tabindex="0" title="Tap to expand full-screen view" aria-label="Main mattress image. Tap to view full-screen">
+          <!-- Main Image Stage (Movable gallery with arrows, swipe, counter & zero-crop fit) -->
+          <div class="pdp-main-stage" id="pdp-main-stage" role="region" tabindex="0" title="Slide or use arrows to view photos. Tap to expand." aria-label="Product photo gallery">
+            <button type="button" class="pdp-stage-arrow pdp-stage-prev" id="pdp-stage-prev-btn" aria-label="Previous photo" title="Previous photo">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
             <img src="assets/comfort-plush.jpg" alt="LORA Mattress" class="pdp-main-img" id="pdp-active-img" loading="eager">
-            <div class="pdp-stage-expand-cue" aria-hidden="true">
+            <button type="button" class="pdp-stage-arrow pdp-stage-next" id="pdp-stage-next-btn" aria-label="Next photo" title="Next photo">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <span class="pdp-stage-counter" id="pdp-stage-counter" aria-label="Photo 1 of 5">1 / 5</span>
+            <div class="pdp-stage-expand-cue" id="pdp-stage-expand-cue" aria-hidden="true" title="Tap to expand full-screen">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
               <span>Tap to expand</span>
+            </div>
+            <div class="pdp-stage-dots" id="pdp-stage-dots" aria-hidden="true">
+              <span class="pdp-dot active" data-index="0" title="Photo 1"></span>
+              <span class="pdp-dot" data-index="1" title="Photo 2"></span>
+              <span class="pdp-dot" data-index="2" title="Photo 3"></span>
+              <span class="pdp-dot" data-index="3" title="Photo 4"></span>
+              <span class="pdp-dot" data-index="4" title="Photo 5: Craftsmanship"></span>
             </div>
           </div>
 
@@ -2132,13 +2148,13 @@
                 <span class="pdp-firmness-val-badge" id="pdp-firmness-val">SOFT ●●○○○ FIRM (2/5)</span>
               </div>
               <div class="pdp-firmness-meter-wrapper">
-                <div class="meter-labels" style="display:flex; justify-content:space-between; font-size:0.75rem; color:#94A3B8; margin-bottom:0.45rem;">
+                <div class="meter-labels" style="display:flex; justify-content:space-between; font-size:0.75rem; color:#57534E; margin-bottom:0.45rem;">
                   <span>Plush Soft (1.0)</span>
-                  <span style="color: #38BDF8; font-weight: 700;" id="pdp-feel-label">Gentle Cloud Cushioning</span>
+                  <span style="color: var(--lp-terracotta); font-weight: 700;" id="pdp-feel-label">Gentle Cloud Cushioning</span>
                   <span>Orthopedic Firm (5.0)</span>
                 </div>
-                <div class="meter-track-graphic" style="margin: 0; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden;">
-                  <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="pdp-meter-fill" style="width: 40%; height: 100%; background: linear-gradient(90deg, #38BDF8, #0284C7); border-radius: 9999px;"></div></div>
+                <div class="meter-track-graphic" style="margin: 0; height: 8px; background: #E8DFD5; border-radius: 9999px; overflow: hidden;">
+                  <div class="meter-bar-fill" style="height: 100%;"><div class="meter-bar-progress" id="pdp-meter-fill" style="width: 40%; height: 100%; background: linear-gradient(90deg, #D97746, #C26136); border-radius: 9999px;"></div></div>
                 </div>
                 <p class="pdp-firmness-posture-text" id="pdp-posture-rec">
                   <strong>Recommended for:</strong> Side sleepers and sleepers seeking zero shoulder pinch and cloud-like joint cradling.
@@ -3235,10 +3251,14 @@
         }
       }
 
-      // Reset active thumbnail to first studio view
-      document.querySelectorAll('.pdp-thumb-btn').forEach((b, idx) => {
-        b.classList.toggle('active', idx === 0);
-      });
+      // Reset active slide and gallery view to first studio view
+      if (typeof window.goToPdpSlide === 'function') {
+        window.goToPdpSlide(0);
+      } else {
+        document.querySelectorAll('.pdp-thumb-btn').forEach((b, idx) => {
+          b.classList.toggle('active', idx === 0);
+        });
+      }
       if (document.querySelector('#pdp-lightbox')?.classList.contains('is-open')) {
         renderLightboxView();
       }
@@ -3530,19 +3550,58 @@
         syncMainGalleryThumb(currentLightboxIndex);
       };
 
-      function syncMainGalleryThumb(index) {
-        const thumbs = document.querySelectorAll('.pdp-thumb-strip .pdp-thumb-btn');
+      let currentPdpSlideIndex = 0;
+
+      window.goToPdpSlide = function (index) {
+        const thumbs = Array.from(document.querySelectorAll('.pdp-thumb-strip .pdp-thumb-btn'));
+        const total = thumbs.length || 5;
+        currentPdpSlideIndex = ((index % total) + total) % total;
+        currentLightboxIndex = currentPdpSlideIndex;
+
         thumbs.forEach((t, i) => {
-          const isActive = (i === index);
+          const isActive = (i === currentPdpSlideIndex);
           t.classList.toggle('active', isActive);
           t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          if (isActive) {
-            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            const imgSrc = t.getAttribute('data-img');
-            const mainImg = document.querySelector('#pdp-active-img');
-            if (mainImg && imgSrc) mainImg.src = imgSrc;
-          }
         });
+
+        const activeThumb = thumbs[currentPdpSlideIndex];
+        const mainImg = document.querySelector('#pdp-active-img');
+        if (activeThumb && mainImg) {
+          activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          const imgSrc = activeThumb.getAttribute('data-img');
+          if (imgSrc && mainImg.getAttribute('src') !== imgSrc) {
+            mainImg.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+            mainImg.style.opacity = '0.35';
+            mainImg.style.transform = 'scale(0.985)';
+            mainImg.src = imgSrc;
+            setTimeout(() => {
+              mainImg.style.opacity = '1';
+              mainImg.style.transform = 'scale(1)';
+            }, 120);
+          }
+        }
+
+        const counterEl = document.querySelector('#pdp-stage-counter');
+        if (counterEl) {
+          counterEl.textContent = `${currentPdpSlideIndex + 1} / ${total}`;
+          counterEl.setAttribute('aria-label', `Photo ${currentPdpSlideIndex + 1} of ${total}`);
+        }
+
+        document.querySelectorAll('#pdp-stage-dots .pdp-dot').forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentPdpSlideIndex);
+        });
+      };
+
+      window.nextPdpSlide = function () {
+        window.goToPdpSlide(currentPdpSlideIndex + 1);
+      };
+
+      window.prevPdpSlide = function () {
+        window.goToPdpSlide(currentPdpSlideIndex - 1);
+      };
+
+      function syncMainGalleryThumb(index) {
+        window.goToPdpSlide(index);
       }
 
       function renderLightboxView() {
@@ -3622,24 +3681,130 @@
       // Main Page Thumbnail Click Handlers
       document.querySelectorAll('.pdp-thumb-strip .pdp-thumb-btn').forEach((btn, idx) => {
         btn.setAttribute('data-index', idx);
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.pdp-thumb-strip .pdp-thumb-btn').forEach(b => {
-            b.classList.remove('active');
-            b.setAttribute('aria-selected', 'false');
-          });
-          this.classList.add('active');
-          this.setAttribute('aria-selected', 'true');
-          const imgSrc = this.getAttribute('data-img');
-          const mainImg = document.querySelector('#pdp-active-img');
-          if (mainImg && imgSrc) {
-            mainImg.style.opacity = '0.6';
-            mainImg.src = imgSrc;
-            setTimeout(() => { mainImg.style.opacity = '1'; }, 100);
-          }
-          currentLightboxIndex = idx;
-          this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.goToPdpSlide(idx);
         });
       });
+
+      // Stage Arrow Navigation
+      const stagePrevBtn = document.querySelector('#pdp-stage-prev-btn');
+      if (stagePrevBtn) {
+        stagePrevBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.prevPdpSlide();
+        });
+      }
+
+      const stageNextBtn = document.querySelector('#pdp-stage-next-btn');
+      if (stageNextBtn) {
+        stageNextBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.nextPdpSlide();
+        });
+      }
+
+      // Stage Dots Navigation
+      document.querySelectorAll('#pdp-stage-dots .pdp-dot').forEach((dot, idx) => {
+        dot.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.goToPdpSlide(idx);
+        });
+      });
+
+      // PDP Main Stage: Touch Swipe, Mouse Drag, Keyboard & Tap-to-Expand
+      const pdpStage = document.querySelector('#pdp-main-stage');
+      if (pdpStage) {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let didSwipe = false;
+
+        pdpStage.addEventListener('touchstart', function (e) {
+          const touch = e.touches[0];
+          touchStartX = touch.clientX;
+          touchStartY = touch.clientY;
+          didSwipe = false;
+        }, { passive: true });
+
+        pdpStage.addEventListener('touchmove', function (e) {
+          const touch = e.touches[0];
+          const diffX = touch.clientX - touchStartX;
+          const diffY = touch.clientY - touchStartY;
+          if (Math.abs(diffX) > 25 && Math.abs(diffX) > Math.abs(diffY)) {
+            didSwipe = true;
+          }
+        }, { passive: true });
+
+        pdpStage.addEventListener('touchend', function (e) {
+          const touch = e.changedTouches[0];
+          const diffX = touch.clientX - touchStartX;
+          const diffY = touch.clientY - touchStartY;
+          if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+            didSwipe = true;
+            if (diffX < 0) {
+              window.nextPdpSlide();
+            } else {
+              window.prevPdpSlide();
+            }
+          }
+        }, { passive: true });
+
+        // Mouse Drag Navigation for Desktop
+        let isMouseDown = false;
+        let mouseStartX = 0;
+        pdpStage.addEventListener('mousedown', function (e) {
+          if (e.target.closest('.pdp-stage-arrow, .pdp-stage-dots, .pdp-stage-counter')) return;
+          isMouseDown = true;
+          mouseStartX = e.clientX;
+          didSwipe = false;
+        });
+
+        window.addEventListener('mousemove', function (e) {
+          if (!isMouseDown) return;
+          if (Math.abs(e.clientX - mouseStartX) > 20) {
+            didSwipe = true;
+          }
+        });
+
+        window.addEventListener('mouseup', function (e) {
+          if (!isMouseDown) return;
+          isMouseDown = false;
+          const diffX = e.clientX - mouseStartX;
+          if (Math.abs(diffX) > 40) {
+            didSwipe = true;
+            if (diffX < 0) {
+              window.nextPdpSlide();
+            } else {
+              window.prevPdpSlide();
+            }
+          }
+        });
+
+        // Stage click: only open lightbox if user clicked without swiping or clicking arrows/dots
+        pdpStage.addEventListener('click', function (e) {
+          if (e.target.closest('.pdp-stage-arrow, .pdp-stage-dots')) return;
+          if (didSwipe) {
+            didSwipe = false;
+            return;
+          }
+          window.openPdpLightbox();
+        });
+
+        // Keyboard arrow navigation when stage has focus
+        pdpStage.addEventListener('keydown', function (e) {
+          if (document.querySelector('#pdp-lightbox')?.classList.contains('is-open')) return;
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            window.nextPdpSlide();
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            window.prevPdpSlide();
+          }
+        });
+      }
 
       // Bed Type, Dimension & Thickness Pill Click Handlers
       document.addEventListener('click', function (e) {

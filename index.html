@@ -1517,7 +1517,7 @@
         <!-- Customer Account / Login Button -->
         <button type="button" class="header-auth-btn" id="btn-header-auth" onclick="window.handleHeaderAuthClick(event)" aria-label="Customer Account">
           <span class="header-auth-avatar" id="header-auth-avatar" style="display: none;">U</span>
-          <svg id="header-auth-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg id="header-auth-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C26136" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span id="header-auth-label">Login</span>
         </button>
 
@@ -1890,24 +1890,38 @@
               <span class="badge-verified">FACTORY DIRECT LUXURY</span>
               <span class="badge-verified" style="background: rgba(194, 97, 54, 0.1); color: var(--lp-terracotta); border-color: rgba(194, 97, 54, 0.3);" id="inner-warr-badge">3 YEARS WARRANTY</span>
             </div>
-            <div class="inner-main-stage">
+            <div class="inner-main-stage" id="inner-main-stage" role="region" tabindex="0" title="Slide or use arrows to view photos." aria-label="Inner product photo gallery">
+              <button type="button" class="inner-stage-arrow inner-stage-prev" id="inner-stage-prev-btn" aria-label="Previous photo" title="Previous photo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
               <img loading="lazy" src="assets/comfort-plush.jpg" alt="LORA Mattress" class="inner-main-img" id="inner-active-img">
+              <button type="button" class="inner-stage-arrow inner-stage-next" id="inner-stage-next-btn" aria-label="Next photo" title="Next photo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <span class="inner-stage-counter" id="inner-stage-counter" aria-label="Photo 1 of 5">1 / 5</span>
+              <div class="inner-stage-dots" id="inner-stage-dots" aria-hidden="true">
+                <span class="inner-dot active" data-index="0" title="Photo 1"></span>
+                <span class="inner-dot" data-index="1" title="Photo 2"></span>
+                <span class="inner-dot" data-index="2" title="Photo 3"></span>
+                <span class="inner-dot" data-index="3" title="Photo 4"></span>
+                <span class="inner-dot" data-index="4" title="Photo 5: Craftsmanship"></span>
+              </div>
             </div>
 
-            <div class="inner-thumb-strip">
-              <button type="button" class="inner-thumb-btn active" data-img="assets/comfort-plush.jpg" id="inner-thumb-1">
+            <div class="inner-thumb-strip" id="inner-thumb-strip" role="tablist" aria-label="Product thumbnails">
+              <button type="button" class="inner-thumb-btn active" data-img="assets/comfort-plush.jpg" id="inner-thumb-1" data-index="0" role="tab" aria-selected="true" aria-label="Photo 1">
                 <img loading="lazy" src="assets/comfort-plush.jpg" alt="Studio perspective">
               </button>
-              <button type="button" class="inner-thumb-btn" data-img="assets/hero-stage-2-exploded.jpg" id="inner-thumb-2">
+              <button type="button" class="inner-thumb-btn" data-img="assets/hero-stage-2-exploded.jpg" id="inner-thumb-2" data-index="1" role="tab" aria-selected="false" aria-label="Photo 2">
                 <img loading="lazy" src="assets/hero-stage-2-exploded.jpg" alt="Layer anatomy">
               </button>
-              <button type="button" class="inner-thumb-btn" data-img="assets/hero-stage-3-spine.jpg" id="inner-thumb-3">
+              <button type="button" class="inner-thumb-btn" data-img="assets/hero-stage-3-spine.jpg" id="inner-thumb-3" data-index="2" role="tab" aria-selected="false" aria-label="Photo 3">
                 <img loading="lazy" src="assets/hero-stage-3-spine.jpg" alt="Spine contour">
               </button>
-              <button type="button" class="inner-thumb-btn" data-img="assets/lifestyle-editorial.jpg" id="inner-thumb-4">
+              <button type="button" class="inner-thumb-btn" data-img="assets/lifestyle-editorial.jpg" id="inner-thumb-4" data-index="3" role="tab" aria-selected="false" aria-label="Photo 4">
                 <img loading="lazy" src="assets/lifestyle-editorial.jpg" alt="Sanctuary suite">
               </button>
-              <button type="button" class="inner-thumb-btn" data-img="assets/lora-flat-luxury.jpg" id="inner-thumb-5">
+              <button type="button" class="inner-thumb-btn" data-img="assets/lora-flat-luxury.jpg" id="inner-thumb-5" data-index="4" role="tab" aria-selected="false" aria-label="Photo 5: Craftsmanship & detail">
                 <img loading="lazy" src="assets/lora-flat-luxury.jpg" alt="Craftsmanship & detail">
               </button>
             </div>
@@ -4712,15 +4726,15 @@
 
               <div style="display: flex; gap: 1.5rem; align-items: baseline; flex-wrap: wrap;">
                 <div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; color: #94A3B8; display: block;">Direct Factory Price</span>
-                  <span style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF;" id="dossier-model-price">₹29,999</span>
+                  <span style="font-size: 0.72rem; text-transform: uppercase; color: #78716C; display: block;">Direct Factory Price</span>
+                  <span style="font-size: 1.6rem; font-weight: 800; color: #1C1917;" id="dossier-model-price">₹29,999</span>
                 </div>
                 <div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; color: #94A3B8; display: block;">Factory Warranty</span>
-                  <span style="font-size: 0.95rem; font-weight: 700; color: #38BDF8;" id="dossier-model-warranty">15-Yr Full Direct Warranty</span>
+                  <span style="font-size: 0.72rem; text-transform: uppercase; color: #78716C; display: block;">Factory Warranty</span>
+                  <span style="font-size: 0.95rem; font-weight: 700; color: var(--lp-terracotta);" id="dossier-model-warranty">15-Yr Full Direct Warranty</span>
                 </div>
                 <div style="margin-left: auto;">
-                  <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); background: rgba(0, 180, 216, 0.12); color: var(--brand-cyan); border: 1px solid rgba(0, 180, 216, 0.3);" id="dossier-model-feel">
+                  <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); background: rgba(194, 97, 54, 0.1); color: var(--lp-terracotta); border: 1px solid rgba(194, 97, 54, 0.28);" id="dossier-model-feel">
                     Balanced Medium (6.0 / 10)
                   </span>
                 </div>
@@ -4759,13 +4773,13 @@
           <!-- Runner-up Alternative -->
           <div class="dossier-runnerup-box">
             <div>
-              <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-cyan); font-weight: 700;">
+              <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--lp-terracotta); font-weight: 700;">
                 Secondary Alternative Recommendation
               </span>
-              <strong style="display: block; font-size: 1.05rem; color: #FFFFFF; margin-top: 0.2rem;" id="dossier-runnerup-name">
+              <strong style="display: block; font-size: 1.05rem; color: #1C1917; margin-top: 0.2rem;" id="dossier-runnerup-name">
                 02. LORA CLOUD ORTHO™ (94.2% Match)
               </strong>
-              <span style="font-size: 0.82rem; color: #94A3B8;" id="dossier-runnerup-desc">
+              <span style="font-size: 0.82rem; color: #57534E;" id="dossier-runnerup-desc">
                 Ideal if you prefer a dedicated non-spring solid orthopedic core.
               </span>
             </div>
@@ -4782,10 +4796,10 @@
             <button type="button" class="btn btn-secondary" id="dossier-btn-inspect" style="padding: 0.85rem 1.5rem; font-size: 0.92rem;">
               Inspect Full 3D & Technical Specs ↓
             </button>
-            <a href="https://wa.me/919072616423?text=Hello%20LORA%20Team,%20Sleep%20Match%20AI%20recommended%20a%20mattress%20for%20me.%20I'd%20like%20to%20consult%20with%20a%20sleep%20specialist." target="_blank" class="btn btn-secondary" id="dossier-btn-wa" style="padding: 0.85rem 1.35rem; font-size: 0.92rem; color: #25D366; border-color: rgba(37, 211, 102, 0.4);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366" style="vertical-align:-3px; margin-right:6px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg> Consult on WhatsApp
+            <a href="https://wa.me/919072616423?text=Hello%20LORA%20Team,%20Sleep%20Match%20AI%20recommended%20a%20mattress%20for%20me.%20I'd%20like%20to%20consult%20with%20a%20sleep%20specialist." target="_blank" class="btn btn-secondary" id="dossier-btn-wa" style="padding: 0.85rem 1.35rem; font-size: 0.92rem; color: #16A34A; border-color: rgba(22, 163, 74, 0.4);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#16A34A" style="vertical-align:-3px; margin-right:6px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg> Consult on WhatsApp
             </a>
-            <button type="button" class="btn btn-outline-white" id="quiz-restart-btn" style="padding: 0.85rem 1.25rem; font-size: 0.88rem; margin-left: auto;">
+            <button type="button" class="btn btn-secondary" id="quiz-restart-btn" style="padding: 0.85rem 1.25rem; font-size: 0.88rem; margin-left: auto;">
               ↺ Retake Diagnostic
             </button>
           </div>
@@ -5758,18 +5772,18 @@
             </select>
 
             <!-- Razorpay Trust & Payment Options Badge -->
-            <div id="razorpay-method-badges" style="margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; padding: 0.55rem 0.8rem; background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.22); border-radius: 8px;">
+            <div id="razorpay-method-badges" style="margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; padding: 0.55rem 0.8rem; background: #FAF7F2; border: 1px solid #E8DFD5; border-radius: 8px;">
               <div style="display: flex; align-items: center; gap: 0.4rem;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="#00B4D8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-                <span style="font-size: 0.74rem; font-weight: 700; color: #38BDF8;">Razorpay 256-Bit SSL Secured</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#059669"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                <span style="font-size: 0.74rem; font-weight: 700; color: #059669;">Razorpay 256-Bit SSL Secured</span>
               </div>
               <div style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
-                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.08); color: #F1F5F9; padding: 0.15rem 0.4rem; border-radius: 4px;">UPI</span>
-                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.08); color: #F1F5F9; padding: 0.15rem 0.4rem; border-radius: 4px;">GPay</span>
-                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.08); color: #F1F5F9; padding: 0.15rem 0.4rem; border-radius: 4px;">PhonePe</span>
-                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.08); color: #F1F5F9; padding: 0.15rem 0.4rem; border-radius: 4px;">Cards</span>
-                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.08); color: #F1F5F9; padding: 0.15rem 0.4rem; border-radius: 4px;">NetBanking</span>
-                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(16, 185, 129, 0.15); color: #34D399; padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.3);">Instant Pay</span>
+                <span style="font-size: 0.65rem; font-weight: 800; background: #FFFFFF; color: #44403C; border: 1px solid #E8DFD5; padding: 0.15rem 0.4rem; border-radius: 4px;">UPI</span>
+                <span style="font-size: 0.65rem; font-weight: 800; background: #FFFFFF; color: #44403C; border: 1px solid #E8DFD5; padding: 0.15rem 0.4rem; border-radius: 4px;">GPay</span>
+                <span style="font-size: 0.65rem; font-weight: 800; background: #FFFFFF; color: #44403C; border: 1px solid #E8DFD5; padding: 0.15rem 0.4rem; border-radius: 4px;">PhonePe</span>
+                <span style="font-size: 0.65rem; font-weight: 800; background: #FFFFFF; color: #44403C; border: 1px solid #E8DFD5; padding: 0.15rem 0.4rem; border-radius: 4px;">Cards</span>
+                <span style="font-size: 0.65rem; font-weight: 800; background: #FFFFFF; color: #44403C; border: 1px solid #E8DFD5; padding: 0.15rem 0.4rem; border-radius: 4px;">NetBanking</span>
+                <span style="font-size: 0.65rem; font-weight: 800; background: rgba(16, 185, 129, 0.12); color: #059669; padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.3);">Instant Pay</span>
               </div>
             </div>
             <div id="cod-disabled-warning" style="display: none; margin-top: 0.45rem; font-size: 0.76rem; color: #DC2626; background: #FEF2F2; border: 1px solid #FECACA; padding: 0.45rem 0.75rem; border-radius: 4px; line-height: 1.4;">
@@ -5780,7 +5794,7 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary" id="btn-submit-order" style="width: 100%; padding: 0.85rem 1rem; font-size: 0.98rem; font-weight: 800; margin-top: 0.65rem; box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);">
+          <button type="submit" class="btn btn-primary" id="btn-submit-order" style="width: 100%; padding: 0.85rem 1rem; font-size: 0.98rem; font-weight: 800; margin-top: 0.65rem;">
             Proceed to Secure Payment <svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ps-amber-grad)" style="vertical-align:-2px; margin-left:3px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </button>
         </form>
@@ -5789,52 +5803,52 @@
       <!-- Confirmation Screen (Hidden until submitted) -->
       <div id="checkout-confirmation-view" style="display: none; text-align: center; padding: 1.5rem 0;">
         <div style="margin-bottom: 0.5rem;"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="url(#ps-gold-grad)" stroke-width="1.6" style="filter: drop-shadow(0 0 16px rgba(245,158,11,0.5));"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-        <h3 style="font-size: 1.35rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.35rem;" id="conf-title">Order Placed Successfully!</h3>
-        <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.5rem;" id="conf-sub">
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: #1C1917; margin-bottom: 0.35rem;" id="conf-title">Order Placed Successfully!</h3>
+        <p style="font-size: 0.85rem; color: #57534E; margin-bottom: 1.5rem;" id="conf-sub">
           Your order has been transmitted directly to our Store Keeper & Dispatch bay.
         </p>
 
 
 
         <!-- Razorpay Transaction Reference (When prepaid) -->
-        <div id="conf-razorpay-badge" style="display: none; background: rgba(0, 180, 216, 0.09); border: 1px solid rgba(0, 180, 216, 0.3); border-radius: 6px; padding: 0.65rem 0.85rem; margin-bottom: 1rem; text-align: left;">
+        <div id="conf-razorpay-badge" style="display: none; background: #FAF7F2; border: 1.5px solid #E8DFD5; border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 1rem; text-align: left;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="color: #38BDF8; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;">Payment Mode:</span>
-            <strong style="color: #6EE7B7; font-size: 0.82rem;">Razorpay PG (Prepaid Verified)</strong>
+            <span style="color: var(--lp-terracotta); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;">Payment Mode:</span>
+            <strong style="color: #059669; font-size: 0.82rem;">Razorpay PG (Prepaid Verified)</strong>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.35rem;">
-            <span style="color: #94A3B8; font-size: 0.75rem;">Razorpay Payment ID:</span>
-            <strong style="font-family: monospace; color: #38BDF8; font-size: 0.92rem;" id="conf-payment-id">pay_xxxxxx</strong>
+            <span style="color: #78716C; font-size: 0.75rem;">Razorpay Payment ID:</span>
+            <strong style="font-family: monospace; color: var(--lp-terracotta); font-size: 0.92rem;" id="conf-payment-id">pay_xxxxxx</strong>
           </div>
         </div>
 
-        <div style="background: rgba(16, 25, 46, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; margin-bottom: 1.5rem; font-size: 0.85rem;">
+        <div style="background: #FFFFFF; border: 1.5px solid #E8DFD5; border-radius: var(--radius-md); padding: 1.25rem; text-align: left; margin-bottom: 1.5rem; font-size: 0.85rem; box-shadow: 0 4px 16px rgba(60, 40, 20, 0.05);">
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-            <span style="color: #94A3B8;">Order Reference:</span>
-            <strong style="font-family: monospace; color: #38BDF8; font-size: 1.05rem;" id="conf-order-id">LORA-XXXX</strong>
+            <span style="color: #78716C;">Order Reference:</span>
+            <strong style="font-family: monospace; color: var(--lp-terracotta); font-size: 1.05rem;" id="conf-order-id">LORA-XXXX</strong>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-            <span style="color: #94A3B8;">Status:</span>
-            <strong style="color: #38BDF8;" id="conf-order-status-tag">Order Received</strong>
+            <span style="color: #78716C;">Status:</span>
+            <strong style="color: var(--lp-terracotta);" id="conf-order-status-tag">Order Received</strong>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-            <span style="color: #94A3B8;">Estimated Delivery:</span>
-            <strong style="color: #34D399;" id="conf-est-delivery">2 - 4 Business Days (Insured)</strong>
+            <span style="color: #78716C;">Estimated Delivery:</span>
+            <strong style="color: #059669;" id="conf-est-delivery">2 - 4 Business Days (Insured)</strong>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-            <span style="color: #94A3B8;">Complimentary Gift:</span>
-            <strong style="color: #34D399; display:inline-flex; align-items:center; gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zm0 0h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> 5-Pc Luxury Sleep Kit Included (₹0)</strong>
+            <span style="color: #78716C;">Complimentary Gift:</span>
+            <strong style="color: #059669; display:inline-flex; align-items:center; gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zm0 0h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> 5-Pc Luxury Sleep Kit Included (₹0)</strong>
           </div>
           <div style="display: flex; justify-content: space-between;">
-            <span style="color: #94A3B8;">Notification:</span>
-            <strong style="color: #25D366;" id="conf-store-alert">✓ Sent to Store Keeper</strong>
+            <span style="color: #78716C;">Notification:</span>
+            <strong style="color: #16A34A;" id="conf-store-alert">✓ Sent to Store Keeper</strong>
           </div>
         </div>
 
-        <div id="guest-account-prompt-box" style="margin-top: 1.25rem; background: rgba(0, 180, 216, 0.1); border: 1px dashed rgba(0, 180, 216, 0.35); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+        <div id="guest-account-prompt-box" style="margin-top: 1.25rem; background: #FAF7F2; border: 1.5px dashed #E8DFD5; border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
           <div style="margin-bottom: 0.25rem;"><svg width="22" height="22" viewBox="0 0 24 24" fill="url(#ps-gold-grad)"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg></div>
-          <strong style="color: #FFFFFF; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Track your order easily with a LORA Account</strong>
-          <p style="font-size: 0.8rem; color: #94A3B8; margin: 0 0 0.85rem 0;">
+          <strong style="color: #1C1917; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Track your order easily with a LORA Account</strong>
+          <p style="font-size: 0.8rem; color: #57534E; margin: 0 0 0.85rem 0;">
             Verify your mobile number to instantly create your LORA account, access live courier dispatch tracking, and register your product warranty.
           </p>
           <button type="button" class="btn btn-primary btn-sm" id="btn-guest-create-account" style="font-size: 0.85rem; padding: 0.55rem 1.25rem;">
@@ -5977,7 +5991,7 @@
           <span style="background: #F0FDF4; border: 1px solid #BBF7D0; color: #15803D; font-size: 0.72rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: var(--radius-pill); text-transform: uppercase;">
             ● Verified Customer
           </span>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="window.handleCustomerLogout(); setTimeout(window.openCustomerAuthModal, 150);" style="border-color: #38BDF8; color: #38BDF8; font-size: 0.78rem; cursor: pointer;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.handleCustomerLogout(); setTimeout(window.openCustomerAuthModal, 150);" style="border-color: #E8DFD5; color: var(--lp-terracotta); font-size: 0.78rem; cursor: pointer;">
             Switch User ⇆
           </button>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-cust-logout" onclick="window.handleCustomerLogout()" style="border-color: #CBD5E1; color: #EF4444; font-size: 0.78rem; cursor: pointer;">
@@ -7219,6 +7233,10 @@
           }
         }
 
+        if (typeof window.goToInnerSlide === 'function') {
+          window.goToInnerSlide(0);
+        }
+
         // Update Firmness
         const firmVal = document.querySelector('#inner-firm-val');
         if (firmVal) firmVal.textContent = data.firmnessVal;
@@ -7671,16 +7689,152 @@
         });
       });
 
-      // Inner Thumbnails
-      document.querySelectorAll('.inner-thumb-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.inner-thumb-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          const imgSrc = this.getAttribute('data-img');
-          const mainImg = document.querySelector('#inner-active-img');
-          if (mainImg && imgSrc) mainImg.src = imgSrc;
+      // Inner Gallery Controller (Arrows, Dots, Counter, Swipe & Thumbnail sync)
+      let currentInnerIndex = 0;
+
+      window.goToInnerSlide = function (index) {
+        const thumbs = Array.from(document.querySelectorAll('.inner-thumb-strip .inner-thumb-btn'));
+        const total = thumbs.length || 5;
+        currentInnerIndex = ((index % total) + total) % total;
+
+        thumbs.forEach((t, i) => {
+          const isActive = (i === currentInnerIndex);
+          t.classList.toggle('active', isActive);
+          t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        const activeThumb = thumbs[currentInnerIndex];
+        const mainImg = document.querySelector('#inner-active-img');
+        if (activeThumb && mainImg) {
+          activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          const imgSrc = activeThumb.getAttribute('data-img');
+          if (imgSrc && mainImg.getAttribute('src') !== imgSrc) {
+            mainImg.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+            mainImg.style.opacity = '0.35';
+            mainImg.style.transform = 'scale(0.985)';
+            mainImg.src = imgSrc;
+            setTimeout(() => {
+              mainImg.style.opacity = '1';
+              mainImg.style.transform = 'scale(1)';
+            }, 120);
+          }
+        }
+
+        const counterEl = document.querySelector('#inner-stage-counter');
+        if (counterEl) {
+          counterEl.textContent = `${currentInnerIndex + 1} / ${total}`;
+          counterEl.setAttribute('aria-label', `Photo ${currentInnerIndex + 1} of ${total}`);
+        }
+
+        document.querySelectorAll('#inner-stage-dots .inner-dot').forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentInnerIndex);
+        });
+      };
+
+      window.nextInnerSlide = function () {
+        window.goToInnerSlide(currentInnerIndex + 1);
+      };
+
+      window.prevInnerSlide = function () {
+        window.goToInnerSlide(currentInnerIndex - 1);
+      };
+
+      // Inner Thumbnails Click
+      document.querySelectorAll('.inner-thumb-strip .inner-thumb-btn').forEach((btn, idx) => {
+        btn.setAttribute('data-index', idx);
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.goToInnerSlide(idx);
         });
       });
+
+      // Inner Stage Arrows
+      const innerPrevBtn = document.querySelector('#inner-stage-prev-btn');
+      if (innerPrevBtn) {
+        innerPrevBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.prevInnerSlide();
+        });
+      }
+
+      const innerNextBtn = document.querySelector('#inner-stage-next-btn');
+      if (innerNextBtn) {
+        innerNextBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.nextInnerSlide();
+        });
+      }
+
+      // Inner Dots
+      document.querySelectorAll('#inner-stage-dots .inner-dot').forEach((dot, idx) => {
+        dot.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.goToInnerSlide(idx);
+        });
+      });
+
+      // Inner Stage Swipe & Drag
+      const innerStage = document.querySelector('#inner-main-stage');
+      if (innerStage) {
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        innerStage.addEventListener('touchstart', function (e) {
+          const touch = e.touches[0];
+          touchStartX = touch.clientX;
+          touchStartY = touch.clientY;
+        }, { passive: true });
+
+        innerStage.addEventListener('touchend', function (e) {
+          const touch = e.changedTouches[0];
+          const diffX = touch.clientX - touchStartX;
+          const diffY = touch.clientY - touchStartY;
+          if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+              window.nextInnerSlide();
+            } else {
+              window.prevInnerSlide();
+            }
+          }
+        }, { passive: true });
+
+        // Mouse Drag for Desktop
+        let isMouseDown = false;
+        let mouseStartX = 0;
+        innerStage.addEventListener('mousedown', function (e) {
+          if (e.target.closest('.inner-stage-arrow, .inner-stage-dots, .inner-stage-counter')) return;
+          isMouseDown = true;
+          mouseStartX = e.clientX;
+        });
+
+        window.addEventListener('mouseup', function (e) {
+          if (!isMouseDown) return;
+          isMouseDown = false;
+          const diffX = e.clientX - mouseStartX;
+          if (Math.abs(diffX) > 40) {
+            if (diffX < 0) {
+              window.nextInnerSlide();
+            } else {
+              window.prevInnerSlide();
+            }
+          }
+        });
+
+        // Stage Keyboard Arrows
+        innerStage.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            window.nextInnerSlide();
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            window.prevInnerSlide();
+          }
+        });
+      }
+
 
       // Inner Add to Bag (from #inner-product-suite)
       function handleInnerAddToBag() {
@@ -9064,20 +9218,20 @@
               }
             } else {
               if (verifyHint) {
-                verifyHint.innerHTML = `<span style="color: #38BDF8;">●</span> Required: Verify via OTP`;
+                verifyHint.innerHTML = `<span style="color: var(--lp-terracotta);">●</span> Required: Verify via OTP`;
               }
               if (btnVerify) {
                 btnVerify.innerHTML = `Verify Phone →`;
-                btnVerify.style.background = '#0284C7';
+                btnVerify.style.background = '#C26136';
               }
             }
           } else {
             if (verifyHint) {
-              verifyHint.innerHTML = `<span style="color: #94A3B8;">Enter 10-digit mobile number</span>`;
+              verifyHint.innerHTML = `<span style="color: #78716C;">Enter 10-digit mobile number</span>`;
             }
             if (btnVerify) {
               btnVerify.innerHTML = `Verify Phone →`;
-              btnVerify.style.background = '#0284C7';
+              btnVerify.style.background = '#C26136';
             }
           }
         }
@@ -9452,11 +9606,11 @@
         if (confSub) confSub.textContent = 'Your order has been transmitted directly to our Store Keeper & Dispatch bay.';
         if (confStatusTag) {
           confStatusTag.textContent = newOrder.status || 'Order Received';
-          confStatusTag.style.color = '#38BDF8';
+          confStatusTag.style.color = '#C26136';
         }
         if (confEstDelivery) {
           confEstDelivery.textContent = '2 - 4 Business Days (Insured)';
-          confEstDelivery.style.color = '#34D399';
+          confEstDelivery.style.color = '#059669';
         }
         if (confStoreAlert) {
           confStoreAlert.textContent = '✓ Sent to Store Keeper';
@@ -10242,7 +10396,7 @@
           if (cartAuthStatus) cartAuthStatus.textContent = 'Have a LORA account?';
           if (cartAuthLink) {
             cartAuthLink.textContent = 'Login / Sign Up →';
-            cartAuthLink.style.background = '#0284C7';
+            cartAuthLink.style.background = '#C26136';
             cartAuthLink.onclick = function (e) {
               if (e) e.preventDefault();
               handleCartAuthClick();
@@ -10252,7 +10406,7 @@
           if (drawerAccount) {
             drawerAccount.innerHTML = `
               <a href="#" class="drawer-login-btn" onclick="openCustomerAuthModal(); if (window.closeMobileNav) window.closeMobileNav(); return false;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C26136" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <span>Customer Login / Register</span>
               </a>
             `;
@@ -10622,10 +10776,10 @@
               <input type="radio" name="cust_selected_channel" value="${method.key}" class="otp-channel-radio" ${isSelected ? 'checked' : ''}>
               <span style="font-size: 1.2rem;">${method.icon}</span>
               <div style="flex: 1;">
-                <strong style="font-size: 0.88rem; color: #FFFFFF; display: block;">${method.name}</strong>
-                <span style="font-size: 0.72rem; color: #94A3B8;">Receive 6-digit code via ${method.name}</span>
+                <strong style="font-size: 0.88rem; color: #1C1917; display: block;">${method.name}</strong>
+                <span style="font-size: 0.72rem; color: #57534E;">Receive 6-digit code via ${method.name}</span>
               </div>
-              <span style="font-size: 0.7rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">${method.badge}</span>
+              <span style="font-size: 0.7rem; color: var(--lp-terracotta); font-weight: 700; background: rgba(194, 97, 54, 0.1); border: 1px solid rgba(194, 97, 54, 0.28); padding: 0.2rem 0.5rem; border-radius: var(--radius-pill);">${method.badge}</span>
             </label>
           `;
         }).join('');
