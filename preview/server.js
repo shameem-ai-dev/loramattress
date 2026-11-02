@@ -109,6 +109,10 @@ try {
 } catch (e) { console.warn('[DATA] Upload migration skipped:', e.message); }
 console.log('[DATA] Persistent data directory:', DATA_DIR);
 
+// Permanent off-server storage (Cloudflare R2 / S3). The hosting container's disk is wiped on every
+// recycle/redeploy, so uploads + data JSON are mirrored to a bucket and restored automatically.
+const cloudSync = require('../api/cloud-sync.js').create({ dataDir: DATA_DIR, configDir: CONFIG_DIR, uploadsDir: UPLOADS_DIR });
+
 // Load settings data
 let settings = {};
 try {
@@ -533,12 +537,36 @@ const server = http.createServer((req, res) => {
     }
   }
 
-  // Handle File / Image Upload API (Persistent Local & Server Storage)
+  // Handle File / Image Upload API (admin only, quota-checked, stored permanently in cloud storage)
   if (pathname === '/api/upload') {
     if (req.method === 'POST') {
-      let body = '';
-      req.on('data', chunk => { body += chunk; });
+      if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
+      // Reject before reading the body if even the decoded image (≤ 75% of base64 size) cannot fit.
+      const freeNow = cloudSync.uploadFreeBytes();
+      const declared = Number(req.headers['content-length'] || 0);
+      if (declared && Math.floor(declared * 0.75) - 1024 > freeNow) {
+        req.resume();
+        return sendJson(507, { success: false, code: 'QUOTA_EXCEEDED', message: `Storage limit reached — only ${(freeNow / 1e6).toFixed(1)} MB free. Delete unused photos/videos in Admin → Storage to free space.` });
+      }
+      const maxBody = Math.ceil(freeNow / 0.75) + 64 * 1024; // bounded by free space only, never by a per-file limit
+      const chunks = [];
+      let bodyLen = 0;
+      let tooBig = false;
+      req.on('data', chunk => {
+        if (tooBig) return;
+        bodyLen += chunk.length;
+        if (bodyLen > maxBody) {
+          tooBig = true;
+          sendJson(507, { success: false, code: 'QUOTA_EXCEEDED', message: 'Storage limit reached — this image does not fit in the remaining space. Delete unused photos/videos in Admin → Storage.' });
+          chunks.length = 0; // keep draining (discarding) so the response is delivered
+          return;
+        }
+        chunks.push(chunk);
+      });
       req.on('end', () => {
+        if (tooBig) return;
+        const body = Buffer.concat(chunks).toString('utf8');
+        let reservationId = null;
         try {
           const parsed = JSON.parse(body);
           const rawImage = parsed.image || parsed.data;
@@ -557,7 +585,7 @@ const server = http.createServer((req, res) => {
           if (rawImage.startsWith('data:')) {
             const matches = rawImage.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
             if (matches) {
-              ext = matches[1] === 'jpeg' ? '.jpg' : `.${matches[1]}`;
+              ext = matches[1] === 'jpeg' ? '.jpg' : `.${matches[1].replace(/\+.*$/, '')}`;
               buffer = Buffer.from(matches[2], 'base64');
             } else {
               res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
@@ -568,28 +596,47 @@ const server = http.createServer((req, res) => {
             buffer = Buffer.from(rawImage, 'base64');
           }
 
+          // Atomic quota booking — simultaneous uploads can never overshoot the limit.
+          reservationId = cloudSync.reserveUpload(buffer.length, 'image');
+
           const uploadsDir = UPLOADS_DIR;
           if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir, { recursive: true });
           }
 
-          const safeFileName = `prod_${modelKey}_${slotName}_${Date.now()}${ext}`;
+          const safeFileName = `prod_${modelKey}_${slotName}_${Date.now()}_${crypto.randomBytes(3).toString('hex')}${ext}`;
           const targetFilePath = path.join(uploadsDir, safeFileName);
           fs.writeFileSync(targetFilePath, buffer);
 
           const publicUrl = `/assets/uploads/${safeFileName}`;
-          console.log(`[UPLOAD API] Successfully saved persistent asset: ${publicUrl} (${buffer.length} bytes)`);
-          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({
-            success: true,
-            url: publicUrl,
-            filename: safeFileName,
-            size: buffer.length,
-            message: 'Image uploaded and stored persistently'
-          }));
+          const resId = reservationId;
+          reservationId = null; // ownership passes to persistUpload (commits or releases)
+          cloudSync.persistUpload(safeFileName, resId).then(info => {
+            console.log(`[UPLOAD API] Saved ${publicUrl} (${buffer.length} bytes) → ${info.storage}`);
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({
+              success: true,
+              url: publicUrl,
+              filename: safeFileName,
+              size: buffer.length,
+              storageType: info.storage,
+              permanent: info.persisted,
+              message: info.persisted
+                ? 'Image uploaded and stored permanently in cloud storage'
+                : 'Image saved on server disk only — configure cloud storage (S3_*) to keep it permanently'
+            }));
+          }).catch(err => {
+            console.error('[UPLOAD API] Cloud persist failed:', err.message);
+            try { fs.unlinkSync(targetFilePath); } catch (e) {}
+            const quota = err.code === 'QUOTA_EXCEEDED';
+            res.writeHead(quota ? 507 : 502, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({ success: false, code: err.code, message: quota ? err.message : 'Could not save image to permanent cloud storage: ' + err.message }));
+          });
         } catch (e) {
-          res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ success: false, message: 'Upload failed: ' + e.message }));
+          cloudSync.releaseUpload(reservationId);
+          const quota = e.code === 'QUOTA_EXCEEDED';
+          res.writeHead(quota ? 507 : 500, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ success: false, code: e.code, message: quota ? e.message : 'Upload failed: ' + e.message }));
         }
       });
       return;
@@ -801,16 +848,59 @@ const server = http.createServer((req, res) => {
     }
   }
 
-  // Streamed video upload (raw binary body, admin only) — keeps original resolution untouched
+  // Storage management API (admin only): usage, file list, delete, browser-direct uploads
+  if (pathname.startsWith('/api/storage/')) {
+    if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
+    const fail = e => sendJson(e.status || (e.code === 'QUOTA_EXCEEDED' ? 507 : 500),
+      { success: false, code: e.code, inUse: e.inUse || undefined, message: e.message });
+    const readJson = cb => {
+      let b = '';
+      req.on('data', c => { b += c; if (b.length > 1e6) req.destroy(); });
+      req.on('end', () => { let p; try { p = JSON.parse(b || '{}'); } catch (e) { return sendJson(400, { success: false, message: 'Invalid JSON' }); } cb(p); });
+    };
+
+    if (pathname === '/api/storage/usage' && req.method === 'GET') {
+      return sendJson(200, { success: true, usage: cloudSync.usage(), files: parsedUrl.searchParams.get('files') === '0' ? undefined : cloudSync.listUploads() });
+    }
+    if (pathname === '/api/storage/delete' && req.method === 'POST') {
+      return readJson(p => cloudSync.deleteUpload(p.path, { force: p.force === true })
+        .then(r => sendJson(200, { success: true, freedBytes: r.freedBytes, usage: cloudSync.usage() })).catch(fail));
+    }
+    if (pathname === '/api/storage/upload-url' && req.method === 'POST') {
+      return readJson(p => cloudSync.beginDirectUpload({ size: p.size, contentType: p.contentType })
+        .then(r => sendJson(200, Object.assign({ success: true }, r))).catch(fail));
+    }
+    if (pathname === '/api/storage/upload-complete' && req.method === 'POST') {
+      return readJson(p => cloudSync.completeDirectUpload(p)
+        .then(r => {
+          console.log(`[VIDEO UPLOAD] Direct-to-cloud ${r.rel} (${(r.size / 1048576).toFixed(1)} MB)`);
+          sendJson(200, { success: true, url: `/assets/uploads/${r.rel}`, size: r.size, permanent: true });
+        }).catch(fail));
+    }
+    if (pathname === '/api/storage/upload-abort' && req.method === 'POST') {
+      return readJson(p => cloudSync.abortDirectUpload(p).then(() => sendJson(200, { success: true })).catch(fail));
+    }
+    return sendJson(404, { success: false, message: 'Unknown storage endpoint' });
+  }
+
+  // Streamed video upload through the server (raw binary body, admin only) — keeps original resolution untouched.
+  // No per-file limit: the size is booked against the total storage cap before any byte is written.
   if (pathname === '/api/upload-video' && req.method === 'POST') {
     if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
-    const MAX_BYTES = 500 * 1024 * 1024;
     const typeMap = { 'video/mp4': '.mp4', 'video/webm': '.webm', 'video/quicktime': '.mov', 'video/x-m4v': '.m4v' };
     const ctype = String(req.headers['content-type'] || '').split(';')[0].trim().toLowerCase();
     const ext = typeMap[ctype];
     if (!ext) return sendJson(415, { success: false, message: 'Only MP4, WebM or MOV videos are supported' });
     const declared = Number(req.headers['content-length'] || 0);
-    if (declared > MAX_BYTES) return sendJson(413, { success: false, message: 'Video exceeds 500 MB limit' });
+    if (!declared) { req.resume(); return sendJson(411, { success: false, message: 'Content-Length is required' }); }
+
+    let reservationId;
+    try {
+      reservationId = cloudSync.reserveUpload(declared, 'video');
+    } catch (e) {
+      req.resume();
+      return sendJson(507, { success: false, code: e.code, message: e.message });
+    }
 
     const videosDir = path.join(UPLOADS_DIR, 'videos');
     fs.mkdirSync(videosDir, { recursive: true });
@@ -823,22 +913,31 @@ const server = http.createServer((req, res) => {
     const fail = (code, msg) => {
       if (aborted) return;
       aborted = true;
+      cloudSync.releaseUpload(reservationId);
       out.destroy();
       fs.unlink(tmp, () => {});
       sendJson(code, { success: false, message: msg });
     };
     req.on('data', chunk => {
       received += chunk.length;
-      if (received > MAX_BYTES) { fail(413, 'Video exceeds 500 MB limit'); req.destroy(); }
+      if (received > declared) { fail(400, 'Upload is larger than its declared size'); req.destroy(); }
     });
+    req.on('close', () => { if (!req.complete) fail(400, 'Upload interrupted'); });
     req.on('error', () => fail(500, 'Upload interrupted'));
     out.on('error', e => fail(500, 'Write failed: ' + e.message));
     out.on('finish', () => {
       if (aborted) return;
       if (received === 0) return fail(400, 'Empty upload');
       fs.renameSync(tmp, target);
-      console.log(`[VIDEO UPLOAD] Saved ${fileName} (${(received / 1048576).toFixed(1)} MB)`);
-      sendJson(200, { success: true, url: `/assets/uploads/videos/${fileName}`, size: received });
+      cloudSync.persistUpload(`videos/${fileName}`, reservationId).then(info => {
+        console.log(`[VIDEO UPLOAD] Saved ${fileName} (${(received / 1048576).toFixed(1)} MB) → ${info.storage}`);
+        sendJson(200, { success: true, url: `/assets/uploads/videos/${fileName}`, size: received, storageType: info.storage, permanent: info.persisted });
+      }).catch(err => {
+        console.error('[VIDEO UPLOAD] Cloud persist failed:', err.message);
+        fs.unlink(target, () => {});
+        const quota = err.code === 'QUOTA_EXCEEDED';
+        sendJson(quota ? 507 : 502, { success: false, code: err.code, message: quota ? err.message : 'Could not save video to permanent cloud storage: ' + err.message });
+      });
     });
     req.pipe(out);
     return;
@@ -851,8 +950,29 @@ const server = http.createServer((req, res) => {
     const safePath = path.normalize(relAssetPath).replace(/^(\.\.[\/\\])+/, '');
     let assetPath = path.join(ASSETS_DIR, safePath);
     if (/^uploads[\/\\]/.test(safePath)) {
-      const persisted = path.join(UPLOADS_DIR, safePath.replace(/^uploads[\/\\]/, ''));
-      if (fs.existsSync(persisted)) assetPath = persisted;
+      const relUpload = safePath.replace(/^uploads[\/\\]/, '').replace(/\\/g, '/');
+      const persisted = path.join(UPLOADS_DIR, relUpload);
+      if (fs.existsSync(persisted)) {
+        assetPath = persisted;
+      } else if (!fs.existsSync(assetPath) && cloudSync.status().enabled && relUpload) {
+        // File vanished from local disk (container recycled) → serve it from permanent cloud storage
+        const cdnUrl = cloudSync.publicUrlFor(relUpload);
+        if (cdnUrl) {
+          res.writeHead(302, { Location: cdnUrl, 'Cache-Control': 'public, max-age=3600' });
+          res.end();
+          return;
+        }
+        cloudSync.restoreUpload(relUpload).then(found => {
+          if (found) {
+            req.url = parsedUrl.pathname + parsedUrl.search; // replay request now that the file is cached locally
+            server.emit('request', req, res);
+          } else {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Asset Not Found');
+          }
+        });
+        return;
+      }
     }
 
     if (fs.existsSync(assetPath) && fs.statSync(assetPath).isFile()) {
@@ -939,7 +1059,7 @@ const server = http.createServer((req, res) => {
   // Health check route for GoDaddy container health monitors
   if (pathname === '/health' || pathname === '/healthz' || pathname === '/api/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: 'ok', uptime: process.uptime(), time: new Date().toISOString() }));
+    res.end(JSON.stringify({ status: 'ok', uptime: process.uptime(), time: new Date().toISOString(), storage: cloudSync.status() }));
     return;
   }
 
@@ -948,6 +1068,20 @@ const server = http.createServer((req, res) => {
   res.end('404 Not Found');
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`LORA Mattress Server running on http://0.0.0.0:${PORT}`);
-});
+// Restore permanent data from cloud BEFORE accepting traffic (capped so health checks never hang).
+function startListening() {
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`LORA Mattress Server running on http://0.0.0.0:${PORT}`);
+  });
+}
+Promise.race([
+  cloudSync.bootstrap().catch(err => console.error('[CLOUD] Startup restore failed:', err.message)),
+  new Promise(resolve => setTimeout(resolve, 25000))
+]).finally(startListening);
+
+// Flush pending data backups when the host stops/recycles the container.
+for (const sig of ['SIGTERM', 'SIGINT']) {
+  process.on(sig, () => {
+    Promise.race([cloudSync.flush(), new Promise(r => setTimeout(r, 5000))]).finally(() => process.exit(0));
+  });
+}

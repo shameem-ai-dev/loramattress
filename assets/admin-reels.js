@@ -12,6 +12,48 @@
   function token() { return localStorage.getItem('lora_admin_token') || 'admin-session-active'; }
   function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function uid() { return 'reel_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function mb(n) { return (n / 1e6).toFixed(1) + ' MB'; }
+
+  /* Storage hook (admin.html is left untouched):
+   * - adds the admin Authorization header to image uploads (/api/upload) and storage API calls
+   * - when the server blocks an upload because the storage limit is reached (HTTP 507), tells the admin clearly */
+  if (window.fetch && !window.__loraStorageFetchHook) {
+    window.__loraStorageFetchHook = true;
+    var nativeFetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : (input && input.url) || '';
+      var isUpload = /^(https?:\/\/[^/]+)?\/api\/(upload|storage\/)/.test(url) && url.indexOf('/api/upload-video') === -1;
+      if (isUpload && typeof input === 'string') {
+        init = Object.assign({}, init || {});
+        var h = new Headers(init.headers || {});
+        if (!h.has('Authorization')) h.set('Authorization', 'Bearer ' + token());
+        init.headers = h;
+      }
+      var p = nativeFetch(input, init);
+      if (/\/api\/upload(\?|$)/.test(url)) {
+        p.then(function (res) {
+          if (res.status === 507) {
+            res.clone().json().then(function (d) {
+              alert('⚠ Upload blocked — storage is full.\n\n' + ((d && d.message) || 'Delete unused photos/videos in the Storage panel to free space.') +
+                '\n\nThe image was NOT saved. Free some space, then upload it again.');
+            }).catch(function () {});
+          }
+          if (res.ok && window.LoraStorage) window.LoraStorage.refresh();
+        }).catch(function () {});
+      }
+      return p;
+    };
+  }
+
+  // Storage usage panel (Photos + Reels tabs)
+  (function loadStoragePanel() {
+    if (document.getElementById('lora-storage-js')) return;
+    var s = document.createElement('script');
+    s.id = 'lora-storage-js';
+    s.src = '/assets/admin-storage.js?v=1';
+    s.defer = true;
+    document.head.appendChild(s);
+  })();
 
   var S = {
     card: 'background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.1rem;',
@@ -112,37 +154,126 @@
     state.profileUrl = g('#reels-profile') ? g('#reels-profile').value.trim() : '';
   }
 
+  /* Upload flow (no per-file size limit — only the total storage cap, enforced by the server):
+   * 1. Ask the server to book space → it returns presigned URL(s) for direct browser → cloud upload
+   *    (bypasses the Cloudflare proxy body limit; multi-part for very large files).
+   * 2. Tell the server the upload finished → it verifies the real size and commits it.
+   * Falls back to streaming through the server when cloud storage is not configured. */
   function uploadVideo(file, r, progressEl) {
-    if (file.size > 500 * 1024 * 1024) { alert('Video is larger than 500 MB.'); return; }
-    var type = file.type || (/\.mov$/i.test(file.name) ? 'video/quicktime' : 'video/mp4');
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/upload-video');
-    xhr.setRequestHeader('Content-Type', type);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + token());
-    xhr.upload.onprogress = function (e) {
-      if (e.lengthComputable) progressEl.textContent = 'Uploading ' + Math.round(e.loaded / e.total * 100) + '% (' + (file.size / 1048576).toFixed(1) + ' MB)';
-    };
-    xhr.onload = function () {
-      var d = {};
-      try { d = JSON.parse(xhr.responseText); } catch (e) {}
-      if (xhr.status !== 200 || !d.success) { progressEl.style.color = '#F87171'; progressEl.textContent = d.message || 'Upload failed'; return; }
-      progressEl.textContent = 'Generating cover frame…';
-      syncTop();
-      r.videoUrl = d.url;
-      capturePoster(file).then(function (dataUrl) {
-        if (!dataUrl) return null;
-        return fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token() },
-          body: JSON.stringify({ image: dataUrl, model: 'reel', slot: 'poster' })
-        }).then(function (x) { return x.json(); }).then(function (p) { if (p && p.success) r.posterUrl = p.url; });
-      }).catch(function () {}).then(function () {
-        render();
-        setStatus('Video uploaded — click "Publish to Homepage" to go live.', '#FBBF24');
+    var type = file.type || (/\.mov$/i.test(file.name) ? 'video/quicktime' : (/\.webm$/i.test(file.name) ? 'video/webm' : 'video/mp4'));
+    var showErr = function (msg) { progressEl.style.color = '#F87171'; progressEl.textContent = msg; };
+    progressEl.style.color = '#94A3B8';
+    progressEl.textContent = 'Checking storage…';
+    api('/api/storage/upload-url', { size: file.size, contentType: type }).then(function (s) {
+      if (s.mode === 'server') return serverUpload(file, type, progressEl);
+      return directUpload(file, type, s, progressEl).then(function () {
+        progressEl.textContent = 'Finalizing…';
+        return api('/api/storage/upload-complete', { uploadId: s.uploadId, rel: s.rel, s3UploadId: s.s3UploadId, parts: s.doneParts });
+      }, function (err) {
+        api('/api/storage/upload-abort', { uploadId: s.uploadId }).catch(function () {});
+        if (err && err.network && file.size < 95e6) {
+          // Bucket CORS not set up yet — small files can still go through the server.
+          progressEl.textContent = 'Direct upload unavailable, retrying via server…';
+          return serverUpload(file, type, progressEl);
+        }
+        throw err && err.network
+          ? new Error('Direct upload to cloud storage was blocked (check the bucket CORS settings).')
+          : err;
       });
-    };
-    xhr.onerror = function () { progressEl.style.color = '#F87171'; progressEl.textContent = 'Network error during upload'; };
-    xhr.send(file);
+    }).then(function (d) {
+      onVideoUploaded(file, r, d, progressEl);
+    }).catch(function (e) {
+      showErr(e.message || 'Upload failed');
+      if (e.status === 507) alert('⚠ Upload blocked — storage is full.\n\n' + e.message);
+    }).then(function () { if (window.LoraStorage) window.LoraStorage.refresh(); });
+  }
+
+  function api(url, body) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token() },
+      body: JSON.stringify(body)
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (d) {
+        if (!res.ok || !d.success) { var e = new Error(d.message || ('Request failed (' + res.status + ')')); e.status = res.status; throw e; }
+        return d;
+      });
+    });
+  }
+
+  function putBlob(url, blob, contentType, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('PUT', url);
+      if (contentType) xhr.setRequestHeader('Content-Type', contentType);
+      xhr.upload.onprogress = function (e) { if (e.lengthComputable) onProgress(e.loaded); };
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) resolve(xhr.getResponseHeader('ETag'));
+        else reject(new Error('Cloud storage rejected the upload (' + xhr.status + ')'));
+      };
+      xhr.onerror = function () { var e = new Error('Network error'); e.network = true; reject(e); };
+      xhr.send(blob);
+    });
+  }
+
+  function directUpload(file, type, s, progressEl) {
+    var show = function (done) { progressEl.textContent = 'Uploading ' + Math.round(done / file.size * 100) + '% (' + mb(file.size) + ')'; };
+    if (s.mode === 'single') return putBlob(s.url, file, type, show);
+    // Multipart: parts uploaded one after another (equal size except the last).
+    s.doneParts = [];
+    var chain = Promise.resolve();
+    s.parts.forEach(function (part) {
+      chain = chain.then(function () {
+        var start = (part.partNumber - 1) * s.partSize;
+        var blob = file.slice(start, Math.min(file.size, start + s.partSize));
+        return putBlob(part.url, blob, null, function (loaded) { show(start + loaded); }).then(function (etag) {
+          if (!etag) throw new Error('Cloud storage did not return an ETag — add "ETag" to the bucket CORS ExposeHeaders.');
+          s.doneParts.push({ partNumber: part.partNumber, etag: etag });
+        });
+      });
+    });
+    return chain;
+  }
+
+  function serverUpload(file, type, progressEl) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload-video');
+      xhr.setRequestHeader('Content-Type', type);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + token());
+      xhr.upload.onprogress = function (e) {
+        if (e.lengthComputable) progressEl.textContent = 'Uploading ' + Math.round(e.loaded / e.total * 100) + '% (' + mb(file.size) + ')';
+      };
+      xhr.onload = function () {
+        var d = {};
+        try { d = JSON.parse(xhr.responseText); } catch (e) {}
+        if (xhr.status !== 200 || !d.success) {
+          var err = new Error(d.message || (xhr.status === 413 ? 'File is too large for the website proxy (Cloudflare). Set up direct cloud upload (bucket CORS).' : 'Upload failed'));
+          err.status = xhr.status;
+          return reject(err);
+        }
+        resolve(d);
+      };
+      xhr.onerror = function () { reject(new Error('Network error during upload')); };
+      xhr.send(file);
+    });
+  }
+
+  function onVideoUploaded(file, r, d, progressEl) {
+    progressEl.textContent = 'Generating cover frame…';
+    syncTop();
+    r.videoUrl = d.url;
+    capturePoster(file).then(function (dataUrl) {
+      if (!dataUrl) return null;
+      return fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token() },
+        body: JSON.stringify({ image: dataUrl, model: 'reel', slot: 'poster' })
+      }).then(function (x) { return x.json(); }).then(function (p) { if (p && p.success) r.posterUrl = p.url; });
+    }).catch(function () {}).then(function () {
+      render();
+      setStatus('Video uploaded — click "Publish to Homepage" to go live.', '#FBBF24');
+    });
   }
 
   /* Grab a high-quality frame (~1s in) at the video's native resolution for the poster */
