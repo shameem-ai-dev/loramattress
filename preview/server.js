@@ -112,6 +112,8 @@ console.log('[DATA] Persistent data directory:', DATA_DIR);
 // Permanent off-server storage (Cloudflare R2 / S3). The hosting container's disk is wiped on every
 // recycle/redeploy, so uploads + data JSON are mirrored to a bucket and restored automatically.
 const cloudSync = require('../api/cloud-sync.js').create({ dataDir: DATA_DIR, configDir: CONFIG_DIR, uploadsDir: UPLOADS_DIR });
+// Pincode → coordinates for the showroom finder (cached in DATA_DIR, so it is cloud-backed too).
+const pincodeGeo = require('../api/pincode-geo.js').create({ dataDir: DATA_DIR });
 
 // Load settings data
 let settings = {};
@@ -643,6 +645,17 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // Pincode → approximate coordinates (public; used by the storefront showroom finder)
+  if (pathname === '/api/pincode-geo' && req.method === 'GET') {
+    const pin = String(parsedUrl.searchParams.get('pin') || '').trim();
+    if (!/^[1-9]\d{5}$/.test(pin)) return sendJson(400, { success: false, message: 'Enter a valid 6-digit pincode' });
+    pincodeGeo.lookup(pin).then(geo => {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': geo ? 'public, max-age=604800' : 'no-cache' });
+      res.end(JSON.stringify(geo ? { success: true, pin, lat: geo.lat, lng: geo.lng, place: geo.place } : { success: false, pin, message: 'Location not found for this pincode' }));
+    });
+    return;
+  }
+
   // Handle Studios API (Store Locations & Manual Pincodes)
   if (pathname === '/api/studios') {
     const studiosFilePath = dataFile('studios_data.json');
@@ -662,12 +675,28 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.method === 'POST') {
+      if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
       let body = '';
-      req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
+      req.on('data', chunk => { body += chunk; if (body.length > 2e6) req.destroy(); });
+      req.on('end', async () => {
         try {
           const parsed = JSON.parse(body);
-          const toSave = parsed.studios || parsed;
+          const list = parsed.studios || parsed;
+          if (!Array.isArray(list)) throw new Error('Expected a list of studios');
+          const toSave = [];
+          for (const s of list) {
+            if (!s || typeof s !== 'object' || !String(s.name || '').trim()) continue;
+            const studio = Object.assign({}, s);
+            const pin = String(studio.pincode || studio.primaryPincode || '').trim();
+            studio.servicedPincodes = (Array.isArray(studio.servicedPincodes) ? studio.servicedPincodes : [])
+              .map(p => String(p).trim()).filter(p => /^\d{6}$/.test(p));
+            // No coordinates entered → derive them from the showroom pincode so the 40 km search works.
+            if ((!Number(studio.lat) || !Number(studio.lng)) && /^\d{6}$/.test(pin)) {
+              const geo = await Promise.race([pincodeGeo.lookup(pin), new Promise(r => setTimeout(() => r(null), 12000))]);
+              if (geo) { studio.lat = geo.lat; studio.lng = geo.lng; studio.geoSource = 'pincode'; }
+            }
+            toSave.push(studio);
+          }
           fs.writeFileSync(studiosFilePath, JSON.stringify(toSave, null, 2), 'utf8');
           res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
           res.end(JSON.stringify({ success: true, studios: toSave, message: 'Studios updated successfully' }));

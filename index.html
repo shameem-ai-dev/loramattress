@@ -5228,13 +5228,14 @@
         let matchedStudio = null;
         let lowestDistance = 999999;
 
-        // 1. Direct manual pincode match in studio's configured pincodes list
+        // 1. Direct manual pincode match in studio's configured pincodes list or primary pincode
         for (const studio of cachedStudios) {
           if (studio.active === false) continue;
           const assigned = Array.isArray(studio.servicedPincodes) ? studio.servicedPincodes : [];
-          if (assigned.includes(pincode) || studio.primaryPincode === pincode) {
+          const sPin = String(studio.primaryPincode || studio.pincode || '').trim();
+          if (assigned.includes(pincode) || sPin === pincode) {
             matchedStudio = studio;
-            lowestDistance = studio.primaryPincode === pincode ? 1.5 : 8.5; // Direct verified match
+            lowestDistance = sPin === pincode ? 1.5 : 8.5; // Direct verified match
             break;
           }
         }
@@ -5242,7 +5243,21 @@
         // 2. If not directly in pincode array, check coordinate distance (< 40 km)
         if (!matchedStudio) {
           const prefix = pincode.substring(0, 3);
-          const userCoord = PINCODE_COORDINATES[prefix];
+          let userCoord = PINCODE_COORDINATES[prefix];
+          if (!userCoord) {
+            try {
+              const geoRes = await fetch(`/api/pincode-geo?pin=${encodeURIComponent(pincode)}`);
+              if (geoRes.ok) {
+                const geoData = await geoRes.json();
+                if (geoData && geoData.lat && geoData.lng) {
+                  userCoord = { lat: geoData.lat, lng: geoData.lng };
+                }
+              }
+            } catch (e) {
+              console.warn('Geo lookup fallback skipped:', e);
+            }
+          }
+
           if (userCoord) {
             for (const studio of cachedStudios) {
               if (studio.active === false || !studio.lat || !studio.lng) continue;

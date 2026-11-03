@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "id": "lead-1793641469750",
+    "name": "Rahul Sharma",
+    "phone": "9876543210",
+    "pincode": "673016",
+    "place": "",
+    "preferredMattress": null,
+    "preferredSize": null,
+    "preferredThickness": null,
+    "summary": "Matched Kozhikode studio (8.5 km)",
+    "source": "Lumi AI Sleep Assistant",
+    "resultType": "matched",
+    "studioId": "studio_kozhikode",
+    "studioName": "LORA Experience Studio Kozhikode",
+    "distanceKm": 8.5,
+    "status": "New",
+    "createdAt": "2026-11-02T17:44:29.750Z",
+    "notes": "Matched Kozhikode studio (8.5 km)"
+  },
+  {
+    "id": "lead-1793641418394",
+    "name": "Rahul Sharma",
+    "phone": "9876543210",
+    "pincode": "673016",
+    "place": "",
+    "preferredMattress": null,
+    "preferredSize": null,
+    "preferredThickness": null,
+    "summary": "Matched Kozhikode studio (8.5 km)",
+    "source": "Lumi AI Sleep Assistant",
+    "resultType": "matched",
+    "studioId": "studio_kozhikode",
+    "studioName": "LORA Experience Studio Kozhikode",
+    "distanceKm": 8.5,
+    "status": "New",
+    "createdAt": "2026-11-02T17:43:38.394Z",
+    "notes": "Matched Kozhikode studio (8.5 km)"
+  }
+]
