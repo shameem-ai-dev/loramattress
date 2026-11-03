@@ -2473,7 +2473,28 @@
               <h2>Executive Sales & Performance Analytics</h2>
               <p>Real-time order volume, gross revenue, conversion performance, and top-selling models.</p>
             </div>
-            <div class="save-feedback-badge" id="analytics-live-badge">● Live Telemetry Synced</div>
+            <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+              <div class="save-feedback-badge" id="analytics-live-badge">● Live Telemetry Synced</div>
+              <button type="button" class="btn-op-action btn-op-secondary" id="btn-open-orders-bin" title="View & restore deleted orders">♻️ Recycle Bin <span id="orders-bin-count" style="opacity:.75;"></span></button>
+              <button type="button" class="btn-op-action" id="btn-reset-sales" style="background: rgba(220,38,38,.15); border: 1px solid rgba(239,68,68,.45); color: #FCA5A5;" title="Move all current orders to the Recycle Bin">🗑️ Reset Sales Data</button>
+            </div>
+          </div>
+
+          <!-- Orders Recycle Bin modal (permanent — items are never auto-deleted) -->
+          <div id="modal-orders-bin" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(2,6,23,.75); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:1.5rem;">
+            <div style="background:#0F172A; border:1px solid rgba(255,255,255,.1); border-radius:16px; width:min(960px,100%); max-height:85vh; display:flex; flex-direction:column; box-shadow:0 25px 60px rgba(0,0,0,.5);">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:1.1rem 1.4rem; border-bottom:1px solid rgba(255,255,255,.08);">
+                <div>
+                  <h3 style="margin:0; color:#fff; font-size:1.05rem;">♻️ Orders Recycle Bin</h3>
+                  <p style="margin:.2rem 0 0; font-size:.75rem; color:var(--text-muted);">Every deleted / reset order is kept here permanently. Restore anytime.</p>
+                </div>
+                <div style="display:flex; gap:.5rem;">
+                  <button type="button" class="btn-op-action btn-op-secondary" id="btn-orders-bin-restore-all">↩️ Restore All</button>
+                  <button type="button" class="btn-op-action btn-op-secondary" id="btn-orders-bin-close">✕ Close</button>
+                </div>
+              </div>
+              <div id="orders-bin-body" style="overflow:auto; padding:1rem 1.4rem;"></div>
+            </div>
           </div>
 
           <div class="kpi-grid">
@@ -4370,13 +4391,12 @@ Order Notes: [Customer Instructions]</pre>
                 <div>
                   <div style="font-weight: 800; color: #FFFFFF; font-size: 0.92rem; margin-bottom: 0.25rem;">🗑️ Recycle Bin — Deleted Customer Details</div>
                   <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                    Deleted or reset leads are kept here for <strong>30 days</strong>. Restore them anytime, or delete permanently. Items older than 30 days are removed automatically.
+                    Deleted or reset leads are kept here <strong>permanently</strong> and are never erased. Restore them anytime.
                   </p>
                 </div>
                 <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
                   <button type="button" class="btn-action-secondary" id="btn-trash-refresh" onclick="window.loadLeadsTrash()" style="height: 38px; padding: 0 0.9rem;">🔄 Refresh</button>
                   <button type="button" class="btn-action-secondary" id="btn-trash-restore-all" onclick="window.restoreLeadsFromTrash(null)" style="height: 38px; padding: 0 0.9rem; color: #86EFAC; border-color: rgba(34, 197, 94, 0.4);">↩ Restore All</button>
-                  <button type="button" class="btn-action-secondary" id="btn-trash-empty" onclick="window.emptyLeadsTrash()" style="height: 38px; padding: 0 0.9rem; color: #FCA5A5; border-color: rgba(239, 68, 68, 0.4);">✖ Empty Bin</button>
                 </div>
               </div>
             </div>
@@ -4765,16 +4785,10 @@ Order Notes: [Customer Instructions]</pre>
       const AUTH_KEY = 'lora_admin_auth_v1';
       const CRED_KEY = 'lora_admin_creds_v1';
 
-      // Default Admin Credentials
-      let adminCredentials = {
-        username: 'admin@loramattress.com',
-        password: 'LoraLuxury2026!'
-      };
-
-      try {
-        const storedCreds = localStorage.getItem(CRED_KEY);
-        if (storedCreds) adminCredentials = JSON.parse(storedCreds);
-      } catch (e) {}
+      const TOKEN_KEY = 'lora_admin_token';
+      // Credentials are checked on the server only — nothing secret is stored in this page
+      let adminCredentials = { username: 'admin@loramattress.com' };
+      try { localStorage.removeItem(CRED_KEY); } catch (e) {} // purge legacy plain-text password
 
       // Check Authentication Session
       const authView = document.querySelector('#auth-view');
@@ -4782,42 +4796,90 @@ Order Notes: [Customer Instructions]</pre>
       const loginForm = document.querySelector('#admin-login-form');
       const authError = document.querySelector('#auth-error-msg');
       const btnLogout = document.querySelector('#btn-logout-action');
+      const IS_LOCAL = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
+
+      function showLogin(msg) {
+        localStorage.removeItem(AUTH_KEY);
+        localStorage.removeItem(TOKEN_KEY);
+        authView.style.display = 'flex';
+        appView.style.display = 'none';
+        if (msg && authError) { authError.style.display = 'block'; authError.textContent = msg; }
+      }
 
       function checkAuth() {
         const urlP = new URLSearchParams(window.location.search);
-        const session = localStorage.getItem(AUTH_KEY);
-        if (session === 'authenticated' || urlP.get('demo') === '1') {
+        const hasToken = !!localStorage.getItem(TOKEN_KEY);
+        if ((hasToken && localStorage.getItem(AUTH_KEY) === 'authenticated') || (IS_LOCAL && urlP.get('demo') === '1')) {
           authView.style.display = 'none';
           appView.style.display = 'flex';
         } else {
-          authView.style.display = 'flex';
-          appView.style.display = 'none';
+          showLogin();
         }
       }
 
-      loginForm.addEventListener('submit', function (e) {
+      // Validate the stored session with the server; sign out if expired
+      async function validateSession() {
+        if (!localStorage.getItem(TOKEN_KEY)) return;
+        try {
+          const r = await fetch('/api/admin-login', { headers: { Authorization: 'Bearer ' + localStorage.getItem(TOKEN_KEY) }, cache: 'no-store' });
+          const d = await r.json();
+          if (!d.valid) showLogin('Your session has expired. Please sign in again.');
+          else if (d.defaultPassword && !sessionStorage.getItem('lora_pwd_warned')) {
+            sessionStorage.setItem('lora_pwd_warned', '1');
+            alert('⚠️ Security: you are using the default admin password.\n\nPlease change it now in "10. Security & Backup" → Change Password.');
+          }
+        } catch (e) {}
+      }
+
+      // Any admin API call returning 401 → session expired → back to login
+      const _origFetch = window.fetch.bind(window);
+      window.fetch = async function (input, init) {
+        const res = await _origFetch(input, init);
+        try {
+          const url = typeof input === 'string' ? input : (input && input.url) || '';
+          const sentAuth = init && init.headers && (init.headers.Authorization || init.headers.authorization);
+          if (res.status === 401 && sentAuth && /\/api\//.test(url) && !/admin-login/.test(url) && !IS_LOCAL) {
+            showLogin('Your session has expired. Please sign in again.');
+          }
+        } catch (e) {}
+        return res;
+      };
+
+      loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         const u = document.querySelector('#login-username').value.trim();
         const p = document.querySelector('#login-password').value;
-
-        if ((u.toLowerCase() === adminCredentials.username.toLowerCase() || u === 'admin') && p === adminCredentials.password) {
-          authError.style.display = 'none';
-          localStorage.setItem(AUTH_KEY, 'authenticated');
-          checkAuth();
-        } else {
+        const btn = loginForm.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+        try {
+          const r = await _origFetch('/api/admin-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+          const d = await r.json().catch(() => ({}));
+          if (r.ok && d.token) {
+            authError.style.display = 'none';
+            localStorage.setItem(TOKEN_KEY, d.token);
+            localStorage.setItem(AUTH_KEY, 'authenticated');
+            document.querySelector('#login-password').value = '';
+            window.location.reload();
+          } else {
+            authError.style.display = 'block';
+            authError.textContent = d.message || 'Invalid username or password. Please verify your credentials.';
+          }
+        } catch (err) {
           authError.style.display = 'block';
-          authError.textContent = 'Invalid username or password. Please verify your credentials.';
+          authError.textContent = 'Could not reach the server. Please check your connection.';
+        } finally {
+          if (btn) btn.disabled = false;
         }
       });
 
       if (btnLogout) {
         btnLogout.addEventListener('click', function () {
-          localStorage.removeItem(AUTH_KEY);
-          checkAuth();
+          showLogin();
         });
       }
 
       checkAuth();
+      validateSession();
 
       // Dimension configurations
       const INCH_SPECS = {
@@ -5114,7 +5176,7 @@ Order Notes: [Customer Instructions]</pre>
         try {
           await fetch('/api/catalog', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
             body: JSON.stringify({ catalog })
           });
         } catch (e) {
@@ -5647,7 +5709,7 @@ Order Notes: [Customer Instructions]</pre>
                 try {
                   const uploadRes = await fetch('/api/upload', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
                     body: JSON.stringify({
                       image: compressedDataUrl,
                       model: activeModel,
@@ -5744,7 +5806,7 @@ Order Notes: [Customer Instructions]</pre>
               try {
                 const upRes = await fetch('/api/upload', {
                   method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
                   body: JSON.stringify({
                     image: inp.value,
                     model: activeModel,
@@ -5846,7 +5908,7 @@ Order Notes: [Customer Instructions]</pre>
           try {
             const apiRes = await fetch('/api/catalog', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
               body: JSON.stringify({ catalog })
             });
             const apiData = await apiRes.json();
@@ -5948,17 +6010,13 @@ Order Notes: [Customer Instructions]</pre>
       // Password Update
       const btnUpdatePwd = document.querySelector('#btn-update-pwd');
       if (btnUpdatePwd) {
-        btnUpdatePwd.addEventListener('click', function () {
+        btnUpdatePwd.addEventListener('click', async function () {
           const curr = document.querySelector('#sec-curr-pwd').value;
           const newP = document.querySelector('#sec-new-pwd').value;
           const confP = document.querySelector('#sec-conf-pwd').value;
 
-          if (curr !== adminCredentials.password) {
-            alert('Current password does not match.');
-            return;
-          }
-          if (!newP || newP.length < 6) {
-            alert('New password must be at least 6 characters long.');
+          if (!newP || newP.length < 10 || !/[A-Za-z]/.test(newP) || !/\d/.test(newP)) {
+            alert('New password must be at least 10 characters and include letters and numbers.');
             return;
           }
           if (newP !== confP) {
@@ -5966,12 +6024,21 @@ Order Notes: [Customer Instructions]</pre>
             return;
           }
 
-          adminCredentials.password = newP;
-          localStorage.setItem(CRED_KEY, JSON.stringify(adminCredentials));
-          alert('Admin password updated successfully! Please use your new password next time you sign in.');
-          document.querySelector('#sec-curr-pwd').value = '';
-          document.querySelector('#sec-new-pwd').value = '';
-          document.querySelector('#sec-conf-pwd').value = '';
+          btnUpdatePwd.disabled = true;
+          try {
+            const r = await fetch('/api/admin-login', { method: 'POST', headers: getAdminAuthHeaders(), body: JSON.stringify({ action: 'change_password', current: curr, next: newP }) });
+            const d = await r.json().catch(() => ({}));
+            if (!r.ok || !d.success) throw new Error(d.message || 'Could not update password.');
+            if (d.token) localStorage.setItem('lora_admin_token', d.token);
+            alert('✓ Admin password updated on the server. Other devices have been signed out.');
+            document.querySelector('#sec-curr-pwd').value = '';
+            document.querySelector('#sec-new-pwd').value = '';
+            document.querySelector('#sec-conf-pwd').value = '';
+          } catch (e) {
+            alert(e.message);
+          } finally {
+            btnUpdatePwd.disabled = false;
+          }
         });
       }
 
@@ -6187,7 +6254,7 @@ Order Notes: [Customer Instructions]</pre>
 
       // Helper: Admin Authorization Headers
       function getAdminAuthHeaders() {
-        const token = localStorage.getItem('lora_admin_token') || 'admin-session-active';
+        const token = localStorage.getItem('lora_admin_token') || '';
         return {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -6618,6 +6685,12 @@ Order Notes: [Customer Instructions]</pre>
             const data = await res.json();
             serverOrders = (data.orders || []).filter(o => o && o.id && !DUMMY_MOCK_ORDER_IDS.includes(o.id));
             serverFetchOk = true;
+            // Orders moved to the Recycle Bin must not come back from this browser's cache
+            if (Array.isArray(data.trashIds) && data.trashIds.length) {
+              const binned = new Set(data.trashIds);
+              const live = new Set(serverOrders.map(o => o.id));
+              localOrders = localOrders.filter(o => live.has(o.id) || !binned.has(o.id));
+            }
           }
         } catch (e) {
           console.warn('Orders API offline, operating in client storage mode', e);
@@ -6697,6 +6770,101 @@ Order Notes: [Customer Instructions]</pre>
                 renderAllOrdersTable();
       }
 
+      // ===== Orders Recycle Bin (permanent) & Reset Sales Data =====
+      const ordersBinModal = document.getElementById('modal-orders-bin');
+      const ordersBinBody = document.getElementById('orders-bin-body');
+      const ordersBinCount = document.getElementById('orders-bin-count');
+      let ordersBin = [];
+      const binEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+      async function loadOrdersBin() {
+        try {
+          const res = await fetch('/api/orders?trash=1', { headers: getAdminAuthHeaders(), cache: 'no-store' });
+          const data = await res.json();
+          ordersBin = Array.isArray(data.trash) ? data.trash : [];
+        } catch (e) { console.warn('Could not load recycle bin', e); }
+        if (ordersBinCount) ordersBinCount.textContent = ordersBin.length ? `(${ordersBin.length})` : '';
+        renderOrdersBin();
+      }
+
+      function renderOrdersBin() {
+        if (!ordersBinBody) return;
+        if (!ordersBin.length) {
+          ordersBinBody.innerHTML = '<div style="text-align:center; padding:2.5rem; color:var(--text-muted); font-size:.85rem;">Recycle Bin is empty.</div>';
+          return;
+        }
+        ordersBinBody.innerHTML = `
+          <table style="width:100%; border-collapse:collapse; font-size:.78rem;">
+            <thead><tr style="color:var(--text-muted); text-align:left; border-bottom:1px solid rgba(255,255,255,.08);">
+              <th style="padding:.5rem;">Order #</th><th style="padding:.5rem;">Customer</th><th style="padding:.5rem;">Product</th>
+              <th style="padding:.5rem;">Amount</th><th style="padding:.5rem;">Placed</th><th style="padding:.5rem;">Deleted</th><th style="padding:.5rem;"></th>
+            </tr></thead>
+            <tbody>${ordersBin.map((o, i) => `
+              <tr style="border-bottom:1px solid rgba(255,255,255,.05); color:#E2E8F0;">
+                <td style="padding:.55rem .5rem; font-weight:700;">#${binEsc(o.id)}</td>
+                <td style="padding:.55rem .5rem;">${binEsc(o.customerName)}<div style="color:var(--text-muted); font-size:.7rem;">${binEsc(o.phone)}</div></td>
+                <td style="padding:.55rem .5rem;">${binEsc(o.productName)}</td>
+                <td style="padding:.55rem .5rem; color:#6EE7B7;">₹${Number(o.totalPrice || 0).toLocaleString('en-IN')}</td>
+                <td style="padding:.55rem .5rem;">${o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : '—'}</td>
+                <td style="padding:.55rem .5rem;">${o.deletedAt ? new Date(o.deletedAt).toLocaleString('en-IN') : '—'}<div style="color:var(--text-muted); font-size:.7rem;">${binEsc(o.deleteReason)}</div></td>
+                <td style="padding:.55rem .5rem; text-align:right;"><button type="button" class="btn-op-action btn-op-secondary btn-bin-restore" data-idx="${i}">↩️ Restore</button></td>
+              </tr>`).join('')}
+            </tbody>
+          </table>`;
+      }
+
+      async function restoreFromBin(body) {
+        try {
+          const res = await fetch('/api/orders', { method: 'POST', headers: getAdminAuthHeaders(), body: JSON.stringify(Object.assign({ action: 'restore' }, body)) });
+          const data = await res.json();
+          if (!res.ok || data.success === false) throw new Error(data.message || 'Restore failed');
+          await loadOrders();
+          await loadOrdersBin();
+        } catch (e) { alert('Could not restore: ' + e.message); }
+      }
+
+      if (ordersBinBody) {
+        ordersBinBody.addEventListener('click', e => {
+          const btn = e.target.closest('.btn-bin-restore');
+          if (!btn) return;
+          const o = ordersBin[Number(btn.dataset.idx)];
+          if (o) restoreFromBin({ ids: [o.id], batch: o.deleteBatch });
+        });
+      }
+      const btnOpenBin = document.getElementById('btn-open-orders-bin');
+      if (btnOpenBin) btnOpenBin.addEventListener('click', () => { ordersBinModal.style.display = 'flex'; loadOrdersBin(); });
+      const btnCloseBin = document.getElementById('btn-orders-bin-close');
+      if (btnCloseBin) btnCloseBin.addEventListener('click', () => { ordersBinModal.style.display = 'none'; });
+      if (ordersBinModal) ordersBinModal.addEventListener('click', e => { if (e.target === ordersBinModal) ordersBinModal.style.display = 'none'; });
+      const btnRestoreAll = document.getElementById('btn-orders-bin-restore-all');
+      if (btnRestoreAll) btnRestoreAll.addEventListener('click', () => {
+        if (!ordersBin.length) return;
+        if (confirm(`Restore all ${ordersBin.length} order(s) from the Recycle Bin?`)) restoreFromBin({ all: true });
+      });
+
+      const btnResetSales = document.getElementById('btn-reset-sales');
+      if (btnResetSales) btnResetSales.addEventListener('click', async () => {
+        if (!orders.length) { alert('There are no current orders to reset.'); return; }
+        if (!confirm(`Reset sales data?\n\nAll ${orders.length} current order(s) will be moved to the Recycle Bin and sales statistics will start from zero.\n\nNothing is lost — you can restore them anytime from ♻️ Recycle Bin.`)) return;
+        btnResetSales.disabled = true;
+        try {
+          const res = await fetch('/api/orders', { method: 'POST', headers: getAdminAuthHeaders(), body: JSON.stringify({ action: 'reset_all', reason: 'Sales data reset' }) });
+          const data = await res.json();
+          if (!res.ok || data.success === false) throw new Error(data.message || 'Reset failed');
+          localStorage.setItem(ORDER_KEY, '[]');
+          localStorage.removeItem('lora_orders_v1');
+          localStorage.removeItem('lora_customer_orders');
+          await loadOrders();
+          await loadOrdersBin();
+          alert(`✓ ${data.moved || 0} order(s) moved to the Recycle Bin. Sales data reset to zero.`);
+        } catch (e) {
+          alert('Reset failed: ' + e.message);
+        } finally {
+          btnResetSales.disabled = false;
+        }
+      });
+      setTimeout(loadOrdersBin, 1500);
+
       // Production Launch Reset All Handler
       const btnLaunchResetAll = document.querySelector('#btn-launch-reset-all');
       const launchResetFeedback = document.querySelector('#launch-reset-feedback');
@@ -6704,7 +6872,8 @@ Order Notes: [Customer Instructions]</pre>
         btnLaunchResetAll.addEventListener('click', async function () {
           const confirmed = confirm(
             '⚠️ WARNING: ARE YOU READY TO MAKE THE SITE LIVE?\\n\\n' +
-            'This will permanently reset all test orders, test inquiries, and mock statistics to zero.\\n\\n' +
+            'This will reset all orders, inquiries and statistics to zero.\\n\\n' +
+            'Nothing is lost: all orders and leads are moved to the Recycle Bin and can be restored.\\n\\n' +
             'Click OK to proceed with production launch reset.'
           );
           if (!confirmed) return;
@@ -7047,6 +7216,7 @@ Order Notes: [Customer Instructions]</pre>
         }
 
         const courierOptions = [
+          'KRS Courier',
           'BlueDart Express',
           'Delhivery Express',
           'DTDC Air/Surface',
@@ -7089,7 +7259,7 @@ Order Notes: [Customer Instructions]</pre>
             `;
           }
 
-          const customerTrackMsg = `Hello ${order.customerName},\nYour LORA Mattress (${order.productName}) has been dispatched!\nCourier: ${order.courier || 'Express Carrier'}\nTracking/AWB: ${order.awb || 'In Transit'}\nExpected Delivery: ${order.expectedDelivery || 'Within 2-3 business days'}\nTrack live on our logistics bay. Thank you for choosing LORA!`;
+          const customerTrackMsg = `Hello ${order.customerName},\nYour LORA Mattress (${order.productName}) has been dispatched!\nCourier: ${order.courier || 'KRS Courier'}\nTracking/AWB: ${order.awb || 'In Transit'}\nExpected Delivery: ${order.expectedDelivery || 'Within 2-3 business days'}\nTrack live on our logistics bay. Thank you for choosing LORA!`;
 
           return `
             <div class="order-item-card" data-order-id="${order.id}">
@@ -7140,7 +7310,7 @@ Order Notes: [Customer Instructions]</pre>
                     <label style="font-size: 0.68rem;">Courier Partner</label>
                     <select class="admin-select dp-input-courier" data-id="${order.id}">
                       <option value="">Select Carrier...</option>
-                      ${courierOptions.map(c => `<option value="${c}" ${order.courier === c ? 'selected' : ''}>${c}</option>`).join('')}
+                      ${courierOptions.map(c => `<option value="${c}" ${(order.courier || 'KRS Courier') === c ? 'selected' : ''}>${c}</option>`).join('')}
                     </select>
                   </div>
                   <div class="input-block" style="margin-bottom: 0;">
@@ -7153,7 +7323,7 @@ Order Notes: [Customer Instructions]</pre>
                   </div>
                   <div class="input-block" style="margin-bottom: 0;">
                     <label style="font-size: 0.68rem;">Expected Delivery Date</label>
-                    <input type="date" class="admin-input dp-input-exp-date" data-id="${order.id}" value="${order.expectedDelivery || ''}">
+                    <input type="date" class="admin-input dp-input-exp-date" data-id="${order.id}" value="${order.expectedDelivery || (() => { const d = new Date(order.dispatchDate || Date.now()); d.setDate(d.getDate() + 4); return d.toISOString().split('T')[0]; })()}">
                   </div>
                 </div>
 
@@ -9057,7 +9227,7 @@ Order Notes: [Customer Instructions]</pre>
         const lead = storeLeads.find(l => l.id === leadId) || {};
         const ok = await window.adminConfirm({
           title: 'Delete this customer?',
-          message: `<strong>${escapeHtml(lead.name || 'Customer')}</strong> (${escapeHtml(lead.phone || '—')}) will be moved to the <strong>Recycle Bin</strong>. You can restore it within 30 days.`,
+          message: `<strong>${escapeHtml(lead.name || 'Customer')}</strong> (${escapeHtml(lead.phone || '—')}) will be moved to the <strong>Recycle Bin</strong>. You can restore it anytime.`,
           confirmText: 'Move to Recycle Bin'
         });
         if (!ok) return;
@@ -9083,7 +9253,7 @@ Order Notes: [Customer Instructions]</pre>
         const label = scope === 'lumi' ? 'Lumi AI enquiries' : (isAll ? 'customer leads' : 'filtered customer leads');
         const ok = await window.adminConfirm({
           title: 'Reset customer details?',
-          message: `This will remove <strong>${targets.length}</strong> ${label} (names, phone numbers, PIN codes) from the list.<br><br>They will be kept in the <strong>Recycle Bin for 30 days</strong> and can be restored. After that they are deleted permanently.`,
+          message: `This will remove <strong>${targets.length}</strong> ${label} (names, phone numbers, PIN codes) from the list.<br><br>They will be kept in the <strong>Recycle Bin permanently</strong> and can be restored anytime.`,
           confirmText: 'Reset ' + targets.length + ' record' + (targets.length > 1 ? 's' : ''),
           requireText: 'RESET'
         });
@@ -9122,10 +9292,9 @@ Order Notes: [Customer Instructions]</pre>
               <td style="font-family:monospace;">${escapeHtml(l.phone || '—')}</td>
               <td>${escapeHtml(l.pincode || l.place || '—')}</td>
               <td style="font-size:0.75rem;color:var(--text-muted);">${escapeHtml(l.source || (l.resultType === 'lumi_consultation' ? 'Lumi AI' : 'Store Locator'))}</td>
-              <td><span style="color:${left <= 3 ? '#F87171' : '#FBBF24'};font-weight:700;font-size:0.78rem;">${left} day${left === 1 ? '' : 's'}</span></td>
+              <td><span style="color:#86EFAC;font-weight:700;font-size:0.78rem;">Kept forever</span></td>
               <td style="text-align:right;white-space:nowrap;">
                 <button type="button" class="btn-op-action" onclick="window.restoreLeadsFromTrash(['${id}'])" style="color:#34D399;border-color:rgba(52,211,153,0.35);padding:0.25rem 0.55rem;font-size:0.74rem;">↩ Restore</button>
-                <button type="button" class="btn-op-action" onclick="window.deleteLeadForever('${id}')" style="color:#F87171;border-color:rgba(239,68,68,0.3);padding:0.25rem 0.55rem;font-size:0.74rem;">Delete forever</button>
               </td></tr>`;
           }).join('');
         } catch (e) {
@@ -9438,7 +9607,7 @@ Order Notes: [Customer Instructions]</pre>
         try {
           await fetch('/api/studios', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
             body: JSON.stringify(studiosList)
           });
         } catch (e) {
@@ -9462,7 +9631,7 @@ Order Notes: [Customer Instructions]</pre>
         try {
           await fetch('/api/studios', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
             body: JSON.stringify(studiosList)
           });
         } catch (e) {
@@ -10214,7 +10383,7 @@ Order Notes: [Customer Instructions]</pre>
         try {
           const res = await fetch(RIBBON_API_ENDPOINT, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
             body: JSON.stringify({ settings: settingsToSave })
           });
           const data = await res.json();

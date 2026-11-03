@@ -19,6 +19,8 @@ const CONFIG_RUNTIME_FILES = [
   'orders_data.json',
   'store_leads.json',
   'store_leads_trash.json',
+  'orders_trash.json',
+  'admin_auth.json',
   'payment_settings.json',
   'otp_settings.json',
   'marketing_settings.json',

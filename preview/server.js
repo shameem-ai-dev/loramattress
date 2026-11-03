@@ -398,6 +398,18 @@ const server = http.createServer((req, res) => {
     };
   };
 
+  // Admin login (server-side password check, signed session token)
+  if (pathname === '/api/admin-login') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; if (body.length > 1e4) req.destroy(); });
+    req.on('end', () => {
+      let payload = {};
+      try { if (body) payload = JSON.parse(body); } catch (e) {}
+      return callApiHandler(require('../api/admin-login.js'), req, res, payload);
+    });
+    return;
+  }
+
   // Offer Ribbon Settings API (GET / POST)
   if (pathname === '/api/ribbon-settings') {
     if (req.method === 'GET') {
@@ -406,6 +418,7 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.method === 'POST') {
+      if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
       let body = '';
       req.on('data', chunk => body += chunk);
       req.on('end', () => {
@@ -420,7 +433,7 @@ const server = http.createServer((req, res) => {
               id: m.id || `ribbon_${idx + 1}`,
               tag: String(m.tag || '').trim().slice(0, 30),
               text: String(m.text || '').trim().slice(0, 180),
-              link: String(m.link || '').trim()
+              link: (() => { const l = String(m.link || '').trim(); return /^(https?:\/\/|\/|#)/i.test(l) ? l.slice(0, 500) : ''; })()
             })).filter(m => m.text.length > 0) : [],
             updatedAt: new Date().toISOString()
           };
@@ -521,6 +534,7 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.method === 'POST') {
+      if (!verifyAdminAuth(req)) return sendJson(401, { success: false, message: 'Unauthorized' });
       let body = '';
       req.on('data', chunk => { body += chunk; });
       req.on('end', () => {

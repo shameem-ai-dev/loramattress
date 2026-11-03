@@ -91,4 +91,18 @@ function create({ dataDir }) {
   return { lookup };
 }
 
-module.exports = { create };
+// Vercel serverless handler: GET /api/pincode-geo?pin=XXXXXX
+let _vercelGeo = null;
+async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  let pin = '';
+  try { pin = new URL(req.url || '/', 'http://localhost').searchParams.get('pin') || ''; } catch (e) {}
+  pin = String((req.query && req.query.pin) || pin).trim();
+  if (!/^[1-9]\d{5}$/.test(pin)) return res.status(400).json({ success: false, message: 'Enter a valid 6-digit pincode' });
+  if (!_vercelGeo) _vercelGeo = create({ dataDir: require('os').tmpdir() });
+  const geo = await _vercelGeo.lookup(pin);
+  if (geo) res.setHeader('Cache-Control', 'public, max-age=604800, s-maxage=604800');
+  return res.status(200).json(geo ? { success: true, pin, lat: geo.lat, lng: geo.lng, place: geo.place } : { success: false, pin, message: 'Location not found for this pincode' });
+}
+handler.create = create;
+module.exports = handler;

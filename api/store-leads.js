@@ -40,13 +40,9 @@ function writeList(file, list) {
   }
 }
 
-// Items older than the retention window are purged automatically
+// Recycle bin is permanent: items are never auto-purged
 function readTrash() {
-  const cutoff = Date.now() - TRASH_RETENTION_DAYS * 24 * 3600 * 1000;
-  const trash = readList(TRASH_FILE);
-  const kept = trash.filter(t => !t.deletedAt || new Date(t.deletedAt).getTime() >= cutoff);
-  if (kept.length !== trash.length) writeList(TRASH_FILE, kept);
-  return kept;
+  return readList(TRASH_FILE);
 }
 
 function getSubPath(req) {
@@ -150,16 +146,8 @@ module.exports = async function handler(req, res) {
         writeList(TRASH_FILE, newTrash);
         return res.status(200).json({ success: true, restored: restoring.length, leads: merged, trash: newTrash });
       }
-      if (req.method === 'DELETE' && sub.length === 2) {
-        const trash = readTrash();
-        const newTrash = trash.filter(t => t.id !== sub[1]);
-        if (newTrash.length === trash.length) return res.status(404).json({ success: false, message: 'Item not found in recycle bin.' });
-        writeList(TRASH_FILE, newTrash);
-        return res.status(200).json({ success: true, trash: newTrash });
-      }
-      if (req.method === 'DELETE' && sub.length === 1) {
-        writeList(TRASH_FILE, []);
-        return res.status(200).json({ success: true, trash: [] });
+      if (req.method === 'DELETE') {
+        return res.status(403).json({ success: false, message: 'The Recycle Bin is permanent — items cannot be deleted from it. You can restore them anytime.' });
       }
       return res.status(405).json({ success: false, message: 'Method Not Allowed' });
     }

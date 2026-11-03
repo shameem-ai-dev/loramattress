@@ -11,7 +11,7 @@
   var state = { usage: null, files: [], filter: 'all', open: false, loading: false, error: '' };
   var hosts = [];
 
-  function token() { return localStorage.getItem('lora_admin_token') || 'admin-session-active'; }
+  function token() { return localStorage.getItem('lora_admin_token') || ''; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function fmt(n) {
     n = Number(n) || 0;

@@ -9,7 +9,7 @@
   var state = { enabled: true, autoplay: true, title: 'Watch LORA', subtitle: '', profileUrl: '', reels: [] };
   var IG_RE = /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels|tv)\/[A-Za-z0-9_-]+/i;
 
-  function token() { return localStorage.getItem('lora_admin_token') || 'admin-session-active'; }
+  function token() { return localStorage.getItem('lora_admin_token') || ''; }
   function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function uid() { return 'reel_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
   function mb(n) { return (n / 1e6).toFixed(1) + ' MB'; }

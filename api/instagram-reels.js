@@ -37,6 +37,7 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
+    if (!require('./auth.js').verifyAdminAuth(req)) return res.status(401).json({ success: false, message: 'Unauthorized: admin login required.' });
     try {
       const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
       const s = payload.settings || payload;

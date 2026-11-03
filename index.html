@@ -5242,26 +5242,33 @@
 
         // 2. If not directly in pincode array, check coordinate distance (< 40 km)
         if (!matchedStudio) {
-          const prefix = pincode.substring(0, 3);
-          let userCoord = PINCODE_COORDINATES[prefix];
-          if (!userCoord) {
+          const geoLookup = async (pin) => {
             try {
-              const geoRes = await fetch(`/api/pincode-geo?pin=${encodeURIComponent(pincode)}`);
-              if (geoRes.ok) {
-                const geoData = await geoRes.json();
-                if (geoData && geoData.lat && geoData.lng) {
-                  userCoord = { lat: geoData.lat, lng: geoData.lng };
-                }
+              const r = await fetch(`/api/pincode-geo?pin=${encodeURIComponent(pin)}`);
+              if (r.ok) {
+                const g = await r.json();
+                if (g && g.lat && g.lng) return { lat: Number(g.lat), lng: Number(g.lng) };
               }
-            } catch (e) {
-              console.warn('Geo lookup fallback skipped:', e);
-            }
-          }
+            } catch (e) { console.warn('Geo lookup skipped:', e); }
+            return null;
+          };
+
+          // Precise pincode location first; coarse prefix table only as fallback
+          let userCoord = await geoLookup(pincode) || PINCODE_COORDINATES[pincode.substring(0, 3)] || null;
 
           if (userCoord) {
             for (const studio of cachedStudios) {
-              if (studio.active === false || !studio.lat || !studio.lng) continue;
-              const dist = getDistanceKm(userCoord.lat, userCoord.lng, studio.lat, studio.lng);
+              if (studio.active === false) continue;
+              let sLat = parseFloat(studio.lat), sLng = parseFloat(studio.lng);
+              if (!sLat || !sLng) {
+                // Studio saved without coordinates → derive from its pincode
+                const sPin = String(studio.primaryPincode || studio.pincode || '').trim();
+                if (!/^\d{6}$/.test(sPin)) continue;
+                const sc = await geoLookup(sPin) || PINCODE_COORDINATES[sPin.substring(0, 3)];
+                if (!sc) continue;
+                sLat = sc.lat; sLng = sc.lng;
+              }
+              const dist = getDistanceKm(userCoord.lat, userCoord.lng, sLat, sLng);
               if (dist <= 40 && dist < lowestDistance) {
                 lowestDistance = dist;
                 matchedStudio = studio;
@@ -9490,6 +9497,16 @@
               alert((data && data.message) || 'Please verify your mobile number with OTP to place this order.');
               return;
             }
+            if (res.status === 400) {
+              const data = await res.json().catch(() => ({}));
+              alert((data && data.message) || 'Your order could not be placed. Please review your details and try again.');
+              try {
+                const list = JSON.parse(localStorage.getItem('lora_orders_v1') || '[]').filter(o => o.id !== newOrder.id);
+                localStorage.setItem('lora_orders_v1', JSON.stringify(list));
+              } catch (e) {}
+              window.location.reload();
+              return;
+            }
             if (!res.ok) throw new Error('Status ' + res.status);
             console.log('[ORDER PERSISTENCE] Successfully committed to backend server database:', newOrder.id);
           } catch (err) {
@@ -9753,7 +9770,8 @@
           const state = document.querySelector('#chk-customer-state')?.value.trim() || 'Karnataka';
           const notes = document.querySelector('#chk-order-notes')?.value.trim() || '';
 
-          const orderId = 'LORA-' + Math.floor(1000 + Math.random() * 9000);
+          // Collision-proof order ID (old 4-digit IDs could overwrite another customer's order)
+          const orderId = 'LORA-' + Date.now().toString(36).toUpperCase().slice(-5) + Math.random().toString(36).slice(2, 5).toUpperCase();
           const fullAddressParts = [
             house,
             street,
@@ -9884,7 +9902,7 @@
             return;
           }
 
-          const finalizeRazorpayOrder = function (paymentId, verifiedOrderId) {
+          const finalizeRazorpayOrder = function (paymentId, verifiedOrderId, signature) {
             const paidOrder = {
               id: orderId,
               createdAt: new Date().toISOString(),
@@ -9903,6 +9921,7 @@
               paymentStatus: `Paid (Razorpay: ${paymentId})`,
               paymentId: paymentId,
               razorpayOrderId: verifiedOrderId || rzpOrderId,
+              razorpaySignature: signature || '',
               orderNotes: notes,
               status: 'Order Received',
               statusHistory: [
@@ -9983,7 +10002,7 @@
                     return;
                   }
 
-                  finalizeRazorpayOrder(paymentId, retOrderId);
+                  finalizeRazorpayOrder(paymentId, retOrderId, retSignature);
                 } catch (vErr) {
                   alert('Payment verification connection error: ' + vErr.message);
                   if (btnSubmitOrder) btnSubmitOrder.disabled = false;
@@ -10001,14 +10020,17 @@
               });
               rzpInstance.open();
             } catch (rzpErr) {
-              console.warn('[CHECKOUT] Razorpay modal launch error, offering simulation:', rzpErr);
-              const simPaymentId = 'pay_' + Math.random().toString(36).substring(2, 12);
-              finalizeRazorpayOrder(simPaymentId, rzpOrderId);
+              // Never mark an order as paid without a real, verified payment
+              console.warn('[CHECKOUT] Razorpay modal launch error:', rzpErr);
+              alert('The payment window could not be opened. Please try again, or choose Cash on Delivery.');
+              if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+              updateCheckoutPaymentUI();
             }
           } else {
-            console.log('[CHECKOUT] Razorpay SDK offline, completing verified simulation');
-            const simPaymentId = 'pay_sim_' + Math.random().toString(36).substring(2, 10);
-            finalizeRazorpayOrder(simPaymentId, rzpOrderId);
+            console.warn('[CHECKOUT] Razorpay SDK not loaded');
+            alert('The secure payment window did not load (check your internet connection or disable ad-blockers), then try again. You can also choose Cash on Delivery.');
+            if (btnSubmitOrder) btnSubmitOrder.disabled = false;
+            updateCheckoutPaymentUI();
           }
         });
       }
