@@ -12,7 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script src="assets/lora-ads.js?v=1"></script>
-  <link rel="stylesheet" href="assets/base.css?v=20261030_v7">
+  <script src="assets/lora-variants.js?v=20261104_v1"></script>
+  <link rel="stylesheet" href="assets/base.css?v=20261104_v2">
   <link rel="stylesheet" href="assets/lumi.css?v=20261030_v7">
   <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -1704,7 +1705,7 @@
       background: #FAF7F2;
     }
   </style>
-  <link rel="stylesheet" href="assets/lora-polish.css?v=20261030_v7">
+  <link rel="stylesheet" href="assets/lora-polish.css?v=20261104_v3">
 </head>
 <body class="pdp-page">
 
@@ -2959,20 +2960,62 @@
       if (!container) return;
 
       const specs = INCH_SPECS[activeCotType] || [];
-      if (!specs.find(s => s.id === activeInchId)) {
-        activeInchId = specs[0] ? specs[0].id : '78x60';
+      const pData = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
+      const LV = window.LoraVariants;
+      const isOk = s => !LV || !pData || LV.sizeAvailable(pData, activeCotType, s.id);
+      if (!specs.find(s => s.id === activeInchId && isOk(s))) {
+        const first = specs.find(isOk) || specs[0];
+        activeInchId = first ? first.id : '78x60';
       }
 
-      container.innerHTML = specs.map(s => `
-        <button type="button" class="pdp-pill-btn ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
-          ${s.title}
-        </button>
-      `).join('');
+      container.innerHTML = specs.map(s => {
+        const ok = isOk(s);
+        const m = LV ? LV.meta(s.id) : {};
+        return `
+        <button type="button" class="pdp-pill-btn lv-size-card ${ok && s.id === activeInchId ? 'active' : ''} ${ok ? '' : 'is-unavailable'}" data-inch="${s.id}" ${ok ? '' : 'disabled aria-disabled="true"'}>
+          ${ok && m.tag ? `<em class="lv-size-tag">${m.tag}</em>` : ''}
+          <strong>${s.title}</strong>
+          <small class="lv-size-sub">${ok ? (m.ft || '') : 'Unavailable'}</small>
+        </button>`;
+      }).join('');
 
       const activeSpec = specs.find(s => s.id === activeInchId) || specs[0];
       if (inchLabel && activeSpec) {
         inchLabel.textContent = activeSpec.title;
       }
+    }
+
+    function syncPdpBedButtons() {
+      const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
+      const LV = window.LoraVariants;
+      document.querySelectorAll('.pdp-pill-btn[data-type]').forEach(btn => {
+        const cot = btn.getAttribute('data-type');
+        const ok = !LV || !data || LV.cotAvailable(data, cot, INCH_SPECS);
+        btn.disabled = !ok;
+        btn.classList.toggle('is-unavailable', !ok);
+        btn.title = ok ? '' : 'Not available for this model';
+        btn.classList.toggle('active', ok && cot === activeCotType);
+      });
+    }
+
+    function renderPdpThickOptions() {
+      const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
+      const thickWrap = document.querySelector('.pdp-thick-pills-wrap');
+      if (!data) return;
+      const LV = window.LoraVariants;
+      const all = LV ? LV.thicknesses(data) : [6, 7, 8, 9, 10, 11, 12];
+      const vis = LV ? LV.visibleThicks(data, activeCotType, activeInchId) : all;
+      if (!vis.includes(activeThickness)) {
+        activeThickness = vis.includes(8) ? 8 : (vis[0] || activeThickness);
+      }
+      if (thickWrap) {
+        thickWrap.innerHTML = all.map(th => {
+          const ok = vis.includes(th);
+          return `<button type="button" class="pdp-pill-btn ${ok && th === activeThickness ? 'active' : ''} ${ok ? '' : 'is-unavailable'}" data-thick="${th}" ${ok ? '' : 'disabled aria-disabled="true" title="Not available in this size"'}>${th} Inch</button>`;
+        }).join('');
+      }
+      const thickLabel = document.querySelector('#pdp-selected-thick-label');
+      if (thickLabel) thickLabel.textContent = `${activeThickness} Inch`;
     }
 
     window.setPdpCustomDim = function(dim, val) {
@@ -3189,32 +3232,14 @@
       const tWarr = document.querySelector('#table-warranty');
       if (tWarr) tWarr.textContent = data.warranty;
 
-      // Sync active state on bed type pills
-      document.querySelectorAll('.pdp-pill-btn[data-type]').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-type') === activeCotType);
-      });
-
-      // Render and sync active state on thickness pills dynamically based on availableThicknesses
-      const thickWrap = document.querySelector('.pdp-thick-pills-wrap');
-      const availThicks = (data.availableThicknesses && data.availableThicknesses.length)
-        ? data.availableThicknesses.map(Number)
-        : [6, 7, 8, 9, 10, 11, 12];
-
-      if (!availThicks.includes(activeThickness)) {
-        activeThickness = availThicks.includes(8) ? 8 : availThicks[0];
+      // Coerce selection to an admin-enabled combination, then render selectors
+      if (window.LoraVariants) {
+        const r = window.LoraVariants.resolve(data, INCH_SPECS, { cot: activeCotType, inch: activeInchId, thick: activeThickness });
+        activeCotType = r.cot; activeInchId = r.inch; activeThickness = r.thick;
       }
-
-      if (thickWrap) {
-        thickWrap.innerHTML = availThicks.map(th => `
-          <button type="button" class="pdp-pill-btn ${th === activeThickness ? 'active' : ''}" data-thick="${th}">${th} Inch</button>
-        `).join('');
-      }
-      const thickLabel = document.querySelector('#pdp-selected-thick-label');
-      if (thickLabel) {
-        thickLabel.textContent = `${activeThickness} Inch`;
-      }
-
+      syncPdpBedButtons();
       renderInchOptions();
+      renderPdpThickOptions();
       updatePriceDisplay();
     }
 
@@ -3683,11 +3708,8 @@
           document.querySelectorAll('.pdp-pill-btn[data-type], .pdp-bed-card').forEach(b => b.classList.remove('active'));
           bedPill.classList.add('active');
           activeCotType = bedPill.getAttribute('data-type') || 'queen';
-          const specs = INCH_SPECS[activeCotType] || [];
-          if (!specs.find(s => s.id === activeInchId)) {
-            activeInchId = specs[0] ? specs[0].id : '78x60';
-          }
           renderInchOptions();
+          renderPdpThickOptions();
           updatePriceDisplay();
           return;
         }
@@ -3705,6 +3727,7 @@
           if (inchLabel && activeSpec) {
             inchLabel.textContent = activeSpec.title;
           }
+          renderPdpThickOptions();
           updatePriceDisplay();
           return;
         }

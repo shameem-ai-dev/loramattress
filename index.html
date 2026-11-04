@@ -12,7 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script src="assets/lora-ads.js?v=1"></script>
-  <link rel="stylesheet" href="assets/base.css?v=20261030_v8">
+  <script src="assets/lora-variants.js?v=20261104_v1"></script>
+  <link rel="stylesheet" href="assets/base.css?v=20261104_v2">
   <link rel="stylesheet" href="assets/lumi.css?v=20261030_v8">
   <link rel="stylesheet" href="assets/lora-float.css?v=20261030_v8">
     <!-- Razorpay Checkout Gateway SDK -->
@@ -1468,7 +1469,7 @@
     }
   </style>
   <!-- Warm Sanctuary Luxury Design System (Highest Cascade Priority & Fresh Cache Version) -->
-  <link rel="stylesheet" href="assets/lora-polish.css?v=20261030_v8">
+  <link rel="stylesheet" href="assets/lora-polish.css?v=20261104_v3">
 </head>
 <body>
 
@@ -7070,34 +7071,17 @@
         if (inch) activeInchId = inch;
         if (thick) activeThickness = parseInt(thick, 10);
 
-        // Sync Bed Type buttons
-        document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(btn => {
-          btn.classList.toggle('active', (btn.getAttribute('data-type') || btn.getAttribute('data-cot')) === activeCotType);
-        });
+        // Coerce selection to a combination the admin has enabled
+        if (window.LoraVariants) {
+          const r = window.LoraVariants.resolve(data, INCH_SPECS, { cot: activeCotType, inch: activeInchId, thick: activeThickness });
+          activeCotType = r.cot; activeInchId = r.inch; activeThickness = r.thick;
+        }
+
+        // Sync Bed Type buttons (disable bed types with no sellable sizes)
+        syncInnerBedButtons();
         const cotNames = { queen: 'Queen', king: 'King', double: 'Double', single: 'Single', custom: 'Custom' };
         const cotLabel = document.querySelector('#inner-cot-type-label');
         if (cotLabel) cotLabel.textContent = cotNames[activeCotType] || activeCotType.toUpperCase();
-
-        // Render & sync Thickness buttons dynamically based on availableThicknesses
-        const availThicks = (data.availableThicknesses && data.availableThicknesses.length)
-          ? data.availableThicknesses.map(Number)
-          : [6, 7, 8, 9, 10, 11, 12];
-
-        if (!availThicks.includes(activeThickness)) {
-          activeThickness = availThicks.includes(8) ? 8 : availThicks[0];
-        }
-
-        const thickContainer = document.querySelector('#inner-thick-container') || document.querySelector('.inner-thickness-row');
-        if (thickContainer) {
-          thickContainer.innerHTML = availThicks.map(th => `
-            <button type="button" class="inner-thick-pill-btn ${th === activeThickness ? 'active' : ''}" data-thick="${th}">${th} Inch</button>
-          `).join('');
-        }
-
-        const thickLabel = document.querySelector('#inner-thick-label');
-        if (thickLabel) {
-          thickLabel.textContent = `${activeThickness} Inch`;
-        }
 
         // Model Switcher pills
         document.querySelectorAll('.inner-model-pill').forEach(pill => {
@@ -7241,16 +7225,50 @@
         updateInnerPrice();
       }
 
+      function syncInnerBedButtons() {
+        const data = catalog[activeInnerModelKey];
+        const LV = window.LoraVariants;
+        document.querySelectorAll('.inner-bed-type-btn, .inner-size-btn').forEach(btn => {
+          const cot = btn.getAttribute('data-type') || btn.getAttribute('data-cot');
+          const ok = !LV || !data || LV.cotAvailable(data, cot, INCH_SPECS);
+          btn.disabled = !ok;
+          btn.classList.toggle('is-unavailable', !ok);
+          btn.title = ok ? '' : 'Not available for this model';
+          btn.classList.toggle('active', ok && cot === activeCotType);
+        });
+      }
+
+      function renderInnerThickButtons() {
+        const data = catalog[activeInnerModelKey];
+        const container = document.querySelector('#inner-thick-container') || document.querySelector('.inner-thickness-row');
+        if (!data || !container) return;
+        const LV = window.LoraVariants;
+        const all = LV ? LV.thicknesses(data) : [6, 7, 8, 9, 10, 11, 12];
+        const vis = LV ? LV.visibleThicks(data, activeCotType, activeInchId) : all;
+        if (!vis.includes(activeThickness)) {
+          activeThickness = vis.includes(8) ? 8 : (vis[0] || activeThickness);
+        }
+        container.innerHTML = all.map(th => {
+          const ok = vis.includes(th);
+          return `<button type="button" class="inner-thick-pill-btn ${ok && th === activeThickness ? 'active' : ''} ${ok ? '' : 'is-unavailable'}" data-thick="${th}" ${ok ? '' : 'disabled aria-disabled="true" title="Not available in this size"'}>${th} Inch</button>`;
+        }).join('');
+        const thickLabel = document.querySelector('#inner-thick-label');
+        if (thickLabel) thickLabel.textContent = `${activeThickness} Inch`;
+      }
+
       function renderInchButtons() {
         const container = document.querySelector('#inner-inch-container');
         const customWrap = document.querySelector('#inner-custom-dim-wrap');
         const inchLabel = document.querySelector('#inner-inch-label');
         if (!container) return;
+        const data = catalog[activeInnerModelKey];
+        const LV = window.LoraVariants;
 
         if (activeCotType === 'custom') {
           container.style.display = 'none';
           if (customWrap) customWrap.style.display = 'flex';
           if (inchLabel) inchLabel.textContent = `Custom (${customLenInches}" × ${customWidInches}")`;
+          renderInnerThickButtons();
           return;
         }
 
@@ -7258,16 +7276,24 @@
         if (customWrap) customWrap.style.display = 'none';
 
         const specs = INCH_SPECS[activeCotType] || [];
-        // Ensure active inch is valid
-        if (!specs.find(s => s.id === activeInchId)) {
-          activeInchId = specs[0] ? specs[0].id : '';
+        const isOk = s => !LV || !data || LV.sizeAvailable(data, activeCotType, s.id);
+        // Ensure active inch is valid & sellable
+        if (!specs.find(s => s.id === activeInchId && isOk(s))) {
+          const first = specs.find(isOk) || specs[0];
+          activeInchId = first ? first.id : '';
         }
 
-        container.innerHTML = specs.map(s => `
-          <button type="button" class="inner-inch-btn ${s.id === activeInchId ? 'active' : ''}" data-inch="${s.id}">
-            <strong>${s.title}</strong>
-          </button>
-        `).join('');
+        container.innerHTML = specs.map(s => {
+          const ok = isOk(s);
+          const m = LV ? LV.meta(s.id) : {};
+          return `
+          <button type="button" class="inner-inch-btn lv-size-card ${ok && s.id === activeInchId ? 'active' : ''} ${ok ? '' : 'is-unavailable'}" data-inch="${s.id}" ${ok ? '' : 'disabled aria-disabled="true"'}>
+            ${ok && m.tag ? `<em class="lv-size-tag">${m.tag}</em>` : ''}
+            <strong style="color: inherit;">${s.title}</strong>
+            <small class="lv-size-sub">${ok ? (m.ft || '') : 'Unavailable'}</small>
+          </button>`;
+        }).join('');
+        renderInnerThickButtons();
 
         const activeSpec = specs.find(s => s.id === activeInchId);
         if (inchLabel && activeSpec) {
@@ -7282,6 +7308,7 @@
             activeInchId = this.getAttribute('data-inch');
             const title = this.querySelector('strong')?.textContent.trim() || '';
             if (inchLabel) inchLabel.textContent = title;
+            renderInnerThickButtons();
             updateInnerPrice();
           });
         });

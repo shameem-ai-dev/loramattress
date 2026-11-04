@@ -320,9 +320,17 @@ body {
   border: 1.5px solid #E8DFD5 !important;
   color: #1C1917 !important;
 }
+.inner-bed-type-btn strong, .inner-inch-pill-btn strong, .inner-thick-pill-btn strong, .inner-inch-btn strong, .inner-thick-btn strong, .inner-size-btn strong,
+.inner-bed-type-btn span, .inner-inch-pill-btn span, .inner-thick-pill-btn span, .inner-inch-btn span, .inner-thick-btn span, .inner-size-btn span {
+  color: #1C1917 !important;
+}
 .inner-bed-type-btn:hover, .inner-inch-pill-btn:hover, .inner-thick-pill-btn:hover, .inner-inch-btn:hover, .inner-thick-btn:hover, .inner-size-btn:hover {
   border-color: var(--lp-terracotta) !important;
   background: #FAF7F2 !important;
+  color: var(--lp-terracotta) !important;
+}
+.inner-bed-type-btn:hover strong, .inner-inch-pill-btn:hover strong, .inner-thick-pill-btn:hover strong, .inner-inch-btn:hover strong, .inner-thick-btn:hover strong, .inner-size-btn:hover strong,
+.inner-bed-type-btn:hover span, .inner-inch-pill-btn:hover span, .inner-thick-pill-btn:hover span, .inner-inch-btn:hover span, .inner-thick-btn:hover span, .inner-size-btn:hover span {
   color: var(--lp-terracotta) !important;
 }
 .inner-bed-type-btn.active, .inner-inch-pill-btn.active, .inner-thick-pill-btn.active, .inner-inch-btn.active, .inner-thick-btn.active, .inner-size-btn.active {
@@ -330,6 +338,10 @@ body {
   border-color: var(--lp-terracotta) !important;
   color: #FFFFFF !important;
   box-shadow: 0 4px 14px rgba(194, 97, 54, 0.35) !important;
+}
+.inner-bed-type-btn.active strong, .inner-inch-pill-btn.active strong, .inner-thick-pill-btn.active strong, .inner-inch-btn.active strong, .inner-thick-btn.active strong, .inner-size-btn.active strong,
+.inner-bed-type-btn.active span, .inner-inch-pill-btn.active span, .inner-thick-pill-btn.active span, .inner-inch-btn.active span, .inner-thick-btn.active span, .inner-size-btn.active span {
+  color: #FFFFFF !important;
 }
 
 .price-current {
@@ -1296,6 +1308,17 @@ body {
   color: #FFFFFF !important;
   box-shadow: 0 4px 16px rgba(194, 97, 54, 0.35) !important;
 }
+.pdp-pill-btn.active strong,
+.pdp-bed-card.active strong,
+.pdp-dim-pill.active strong,
+.pdp-thick-pill.active strong,
+.inner-cot-btn.active strong,
+.inner-inch-btn.active strong,
+.inner-thick-btn.active strong,
+.model-switch-btn.active strong,
+.inner-model-pill.active strong {
+  color: #FFFFFF !important;
+}
 
 .pdp-pill-btn:hover,
 .pdp-bed-card:hover,
@@ -1307,6 +1330,15 @@ body {
   border-color: #C26136 !important;
   background: rgba(194, 97, 54, 0.08) !important;
   color: #1C1917 !important;
+}
+.pdp-pill-btn:hover strong,
+.pdp-bed-card:hover strong,
+.pdp-dim-pill:hover strong,
+.pdp-thick-pill:hover strong,
+.inner-cot-btn:hover strong,
+.inner-inch-btn:hover strong,
+.inner-thick-btn:hover strong {
+  color: #C26136 !important;
 }
 
 .pdp-tagline,
@@ -1561,3 +1593,89 @@ h1.lf-title,
 
 
 
+
+/* ==========================================================
+   PREMIUM SIZE SELECTOR (Wakefit / Emma / Sleep Company style)
+   ========================================================== */
+#inner-inch-container, #pdp-inch-container {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+  gap: 0.65rem !important;
+}
+.lv-size-card {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 0.2rem !important;
+  min-height: 68px !important;
+  padding: 0.85rem 0.95rem 0.75rem !important;
+  border-radius: 14px !important;
+  text-align: left !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #E8DFD5 !important;
+  color: #1C1917 !important;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, background .2s ease !important;
+}
+.lv-size-card strong { font-size: 1rem !important; font-weight: 800 !important; letter-spacing: -0.01em; }
+.lv-size-card .lv-size-sub,
+.inner-inch-btn.lv-size-card .lv-size-sub,
+.pdp-pill-btn.lv-size-card .lv-size-sub {
+  font-size: 0.72rem !important; font-weight: 600 !important; color: #8A7F75 !important; letter-spacing: 0.01em;
+}
+.lv-size-card .lv-size-tag,
+.inner-inch-btn.lv-size-card .lv-size-tag,
+.pdp-pill-btn.lv-size-card .lv-size-tag {
+  position: absolute; top: -9px; right: 10px;
+  font-style: normal; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.16rem 0.5rem; border-radius: 999px;
+  background: #1C1917 !important; color: #FFFFFF !important;
+}
+.lv-size-card:hover:not(:disabled) {
+  border-color: #C26136 !important;
+  background: #FFF8F3 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(194, 97, 54, 0.14) !important;
+}
+.lv-size-card.active {
+  background: #FFF4EC !important;
+  border: 2px solid #C26136 !important;
+  color: #1C1917 !important;
+  box-shadow: 0 0 0 4px rgba(194, 97, 54, 0.12), 0 8px 22px rgba(194, 97, 54, 0.16) !important;
+}
+.lv-size-card.active strong,
+.inner-inch-btn.lv-size-card.active strong,
+.pdp-pill-btn.lv-size-card.active strong { color: #A24B24 !important; }
+.lv-size-card.active::after {
+  content: '✓'; position: absolute; bottom: 8px; right: 10px;
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 900; color: #FFFFFF;
+  background: linear-gradient(135deg, #D97746 0%, #C26136 100%);
+}
+.lv-size-card.active .lv-size-tag { background: #C26136 !important; }
+
+/* Unavailable (not enabled by admin) — visible but not selectable */
+.lv-size-card.is-unavailable,
+.inner-bed-type-btn.is-unavailable,
+.inner-thick-pill-btn.is-unavailable,
+.pdp-pill-btn.is-unavailable {
+  cursor: not-allowed !important;
+  opacity: 0.45 !important;
+  background: repeating-linear-gradient(135deg, #FAF7F2 0 6px, #F3EEE7 6px 12px) !important;
+  border-style: dashed !important;
+  border-color: #E0D6CB !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.lv-size-card.is-unavailable strong,
+.inner-bed-type-btn.is-unavailable,
+.inner-thick-pill-btn.is-unavailable,
+.pdp-pill-btn.is-unavailable,
+.pdp-pill-btn.is-unavailable strong { color: #A8A29E !important; text-decoration: line-through; text-decoration-thickness: 1px; }
+
+@media (max-width: 600px) {
+  #inner-inch-container, #pdp-inch-container { grid-template-columns: repeat(2, 1fr) !important; }
+  .lv-size-card { min-height: 62px !important; padding: 0.75rem 0.8rem 0.65rem !important; }
+}

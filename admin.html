@@ -2958,22 +2958,39 @@
             </div>
           </div>
 
+          <!-- Storefront Size Visibility (simple ticking) -->
+          <div class="admin-card" id="size-visibility-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">☑ Storefront Sizes — What Customers Can Select</h3>
+              <span style="font-size: 0.76rem; color: var(--text-muted);">Untick a bed type or size to hide it on the website. Click "Save &amp; Publish".</span>
+            </div>
+            <div id="size-visibility-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;"></div>
+          </div>
+
           <!-- Dynamic Combination Matrix Table -->
           <div class="admin-card">
-            <div class="admin-card-header">
-              <h3 class="admin-card-title">Live Combination Overrides Table</h3>
-              <span style="font-size: 0.76rem; color: var(--text-muted);">Leave empty to use automatic calculation</span>
+            <div class="admin-card-header" style="flex-wrap:wrap; gap:0.6rem;">
+              <h3 class="admin-card-title">Combination Prices &amp; Visibility</h3>
+              <span style="font-size: 0.76rem; color: var(--text-muted);">Untick "Show" to hide one exact combination. Leave price empty for automatic calculation.</span>
+            </div>
+            <div id="matrix-filter-tabs" style="display:flex; flex-wrap:wrap; gap:0.45rem; margin-bottom:0.85rem;">
+              <button type="button" class="btn btn-secondary btn-sm matrix-tab active" data-mtab="queen">Queen</button>
+              <button type="button" class="btn btn-secondary btn-sm matrix-tab" data-mtab="king">King</button>
+              <button type="button" class="btn btn-secondary btn-sm matrix-tab" data-mtab="double">Double</button>
+              <button type="button" class="btn btn-secondary btn-sm matrix-tab" data-mtab="single">Single</button>
+              <button type="button" class="btn btn-secondary btn-sm matrix-tab" data-mtab="all">All</button>
             </div>
             <div class="matrix-table-wrap">
               <table class="admin-table">
                 <thead>
                   <tr>
-                    <th style="width: 15%;">Cot Type</th>
-                    <th style="width: 25%;">Dimension (Inches)</th>
-                    <th style="width: 15%;">Thickness</th>
-                    <th style="width: 15%;">Calculated Price (₹)</th>
+                    <th style="width: 7%;">Show</th>
+                    <th style="width: 11%;">Cot Type</th>
+                    <th style="width: 24%;">Dimension (Inches)</th>
+                    <th style="width: 11%;">Thickness</th>
+                    <th style="width: 14%;">Calculated Price (₹)</th>
                     <th style="width: 15%;">Custom Override (₹)</th>
-                    <th style="width: 15%;">Stock Availability</th>
+                    <th style="width: 18%;">Stock Availability</th>
                   </tr>
                 </thead>
                 <tbody id="matrix-tbody">
@@ -5595,15 +5612,20 @@ Order Notes: [Customer Instructions]</pre>
       };
 
       // Render Combination Matrix Table
+      let activeMatrixTab = 'queen';
       function renderMatrixTable(data) {
+        renderSizeVisibility(data);
         const tbody = document.querySelector('#matrix-tbody');
         if (!tbody) return;
 
-        const types = ['queen', 'king', 'single', 'double'];
+        const types = ['queen', 'king', 'double', 'single'];
         const thicknesses = (data.availableThicknesses && data.availableThicknesses.length)
-          ? data.availableThicknesses.map(Number)
+          ? data.availableThicknesses.map(Number).sort((a, b) => a - b)
           : [6, 7, 8, 9, 10, 11, 12];
         const base = parseInt(data.basePrice, 10) || 21999;
+        const disabledCots = data.disabledCots || {};
+        const disabledSizes = data.disabledSizes || {};
+        const hiddenCombos = data.hiddenCombos || {};
         let html = '';
 
         types.forEach(tKey => {
@@ -5612,6 +5634,7 @@ Order Notes: [Customer Instructions]</pre>
 
           specs.forEach(s => {
             const inchDelta = data.inchAddons?.[tKey]?.[s.id] || 0;
+            const sizeOff = !!disabledCots[tKey] || !!disabledSizes[`${tKey}_${s.id}`];
 
             thicknesses.forEach(th => {
               const thDelta = data.thicknessOffsets?.[String(th)] || 0;
@@ -5619,9 +5642,15 @@ Order Notes: [Customer Instructions]</pre>
               const combKey = `${tKey}_${s.id}_${th}`;
               const overrideVal = data.combinationOverrides?.[combKey] !== undefined ? data.combinationOverrides[combKey] : '';
               const stockState = data.combinationStock?.[combKey] || data.defaultStock || 'in-stock';
+              const shown = !sizeOff && !hiddenCombos[combKey];
+              const tabHidden = activeMatrixTab !== 'all' && activeMatrixTab !== tKey;
 
               html += `
-                <tr>
+                <tr data-row-cot="${tKey}" style="${tabHidden ? 'display:none;' : ''}${shown ? '' : 'opacity:0.45;'}">
+                  <td>
+                    <input type="checkbox" class="combo-show-cb" data-comb-show="${combKey}" ${shown ? 'checked' : ''} ${sizeOff ? 'disabled title="Size is unticked above"' : ''}
+                           style="accent-color:#00B4D8; width:17px; height:17px; cursor:pointer;">
+                  </td>
                   <td><strong style="color:var(--brand-cyan);">${tKey.toUpperCase()}</strong></td>
                   <td>${s.title} <span style="color:var(--text-sub); font-size:0.75rem;">(${s.sub})</span></td>
                   <td>${th}" Profile</td>
@@ -5645,7 +5674,96 @@ Order Notes: [Customer Instructions]</pre>
         });
 
         tbody.innerHTML = html;
+
+        tbody.querySelectorAll('.combo-show-cb').forEach(cb => {
+          cb.addEventListener('change', function () {
+            const d = catalog[activeModel];
+            if (!d) return;
+            if (!d.hiddenCombos) d.hiddenCombos = {};
+            const key = this.getAttribute('data-comb-show');
+            if (this.checked) delete d.hiddenCombos[key]; else d.hiddenCombos[key] = true;
+            const row = this.closest('tr');
+            if (row) row.style.opacity = this.checked ? '1' : '0.45';
+            renderSizeVisibility(d);
+          });
+        });
       }
+
+      // Per-bed-type size ticking grid (simple "what is sold" control)
+      function renderSizeVisibility(data) {
+        const grid = document.querySelector('#size-visibility-grid');
+        if (!grid || !data) return;
+        const cots = [['queen', 'Queen'], ['king', 'King'], ['double', 'Double'], ['single', 'Single'], ['custom', 'Custom Size']];
+        const disabledCots = data.disabledCots || {};
+        const disabledSizes = data.disabledSizes || {};
+        const hiddenCombos = data.hiddenCombos || {};
+        const ths = (data.availableThicknesses && data.availableThicknesses.length) ? data.availableThicknesses.map(Number) : [6, 7, 8, 9, 10, 11, 12];
+
+        grid.innerHTML = cots.map(([cot, label]) => {
+          const cotOn = !disabledCots[cot];
+          const specs = INCH_SPECS[cot] || [];
+          const sizesHtml = cot === 'custom'
+            ? `<div style="font-size:0.75rem; color:var(--text-muted);">Customer enters own length × width.</div>`
+            : specs.map(s => {
+                const on = !disabledSizes[`${cot}_${s.id}`];
+                const visCount = ths.filter(th => !hiddenCombos[`${cot}_${s.id}_${th}`]).length;
+                return `
+                  <label style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; padding:0.4rem 0.55rem; border-radius:6px; background:rgba(255,255,255,0.04); cursor:${cotOn ? 'pointer' : 'not-allowed'}; opacity:${cotOn ? 1 : 0.45};">
+                    <span style="display:flex; align-items:center; gap:0.5rem;">
+                      <input type="checkbox" class="size-vis-cb" data-size-key="${cot}_${s.id}" ${on ? 'checked' : ''} ${cotOn ? '' : 'disabled'} style="accent-color:#00B4D8; width:15px; height:15px;">
+                      <span style="font-size:0.82rem; font-weight:700; color:#FFFFFF;">${s.title}</span>
+                    </span>
+                    <span style="font-size:0.68rem; color:${on && visCount ? '#34D399' : 'var(--text-muted)'};">${on ? `${visCount}/${ths.length} thick` : 'Hidden'}</span>
+                  </label>`;
+              }).join('');
+          return `
+            <div style="background:rgba(15,23,42,0.6); border:1px solid ${cotOn ? 'rgba(0,180,216,0.35)' : 'rgba(255,255,255,0.08)'}; border-radius:10px; padding:0.8rem;">
+              <label style="display:flex; align-items:center; gap:0.55rem; margin-bottom:0.6rem; cursor:pointer;">
+                <input type="checkbox" class="cot-vis-cb" data-cot-key="${cot}" ${cotOn ? 'checked' : ''} style="accent-color:#00B4D8; width:17px; height:17px;">
+                <strong style="font-size:0.9rem; color:${cotOn ? '#38BDF8' : 'var(--text-muted)'}; text-transform:uppercase; letter-spacing:0.04em;">${label}</strong>
+                <span style="margin-left:auto; font-size:0.68rem; font-weight:700; color:${cotOn ? '#34D399' : '#F87171'};">${cotOn ? 'ON WEBSITE' : 'HIDDEN'}</span>
+              </label>
+              <div style="display:flex; flex-direction:column; gap:0.35rem;">${sizesHtml}</div>
+            </div>`;
+        }).join('');
+
+        grid.querySelectorAll('.cot-vis-cb').forEach(cb => {
+          cb.addEventListener('change', function () {
+            const d = catalog[activeModel];
+            if (!d) return;
+            if (!d.disabledCots) d.disabledCots = {};
+            const k = this.getAttribute('data-cot-key');
+            if (this.checked) delete d.disabledCots[k]; else d.disabledCots[k] = true;
+            renderMatrixTable(d);
+          });
+        });
+        grid.querySelectorAll('.size-vis-cb').forEach(cb => {
+          cb.addEventListener('change', function () {
+            const d = catalog[activeModel];
+            if (!d) return;
+            if (!d.disabledSizes) d.disabledSizes = {};
+            const k = this.getAttribute('data-size-key');
+            if (this.checked) delete d.disabledSizes[k]; else d.disabledSizes[k] = true;
+            renderMatrixTable(d);
+          });
+        });
+      }
+
+      document.querySelectorAll('.matrix-tab').forEach(btn => {
+        btn.addEventListener('click', function () {
+          activeMatrixTab = this.getAttribute('data-mtab');
+          document.querySelectorAll('.matrix-tab').forEach(b => {
+            const on = b === this;
+            b.classList.toggle('active', on);
+            b.style.background = on ? 'linear-gradient(135deg,#00B4D8,#0284C7)' : '';
+            b.style.color = on ? '#FFFFFF' : '';
+          });
+          document.querySelectorAll('#matrix-tbody tr[data-row-cot]').forEach(tr => {
+            tr.style.display = (activeMatrixTab === 'all' || tr.getAttribute('data-row-cot') === activeMatrixTab) ? '' : 'none';
+          });
+        });
+      });
+      (function () { const t = document.querySelector('.matrix-tab.active'); if (t) { t.style.background = 'linear-gradient(135deg,#00B4D8,#0284C7)'; t.style.color = '#FFFFFF'; } })();
 
       // In-browser image compressor to prevent LocalStorage QuotaExceededError
       function compressImage(file, maxDimension = 1200, quality = 0.82) {
@@ -5962,7 +6080,7 @@ Order Notes: [Customer Instructions]</pre>
           const block = document.querySelector('#block-p-thick-' + th);
           if (block) block.style.opacity = this.checked ? '1' : '0.45';
 
-          const curData = catalog[activeCatalogKey];
+          const curData = catalog[activeModel];
           if (curData) {
             const avail = [];
             document.querySelectorAll('.thick-enable-cb:checked').forEach(c => avail.push(Number(c.getAttribute('data-thick'))));
@@ -5981,7 +6099,7 @@ Order Notes: [Customer Instructions]</pre>
             const block = document.querySelector('#block-p-thick-' + th);
             if (block) block.style.opacity = '1';
           });
-          const curData = catalog[activeCatalogKey];
+          const curData = catalog[activeModel];
           if (curData) {
             curData.availableThicknesses = [6, 7, 8, 9, 10, 11, 12];
             renderMatrixTable(curData);
@@ -5999,7 +6117,7 @@ Order Notes: [Customer Instructions]</pre>
             const block = document.querySelector('#block-p-thick-' + th);
             if (block) block.style.opacity = std.includes(th) ? '1' : '0.45';
           });
-          const curData = catalog[activeCatalogKey];
+          const curData = catalog[activeModel];
           if (curData) {
             curData.availableThicknesses = [6, 8, 10, 12];
             renderMatrixTable(curData);
