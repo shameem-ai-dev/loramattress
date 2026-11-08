@@ -43,7 +43,22 @@ function readSettings() {
     testEventCode: String(s.testEventCode || '').trim(),
     domainVerification: String(s.domainVerification || '').trim(),
     googleVerification: String(s.googleVerification || '').trim(),
-    capiEnabled: s.capiEnabled !== false
+    capiEnabled: s.capiEnabled !== false,
+    googleAdsId: String(s.googleAdsId || '').trim(),
+    googleAdsPurchaseLabel: String(s.googleAdsPurchaseLabel || '').trim(),
+    googleAdsLeadLabel: String(s.googleAdsLeadLabel || '').trim(),
+    tiktokPixelId: String(s.tiktokPixelId || '').trim(),
+    pinterestTagId: String(s.pinterestTagId || '').replace(/\D/g, ''),
+    clarityId: String(s.clarityId || '').trim(),
+    gtmId: String(s.gtmId || '').trim()
+  };
+}
+// Public (non-secret) tag ids sent to the browser
+function publicTags(s) {
+  if (!s.enabled) return {};
+  return {
+    googleAdsId: s.googleAdsId, googleAdsPurchaseLabel: s.googleAdsPurchaseLabel, googleAdsLeadLabel: s.googleAdsLeadLabel,
+    tiktokPixelId: s.tiktokPixelId, pinterestTagId: s.pinterestTagId, clarityId: s.clarityId, gtmId: s.gtmId
   };
 }
 function capiToken() { return String(process.env.META_CAPI_TOKEN || '').trim(); }
@@ -163,38 +178,74 @@ function buildCapiEvent(e, req) {
 }
 
 // ---------------------------------------------------------------- feeds
-function feedRows(origin) {
+// Price shown on the product page for the default (first sellable) size + thickness, after the active offer.
+const DEFAULT_INCH = { single: '72x36', double: '72x48', queen: '78x60', king: '78x72' };
+const ALL_THICK = [6, 7, 8, 9, 10, 11, 12];
+function storefrontPrice(p, size) {
+  const ths = (Array.isArray(p.availableThicknesses) && p.availableThicknesses.length ? p.availableThicknesses.map(Number) : ALL_THICK).sort((a, b) => a - b);
+  const inch = DEFAULT_INCH[size];
+  const hidden = p.hiddenCombos || {};
+  const visThicks = ths.filter(th => !hidden[`${size}_${inch}_${th}`]);
+  const th = visThicks.includes(8) ? 8 : visThicks[0];
+  if (th === undefined) return null;
+  const key = `${size}_${inch}_${th}`;
+  let raw;
+  if (p.combinationOverrides && p.combinationOverrides[key] !== undefined) raw = parseInt(p.combinationOverrides[key], 10);
+  else {
+    const mult = (p.multipliers && p.multipliers[size]) || 1;
+    raw = Math.round((Number(p.basePrice) || 21999) * mult) + ((p.thicknessOffsets && p.thicknessOffsets[String(th)]) || 0) + ((p.inchAddons && p.inchAddons[size] && p.inchAddons[size][inch]) || 0);
+  }
+  let price = raw;
+  const o = p.offer || {};
+  if (o.active) {
+    if (o.type === 'percent') price = Math.round(price * (1 - (parseFloat(o.value) || 0) / 100));
+    else if (o.type === 'flat') price = Math.max(5000, price - (parseInt(o.value, 10) || 0));
+  }
+  const stock = (p.combinationStock && p.combinationStock[key]) || p.defaultStock || 'in-stock';
+  return { raw, price, mrp: Math.round(raw * 1.65), stock, thick: th };
+}
+function feedAvailability(stock) {
+  if (stock === 'out-of-stock') return 'out of stock';
+  if (stock === 'made-to-order') return 'preorder';
+  return 'in stock';
+}
+function feedRows(origin, channel) {
+  const src = channel === 'google' ? 'utm_source=google&utm_medium=shopping' : 'utm_source=facebook&utm_medium=catalog';
   const rows = [];
   loadCatalog().forEach(p => {
-    const mult = p.multipliers || { queen: 1 };
-    const sizes = Object.keys(SIZE_LABELS).filter(s => mult[s]);
-    if (!sizes.length) sizes.push('queen');
-    sizes.forEach(size => {
-      const price = Math.round((Number(p.basePrice) || 0) * (mult[size] || 1));
-      const mrp = p.mrp ? Math.round(Number(p.mrp) * (mult[size] || 1)) : 0;
-      const hasSale = mrp && mrp > price;
-      rows.push({
+    const disabledCots = p.disabledCots || {};
+    const disabledSizes = p.disabledSizes || {};
+    Object.keys(SIZE_LABELS).forEach(size => {
+      if (disabledCots[size] || disabledSizes[`${size}_${DEFAULT_INCH[size]}`]) return; // not sold on the website
+      const pr = storefrontPrice(p, size);
+      if (!pr || !pr.price) return;
+      const hasSale = pr.mrp > pr.price;
+      const row = {
         id: `LORA-${p.id}-${size.toUpperCase()}`,
         item_group_id: `LORA-${p.id}`,
         title: `LORA ${cleanName(p.name).replace(/^LORA\s+/i, '')} Mattress – ${SIZE_LABELS[size]}`.slice(0, 150),
         description: productDescription(p),
-        availability: 'in stock',
+        availability: feedAvailability(pr.stock),
         condition: 'new',
-        price: `${hasSale ? mrp : price}.00 INR`,
-        sale_price: hasSale ? `${price}.00 INR` : '',
-        link: `${productUrl(origin, p.id)}&size=${size}&utm_source=facebook&utm_medium=catalog`,
+        price: `${hasSale ? pr.mrp : pr.price}.00 INR`,
+        sale_price: hasSale ? `${pr.price}.00 INR` : '',
+        link: `${productUrl(origin, p.id)}&cot=${size}&inch=${DEFAULT_INCH[size]}&thick=${pr.thick}&size=${size}&${src}`,
         image_link: absUrl(origin, p.heroImg || p.img),
         additional_image_link: [p.roomImg, p.detailImg, p.explodedImg].filter(Boolean).map(i => absUrl(origin, i)).join(','),
         brand: 'LORA',
-        google_product_category: 'Furniture > Beds & Accessories > Mattresses',
+        google_product_category: '2696',
         fb_product_category: 'Home > Mattresses',
-        product_type: p.category || 'Mattress',
+        product_type: `Mattresses > ${p.category || 'Mattress'}`,
         size: SIZE_LABELS[size],
+        identifier_exists: 'no',
         custom_label_0: p.warranty || '',
         custom_label_1: p.feelLabel || '',
-        custom_label_2: price >= 30000 ? 'premium' : price >= 20000 ? 'mid' : 'value',
+        custom_label_2: pr.price >= 30000 ? 'premium' : pr.price >= 20000 ? 'mid' : 'value',
+        custom_label_3: size,
         shipping: 'IN:::0.00 INR'
-      });
+      };
+      if (channel === 'google') { delete row.fb_product_category; row.shipping = 'IN:::0.00 INR'; }
+      rows.push(row);
     });
   });
   return rows;
@@ -218,7 +269,7 @@ function sitemap(origin) {
     '\n</urlset>\n';
 }
 function robots(origin) {
-  return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /config/\nAllow: /api/meta-catalog\n\nSitemap: ${origin}/sitemap.xml\n`;
+  return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /config/\nAllow: /api/meta-catalog\nAllow: /api/google-merchant\n\nSitemap: ${origin}/sitemap.xml\n`;
 }
 
 // ---------------------------------------------------------------- SEO head injection
@@ -348,11 +399,12 @@ async function handler(req, res) {
   if (p === '/sitemap.xml') return send(res, 200, 'application/xml; charset=UTF-8', sitemap(origin), 'public, max-age=3600');
   if (p === '/meta-catalog.csv' || p === '/api/meta-catalog.csv') return send(res, 200, 'text/csv; charset=UTF-8', toCsv(feedRows(origin)), 'public, max-age=1800');
   if (p === '/meta-catalog.xml' || p === '/api/meta-catalog.xml') return send(res, 200, 'application/xml; charset=UTF-8', toXml(feedRows(origin), origin), 'public, max-age=1800');
+  if (p === '/google-merchant.xml' || p === '/api/google-merchant.xml') return send(res, 200, 'application/xml; charset=UTF-8', toXml(feedRows(origin, 'google'), origin), 'public, max-age=1800');
 
   if (p === '/api/marketing-settings') {
     if (req.method === 'GET') {
       const s = readSettings();
-      return json(res, 200, { success: true, enabled: s.enabled, metaPixelId: s.enabled ? s.metaPixelId : '', ga4Id: s.enabled ? s.ga4Id : '', capi: Boolean(s.enabled && s.capiEnabled && capiToken() && s.metaPixelId) });
+      return json(res, 200, { success: true, enabled: s.enabled, metaPixelId: s.enabled ? s.metaPixelId : '', ga4Id: s.enabled ? s.ga4Id : '', capi: Boolean(s.enabled && s.capiEnabled && capiToken() && s.metaPixelId), ...publicTags(s) });
     }
     if (req.method === 'POST') {
       if (!verifyAdminAuth(req)) return json(res, 401, { success: false, message: 'Unauthorized' });
@@ -367,6 +419,13 @@ async function handler(req, res) {
         domainVerification: String(b.domainVerification || '').replace(/[^a-z0-9]/gi, '').slice(0, 64),
         googleVerification: String(b.googleVerification || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 100),
         capiEnabled: b.capiEnabled !== false,
+        googleAdsId: String(b.googleAdsId || '').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 20),
+        googleAdsPurchaseLabel: String(b.googleAdsPurchaseLabel || '').trim().replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40),
+        googleAdsLeadLabel: String(b.googleAdsLeadLabel || '').trim().replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40),
+        tiktokPixelId: String(b.tiktokPixelId || '').trim().replace(/[^A-Za-z0-9]/g, '').slice(0, 30),
+        pinterestTagId: String(b.pinterestTagId || '').replace(/\D/g, '').slice(0, 20),
+        clarityId: String(b.clarityId || '').trim().replace(/[^a-z0-9]/gi, '').slice(0, 20),
+        gtmId: String(b.gtmId || '').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 20),
         updatedAt: new Date().toISOString()
       };
       fs.writeFileSync(SETTINGS_FILE, JSON.stringify(next, null, 2));
@@ -391,7 +450,7 @@ async function handler(req, res) {
       capiTokenConfigured: Boolean(capiToken()),
       capiActive: Boolean(s.enabled && s.capiEnabled && s.metaPixelId && capiToken()),
       testEventCode: s.testEventCode || null,
-      feeds: { csv: origin + '/meta-catalog.csv', xml: origin + '/meta-catalog.xml' },
+      feeds: { csv: origin + '/meta-catalog.csv', xml: origin + '/meta-catalog.xml', google: origin + '/google-merchant.xml' },
       sitemap: origin + '/sitemap.xml',
       products: loadCatalog().length,
       test
@@ -419,4 +478,4 @@ module.exports = handler;
 module.exports.renderSeoHead = renderSeoHead;
 module.exports.buildCapiEvent = buildCapiEvent;
 module.exports.feedRows = feedRows;
-module.exports.isMarketingPath = (p) => ['/robots.txt', '/sitemap.xml', '/meta-catalog.csv', '/meta-catalog.xml', '/api/meta-catalog.csv', '/api/meta-catalog.xml', '/api/marketing-settings', '/api/meta-status', '/api/meta-event'].includes(p);
+module.exports.isMarketingPath = (p) => ['/robots.txt', '/sitemap.xml', '/meta-catalog.csv', '/meta-catalog.xml', '/api/meta-catalog.csv', '/api/meta-catalog.xml', '/google-merchant.xml', '/api/google-merchant.xml', '/api/marketing-settings', '/api/meta-status', '/api/meta-event'].includes(p);
