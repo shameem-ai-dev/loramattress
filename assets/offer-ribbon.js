@@ -50,6 +50,7 @@
       .replace(/'/g, '&#039;');
   }
 
+  let lastSettings = null;
   function renderRibbon(settings) {
     const ribbonEl = document.getElementById('lora-offer-ribbon');
     if (!ribbonEl) return;
@@ -60,7 +61,24 @@
       return;
     }
 
-    const messages = settings.messages.filter(m => m && m.text && m.text.trim().length > 0);
+    let messages = settings.messages.filter(m => m && m.text && m.text.trim().length > 0);
+
+    // Product page: show THIS product's warranty instead of the generic "up to 15 years"
+    const pw = (window.LORA_PRODUCT_WARRANTY || '').trim();
+    if (pw) {
+      const yrs = (pw.match(/(\d+)\s*(year|yr)/i) || [])[1];
+      const label = yrs ? `${yrs} ${yrs === '1' ? 'Year' : 'Years'} Warranty` : pw;
+      messages = messages.map(m => {
+        if (!/warrant/i.test(`${m.tag || ''} ${m.text || ''}`)) return m;
+        const name = (window.LORA_PRODUCT_NAME || 'This mattress').trim();
+        return Object.assign({}, m, {
+          tag: label.toUpperCase(),
+          text: `${name} comes with ${label} — Direct Factory Craftsmanship`,
+          link: '#pdp-warranty-badge'
+        });
+      });
+    }
+    lastSettings = settings;
     if (messages.length === 0) {
       ribbonEl.classList.add('is-hidden');
       document.body.classList.remove('has-offer-ribbon');
@@ -138,6 +156,13 @@
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings)); } catch (e) {}
       renderRibbon(newSettings);
     }
+  };
+
+  // Product pages call this once the product's warranty is known
+  window.setLoraRibbonProductWarranty = function (warrantyText, productName) {
+    window.LORA_PRODUCT_WARRANTY = warrantyText || '';
+    window.LORA_PRODUCT_NAME = productName || '';
+    if (lastSettings) renderRibbon(lastSettings);
   };
 
   window.addEventListener('lora:ribbon_updated', function (e) {

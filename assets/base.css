@@ -4738,6 +4738,20 @@ body {
     font-weight: 900;
     color: var(--brand-cyan);
     letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .mobile-sticky-price .msp-mrp {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #94A3B8;
+    text-decoration: line-through;
+    margin-left: 0.3rem;
+  }
+  .mobile-sticky-price .msp-off {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #10B981;
+    margin-left: 0.25rem;
   }
   .mobile-sticky-actions {
     display: flex;

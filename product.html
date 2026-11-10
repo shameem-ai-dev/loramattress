@@ -15,7 +15,7 @@
 
   <script src="assets/lora-ads.js?v=1"></script>
   <script src="assets/lora-variants.js?v=20261110_v1"></script>
-  <link rel="stylesheet" href="assets/base.css?v=20261104_v2">
+  <link rel="stylesheet" href="assets/base.css?v=20261110_v3">
   <link rel="stylesheet" href="assets/lumi.css?v=20261030_v7">
   <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -2133,7 +2133,7 @@
                 </div>
                 <div style="flex: 1; min-width: 0;">
                   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-                    <strong class="pdp-large-emi-title" style="color: #1C1917; font-weight: 700; font-size: 0.88rem;">100% Direct Factory Assurance • 15-Year Insured Warranty</strong>
+                    <strong class="pdp-large-emi-title" id="pdp-assurance-warranty" style="color: #1C1917; font-weight: 700; font-size: 0.88rem;">100% Direct Factory Assurance • Insured Warranty</strong>
                     <span class="badge-verified" style="background: rgba(194, 97, 54, 0.1); color: #A24B24; border: 1px solid rgba(194, 97, 54, 0.25); font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px;">DIRECT CRAFT</span>
                   </div>
                   <p class="pdp-large-emi-desc" style="color: #57534E; font-size: 0.80rem; line-height: 1.4; margin-top: 0.25rem; font-weight: 450;">
@@ -2311,7 +2311,7 @@
             <img loading="lazy" src="assets/lora-logo-transparent.png" alt="LORA Mattresses" class="footer-logo-img" style="filter: brightness(0) invert(1); height: 44px;">
           </a>
           <p class="footer-subtext">
-            Precision sleep engineering delivered direct from our robotics manufacturing plant. Up to 15 years warranty, zero middleman markups, certified materials.
+            Precision sleep engineering delivered direct from our robotics manufacturing plant. Model-specific warranty, zero middleman markups, certified materials.
           </p>
         </div>
 
@@ -2944,7 +2944,10 @@
     function calculateCurrentPrice() {
       const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
       if (!data) return 21999;
-      return computeDiscounts(data, getRawPriceInfo().raw);
+      const info = getRawPriceInfo();
+      // Admin "Selling Price" for this exact combination is final — shown exactly as entered.
+      if (data.combinationOverrides && data.combinationOverrides[info.combKey] !== undefined) return info.raw;
+      return computeDiscounts(data, info.raw);
     }
 
     function renderInchOptions() {
@@ -3205,6 +3208,21 @@
       const guarWarr = document.querySelector('#pdp-guarantee-warr');
       if (guarWarr && data.warranty) guarWarr.textContent = data.warranty;
 
+      // Product-specific warranty everywhere on this page (no generic "15 years")
+      if (data.warranty) {
+        const wYrs = (String(data.warranty).match(/(\d+)\s*(year|yr)/i) || [])[1];
+        const wShort = wYrs ? `${wYrs}-Year` : String(data.warranty).replace(/\s*warranty\s*/i, '');
+        const assureEl = document.querySelector('#pdp-assurance-warranty');
+        if (assureEl) assureEl.textContent = `100% Direct Factory Assurance • ${wShort} Insured Warranty`;
+        const footEl = document.querySelector('#pdp-checkout-warranty-note');
+        if (footEl) footEl.textContent = `Factory Direct Craft • ${data.warranty} • 100% Flat Uncompressed Delivery`;
+        if (typeof window.setLoraRibbonProductWarranty === 'function') {
+          window.setLoraRibbonProductWarranty(data.warranty, data.name);
+        } else {
+          window.LORA_PRODUCT_WARRANTY = data.warranty; window.LORA_PRODUCT_NAME = data.name;
+        }
+      }
+
       // Update Firmness
       const firmnessVal = document.querySelector('#pdp-firmness-val');
       if (firmnessVal && data.firmnessVal) firmnessVal.textContent = data.firmnessVal;
@@ -3280,7 +3298,12 @@
       if (mrpEl) mrpEl.textContent = `₹${finalMrp.toLocaleString('en-IN')}`;
 
       const saveEl = document.querySelector('#pdp-save');
-      if (saveEl) saveEl.textContent = `SAVE ₹${savings.toLocaleString('en-IN')} (DIRECT)`;
+      const offPct = finalMrp > finalPrice ? Math.round((savings / finalMrp) * 100) : 0;
+      if (saveEl) {
+        saveEl.textContent = offPct > 0 ? `${offPct}% OFF • SAVE ₹${savings.toLocaleString('en-IN')}` : '';
+        saveEl.style.display = offPct > 0 ? '' : 'none';
+      }
+      if (mrpEl) mrpEl.style.display = offPct > 0 ? '' : 'none';
 
 
       const transPrice = document.querySelector('#pdp-trans-price');
@@ -3328,9 +3351,12 @@
         }
       }
 
-      // Update sticky mobile bar
+      // Update sticky mobile bar — same price / MRP / % OFF as the main price block
       const stickyPrice = document.querySelector('#mobile-sticky-price');
-      if (stickyPrice) stickyPrice.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+      if (stickyPrice) {
+        stickyPrice.innerHTML = `₹${finalPrice.toLocaleString('en-IN')}` +
+          (offPct > 0 ? `<span class="msp-mrp">₹${finalMrp.toLocaleString('en-IN')}</span><span class="msp-off">${offPct}% OFF</span>` : '');
+      }
     }
 
     function getSelectedPdpOrderPayload() {
@@ -4117,11 +4143,8 @@
         const isMobile = window.innerWidth <= 768;
         const scrolled = window.scrollY > 220;
         const titleEl = document.querySelector('#pdp-title');
-        const priceEl = document.querySelector('#pdp-price');
         const stickyTitle = document.querySelector('#mobile-sticky-title');
-        const stickyPrice = document.querySelector('#mobile-sticky-price');
         if (titleEl && stickyTitle) stickyTitle.textContent = titleEl.textContent;
-        if (priceEl && stickyPrice) stickyPrice.textContent = priceEl.textContent;
 
         if (isMobile && scrolled) {
           stickyBar.classList.add('visible');
@@ -4171,8 +4194,8 @@
       <button type="button" class="btn btn-primary" onclick="window.location.href='index.html?checkout=1'" style="width: 100%; padding: 1rem; font-size: 1rem; cursor: pointer; text-align: center;">
         Proceed to Secure Checkout →
       </button>
-      <p style="font-size: 0.75rem; color: #64748B; text-align: center; margin-top: 0.75rem;">
-        Factory Direct Craft • Up to 15 Years Warranty • 100% Flat Uncompressed Delivery
+      <p id="pdp-checkout-warranty-note" style="font-size: 0.75rem; color: #64748B; text-align: center; margin-top: 0.75rem;">
+        Factory Direct Craft • Model Warranty • 100% Flat Uncompressed Delivery
       </p>
     </div>
   </aside>
@@ -4240,7 +4263,7 @@
   </div>
 
   <!-- Offer Ribbon (3D Rotating Moving Belt) -->
-  <script src="assets/offer-ribbon.js"></script>
+  <script src="assets/offer-ribbon.js?v=20261110_w1"></script>
 
   <!-- Lumi — Lora's AI Sleep Assistant (KB 2.0) -->
   <script src="assets/lumi.js?v=20261025v3"></script>

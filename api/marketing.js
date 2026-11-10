@@ -197,12 +197,14 @@ function storefrontPrice(p, size) {
   }
   let price = raw;
   const o = p.offer || {};
-  if (o.active) {
+  const isOverride = !!(p.combinationOverrides && p.combinationOverrides[key] !== undefined);
+  if (o.active && !isOverride) {
     if (o.type === 'percent') price = Math.round(price * (1 - (parseFloat(o.value) || 0) / 100));
     else if (o.type === 'flat') price = Math.max(5000, price - (parseInt(o.value, 10) || 0));
   }
   const stock = (p.combinationStock && p.combinationStock[key]) || p.defaultStock || 'in-stock';
-  return { raw, price, mrp: Math.round(raw * 1.65), stock, thick: th };
+  const adminMrp = p.combinationMrp ? parseInt(p.combinationMrp[key], 10) : NaN;
+  return { raw, price, mrp: adminMrp > 0 ? adminMrp : Math.round(raw * 1.65), stock, thick: th };
 }
 function feedAvailability(stock) {
   if (stock === 'out-of-stock') return 'out of stock';
