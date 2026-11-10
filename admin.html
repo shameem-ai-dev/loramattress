@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/assets/lora-logo.png">
+  <link rel="apple-touch-icon" href="/assets/lora-logo.png">
   <title>LORA Merchant Studio & Operations Suite — admin.loramattress.com</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2971,7 +2973,8 @@
           <div class="admin-card">
             <div class="admin-card-header" style="flex-wrap:wrap; gap:0.6rem;">
               <h3 class="admin-card-title">Combination Prices &amp; Visibility</h3>
-              <span style="font-size: 0.76rem; color: var(--text-muted);">Untick "Show" to hide one exact combination. Leave price empty for automatic calculation.</span>
+              <span style="font-size: 0.76rem; color: var(--text-muted);">Untick "Show" to hide one exact combination. Leave price empty for automatic calculation. Custom Size uses the next standard size price.</span>
+              <button type="button" class="btn btn-primary btn-sm" id="btn-apply-price-sheet" style="margin-left:auto;">⬇ Apply LORA Price Sheet (Ortho Latex, Comfort Core, Pocket Luxe, Hybrid Fusion)</button>
             </div>
             <div id="matrix-filter-tabs" style="display:flex; flex-wrap:wrap; gap:0.45rem; margin-bottom:0.85rem;">
               <button type="button" class="btn btn-secondary btn-sm matrix-tab active" data-mtab="queen">Queen</button>
@@ -2984,13 +2987,14 @@
               <table class="admin-table">
                 <thead>
                   <tr>
-                    <th style="width: 7%;">Show</th>
-                    <th style="width: 11%;">Cot Type</th>
-                    <th style="width: 24%;">Dimension (Inches)</th>
-                    <th style="width: 11%;">Thickness</th>
-                    <th style="width: 14%;">Calculated Price (₹)</th>
-                    <th style="width: 15%;">Custom Override (₹)</th>
-                    <th style="width: 18%;">Stock Availability</th>
+                    <th style="width: 6%;">Show</th>
+                    <th style="width: 9%;">Cot Type</th>
+                    <th style="width: 22%;">Dimension (Inches)</th>
+                    <th style="width: 9%;">Thickness</th>
+                    <th style="width: 12%;">Calculated Price (₹)</th>
+                    <th style="width: 13%;">Website MRP (₹)</th>
+                    <th style="width: 13%;">Final Price (₹)</th>
+                    <th style="width: 16%;">Stock Availability</th>
                   </tr>
                 </thead>
                 <tbody id="matrix-tbody">
@@ -4910,20 +4914,78 @@ Order Notes: [Customer Instructions]</pre>
           { id: "78x60", title: "78\" × 60\" (Standard Queen)", sub: "6.5 × 5.0 ft • Popular Standard" },
           { id: "75x60", title: "75\" × 60\" (Compact Queen)", sub: "6.25 × 5.0 ft • Cozy Room" },
           { id: "72x60", title: "72\" × 60\" (Short Queen)", sub: "6.0 × 5.0 ft • Studio Layout" },
-          { id: "78x66", title: "78\" × 66\" (Olympic Queen)", sub: "6.5 × 5.5 ft • Wide Queen" }
+          { id: "78x66", title: "78\" × 66\" (Olympic Queen)", sub: "6.5 × 5.5 ft • Wide Queen" },
+          { id: "75x66", title: "75\" × 66\" (Wide Queen)", sub: "6.25 × 5.5 ft • Wide Queen" },
+          { id: "72x66", title: "72\" × 66\" (Short Wide Queen)", sub: "6.0 × 5.5 ft • Wide Queen" }
         ],
         single: [
           { id: "72x36", title: "72\" × 36\" (Standard Single)", sub: "6.0 × 3.0 ft • Guest Bed" },
           { id: "75x36", title: "75\" × 36\" (Long Single)", sub: "6.25 × 3.0 ft • Teen/Adult" },
           { id: "78x36", title: "78\" × 36\" (Tall Single)", sub: "6.5 × 3.0 ft • Tall Sleeper" },
-          { id: "75x42", title: "75\" × 42\" (Twin XL / Single Large)", sub: "6.25 × 3.5 ft • Extra Width" }
+          { id: "72x30", title: "72\" × 30\" (Narrow Single)", sub: "6.0 × 2.5 ft • Kids / Bunk" },
+          { id: "75x30", title: "75\" × 30\" (Narrow Long Single)", sub: "6.25 × 2.5 ft • Kids / Bunk" },
+          { id: "78x30", title: "78\" × 30\" (Narrow Tall Single)", sub: "6.5 × 2.5 ft • Kids / Bunk" }
         ],
         double: [
           { id: "72x48", title: "72\" × 48\" (Standard Double)", sub: "6.0 × 4.0 ft • Diwan Bed" },
           { id: "75x48", title: "75\" × 48\" (Double Long)", sub: "6.25 × 4.0 ft • Long Diwan Cot" },
-          { id: "78x48", title: "78\" × 48\" (Tall Double)", sub: "6.5 × 4.0 ft • Extended Diwan" }
+          { id: "78x48", title: "78\" × 48\" (Tall Double)", sub: "6.5 × 4.0 ft • Extended Diwan" },
+          { id: "72x42", title: "72\" × 42\" (Small Double)", sub: "6.0 × 3.5 ft • Compact Double" },
+          { id: "75x42", title: "75\" × 42\" (Small Double Long)", sub: "6.25 × 3.5 ft • Compact Double" },
+          { id: "78x42", title: "78\" × 42\" (Small Double Tall)", sub: "6.5 × 3.5 ft • Compact Double" }
         ]
       };
+
+      // LORA price sheet (Website MRP / Final price). Widths: 30,36 = Single • 42,48 = Double • 60,66 = Queen • 72 = King.
+      const PRICE_SHEET_WIDTHS = [30, 36, 42, 48, 60, 66, 72];
+      const PRICE_SHEET = [
+        { id: '05', match: 'ORTHO LATEX', thick: 9, rows: {
+          72: [[25364,13950],[30091,16550],[35182,19350],[40091,22050],[50091,27550],[55182,30350],[60091,33050]],
+          75: [[26455,14550],[31364,17250],[36273,19950],[41364,22750],[51364,28250],[56455,31050],[61364,33750]],
+          78: [[27545,15150],[32636,17950],[38818,21350],[43909,24150],[53909,29650],[58818,32350],[63909,35150]] } },
+        { id: '06', match: 'COMFORT CORE', thick: 10, rows: {
+          72: [[19727,10850],[23364,12850],[27000,14850],[30636,16850],[37909,20850],[41727,22950],[45364,24950]],
+          75: [[20455,11250],[24273,13350],[28091,15450],[31909,17550],[39545,21750],[43364,23850],[47182,25950]],
+          78: [[21182,11650],[25182,13850],[29182,16050],[33182,18250],[41000,22550],[45000,24750],[49000,26950]] } },
+        { id: '07', match: 'POCKET LUXE', thick: 10, rows: {
+          72: [[23909,13150],[28455,15650],[33000,18150],[37545,20650],[46636,25650],[51182,28150],[55727,30650]],
+          75: [[25000,13750],[29727,16350],[34455,18950],[39000,21450],[48455,26650],[53182,29250],[57909,31850]],
+          78: [[25909,14250],[30818,16950],[35727,19650],[40636,22350],[50455,27750],[55364,30450],[60273,33150]] } },
+        { id: '08', match: 'HYBRID FUSION', thick: 10, rows: {
+          72: [[35545,19550],[42455,23350],[49182,27050],[56091,30850],[69727,38350],[76636,42150],[83364,45850]],
+          75: [[37000,20350],[44091,24250],[51182,28150],[58455,32150],[72636,39950],[79727,43850],[86818,47750]],
+          78: [[38455,21150],[45909,25250],[53182,29250],[60636,33350],[75545,41550],[82818,45550],[90273,49650]] } }
+      ];
+
+      function cotForWidth(w) {
+        if (w <= 36) return 'single';
+        if (w <= 48) return 'double';
+        if (w <= 66) return 'queen';
+        return 'king';
+      }
+
+      // Writes the sheet into combinationOverrides / combinationMrp only (no other pricing fields touched).
+      function applyPriceSheetToCatalog(cat) {
+        const applied = [];
+        PRICE_SHEET.forEach(sheet => {
+          let key = (cat[sheet.id] && String(cat[sheet.id].name || '').toUpperCase().includes(sheet.match)) ? sheet.id : null;
+          if (!key) key = Object.keys(cat).find(k => String(cat[k]?.name || '').toUpperCase().includes(sheet.match)) || null;
+          if (!key) return;
+          const d = cat[key];
+          if (!d.combinationOverrides) d.combinationOverrides = {};
+          if (!d.combinationMrp) d.combinationMrp = {};
+          Object.keys(sheet.rows).forEach(len => {
+            sheet.rows[len].forEach(([mrp, price], i) => {
+              const w = PRICE_SHEET_WIDTHS[i];
+              const comb = `${cotForWidth(w)}_${len}x${w}_${sheet.thick}`;
+              d.combinationOverrides[comb] = price;
+              d.combinationMrp[comb] = mrp;
+            });
+          });
+          applied.push(`${d.name} (${sheet.thick}")`);
+        });
+        return applied;
+      }
 
       const DEFAULT_CATALOG = {
         "01": {
@@ -5641,6 +5703,7 @@ Order Notes: [Customer Instructions]</pre>
               const calcPrice = Math.round(base * mult) + inchDelta + thDelta;
               const combKey = `${tKey}_${s.id}_${th}`;
               const overrideVal = data.combinationOverrides?.[combKey] !== undefined ? data.combinationOverrides[combKey] : '';
+              const mrpVal = data.combinationMrp?.[combKey] !== undefined ? data.combinationMrp[combKey] : '';
               const stockState = data.combinationStock?.[combKey] || data.defaultStock || 'in-stock';
               const shown = !sizeOff && !hiddenCombos[combKey];
               const tabHidden = activeMatrixTab !== 'all' && activeMatrixTab !== tKey;
@@ -5655,6 +5718,10 @@ Order Notes: [Customer Instructions]</pre>
                   <td>${s.title} <span style="color:var(--text-sub); font-size:0.75rem;">(${s.sub})</span></td>
                   <td>${th}" Profile</td>
                   <td><span style="font-weight:700; color:#FFFFFF;">₹${calcPrice.toLocaleString('en-IN')}</span></td>
+                  <td>
+                    <input type="number" step="1" placeholder="Auto" 
+                           value="${mrpVal}" data-comb-mrp="${combKey}" class="override-input mrp-input">
+                  </td>
                   <td>
                     <input type="number" step="500" placeholder="₹${calcPrice}" 
                            value="${overrideVal}" data-comb="${combKey}" class="override-input">
@@ -5993,13 +6060,25 @@ Order Notes: [Customer Instructions]</pre>
 
           // Overrides
           if (!d.combinationOverrides) d.combinationOverrides = {};
-          document.querySelectorAll('.override-input').forEach(inp => {
+          document.querySelectorAll('.override-input[data-comb]').forEach(inp => {
             const comb = inp.getAttribute('data-comb');
             const val = inp.value.trim();
             if (val) {
               d.combinationOverrides[comb] = parseInt(val, 10);
             } else {
               delete d.combinationOverrides[comb];
+            }
+          });
+
+          // Website MRP per combination
+          if (!d.combinationMrp) d.combinationMrp = {};
+          document.querySelectorAll('.mrp-input[data-comb-mrp]').forEach(inp => {
+            const comb = inp.getAttribute('data-comb-mrp');
+            const val = inp.value.trim();
+            if (val) {
+              d.combinationMrp[comb] = parseInt(val, 10);
+            } else {
+              delete d.combinationMrp[comb];
             }
           });
 
@@ -6070,6 +6149,39 @@ Order Notes: [Customer Instructions]</pre>
               }, 6000);
             }
           }
+        });
+      }
+
+      // Apply LORA Price Sheet → combination prices + Website MRP, then publish
+      const applySheetBtn = document.querySelector('#btn-apply-price-sheet');
+      if (applySheetBtn) {
+        applySheetBtn.addEventListener('click', async function () {
+          if (!confirm('Fill combination prices & Website MRP from the LORA price sheet for Ortho Latex (9"), Comfort Core, Pocket Luxe and Hybrid Fusion (10")? Other pricing settings are not changed.')) return;
+          const applied = applyPriceSheetToCatalog(catalog);
+          if (!applied.length) { showToast('⚠️ No matching models found in the catalog.'); return; }
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog));
+            localStorage.setItem('lora_product_catalog_v3', JSON.stringify(catalog));
+          } catch (e) {}
+          if (catalog[activeModel]) renderMatrixTable(catalog[activeModel]);
+          applySheetBtn.disabled = true;
+          try {
+            const r = await fetch('/api/catalog', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '') },
+              body: JSON.stringify({ catalog })
+            });
+            const j = await r.json().catch(() => ({}));
+            if (r.ok && j.success) {
+              window.dispatchEvent(new CustomEvent('lora:catalog_updated', { detail: catalog }));
+              showToast(`✓ Price sheet applied & published: ${applied.join(', ')}`);
+            } else {
+              showToast(`⚠️ Applied locally, server save failed (${j.message || 'HTTP ' + r.status}). Click "Save & Publish".`);
+            }
+          } catch (e) {
+            showToast('⚠️ Applied locally, server offline. Click "Save & Publish" when online.');
+          }
+          applySheetBtn.disabled = false;
         });
       }
 
@@ -7900,7 +8012,7 @@ Order Notes: [Customer Instructions]</pre>
           </div>
 
           <div style="border-top: 1px dashed #94A3B8; padding-top: 0.75rem; font-size: 0.72rem; color: #64748B; display: flex; justify-content: space-between;">
-            <div>Sender: LORA Mattress Hub, Indiranagar, BLR - 560038</div>
+            <div>Sender: LORA MATTRESS, Meenkunnam, Muvattupuzha, Ernakulam, Kerala 686667, India</div>
             <div>Support: care@loramattress.com</div>
           </div>
         `;

@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/assets/lora-logo.png">
+  <link rel="apple-touch-icon" href="/assets/lora-logo.png">
   <title id="pdp-meta-title">LORA Mattress — Detailed Product Specifications</title>
   <meta name="description" id="pdp-meta-desc" content="Comprehensive engineering specifications, 4-tier layer anatomy, ergonomic spine contour analysis, and direct factory pricing for LORA mattresses.">
 
@@ -12,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script src="assets/lora-ads.js?v=1"></script>
-  <script src="assets/lora-variants.js?v=20261104_v1"></script>
+  <script src="assets/lora-variants.js?v=20261110_v1"></script>
   <link rel="stylesheet" href="assets/base.css?v=20261104_v2">
   <link rel="stylesheet" href="assets/lumi.css?v=20261030_v7">
   <!-- Razorpay Checkout Gateway SDK -->
@@ -2816,7 +2818,9 @@
         { id: "78x60", title: "78\" × 60\"" },
         { id: "75x60", title: "75\" × 60\"" },
         { id: "72x60", title: "72\" × 60\"" },
-        { id: "78x66", title: "78\" × 66\"" }
+        { id: "78x66", title: "78\" × 66\"" },
+        { id: "75x66", title: "75\" × 66\"" },
+        { id: "72x66", title: "72\" × 66\"" }
       ],
       king: [
         { id: "78x72", title: "78\" × 72\"" },
@@ -2827,13 +2831,18 @@
       double: [
         { id: "75x48", title: "75\" × 48\"" },
         { id: "72x48", title: "72\" × 48\"" },
-        { id: "78x48", title: "78\" × 48\"" }
+        { id: "78x48", title: "78\" × 48\"" },
+        { id: "72x42", title: "72\" × 42\"" },
+        { id: "75x42", title: "75\" × 42\"" },
+        { id: "78x42", title: "78\" × 42\"" }
       ],
       single: [
         { id: "75x36", title: "75\" × 36\"" },
         { id: "72x36", title: "72\" × 36\"" },
         { id: "78x36", title: "78\" × 36\"" },
-        { id: "75x42", title: "75\" × 42\"" }
+        { id: "72x30", title: "72\" × 30\"" },
+        { id: "75x30", title: "75\" × 30\"" },
+        { id: "78x30", title: "78\" × 30\"" }
       ]
     };
 
@@ -2901,32 +2910,41 @@
       return finalPrice;
     }
 
-    function calculateCurrentPrice() {
+    // Raw (pre-offer) price for the current selection. Custom size → next standard size price.
+    function getRawPriceInfo() {
       const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
-      if (!data) return 21999;
-
-      const combKey = `${activeCotType}_${activeInchId}_${activeThickness}`;
+      let cot = activeCotType;
+      let inch = activeInchId;
+      if (cot === 'custom' && window.LoraVariants && LoraVariants.nextStandardSize) {
+        const nx = LoraVariants.nextStandardSize(INCH_SPECS, customLenInches || 78, customWidInches || 60);
+        if (nx) { cot = nx.cot; inch = nx.inch; }
+      }
+      const combKey = `${cot}_${inch}_${activeThickness}`;
 
       if (data.combinationOverrides && data.combinationOverrides[combKey] !== undefined) {
-        const rawPrice = parseInt(data.combinationOverrides[combKey], 10);
-        return computeDiscounts(data, rawPrice);
+        return { raw: parseInt(data.combinationOverrides[combKey], 10), combKey };
       }
 
       const base = data.basePrice || 21999;
-      const mult = (data.multipliers && data.multipliers[activeCotType]) || 1.0;
+      const mult = (data.multipliers && data.multipliers[cot]) || 1.0;
       const thickOffsets = data.thicknessOffsets || { "6": -2500, "8": 0, "10": 3800, "12": 7500 };
       const thickDelta = thickOffsets[String(activeThickness)] !== undefined ? thickOffsets[String(activeThickness)] : 0;
 
       let inchDelta = 0;
-      if (activeCotType === 'custom') {
+      if (cot === 'custom') {
         const sqInches = (customLenInches || 78) * (customWidInches || 60);
         inchDelta = Math.round(base * ((sqInches / 4680) - 1) * 0.85);
-      } else if (data.inchAddons && data.inchAddons[activeCotType]) {
-        inchDelta = data.inchAddons[activeCotType][activeInchId] || 0;
+      } else if (data.inchAddons && data.inchAddons[cot]) {
+        inchDelta = data.inchAddons[cot][inch] || 0;
       }
 
-      const calculated = Math.round(base * mult) + thickDelta + inchDelta;
-      return computeDiscounts(data, calculated);
+      return { raw: Math.round(base * mult) + thickDelta + inchDelta, combKey };
+    }
+
+    function calculateCurrentPrice() {
+      const data = PRODUCTS_DATA[currentModelKey] || PRODUCTS_DATA["01"];
+      if (!data) return 21999;
+      return computeDiscounts(data, getRawPriceInfo().raw);
     }
 
     function renderInchOptions() {
@@ -3248,19 +3266,10 @@
       if (!data) return;
 
       const finalPrice = calculateCurrentPrice();
-      const base = data.basePrice || 21999;
-      const mult = (data.multipliers && data.multipliers[activeCotType]) || 1.0;
-      const thickOffsets = data.thicknessOffsets || { "6": -2500, "8": 0, "10": 3800, "12": 7500 };
-      const thickDelta = thickOffsets[String(activeThickness)] !== undefined ? thickOffsets[String(activeThickness)] : 0;
-      let inchDelta = 0;
-      if (activeCotType === 'custom') {
-        const sqInches = (customLenInches || 78) * (customWidInches || 60);
-        inchDelta = Math.round(base * ((sqInches / 4680) - 1) * 0.85);
-      } else if (data.inchAddons && data.inchAddons[activeCotType]) {
-        inchDelta = data.inchAddons[activeCotType][activeInchId] || 0;
-      }
-      const rawPrice = Math.round(base * mult) + thickDelta + inchDelta;
-      const finalMrp = Math.round(rawPrice * 1.65);
+      const rawInfo = getRawPriceInfo();
+      const rawPrice = rawInfo.raw;
+      const adminMrp = (window.LoraVariants && LoraVariants.comboMrp) ? LoraVariants.comboMrp(data, rawInfo.combKey) : null;
+      const finalMrp = adminMrp || Math.round(rawPrice * 1.65);
       const savings = finalMrp - finalPrice;
       const emiVal = Math.round(finalPrice / 12);
 

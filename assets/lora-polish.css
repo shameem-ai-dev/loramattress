@@ -347,6 +347,20 @@ body {
 .price-current {
   color: var(--lp-espresso) !important;
 }
+del.price-original-mrp,
+.price-original-mrp {
+  color: #78716C !important;
+  text-decoration: line-through !important;
+  -webkit-text-decoration-line: line-through !important;
+  text-decoration-line: line-through !important;
+  text-decoration-color: #8A7F75 !important;
+  opacity: 0.72 !important;
+}
+.price-discount-tag {
+  color: #15803D !important;
+  background: rgba(22, 163, 74, 0.12) !important;
+  border: 1px solid rgba(22, 163, 74, 0.28) !important;
+}
 .card-spec-badge {
   color: var(--lp-terracotta) !important;
   background: rgba(194, 97, 54, 0.1) !important;

@@ -21,14 +21,42 @@
     '75x60': { ft: '6.25 × 5 ft' },
     '72x60': { ft: '6 × 5 ft' },
     '78x66': { ft: '6.5 × 5.5 ft', tag: 'Olympic' },
+    '72x66': { ft: '6 × 5.5 ft' },
+    '75x66': { ft: '6.25 × 5.5 ft' },
     '72x36': { ft: '6 × 3 ft', tag: 'Most Popular' },
     '75x36': { ft: '6.25 × 3 ft' },
     '78x36': { ft: '6.5 × 3 ft' },
+    '72x30': { ft: '6 × 2.5 ft' },
+    '75x30': { ft: '6.25 × 2.5 ft' },
+    '78x30': { ft: '6.5 × 2.5 ft' },
+    '72x42': { ft: '6 × 3.5 ft' },
     '75x42': { ft: '6.25 × 3.5 ft', tag: 'Wide' },
+    '78x42': { ft: '6.5 × 3.5 ft' },
     '72x48': { ft: '6 × 4 ft', tag: 'Most Popular' },
     '75x48': { ft: '6.25 × 4 ft' },
     '78x48': { ft: '6.5 × 4 ft' }
   };
+
+  // Custom size → the next (smallest covering) standard size. Returns { cot, inch } or null.
+  function nextStandardSize(specs, len, wid) {
+    len = Number(len) || 0; wid = Number(wid) || 0;
+    let best = null;
+    ['single', 'double', 'queen', 'king'].forEach(cot => {
+      (specs[cot] || []).forEach(s => {
+        const [l, w] = String(s.id).split('x').map(Number);
+        if (!l || !w || l < len || w < wid) return;
+        const area = l * w;
+        if (!best || area < best.area || (area === best.area && w < best.w)) best = { cot, inch: s.id, area, w };
+      });
+    });
+    return best ? { cot: best.cot, inch: best.inch } : null;
+  }
+
+  // Admin-entered per-combination MRP ("Website MRP"), or null when not set.
+  function comboMrp(d, key) {
+    const v = d && d.combinationMrp ? parseInt(d.combinationMrp[key], 10) : NaN;
+    return v > 0 ? v : null;
+  }
 
   function thicknesses(d) {
     const list = (d && Array.isArray(d.availableThicknesses) && d.availableThicknesses.length)
@@ -93,6 +121,6 @@
 
   window.LoraVariants = {
     ALL_THICK, COT_ORDER, thicknesses, cotEnabled, sizeEnabled, comboVisible,
-    visibleThicks, sizeAvailable, cotAvailable, resolve, meta
+    visibleThicks, sizeAvailable, cotAvailable, resolve, meta, nextStandardSize, comboMrp
   };
 })();

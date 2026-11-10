@@ -1859,6 +1859,13 @@ button, input, select {
   flex-wrap: wrap;
 }
 
+.card-mrp-discount-wrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
 .price-current {
   font-size: 1.65rem;
   font-weight: 800;
@@ -1866,14 +1873,33 @@ button, input, select {
   letter-spacing: -0.02em;
 }
 
+del.price-original-mrp,
 .price-original-mrp {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 500;
   color: #94A3B8;
   text-decoration: line-through;
-  opacity: 0.65;
+  -webkit-text-decoration-line: line-through;
+  text-decoration-line: line-through;
+  text-decoration-color: #8A7F75;
+  opacity: 0.72;
   white-space: nowrap;
   letter-spacing: -0.01em;
+}
+
+.price-discount-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .card-spec-badge {
@@ -4059,7 +4085,14 @@ body {
   .card-price-group {
     display: inline-flex !important;
     align-items: baseline !important;
-    gap: 0.35rem !important;
+    gap: 0.2rem 0.35rem !important;
+    flex-wrap: wrap !important;
+  }
+  .card-mrp-discount-wrap {
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 0.3rem !important;
+    white-space: nowrap !important;
   }
   .price-current {
     font-size: 0.95rem !important;
@@ -4068,11 +4101,26 @@ body {
     letter-spacing: -0.01em !important;
     line-height: 1.1 !important;
   }
+  del.price-original-mrp,
   .price-original-mrp {
-    font-size: 0.74rem !important;
-    opacity: 0.6 !important;
+    font-size: 0.72rem !important;
+    opacity: 0.72 !important;
     color: #94A3B8 !important;
     text-decoration: line-through !important;
+    -webkit-text-decoration-line: line-through !important;
+    text-decoration-line: line-through !important;
+    text-decoration-color: #8A7F75 !important;
+    white-space: nowrap !important;
+  }
+  .price-discount-tag {
+    font-size: 0.62rem !important;
+    font-weight: 800 !important;
+    color: #10B981 !important;
+    background: rgba(16, 185, 129, 0.15) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    padding: 0.08rem 0.3rem !important;
+    border-radius: 4px !important;
+    line-height: 1.1 !important;
     white-space: nowrap !important;
   }
   .card-spec-badge {
