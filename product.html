@@ -2117,7 +2117,7 @@
 
           <!-- Compact Reassurance Micro-Strip -->
           <div class="pdp-reassurance-micro">
-            <span>✓ <strong id="pdp-guarantee-warr">10-Yr Sag-Free Warranty</strong></span>
+            <span>✓ <strong id="pdp-guarantee-warr">3-Year Factory Warranty</strong></span>
             <span>•</span>
             <span>✓ <strong>Free Flat Uncompressed Delivery</strong></span>
           </div>
@@ -2133,7 +2133,7 @@
                 </div>
                 <div style="flex: 1; min-width: 0;">
                   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-                    <strong class="pdp-large-emi-title" id="pdp-assurance-warranty" style="color: #1C1917; font-weight: 700; font-size: 0.88rem;">100% Direct Factory Assurance • Insured Warranty</strong>
+                    <strong class="pdp-large-emi-title" id="pdp-assurance-warranty" style="color: #1C1917; font-weight: 700; font-size: 0.88rem;">100% Direct Factory Assurance • 3-Year Factory Warranty</strong>
                     <span class="badge-verified" style="background: rgba(194, 97, 54, 0.1); color: #A24B24; border: 1px solid rgba(194, 97, 54, 0.25); font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px;">DIRECT CRAFT</span>
                   </div>
                   <p class="pdp-large-emi-desc" style="color: #57534E; font-size: 0.80rem; line-height: 1.4; margin-top: 0.25rem; font-weight: 450;">
@@ -3206,14 +3206,17 @@
       const warrBadge = document.querySelector('#pdp-warranty-badge');
       if (warrBadge && data.warranty) warrBadge.textContent = data.warranty.toUpperCase();
       const guarWarr = document.querySelector('#pdp-guarantee-warr');
-      if (guarWarr && data.warranty) guarWarr.textContent = data.warranty;
+      if (guarWarr && data.warranty) {
+        const wYrs = (String(data.warranty).match(/(\d+)\s*(year|yr)/i) || [])[1];
+        guarWarr.textContent = wYrs ? `${wYrs}-Year Factory Warranty` : data.warranty;
+      }
 
       // Product-specific warranty everywhere on this page (no generic "15 years")
       if (data.warranty) {
         const wYrs = (String(data.warranty).match(/(\d+)\s*(year|yr)/i) || [])[1];
         const wShort = wYrs ? `${wYrs}-Year` : String(data.warranty).replace(/\s*warranty\s*/i, '');
         const assureEl = document.querySelector('#pdp-assurance-warranty');
-        if (assureEl) assureEl.textContent = `100% Direct Factory Assurance • ${wShort} Insured Warranty`;
+        if (assureEl) assureEl.textContent = `100% Direct Factory Assurance • ${wShort} Factory Warranty`;
         const footEl = document.querySelector('#pdp-checkout-warranty-note');
         if (footEl) footEl.textContent = `Factory Direct Craft • ${data.warranty} • 100% Flat Uncompressed Delivery`;
         if (typeof window.setLoraRibbonProductWarranty === 'function') {

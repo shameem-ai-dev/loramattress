@@ -2167,7 +2167,7 @@
 
             <!-- Compact Reassurance Micro Strip -->
             <div class="pdp-reassurance-micro">
-              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <strong id="inner-guar-warr">10-Yr Warranty</strong></span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <strong id="inner-guar-warr">3-Year Factory Warranty</strong></span>
               <span>•</span>
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Free Insured Delivery</span>
               <span>•</span>
@@ -2185,7 +2185,7 @@
                   </div>
                   <div style="flex: 1; min-width: 0;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-                      <strong class="pdp-large-emi-title" style="color: #1C1917;">100% Direct Factory Assurance • 15-Year Insured Warranty</strong>
+                      <strong class="pdp-large-emi-title" id="inner-assurance-warranty" style="color: #1C1917;">100% Direct Factory Assurance • 3-Year Factory Warranty</strong>
                       <span class="badge-verified" style="background: rgba(16, 185, 129, 0.15); color: #059669; border-color: rgba(16, 185, 129, 0.3); font-size: 0.7rem; padding: 0.2rem 0.55rem;">DIRECT CRAFT</span>
                     </div>
                     <p class="pdp-large-emi-desc" style="color: #57534E; margin-top: 0.25rem;">
@@ -2780,7 +2780,7 @@
               <div style="padding: 2rem; display: flex; flex-direction: column; gap: 0.75rem; justify-content: center; height: 100%;">
                 <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>Spine Doctor Recommended:</strong> Maintains anatomical lumbar curvature.</div>
                 <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>Zero Sag Resilience:</strong> High density core prevents center dipping.</div>
-                <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>12-Year Warranty:</strong> Engineered for lasting orthopedic therapy.</div>
+                <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>5-Year Warranty:</strong> Engineered for lasting orthopedic therapy.</div>
               </div>
             </div>
             <div class="card-slide-content" data-panel="size">
@@ -3177,7 +3177,7 @@
             <div class="card-slide-content" data-panel="why">
               <div style="padding: 2rem; display: flex; flex-direction: column; gap: 0.75rem; justify-content: center; height: 100%;">
                 <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>Zero Synthetic Chemical Off-Gassing:</strong> 100% natural tree sap.</div>
-                <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>15-Year Factory Warranty:</strong> Will not sag or harden over time.</div>
+                <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>10-Year Factory Warranty:</strong> Will not sag or harden over time.</div>
               </div>
             </div>
             <div class="card-slide-content" data-panel="size">
@@ -3566,7 +3566,7 @@
             <div class="card-slide-content" data-panel="why">
               <div style="padding: 2rem; display: flex; flex-direction: column; gap: 0.75rem; justify-content: center; height: 100%;">
                 <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>Flagship Engineering:</strong> Combines natural latex, pocket coils, and cooling fabric.</div>
-                <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>15-Year Coverage:</strong> Masterpiece craftsmanship direct from factory.</div>
+                <div style="display: flex; gap: 0.65rem; font-size: 0.88rem;"><span>✓</span> <strong>10-Year Coverage:</strong> Masterpiece craftsmanship direct from factory.</div>
               </div>
             </div>
             <div class="card-slide-content" data-panel="size">
@@ -7244,7 +7244,16 @@
         const standaloneBtn = document.querySelector('#inner-standalone-btn');
         if (standaloneBtn) standaloneBtn.href = `product.html?model=${modelKey}&cot=${activeCotType}&inch=${activeInchId}&thick=${activeThickness}`;
         const guarWarr = document.querySelector('#inner-guar-warr');
-        if (guarWarr) guarWarr.textContent = `${data.warranty} Direct Factory Coverage`;
+        if (guarWarr && data.warranty) {
+          const wYrs = (String(data.warranty).match(/(\d+)\s*(year|yr)/i) || [])[1];
+          guarWarr.textContent = wYrs ? `${wYrs}-Year Factory Warranty` : data.warranty;
+        }
+        const innerAssure = document.querySelector('#inner-assurance-warranty');
+        if (innerAssure && data.warranty) {
+          const wYrs = (String(data.warranty).match(/(\d+)\s*(year|yr)/i) || [])[1];
+          const wShort = wYrs ? `${wYrs}-Year` : String(data.warranty).replace(/\s*warranty\s*/i, '');
+          innerAssure.textContent = `100% Direct Factory Assurance • ${wShort} Factory Warranty`;
+        }
 
         // Update Images with robust fallback protection against 404s
         const defaultHero = DEFAULT_PRODUCTS[modelKey]?.heroImg || 'assets/comfort-plush.jpg';
