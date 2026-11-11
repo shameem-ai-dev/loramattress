@@ -7175,7 +7175,7 @@
 
       async function syncServerCatalog() {
         try {
-          const res = await fetch('/api/catalog');
+          const res = await fetch('/api/catalog', { cache: 'no-store' });
           const data = await res.json();
           if (data && data.success && data.catalog) {
             catalog = Object.assign({}, DEFAULT_PRODUCTS, data.catalog);

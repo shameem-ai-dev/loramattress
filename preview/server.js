@@ -523,7 +523,7 @@ const server = http.createServer((req, res) => {
       if (fs.existsSync(catalogFilePath)) {
         try {
           const data = JSON.parse(fs.readFileSync(catalogFilePath, 'utf8'));
-          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-store' });
           res.end(JSON.stringify({ success: true, catalog: data }));
           return;
         } catch (e) {}
@@ -1063,7 +1063,7 @@ const server = http.createServer((req, res) => {
     const adminPath = path.join(ROOT_DIR, 'admin.html');
     if (fs.existsSync(adminPath)) {
       const html = fs.readFileSync(adminPath, 'utf8');
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
       res.end(html);
       return;
     }
@@ -1074,12 +1074,12 @@ const server = http.createServer((req, res) => {
     const productPath = path.join(ROOT_DIR, 'product.html');
     if (fs.existsSync(productPath)) {
       const html = withSeo(fs.readFileSync(productPath, 'utf8'), 'product', req);
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
       res.end(html);
       return;
     }
     const html = buildProductPage();
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
     res.end(html);
     return;
   }
@@ -1089,12 +1089,12 @@ const server = http.createServer((req, res) => {
     const indexPath = path.join(ROOT_DIR, 'index.html');
     if (fs.existsSync(indexPath)) {
       const html = withSeo(fs.readFileSync(indexPath, 'utf8'), 'home', req);
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
       res.end(html);
       return;
     }
     const html = buildIndexPage();
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
     res.end(html);
     return;
   }

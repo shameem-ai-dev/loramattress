@@ -2780,7 +2780,7 @@
     // Live Server Sync from API
     async function syncServerCatalogPdp() {
       try {
-        const res = await fetch('/api/catalog');
+        const res = await fetch('/api/catalog', { cache: 'no-store' });
         const data = await res.json();
         if (data && data.success && data.catalog && typeof data.catalog === 'object') {
           Object.assign(PRODUCTS_DATA, data.catalog);
