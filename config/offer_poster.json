@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "posterImage": "assets/hero-bedroom-luxury.jpg",
+  "badge": "LIMITED TIME FESTIVE RELEASE",
+  "headline": "Flat 20% Off + Complimentary Luxury Sleep Kit",
+  "subtext": "Shipped 100% full-size and flat across India with direct factory warranty. Use coupon code at checkout.",
+  "couponCode": "LORA20",
+  "buttonText": "Explore Festive Offers →",
+  "buttonLink": "#the-collection",
+  "stickyEnabled": true,
+  "timerEnabled": true,
+  "timerEndTime": "2026-11-30T23:59:59",
+  "timerLabel": "⚡ Limited Deal Ends In:",
+  "updatedAt": "2026-11-18T17:55:39.317Z"
+}

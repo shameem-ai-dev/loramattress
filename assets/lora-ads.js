@@ -170,7 +170,7 @@
     if (opts.user) Object.keys(opts.user).forEach(function (k) { if (opts.user[k]) u[k] = opts.user[k]; });
     u.fbp = getCookie('_fbp');
     u.fbc = getCookie('_fbc');
-    relay({ event_name: name, event_id: eventId, event_source_url: location.href.split('#')[0], custom_data: data, user_data: u });
+    relay({ event_name: name, event_id: eventId, event_source_url: opts.sourceUrl || location.href.split('#')[0], custom_data: data, user_data: u, verify: opts.verify });
   }
   window.loraTrack = track;
 
@@ -223,20 +223,77 @@
     } catch (e) {}
     return false;
   }
-  function onOrder(o) {
-    if (!o || !o.id || firedBefore(o.id)) return;
+  // ---------------- dedicated thank-you URL (/thank-you?order_id=…) ----------------
+  // The confirmation is shown inside the checkout modal, so we give it its own URL
+  // (history.pushState) and fire a virtual PageView on it. Meta custom conversions,
+  // GA4 funnels and URL-based goals can then target "/thank-you" precisely.
+  var THANKYOU_PATH = '/thank-you';
+  var thankYouShown = {};
+  function thankYouUrl(o) {
+    return location.origin + THANKYOU_PATH + '?order_id=' + encodeURIComponent(o.id);
+  }
+  function goThankYou(o) {
+    if (!o || !o.id || thankYouShown[o.id]) return;
+    thankYouShown[o.id] = true;
+    try {
+      if (location.pathname !== THANKYOU_PATH) {
+        sessionStorage.setItem('lora_thankyou_prev', location.pathname + location.search);
+      }
+      history.pushState({ loraThankYou: o.id }, '', THANKYOU_PATH + '?order_id=' + encodeURIComponent(o.id));
+    } catch (e) {}
+    document.title = 'Order Confirmed — Thank You | LORA';
+    track('PageView', {}, { eventId: 'pv.thankyou.' + o.id });
+    if (window.gtag) window.gtag('event', 'page_view', { page_title: 'Thank You', page_location: location.href, page_path: THANKYOU_PATH });
+  }
+  function leaveThankYou() {
+    if (location.pathname !== THANKYOU_PATH) return;
+    var prev = '/';
+    try { prev = sessionStorage.getItem('lora_thankyou_prev') || '/'; } catch (e) {}
+    try { history.replaceState(null, '', prev); } catch (e) {}
+  }
+  window.loraLeaveThankYou = leaveThankYou;
+  document.addEventListener('lora:order_placed', function (e) { onOrder(e && e.detail, true); });
+  // Direct load / refresh of /thank-you (no live order in memory) → don't count a fake
+  // conversion page view; send the visitor back to the store.
+  if (location.pathname.replace(/\/$/, '') === THANKYOU_PATH) {
+    try { history.replaceState(null, '', '/'); } catch (e) {}
+  }
+  window.addEventListener('popstate', function () {
+    if (location.pathname !== THANKYOU_PATH && typeof window.closeCheckoutModal === 'function') {
+      try { window.closeCheckoutModal(); } catch (e) {}
+    }
+  });
+
+  function onOrder(o, isNew) {
+    if (!o || !o.id) return;
     var st = String(o.status || o.paymentStatus || '').toLowerCase();
     if (/declined|failed|cancel/.test(st)) return;
+    if (isNew) goThankYou(o);
+    if (!isNew) return;                       // background syncs / outbox replays never count as a sale
     var items = Array.isArray(o.items) && o.items.length ? o.items : [{ title: o.productName, specs: o.size, price: o.totalPrice, quantity: o.quantity }];
     var ids = items.map(function (i) { return contentId(i.title || i.productName, i.specs || i.size || o.size); }).filter(Boolean);
     var digits = String(o.phone || '').replace(/\D/g, '');
-    track('Purchase', {
+    var user = { ph: digits, zp: o.addressDetails && o.addressDetails.pincode, ct: o.addressDetails && o.addressDetails.city, st: o.addressDetails && o.addressDetails.state, fn: String(o.customerName || '').split(/\s+/)[0] };
+    var data = {
       content_ids: ids, content_type: 'product', value: priceNum(o.totalPrice), currency: 'INR',
       num_items: items.length, order_id: o.id, contents: ids.map(function (id) { return { id: id, quantity: 1 }; })
-    }, {
-      eventId: 'purchase.' + o.id,   // stable id: browser + server + retries collapse into one purchase
-      user: { ph: digits, zp: o.addressDetails && o.addressDetails.pincode, ct: o.addressDetails && o.addressDetails.city, st: o.addressDetails && o.addressDetails.state, fn: String(o.customerName || '').split(/\s+/)[0] }
-    });
+    };
+    // Purchase = ONLY a Razorpay payment that the server verified (signature present).
+    // COD orders are NOT money received yet → reported as a separate custom event so
+    // Meta never optimises / reports "purchases" that never paid.
+    var paid = /^paid/i.test(String(o.paymentStatus || '')) && o.paymentId && o.razorpaySignature;
+    if (paid) {
+      if (firedBefore(o.id)) return;
+      track('Purchase', data, {
+        eventId: 'purchase.' + o.id,   // stable id: browser + server + retries collapse into one purchase
+        sourceUrl: thankYouUrl(o),
+        user: user,
+        verify: { razorpay_order_id: o.razorpayOrderId, razorpay_payment_id: o.paymentId, razorpay_signature: o.razorpaySignature }
+      });
+    } else if (/cod|cash/i.test(String(o.paymentMethod || o.paymentStatus || ''))) {
+      if (firedBefore('cod.' + o.id)) return;
+      track('OrderPlacedCOD', data, { eventId: 'cod.' + o.id, sourceUrl: thankYouUrl(o), user: user });
+    }
   }
   if (_fetch) {
     window.fetch = function (input, init) {
@@ -261,10 +318,11 @@
         p.then(function (res) {
           if (!res || !res.ok) return;
           if (path === '/api/orders') {
-            if (parsed.order) onOrder(parsed.order);
-            if (Array.isArray(parsed.orders)) parsed.orders.forEach(onOrder);
+            if (parsed.order && !Array.isArray(parsed.orders)) onOrder(parsed.order, true);
+            if (Array.isArray(parsed.orders)) parsed.orders.forEach(function (o) { onOrder(o, false); });
           } else if (path === '/api/store-leads') {
             var lead = parsed.lead || parsed;
+            if (lead.resultType === 'checkout_abandoned') return;   // recovery list, not a marketing lead
             var isLumi = /lumi/i.test(lead.source || '') || lead.resultType === 'lumi_consultation';
             var mid = modelFromName(lead.preferredMattress);
             track('Lead', {

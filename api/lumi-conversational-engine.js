@@ -56,7 +56,7 @@ const PRODUCTS_MAP = {
     height: '9 inches',
     warranty: '5 years',
     type: 'Eurotop comfort',
-    basePrice: 25999,
+    basePrice: 23499,
     description: 'Generous 9-inch Eurotop cushioning with balanced posture alignment. Cushioning without sinking too deep.'
   },
   '03': {
@@ -66,7 +66,7 @@ const PRODUCTS_MAP = {
     height: '8-10 inches',
     warranty: '5 years',
     type: 'Pillow top',
-    basePrice: 24999,
+    basePrice: 27999,
     description: 'Deep cloud-like sink-in luxury with gentle pressure relief for shoulders and hips. Ideal for side sleepers.'
   },
   '04': {
@@ -76,7 +76,7 @@ const PRODUCTS_MAP = {
     height: '8-10 inches',
     warranty: '10 years',
     type: 'Hybrid ortho-support',
-    basePrice: 27999,
+    basePrice: 29499,
     description: 'Dynamic 7-zone SpineAlign™ core with targeted lumbar reinforcement. Best for back sleepers and back pain relief.'
   },
   '05': {
@@ -86,7 +86,7 @@ const PRODUCTS_MAP = {
     height: '8-10 inches',
     warranty: '12 years',
     type: 'Latex comfort + Ortho core',
-    basePrice: 29999,
+    basePrice: 34999,
     description: '100% natural pin-core Dunlop latex with open-cell ventilation. Naturally buoyant, cool, anti-dust-mite, with 12-year warranty.'
   },
   '06': {
@@ -96,7 +96,7 @@ const PRODUCTS_MAP = {
     height: '8-10 inches',
     warranty: '10 years',
     type: 'Pillow top balanced comfort',
-    basePrice: 26999,
+    basePrice: 19499,
     description: 'Everyday balanced pillow-top comfort built for long-term resilience and versatile sleeping styles.'
   },
   '07': {
@@ -116,7 +116,7 @@ const PRODUCTS_MAP = {
     height: '10-12 inches',
     warranty: '15 years',
     type: 'Tri-hybrid flagship (Latex + Memory Foam + Ortho Core)',
-    basePrice: 34999,
+    basePrice: 36999,
     description: 'Master multi-layer luxury blending buoyant natural latex, contouring memory foam, and high-density orthopedic core with 15-year warranty.'
   }
 };

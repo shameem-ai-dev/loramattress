@@ -26,6 +26,7 @@ const CONFIG_RUNTIME_FILES = [
   'marketing_settings.json',
   'instagram_reels.json',
   'ribbon_settings.json',
+  'offer_poster.json',
   'catalog_data.json',
   'studios_data.json'
 ];

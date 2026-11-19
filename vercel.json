@@ -23,6 +23,8 @@
     { "source": "/admin/", "destination": "/admin.html" },
     { "source": "/product", "destination": "/product.html" },
     { "source": "/product/", "destination": "/product.html" },
+    { "source": "/thank-you", "destination": "/index.html" },
+    { "source": "/thank-you/", "destination": "/index.html" },
     { "source": "/api/orders/:id*", "destination": "/api/orders" }
   ]
 }

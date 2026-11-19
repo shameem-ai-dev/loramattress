@@ -25,6 +25,15 @@ const SETTINGS_FILE = path.join(CONFIG_DIR, 'marketing_settings.json');
 const CATALOG_FILE = path.join(CONFIG_DIR, 'catalog_data.json');
 const GRAPH_VERSION = 'v21.0';
 const BRAND = 'LORA Mattress';
+const CUSTOM_EVENTS = new Set(['OrderPlacedCOD', 'SizeFinderMatch', 'CheckoutFormStarted', 'CheckoutPhoneEntered', 'OTPRequested', 'OTPSendFailed', 'OTPVerified', 'OTPVerifyFailed', 'CheckoutAddressDone', 'PaymentWindowOpened', 'PaymentFailed', 'PaymentDismissed']);
+function verifiedRazorpay(v) {
+  const secret = (process.env.RAZORPAY_KEY_SECRET || '').trim();
+  if (!secret || !v || typeof v !== 'object') return false;
+  const oid = String(v.razorpay_order_id || ''), pid = String(v.razorpay_payment_id || ''), sig = String(v.razorpay_signature || '');
+  if (!oid || !pid || !sig) return false;
+  const exp = require('crypto').createHmac('sha256', secret).update(oid + '|' + pid).digest('hex');
+  return exp.length === sig.length && require('crypto').timingSafeEqual(Buffer.from(exp), Buffer.from(sig));
+}
 const ALLOWED_EVENTS = new Set(['PageView', 'ViewContent', 'AddToCart', 'InitiateCheckout', 'AddPaymentInfo', 'Purchase', 'Lead', 'CompleteRegistration', 'Contact', 'Search', 'FindLocation']);
 
 const SIZE_LABELS = { single: 'Single (72x36)', double: 'Double (72x48)', queen: 'Queen (78x60)', king: 'King (78x72)' };
@@ -464,7 +473,11 @@ async function handler(req, res) {
     if (!s.enabled || !s.capiEnabled || !s.metaPixelId || !capiToken()) return json(res, 200, { success: true, skipped: true });
     if (rateLimited(clientIp(req))) return json(res, 429, { success: false });
     const b = req.body || {};
-    const list = (Array.isArray(b.events) ? b.events : [b]).slice(0, 10).filter(e => e && ALLOWED_EVENTS.has(e.event_name));
+    const list = (Array.isArray(b.events) ? b.events : [b]).slice(0, 10)
+      .filter(e => e && (ALLOWED_EVENTS.has(e.event_name) || CUSTOM_EVENTS.has(e.event_name)))
+      // A Purchase is only forwarded to Meta when it carries a valid Razorpay signature.
+      // Stops fake / test / COD / bot "purchases" from polluting Ads Manager and optimisation.
+      .filter(e => e.event_name !== 'Purchase' || verifiedRazorpay(e.verify));
     if (!list.length) return json(res, 400, { success: false, message: 'No valid events' });
     const payload = { data: list.map(e => buildCapiEvent(e, req)) };
     if (s.testEventCode) payload.test_event_code = s.testEventCode;

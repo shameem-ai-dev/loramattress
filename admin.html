@@ -3027,6 +3027,145 @@
             </div>
           </div>
 
+          <!-- =========================================================
+               HERO STICKY OFFER POSTER & COUNTDOWN TIMER MANAGER
+               ========================================================= -->
+          <div class="admin-card" id="card-hero-offer-poster" style="border: 1px solid rgba(212, 160, 23, 0.4); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(212, 160, 23, 0.1); margin-bottom: 2rem;">
+            <div class="admin-card-header" style="flex-wrap: wrap; gap: 1rem; align-items: center; border-bottom: 1px solid rgba(212, 160, 23, 0.2); padding-bottom: 1.25rem;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                  <h3 class="admin-card-title" style="margin: 0; color: #FDE68A;">Hero Sticky Offer Poster &amp; Countdown Timer</h3>
+                  <span style="background: linear-gradient(135deg, rgba(212, 160, 23, 0.25) 0%, rgba(194, 97, 54, 0.3) 100%); color: #FDE68A; font-size: 0.68rem; font-weight: 800; padding: 3px 10px; border-radius: 9999px; border: 1px solid rgba(212, 160, 23, 0.45); letter-spacing: 0.05em;">HERO PRIORITY</span>
+                </div>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0.35rem 0 0 0;">Upload festive poster images, set end-date countdown clock with live ON/OFF toggle, and configure sticky scroll persistence.</p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 0.55rem; font-size: 0.85rem; color: #FFFFFF; cursor: pointer; background: rgba(212,160,23,0.12); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid rgba(212,160,23,0.35);">
+                  <input type="checkbox" id="poster-admin-enabled" checked style="accent-color: #D4A017; width: 17px; height: 17px;">
+                  <strong>Offer Poster Active on Storefront</strong>
+                </label>
+              </div>
+            </div>
+
+            <!-- Two-Column Layout: Visual Upload & Controls -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem; margin-top: 1.5rem; margin-bottom: 1.75rem;">
+              <!-- Left Column: Poster Image Upload & Live Preview -->
+              <div style="background: rgba(10, 15, 29, 0.6); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                <label style="font-size: 0.82rem; font-weight: 700; color: #CBD5E1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; display: block;">Offer Poster Image</label>
+                
+                <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #070B14; border: 1px solid rgba(212, 160, 23, 0.3); margin-bottom: 0.4rem; box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);">
+                  <img id="poster-admin-preview" src="assets/hero-bedroom-luxury.jpg" alt="Poster Preview" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                  <div style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); color: #FDE68A; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(212,160,23,0.3);">PREVIEW</div>
+                </div>
+
+                <p style="font-size: 0.72rem; color: #94A3B8; margin: 0 0 0.9rem;">📐 Shown at the same <strong style="color:#FDE68A;">16:9</strong> size on mobile &amp; desktop. Best upload: <strong style="color:#FDE68A;">1600 × 900 px</strong> JPG/WebP, under 400 KB. Keep text &amp; prices in the centre.</p>
+                <div style="display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.75rem;">
+                  <input type="file" id="poster-admin-file" accept="image/*" style="display: none;">
+                  <button type="button" class="btn-action-primary" id="btn-poster-upload" style="flex: 1; height: 36px; font-size: 0.8rem; background: linear-gradient(135deg, #D4A017 0%, #C26136 100%); border: none;">
+                    📁 Upload Poster Image
+                  </button>
+                </div>
+
+                <div>
+                  <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Or Direct Image URL / Path</label>
+                  <input type="text" id="poster-admin-url" class="admin-input" placeholder="assets/hero-bedroom-luxury.jpg" style="font-size: 0.82rem; width: 100%; box-sizing: border-box;">
+                </div>
+              </div>
+
+              <!-- Right Column: Timer Configuration (Timer ON/OFF Button & End Date) -->
+              <div style="background: rgba(10, 15, 29, 0.6); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 1.25rem;">
+                <!-- TIMER ON / OFF BUTTON (Explicit toggle as requested) -->
+                <div style="background: rgba(212, 160, 23, 0.08); border: 1px solid rgba(212, 160, 23, 0.3); border-radius: 10px; padding: 1rem 1.15rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <span style="font-size: 0.88rem; font-weight: 800; color: #FFFFFF; display: block;">Countdown Timer Switch</span>
+                      <span style="font-size: 0.75rem; color: var(--text-muted);">Toggle timer countdown display on storefront</span>
+                    </div>
+                    <label style="position: relative; display: inline-flex; align-items: center; cursor: pointer; gap: 0.65rem;">
+                      <input type="checkbox" id="poster-admin-timer-enabled" checked style="width: 20px; height: 20px; accent-color: #D4A017; cursor: pointer;">
+                      <span id="poster-timer-switch-status" style="font-size: 0.82rem; font-weight: 700; color: #34D399; background: rgba(52, 211, 153, 0.15); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(52, 211, 153, 0.3);">TIMER ON</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Timer Settings (Expiry & Label) -->
+                <div id="poster-timer-controls-box" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                  <div>
+                    <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.4rem;">Offer End Date &amp; Time (Local)</label>
+                    <input type="datetime-local" id="poster-admin-timer-end" class="admin-input" style="font-size: 0.85rem; width: 100%; box-sizing: border-box; color: #FFFFFF;">
+                  </div>
+
+                  <!-- Quick Preset Buttons -->
+                  <div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Quick Duration Presets:</span>
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                      <button type="button" class="btn-logout btn-poster-preset" data-preset-hours="24" style="padding: 3px 8px; font-size: 0.72rem; height: 26px;">+24 Hours</button>
+                      <button type="button" class="btn-logout btn-poster-preset" data-preset-hours="72" style="padding: 3px 8px; font-size: 0.72rem; height: 26px;">+3 Days</button>
+                      <button type="button" class="btn-logout btn-poster-preset" data-preset-hours="168" style="padding: 3px 8px; font-size: 0.72rem; height: 26px;">+7 Days</button>
+                      <button type="button" class="btn-logout btn-poster-preset" data-preset="month-end" style="padding: 3px 8px; font-size: 0.72rem; height: 26px;">End of Month</button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style="font-size: 0.78rem; font-weight: 600; color: #CBD5E1; display: block; margin-bottom: 0.3rem;">Timer Urgency Label</label>
+                    <input type="text" id="poster-admin-timer-label" class="admin-input" value="⚡ Limited Deal Ends In:" style="font-size: 0.82rem; width: 100%; box-sizing: border-box;">
+                  </div>
+                </div>
+
+                <!-- Sticky Dock Toggle -->
+                <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.85rem;">
+                  <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: #E2E8F0; cursor: pointer;">
+                    <input type="checkbox" id="poster-admin-sticky-enabled" checked style="accent-color: #D4A017; width: 16px; height: 16px;">
+                    <span><strong>Enable Sticky Dock on Scroll</strong> (floating bar appears after scrolling past hero)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Inputs Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; background: rgba(10, 15, 29, 0.6); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 1.5rem;">
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.35rem;">Badge Text</label>
+                <input type="text" id="poster-admin-badge" class="admin-input" value="LIMITED TIME FESTIVE RELEASE" style="font-size: 0.82rem; width: 100%; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.35rem;">Coupon Code</label>
+                <input type="text" id="poster-admin-coupon" class="admin-input" value="LORA20" style="font-size: 0.82rem; width: 100%; box-sizing: border-box; text-transform: uppercase;">
+              </div>
+              <div style="grid-column: 1 / -1;">
+                <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.35rem;">Offer Headline</label>
+                <input type="text" id="poster-admin-headline" class="admin-input" value="Flat 20% Off + Complimentary Luxury Sleep Kit" style="font-size: 0.85rem; width: 100%; box-sizing: border-box;">
+              </div>
+              <div style="grid-column: 1 / -1;">
+                <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.35rem;">Subtext / Guarantee Note</label>
+                <textarea id="poster-admin-subtext" class="admin-input" rows="2" style="font-size: 0.82rem; width: 100%; box-sizing: border-box; resize: vertical;">Shipped 100% full-size and flat across India with direct factory warranty. Use coupon code at checkout.</textarea>
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.35rem;">CTA Button Label</label>
+                <input type="text" id="poster-admin-btn-text" class="admin-input" value="Explore Festive Offers →" style="font-size: 0.82rem; width: 100%; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; display: block; margin-bottom: 0.35rem;">CTA Button Destination Link</label>
+                <input type="text" id="poster-admin-btn-link" class="admin-input" value="#the-collection" style="font-size: 0.82rem; width: 100%; box-sizing: border-box;">
+              </div>
+            </div>
+
+            <!-- Footer Save & Publish Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(212, 160, 23, 0.2); padding-top: 1.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.76rem; color: var(--text-muted);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D4A017" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="poster-storage-indicator">Synced with /config/offer_poster.json. Real-time updates propagate instantly.</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button type="button" class="btn-logout" id="btn-poster-reset-defaults" style="height: 38px; font-size: 0.8rem; padding: 0 1rem;">Reset Defaults</button>
+                <button type="button" class="btn-action-primary" id="btn-publish-offer-poster" style="height: 38px; font-size: 0.84rem; padding: 0 1.6rem; display: flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #D4A017 0%, #C26136 100%); box-shadow: 0 4px 15px rgba(212, 160, 23, 0.35); border: none;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Save &amp; Publish Offer Poster</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- 3D ROTATING OFFER RIBBON MANAGER -->
           <div class="admin-card" id="card-ribbon-manager" style="border: 1px solid rgba(0, 180, 216, 0.35); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 180, 216, 0.08); margin-bottom: 2rem;">
             <div class="admin-card-header" style="flex-wrap: wrap; gap: 1rem; align-items: center;">
@@ -4994,7 +5133,7 @@ Order Notes: [Customer Instructions]</pre>
           name: "LORA CLOUD 7™",
           tagline: "7-Zone Buoyant Contour System",
           category: "Ultra Plush • Pressureless Buoyancy",
-          warranty: "15 Years Warranty",
+          warranty: "3 Years Warranty",
           feelLabel: "Gentle Cloud Cushioning",
           postureRec: "Side sleepers seeking zero shoulder pinch and weightless joint contouring.",
           heroImg: "assets/comfort-plush.jpg",
@@ -5002,7 +5141,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/lora-flat-luxury.jpg",
-          basePrice: 21999,
+          basePrice: 22999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5021,7 +5160,7 @@ Order Notes: [Customer Instructions]</pre>
           name: "LORA CLOUD ORTHO™",
           tagline: "Medium-Firm SpineAlign™ High Density Core",
           category: "Clinical Orthopedic Series",
-          warranty: "12 Years Warranty",
+          warranty: "5 Years Warranty",
           feelLabel: "Targeted Lumbar Support",
           postureRec: "Recommended for back sleepers, individuals with lower back stiffness, and those needing orthopedic alignment.",
           heroImg: "assets/comfort-firm.jpg",
@@ -5048,7 +5187,7 @@ Order Notes: [Customer Instructions]</pre>
           name: "LORA PLUSH™",
           tagline: "Cloud Feel Micro-Quilted Pillow-Top",
           category: "Luxury Pillow-Top Series",
-          warranty: "10 Years Warranty",
+          warranty: "5 Years Warranty",
           feelLabel: "Sink-In Gentle Support",
           postureRec: "Ideal for petite sleepers, side sleepers, and luxury hotel feel enthusiasts.",
           heroImg: "assets/comfort-plush.jpg",
@@ -5056,7 +5195,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/material-cashmere-linen.jpg",
-          basePrice: 24999,
+          basePrice: 27999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5075,7 +5214,7 @@ Order Notes: [Customer Instructions]</pre>
           name: "LORA ORTHO HYBRID™",
           tagline: "High-Resilience Latex + Orthopedic Layer",
           category: "Advanced Hybrid Series",
-          warranty: "15 Years Warranty",
+          warranty: "10 Years Warranty",
           feelLabel: "Balanced Buoyant Firm",
           postureRec: "Combination sleepers changing sleep positions through the night.",
           heroImg: "assets/comfort-balanced.jpg",
@@ -5083,7 +5222,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/material-pocket-springs.jpg",
-          basePrice: 26999,
+          basePrice: 29499,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5102,7 +5241,7 @@ Order Notes: [Customer Instructions]</pre>
           name: "LORA ORTHO LATEX™",
           tagline: "100% Certified Dunlop Natural Latex",
           category: "Pure Organic Latex Series",
-          warranty: "15 Years Warranty",
+          warranty: "12 Years Warranty",
           feelLabel: "Naturally Breathable & Resilient",
           postureRec: "Eco-conscious buyers and hot sleepers wanting maximum natural airflow.",
           heroImg: "assets/material-natural-latex.jpg",
@@ -5110,7 +5249,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/complimentary-sleep-kit.jpg",
-          basePrice: 28999,
+          basePrice: 34999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5137,7 +5276,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/delivery-full-flat.jpg",
-          basePrice: 20999,
+          basePrice: 19499,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5156,7 +5295,7 @@ Order Notes: [Customer Instructions]</pre>
           name: "LORA POCKET LUXE™",
           tagline: "Individually Encased Zero-Motion Springs",
           category: "Luxury Pocket Spring Series",
-          warranty: "12 Years Warranty",
+          warranty: "10 Years Warranty",
           feelLabel: "Active Micro-Responsive Spring",
           postureRec: "Couples wanting 100% zero motion transfer when partner moves.",
           heroImg: "assets/material-pocket-springs.jpg",
@@ -5164,7 +5303,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/lora-flat-luxury.jpg",
-          basePrice: 27999,
+          basePrice: 28999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5191,7 +5330,7 @@ Order Notes: [Customer Instructions]</pre>
           spineImg: "assets/hero-stage-3-spine.jpg",
           roomImg: "assets/lifestyle-editorial.jpg",
           detailImg: "assets/material-cashmere-linen.jpg",
-          basePrice: 32999,
+          basePrice: 36999,
           multipliers: { king: 1.18, queen: 1.0, single: 0.68, double: 0.82 },
           availableThicknesses: [6, 7, 8, 9, 10, 11, 12],
           thicknessOffsets: { "6": -2500, "7": -1200, "8": 0, "9": 1900, "10": 3800, "11": 5600, "12": 7500 },
@@ -5608,7 +5747,7 @@ Order Notes: [Customer Instructions]</pre>
         document.querySelector('#p-name').value = data.name || '';
         document.querySelector('#p-tagline').value = data.tagline || '';
         document.querySelector('#p-category').value = data.category || '';
-        document.querySelector('#p-warranty').value = data.warranty || '15 Years Warranty';
+        document.querySelector('#p-warranty').value = data.warranty || '10 Years Warranty';
         document.querySelector('#p-feel').value = data.feelLabel || '';
         document.querySelector('#p-posture').value = data.postureRec || '';
 
@@ -10834,10 +10973,322 @@ Order Notes: [Customer Instructions]</pre>
         }
       }
 
-      loadRibbonAdminSettings();
-      initRibbonManagerEvents();
+        // =========================================================
+        // HERO STICKY OFFER POSTER & COUNTDOWN TIMER ADMIN ENGINE
+        // =========================================================
+        const DEFAULT_POSTER_SETTINGS = {
+          enabled: true,
+          posterImage: "assets/hero-bedroom-luxury.jpg",
+          badge: "LIMITED TIME FESTIVE RELEASE",
+          headline: "Flat 20% Off + Complimentary Luxury Sleep Kit",
+          subtext: "Shipped 100% full-size and flat across India with direct factory warranty. Use coupon code at checkout.",
+          couponCode: "LORA20",
+          buttonText: "Explore Festive Offers →",
+          buttonLink: "#the-collection",
+          stickyEnabled: true,
+          timerEnabled: true,
+          timerEndTime: new Date(Date.now() + 7 * 864e5).toISOString(),
+          timerLabel: "⚡ Limited Deal Ends In:"
+        };
 
-      loadLumiKB();
+        let currentPosterSettings = JSON.parse(JSON.stringify(DEFAULT_POSTER_SETTINGS));
+
+        function toLocalDatetimeString(dateObj) {
+          if (!dateObj || isNaN(dateObj.getTime())) {
+            dateObj = new Date(Date.now() + 7 * 864e5);
+          }
+          const year = dateObj.getFullYear();
+          const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+          const day = String(dateObj.getDate()).padStart(2, '0');
+          const hours = String(dateObj.getHours()).padStart(2, '0');
+          const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+          return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        function updateTimerSwitchUI(isEnabled) {
+          const statusSpan = document.getElementById('poster-timer-switch-status');
+          const controlsBox = document.getElementById('poster-timer-controls-box');
+          if (statusSpan) {
+            if (isEnabled) {
+              statusSpan.textContent = 'TIMER ON';
+              statusSpan.style.color = '#34D399';
+              statusSpan.style.background = 'rgba(52, 211, 153, 0.15)';
+              statusSpan.style.borderColor = 'rgba(52, 211, 153, 0.3)';
+            } else {
+              statusSpan.textContent = 'TIMER OFF';
+              statusSpan.style.color = '#94A3B8';
+              statusSpan.style.background = 'rgba(148, 163, 184, 0.1)';
+              statusSpan.style.borderColor = 'rgba(148, 163, 184, 0.2)';
+            }
+          }
+          if (controlsBox) {
+            controlsBox.style.opacity = isEnabled ? '1' : '0.45';
+            controlsBox.style.pointerEvents = isEnabled ? 'auto' : 'none';
+          }
+        }
+
+        function populatePosterAdminUI(settings) {
+          const elEnabled = document.getElementById('poster-admin-enabled');
+          const elPreview = document.getElementById('poster-admin-preview');
+          const elUrl = document.getElementById('poster-admin-url');
+          const elTimerEnabled = document.getElementById('poster-admin-timer-enabled');
+          const elTimerEnd = document.getElementById('poster-admin-timer-end');
+          const elTimerLabel = document.getElementById('poster-admin-timer-label');
+          const elStickyEnabled = document.getElementById('poster-admin-sticky-enabled');
+          const elBadge = document.getElementById('poster-admin-badge');
+          const elHeadline = document.getElementById('poster-admin-headline');
+          const elSubtext = document.getElementById('poster-admin-subtext');
+          const elCoupon = document.getElementById('poster-admin-coupon');
+          const elBtnText = document.getElementById('poster-admin-btn-text');
+          const elBtnLink = document.getElementById('poster-admin-btn-link');
+
+          if (elEnabled) elEnabled.checked = settings.enabled !== false;
+          if (elPreview && settings.posterImage) elPreview.src = settings.posterImage;
+          if (elUrl) elUrl.value = settings.posterImage || '';
+          if (elTimerEnabled) {
+            elTimerEnabled.checked = settings.timerEnabled !== false;
+            updateTimerSwitchUI(elTimerEnabled.checked);
+          }
+          if (elTimerEnd && settings.timerEndTime) {
+            try {
+              elTimerEnd.value = toLocalDatetimeString(new Date(settings.timerEndTime));
+            } catch (e) {
+              elTimerEnd.value = toLocalDatetimeString(new Date(Date.now() + 7 * 864e5));
+            }
+          }
+          if (elTimerLabel) elTimerLabel.value = settings.timerLabel || '⚡ Limited Deal Ends In:';
+          if (elStickyEnabled) elStickyEnabled.checked = settings.stickyEnabled !== false;
+          if (elBadge) elBadge.value = settings.badge || 'LIMITED TIME FESTIVE RELEASE';
+          if (elHeadline) elHeadline.value = settings.headline || '';
+          if (elSubtext) elSubtext.value = settings.subtext || '';
+          if (elCoupon) elCoupon.value = settings.couponCode || 'LORA20';
+          if (elBtnText) elBtnText.value = settings.buttonText || 'Explore Festive Offers →';
+          if (elBtnLink) elBtnLink.value = settings.buttonLink || '#the-collection';
+        }
+
+        async function loadOfferPosterAdminSettings() {
+          try {
+            const res = await fetch('/api/offer-poster', { cache: 'no-store' });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.success && data.settings) {
+                currentPosterSettings = Object.assign({}, DEFAULT_POSTER_SETTINGS, data.settings);
+                populatePosterAdminUI(currentPosterSettings);
+                return;
+              }
+            }
+          } catch (err) {
+            console.warn('[Offer Poster Admin] Server fetch error, using local fallback:', err);
+          }
+
+          // Fallback to localStorage if any
+          try {
+            const local = localStorage.getItem('lora_offer_poster_v1');
+            if (local) {
+              currentPosterSettings = Object.assign({}, DEFAULT_POSTER_SETTINGS, JSON.parse(local));
+            }
+          } catch (e) {}
+          populatePosterAdminUI(currentPosterSettings);
+        }
+
+        function initOfferPosterAdminEvents() {
+          const timerToggle = document.getElementById('poster-admin-timer-enabled');
+          if (timerToggle) {
+            timerToggle.addEventListener('change', () => {
+              updateTimerSwitchUI(timerToggle.checked);
+            });
+          }
+
+          // Direct URL typing reflects immediately on preview
+          const urlInput = document.getElementById('poster-admin-url');
+          const previewImg = document.getElementById('poster-admin-preview');
+          if (urlInput && previewImg) {
+            urlInput.addEventListener('input', () => {
+              if (urlInput.value.trim()) {
+                previewImg.src = urlInput.value.trim();
+              }
+            });
+          }
+
+          // Quick Preset Buttons
+          document.querySelectorAll('.btn-poster-preset').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const hours = btn.getAttribute('data-preset-hours');
+              const presetType = btn.getAttribute('data-preset');
+              const timerInput = document.getElementById('poster-admin-timer-end');
+              if (!timerInput) return;
+
+              let targetDate = new Date();
+              if (hours) {
+                targetDate = new Date(Date.now() + parseInt(hours, 10) * 3600 * 1000);
+              } else if (presetType === 'month-end') {
+                const now = new Date();
+                targetDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+              }
+              timerInput.value = toLocalDatetimeString(targetDate);
+              showToast(`Preset applied: ${targetDate.toLocaleDateString()} ${targetDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
+            });
+          });
+
+          // Image file upload with compression and /api/upload
+          const btnUpload = document.getElementById('btn-poster-upload');
+          const fileInput = document.getElementById('poster-admin-file');
+          if (btnUpload && fileInput) {
+            btnUpload.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', async (e) => {
+              const file = e.target.files && e.target.files[0];
+              if (!file) return;
+
+              btnUpload.disabled = true;
+              btnUpload.textContent = '⏳ Compressing & Uploading...';
+
+              try {
+                let compressedDataUrl = '';
+                if (typeof compressImage === 'function') {
+                  compressedDataUrl = await compressImage(file, 1600, 0.85);
+                } else {
+                  compressedDataUrl = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => resolve(ev.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                  });
+                }
+
+                if (previewImg) previewImg.src = compressedDataUrl;
+
+                // Upload to server persistent storage
+                const uploadRes = await fetch('/api/upload', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '')
+                  },
+                  body: JSON.stringify({
+                    image: compressedDataUrl,
+                    model: 'offers',
+                    slot: 'hero_poster_' + Date.now()
+                  })
+                });
+
+                const uploadData = await uploadRes.json();
+                if (uploadRes.ok && uploadData && uploadData.success && uploadData.url) {
+                  if (urlInput) urlInput.value = uploadData.url;
+                  if (previewImg) previewImg.src = uploadData.url;
+                  showToast('✓ Poster uploaded & stored on server. Ready to publish!');
+                } else {
+                  // If endpoint storage fallback
+                  if (urlInput) urlInput.value = compressedDataUrl;
+                  showToast('✓ Poster processed successfully. Ready to publish!');
+                }
+              } catch (err) {
+                console.error('[Poster Upload]', err);
+                showToast('❌ Image upload failed: ' + (err.message || 'Unknown error'));
+              } finally {
+                btnUpload.disabled = false;
+                btnUpload.textContent = '📁 Upload Poster Image';
+                fileInput.value = '';
+              }
+            });
+          }
+
+          // Reset to Defaults
+          const btnReset = document.getElementById('btn-poster-reset-defaults');
+          if (btnReset) {
+            btnReset.addEventListener('click', () => {
+              if (confirm('Reset hero offer poster to standard festive release defaults?')) {
+                currentPosterSettings = JSON.parse(JSON.stringify(DEFAULT_POSTER_SETTINGS));
+                populatePosterAdminUI(currentPosterSettings);
+                showToast('Offer poster reset to defaults. Click "Save & Publish" to update storefront.');
+              }
+            });
+          }
+
+          // Publish Offer Poster
+          const btnPublish = document.getElementById('btn-publish-offer-poster');
+          if (btnPublish) {
+            btnPublish.addEventListener('click', async () => {
+              const elEnabled = document.getElementById('poster-admin-enabled');
+              const elUrl = document.getElementById('poster-admin-url');
+              const elTimerEnabled = document.getElementById('poster-admin-timer-enabled');
+              const elTimerEnd = document.getElementById('poster-admin-timer-end');
+              const elTimerLabel = document.getElementById('poster-admin-timer-label');
+              const elStickyEnabled = document.getElementById('poster-admin-sticky-enabled');
+              const elBadge = document.getElementById('poster-admin-badge');
+              const elHeadline = document.getElementById('poster-admin-headline');
+              const elSubtext = document.getElementById('poster-admin-subtext');
+              const elCoupon = document.getElementById('poster-admin-coupon');
+              const elBtnText = document.getElementById('poster-admin-btn-text');
+              const elBtnLink = document.getElementById('poster-admin-btn-link');
+
+              let timerEndTimeISO = currentPosterSettings.timerEndTime;
+              if (elTimerEnd && elTimerEnd.value) {
+                const parsed = new Date(elTimerEnd.value);
+                if (!isNaN(parsed.getTime())) {
+                  timerEndTimeISO = parsed.toISOString();
+                }
+              }
+
+              const payload = {
+                enabled: elEnabled ? elEnabled.checked : true,
+                posterImage: elUrl && elUrl.value.trim() ? elUrl.value.trim() : 'assets/hero-bedroom-luxury.jpg',
+                badge: elBadge && elBadge.value.trim() ? elBadge.value.trim() : 'LIMITED TIME FESTIVE RELEASE',
+                headline: elHeadline && elHeadline.value.trim() ? elHeadline.value.trim() : 'Flat 20% Off + Complimentary Luxury Sleep Kit',
+                subtext: elSubtext && elSubtext.value.trim() ? elSubtext.value.trim() : '',
+                couponCode: elCoupon && elCoupon.value.trim() ? elCoupon.value.trim().toUpperCase() : 'LORA20',
+                buttonText: elBtnText && elBtnText.value.trim() ? elBtnText.value.trim() : 'Explore Festive Offers →',
+                buttonLink: elBtnLink && elBtnLink.value.trim() ? elBtnLink.value.trim() : '#the-collection',
+                stickyEnabled: elStickyEnabled ? elStickyEnabled.checked : true,
+                timerEnabled: elTimerEnabled ? elTimerEnabled.checked : true,
+                timerEndTime: timerEndTimeISO,
+                timerLabel: elTimerLabel && elTimerLabel.value.trim() ? elTimerLabel.value.trim() : '⚡ Limited Deal Ends In:',
+                updatedAt: new Date().toISOString()
+              };
+
+              btnPublish.disabled = true;
+              btnPublish.textContent = 'Publishing...';
+
+              try {
+                // 1. Save to local storage for immediate cross-tab preview
+                localStorage.setItem('lora_offer_poster_v1', JSON.stringify(payload));
+                window.dispatchEvent(new CustomEvent('lora:offer_poster_updated', { detail: payload }));
+
+                // 2. Persist to API
+                const res = await fetch('/api/offer-poster', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + (localStorage.getItem('lora_admin_token') || '')
+                  },
+                  body: JSON.stringify({ settings: payload })
+                });
+
+                const data = await res.json();
+                if (res.ok && data && data.success) {
+                  currentPosterSettings = payload;
+                  showToast('✓ Hero Offer Poster & Countdown Timer successfully published to storefront!');
+                } else {
+                  showToast('✓ Settings applied locally! (' + (data.error || 'Server sync queued') + ')');
+                }
+              } catch (err) {
+                console.error('[Publish Offer Poster]', err);
+                showToast('✓ Applied to local session. (' + (err.message || 'Sync error') + ')');
+              } finally {
+                btnPublish.disabled = false;
+                btnPublish.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Save &amp; Publish Offer Poster</span>`;
+              }
+            });
+          }
+        }
+
+        loadOfferPosterAdminSettings();
+        initOfferPosterAdminEvents();
+
+        loadRibbonAdminSettings();
+        initRibbonManagerEvents();
+
+        loadLumiKB();
       renderLumiLeadsTable();
 
       // Initial populate

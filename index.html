@@ -13,11 +13,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <script src="assets/lora-ads.js?v=1"></script>
+  <script src="assets/lora-ads.js?v=3"></script>
   <script src="assets/lora-variants.js?v=20261110_v1"></script>
   <link rel="stylesheet" href="assets/base.css?v=20261110_v3">
   <link rel="stylesheet" href="assets/lumi.css?v=20261030_v8">
   <link rel="stylesheet" href="assets/lora-float.css?v=20261030_v8">
+  <link rel="stylesheet" href="assets/offer-poster.css?v=20261119_v3">
     <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -1567,6 +1568,17 @@
       color: #FFFFFF;
       box-shadow: 0 0 10px rgba(194, 97, 54, 0.4);
     }
+    /* mobile width guard */
+    html, body { max-width: 100%; overflow-x: clip; }
+    @media (max-width: 600px) {
+      .measure-step-tabs { max-width: 100% !important; overflow-x: auto !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; box-sizing: border-box; }
+      .measure-step-tabs::-webkit-scrollbar { display: none; }
+      .measure-tab-btn { flex-shrink: 0; white-space: nowrap; }
+      /* 2-column product cards: keep price + buttons inside the card */
+      .price-block, .card-action-btns, .card-action-footer, .card-price-row, .card-header-status-slot { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+      .card-price-row { flex-wrap: wrap !important; }
+      .card-action-btns > * { min-width: 0 !important; }
+    }
   </style>
   <!-- Warm Sanctuary Luxury Design System (Highest Cascade Priority & Fresh Cache Version) -->
   <link rel="stylesheet" href="assets/lora-polish.css?v=20261110_v2">
@@ -1781,14 +1793,65 @@
 <script src="assets/lora-float.js?v=12" defer></script>
 <script src="assets/lora-polish.js?v=1" defer></script>
 
+  <!-- =========================================================
+       HERO STICKY OFFER POSTER & LIVE COUNTDOWN TIMER
+       Managed in Admin -> Offers & Promo Codes
+       ========================================================= -->
+  <section class="lora-hero-offer-section" id="lora-hero-offer" aria-label="Limited Time Offer">
+    <div class="lora-offer-poster-card">
+      <div class="lora-offer-content-col">
+        <div class="lora-offer-badge-pill">
+          <span class="lora-offer-pulse-dot"></span>
+          <span id="poster-card-badge">LIMITED TIME FESTIVE RELEASE</span>
+        </div>
+        <h2 class="lora-offer-headline" id="poster-card-headline">Flat 20% Off + Complimentary Luxury Sleep Kit</h2>
+        <p class="lora-offer-subtext" id="poster-card-subtext">Shipped 100% full-size and flat across India with direct factory warranty. Use coupon code at checkout.</p>
+        
+        <!-- Live Countdown Timer (can be toggled ON/OFF in Admin) -->
+        <div class="lora-offer-timer-wrap" id="poster-card-timer-wrap">
+          <span class="lora-offer-timer-label" id="poster-card-timer-label">⚡ Limited Deal Ends In:</span>
+          <div class="lora-timer-grid">
+            <div class="lora-timer-block">
+              <span class="lora-timer-num" id="poster-timer-days">00</span>
+              <span class="lora-timer-unit">Days</span>
+            </div>
+            <span class="lora-timer-sep">:</span>
+            <div class="lora-timer-block">
+              <span class="lora-timer-num" id="poster-timer-hours">00</span>
+              <span class="lora-timer-unit">Hours</span>
+            </div>
+            <span class="lora-timer-sep">:</span>
+            <div class="lora-timer-block">
+              <span class="lora-timer-num" id="poster-timer-mins">00</span>
+              <span class="lora-timer-unit">Mins</span>
+            </div>
+            <span class="lora-timer-sep">:</span>
+            <div class="lora-timer-block">
+              <span class="lora-timer-num" id="poster-timer-secs">00</span>
+              <span class="lora-timer-unit">Secs</span>
+            </div>
+          </div>
+        </div>
 
+        <div class="lora-offer-actions-row">
+          <div class="lora-offer-coupon-pill" id="poster-coupon-pill" title="Click to copy coupon code" role="button" tabindex="0">
+            <span class="lora-offer-coupon-label">Code</span>
+            <span class="lora-offer-coupon-code" id="poster-card-coupon">LORA20</span>
+            <span class="lora-offer-coupon-copy" id="poster-card-copy-btn">Copy</span>
+          </div>
+          <a href="#the-collection" class="lora-offer-cta-btn" id="poster-card-cta">Explore Festive Offers →</a>
+        </div>
+      </div>
 
-
-
-
-
-  
-
+      <div class="lora-offer-visual-col">
+        <div class="lora-offer-poster-frame">
+          <img src="assets/hero-bedroom-luxury.jpg" alt="LORA Festive Offer" class="lora-offer-poster-img" id="poster-card-img" loading="eager">
+          <div class="lora-offer-poster-overlay"></div>
+          <span class="lora-offer-poster-tag" id="poster-card-tag">EXCLUSIVE FESTIVE DEAL</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- =========================================================
        WATCH LORA — INSTAGRAM REELS (managed in Admin → Instagram Reels)
@@ -4807,11 +4870,11 @@
               <div style="display: flex; gap: 1.5rem; align-items: baseline; flex-wrap: wrap;">
                 <div>
                   <span style="font-size: 0.72rem; text-transform: uppercase; color: #78716C; display: block;">Direct Factory Price</span>
-                  <span style="font-size: 1.6rem; font-weight: 800; color: #1C1917;" id="dossier-model-price">₹29,999</span>
+                  <span style="font-size: 1.6rem; font-weight: 800; color: #1C1917;" id="dossier-model-price">₹29,499</span>
                 </div>
                 <div>
                   <span style="font-size: 0.72rem; text-transform: uppercase; color: #78716C; display: block;">Factory Warranty</span>
-                  <span style="font-size: 0.95rem; font-weight: 700; color: var(--lp-terracotta);" id="dossier-model-warranty">15-Yr Full Direct Warranty</span>
+                  <span style="font-size: 0.95rem; font-weight: 700; color: var(--lp-terracotta);" id="dossier-model-warranty">10-Yr Full Direct Warranty</span>
                 </div>
                 <div style="margin-left: auto;">
                   <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); background: rgba(194, 97, 54, 0.1); color: var(--lp-terracotta); border: 1px solid rgba(194, 97, 54, 0.28);" id="dossier-model-feel">
@@ -6294,8 +6357,9 @@
           tagline: "7-Zone Buoyant Contour System • Ultra Plush",
           feel: "Ultra Plush (2.5 / 10)",
           img: "assets/comfort-plush.jpg",
-          price: 21999,
-          emi: "₹1,833/mo",
+          price: 22999,
+          warranty: "3 Years Warranty",
+          emi: "₹1,916/mo",
           metrics: { spine: "97% ●●●●●", lumbar: "94% ●●●●○", pressure: "99% ●●●●●", motion: "95% ●●●●●" },
           rationale: "Engineered specifically for side and light-frame sleepers. The 7-zone buoyant memory core allows the shoulder girdle and pelvic bone to sink naturally without joint pinching, keeping the cervical and thoracic spine in a neutral horizontal plane."
         },
@@ -6307,8 +6371,9 @@
           tagline: "High-Density Orthopedic Spine Decompression",
           feel: "Orthopedic Firm (7.5 / 10)",
           img: "assets/comfort-firm.jpg",
-          price: 24999,
-          emi: "₹2,083/mo",
+          price: 23499,
+          warranty: "5 Years Warranty",
+          emi: "₹1,958/mo",
           metrics: { spine: "99% ●●●●●", lumbar: "99% ●●●●●", pressure: "93% ●●●●○", motion: "92% ●●●●○" },
           rationale: "The gold standard for lower back pain, sciatica, and lumbar lordosis stiffness. High-resilience rebonded orthopedic core prevents the lower spine from sagging into a hammock curve, restoring vertebral alignment through the night."
         },
@@ -6321,6 +6386,7 @@
           feel: "Soft Velvet Plush (2.0 / 10)",
           img: "assets/comfort-plush.jpg",
           price: 27999,
+          warranty: "5 Years Warranty",
           emi: "₹2,333/mo",
           metrics: { spine: "94% ●●●●○", lumbar: "92% ●●●●○", pressure: "100% ●●●●●", motion: "96% ●●●●●" },
           rationale: "Designed for sleepers seeking opulent 5-star presidential hotel cloud luxury with zero physical pressure points. High-density supersoft contouring foam envelops the body, virtually eliminating all cutaneous contact pressure."
@@ -6333,8 +6399,9 @@
           tagline: "5-Zone Pocket Springs + Ergonomic Adaptive Core",
           feel: "Balanced Medium (6.0 / 10)",
           img: "assets/comfort-balanced.jpg",
-          price: 29999,
-          emi: "₹2,500/mo",
+          price: 29499,
+          warranty: "10 Years Warranty",
+          emi: "₹2,458/mo",
           metrics: { spine: "98% ●●●●●", lumbar: "97% ●●●●●", pressure: "97% ●●●●●", motion: "99% ●●●●●" },
           rationale: "The premier hybrid solution for active, combination sleepers and couples. Individually encased barrel pocket springs dynamically flex to sudden posture rotations while the orthopedic top foam delivers targeted lumbar pushback with zero partner disturbance."
         },
@@ -6346,8 +6413,9 @@
           tagline: "100% Natural Dunlop Latex + Pin-Core Airflow",
           feel: "Medium-Firm (6.5 / 10)",
           img: "assets/comfort-balanced.jpg",
-          price: 32999,
-          emi: "₹2,750/mo",
+          price: 34999,
+          warranty: "12 Years Warranty",
+          emi: "₹2,916/mo",
           metrics: { spine: "98% ●●●●●", lumbar: "97% ●●●●●", pressure: "95% ●●●●●", motion: "94% ●●●●○" },
           rationale: "Certified organic botanical Dunlop latex provides instantaneous buoyant pushback without heat retention. Pin-core vertical ventilation channels continuously dissipate body heat, making it the supreme choice for hot sleepers and stomach sleepers."
         },
@@ -6359,8 +6427,9 @@
           tagline: "Reversible Dual-Feel Ergonomic Architecture",
           feel: "Dual Reversible (4.5 / 10 or 7.0 / 10)",
           img: "assets/comfort-balanced.jpg",
-          price: 22999,
-          emi: "₹1,916/mo",
+          price: 19499,
+          warranty: "10 Years Warranty",
+          emi: "₹1,624/mo",
           metrics: { spine: "95% ●●●●●", lumbar: "95% ●●●●●", pressure: "94% ●●●●○", motion: "91% ●●●●○" },
           rationale: "The ultimate versatile mattress for sleepers desiring seasonal flexibility or undecided firmness. Flip effortlessly between Medium-Soft cloud contouring for winter relaxation and Firm supportive rebonded core for posture rejuvenation."
         },
@@ -6372,8 +6441,9 @@
           tagline: "Zero Motion Transfer Pocket Springs + Edge Shield",
           feel: "Medium-Firm (6.5 / 10)",
           img: "assets/comfort-balanced.jpg",
-          price: 31499,
-          emi: "₹2,624/mo",
+          price: 28999,
+          warranty: "10 Years Warranty",
+          emi: "₹2,416/mo",
           metrics: { spine: "97% ●●●●●", lumbar: "96% ●●●●●", pressure: "96% ●●●●●", motion: "100% ●●●●●" },
           rationale: "Engineered specifically for couples with mismatched sleep schedules or restless partners. Encapsulated heat-treated pocket springs isolate movement to a localized 3-inch radius, coupled with high-density perimeter encasement preventing edge roll-off."
         },
@@ -6385,8 +6455,9 @@
           tagline: "Multi-Tier Eurotop Pocket Springs + Cool Gel Matrix",
           feel: "Plush Eurotop (5.0 / 10)",
           img: "assets/comfort-plush.jpg",
-          price: 38999,
-          emi: "₹3,250/mo",
+          price: 36999,
+          warranty: "15 Years Warranty",
+          emi: "₹3,083/mo",
           metrics: { spine: "99% ●●●●●", lumbar: "98% ●●●●●", pressure: "99% ●●●●●", motion: "98% ●●●●●" },
           rationale: "LORA's flagship masterpiece. Integrates an ultra-deep Eurotop pillow quilted with cooling gel beads over a medical pocket spring foundation. Offers the sink-in luxury of a 7-star suite without sacrificing orthopedic spinal decompression."
         }
@@ -6569,25 +6640,64 @@
         applyModelDataToDossier(activePrimaryModel, activeRunnerUpModel);
       }
 
+      function getLiveModelData(modelId) {
+        // 1. Live synchronized catalog state in memory
+        try {
+          if (typeof catalog === 'object' && catalog && catalog[modelId]) {
+            return catalog[modelId];
+          }
+        } catch (e) {}
+        // 2. LocalStorage sync from server / admin
+        try {
+          const stored = localStorage.getItem('lora_product_catalog_v3') || localStorage.getItem('lora_mattress_catalog_v2');
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed && parsed[modelId]) return parsed[modelId];
+          }
+        } catch (e) {}
+        // 3. Fallback to DEFAULT_PRODUCTS
+        try {
+          if (typeof DEFAULT_PRODUCTS === 'object' && DEFAULT_PRODUCTS && DEFAULT_PRODUCTS[modelId]) {
+            return DEFAULT_PRODUCTS[modelId];
+          }
+        } catch (e) {}
+        // 4. Fallback to static AI catalog
+        return LORA_AI_CATALOG[modelId] || {};
+      }
+
       function applyModelDataToDossier(priId, runId) {
+        priId = priId || activePrimaryModel || "04";
+        runId = runId || activeRunnerUpModel || "02";
         const priData = LORA_AI_CATALOG[priId] || LORA_AI_CATALOG["04"];
         const runData = LORA_AI_CATALOG[runId] || LORA_AI_CATALOG["02"];
 
-        // Check if admin portal catalog has live updates in localStorage
-        let liveCatalog = null;
-        try {
-          const stored = localStorage.getItem('lora_mattress_catalog_v2');
-          if (stored) liveCatalog = JSON.parse(stored);
-        } catch (e) {}
+        // Pull live model details directly from the active synchronized catalog
+        const priLive = getLiveModelData(priId);
+        const runLive = getLiveModelData(runId);
 
-        const priCustom = liveCatalog?.[priId] || {};
-        const runCustom = liveCatalog?.[runId] || {};
+        const priName = priLive.name || priData.name;
+        const priTagline = priLive.tagline || priData.tagline;
+        const rawPrice = priLive.basePrice !== undefined ? priLive.basePrice : (priLive.price !== undefined ? priLive.price : priData.price);
+        const priPrice = `₹${Number(rawPrice).toLocaleString('en-IN')}`;
+        const priImg = priLive.heroImg || priData.img;
+        const priFeel = priLive.feelLabel ? `${priLive.feelLabel} • ${priData.feel}` : priData.feel;
 
-        const priName = priCustom.name || priData.name;
-        const priTagline = priCustom.tagline || priData.tagline;
-        const priPrice = priCustom.basePrice ? `₹${priCustom.basePrice.toLocaleString('en-IN')}` : `₹${priData.price.toLocaleString('en-IN')}`;
-        const priImg = priCustom.heroImg || priData.img;
-        const priFeel = priCustom.feelLabel ? `${priCustom.feelLabel} • ${priData.feel}` : priData.feel;
+        // Warranty resolution: strictly prioritized from live catalog
+        let years = 0;
+        const rawWarranty = priLive.warranty || priData.warranty || '';
+        if (rawWarranty) {
+          const m = String(rawWarranty).match(/(\d+)/);
+          if (m) years = parseInt(m[1], 10);
+        }
+        if (!years && typeof window.loraResolveWarranty === 'function') {
+          const wInfo = window.loraResolveWarranty(priName);
+          if (wInfo && wInfo.years) years = wInfo.years;
+        }
+        if (!years) {
+          const fallbackTable = { '01': 3, '02': 5, '03': 5, '04': 10, '05': 12, '06': 10, '07': 10, '08': 15 };
+          years = fallbackTable[priId] || 10;
+        }
+        const priWarranty = `${years}-Yr Full Direct Warranty`;
 
         // Confidence calculation
         const confidence = (97.6 + (parseInt(priId, 10) % 3) * 0.6).toFixed(1);
@@ -6612,10 +6722,7 @@
         if (priceEl) priceEl.textContent = priPrice;
 
         const warrantyEl = document.querySelector('#dossier-model-warranty');
-        if (warrantyEl) {
-          const wInfo = window.loraResolveWarranty ? window.loraResolveWarranty(priName) : null;
-          warrantyEl.textContent = wInfo && wInfo.years ? `${wInfo.years}-Yr Full Direct Warranty` : 'Full Direct Factory Warranty';
-        }
+        if (warrantyEl) warrantyEl.textContent = priWarranty;
 
         const feelEl = document.querySelector('#dossier-model-feel');
         if (feelEl) feelEl.textContent = priFeel;
@@ -6639,10 +6746,10 @@
 
         // Runner Up
         const runNameEl = document.querySelector('#dossier-runnerup-name');
-        if (runNameEl) runNameEl.textContent = `${runCustom.name || runData.name} (${runnerConf}% Match)`;
+        if (runNameEl) runNameEl.textContent = `${runLive.name || runData.name} (${runnerConf}% Match)`;
 
         const runDescEl = document.querySelector('#dossier-runnerup-desc');
-        if (runDescEl) runDescEl.textContent = runData.tagline;
+        if (runDescEl) runDescEl.textContent = runLive.tagline || runData.tagline;
 
         // Configure button action
         const btnConf = document.querySelector('#dossier-btn-configure');
@@ -6694,6 +6801,7 @@
           applyModelDataToDossier(activePrimaryModel, activeRunnerUpModel);
         });
       }
+      window.applyModelDataToDossier = applyModelDataToDossier;
 
       // Restart Diagnostic
       const restartBtn = document.querySelector('#quiz-restart-btn');
@@ -7183,11 +7291,13 @@
             localStorage.setItem('lora_mattress_catalog_v2', JSON.stringify(catalog));
             if (typeof syncStorefrontCatalog === 'function') syncStorefrontCatalog();
             if (typeof renderInnerSuite === 'function') renderInnerSuite(activeInnerModelKey);
+            if (typeof applyModelDataToDossier === 'function') applyModelDataToDossier(activePrimaryModel, activeRunnerUpModel);
           }
         } catch (e) {}
       }
 
       loadCatalog();
+      if (typeof applyModelDataToDossier === 'function') applyModelDataToDossier(activePrimaryModel, activeRunnerUpModel);
       syncServerCatalog();
 
       // Inner PDP Selection States
@@ -8596,6 +8706,7 @@
           loadCatalog();
           syncStorefrontCatalog();
           renderInnerSuite(activeInnerModelKey);
+          if (typeof applyModelDataToDossier === 'function') applyModelDataToDossier(activePrimaryModel, activeRunnerUpModel);
         }
       });
 
@@ -8605,6 +8716,7 @@
           catalog = Object.assign({}, DEFAULT_PRODUCTS, e.detail);
           syncStorefrontCatalog();
           renderInnerSuite(activeInnerModelKey);
+          if (typeof applyModelDataToDossier === 'function') applyModelDataToDossier(activePrimaryModel, activeRunnerUpModel);
         }
       });
       window.addEventListener('focus', function () {
@@ -9593,6 +9705,7 @@
           cModal.style.display = 'none';
         }
         document.body.style.overflow = '';
+        if (typeof window.loraLeaveThankYou === 'function') window.loraLeaveThankYou();
       }
 
       // Assign to window and delegates
@@ -12165,6 +12278,35 @@
       </button>
     </div>
   </aside>
+
+  <!-- Sticky Floating Offer Dock (Appears when scrolled past hero section) -->
+  <aside class="lora-sticky-offer-dock" id="lora-sticky-offer-dock" aria-label="Limited Time Offer Dock">
+    <div class="lora-dock-thumb">
+      <img src="assets/hero-bedroom-luxury.jpg" alt="Offer" id="dock-thumb-img">
+    </div>
+    <div class="lora-dock-body">
+      <span class="lora-dock-title" id="dock-title-text">Flat 20% Off + Sleep Kit</span>
+      <div class="lora-dock-meta">
+        <span class="lora-dock-code" id="dock-coupon-code">LORA20</span>
+        <div class="lora-dock-timer">
+          <span>⚡</span>
+          <span id="dock-timer-digits">00d 00:00:00</span>
+        </div>
+      </div>
+    </div>
+    <a href="#the-collection" class="lora-dock-cta" id="dock-cta-btn">Claim →</a>
+    <button type="button" class="lora-dock-close" id="dock-close-btn" aria-label="Dismiss offer dock">×</button>
+  </aside>
+
+  <!-- Minimized Floating Offer Launcher -->
+  <button type="button" class="lora-offer-launcher-btn" id="lora-offer-launcher-btn" aria-label="Open Special Offer">
+    <span>🏷️</span>
+    <span>Special Festive Offer</span>
+  </button>
+
+  <!-- Offer Poster Storefront Engine -->
+  <script src="assets/offer-poster.js?v=20261119_v3" defer></script>
+  <script src="assets/checkout-funnel.js?v=1" defer></script>
 
   <!-- Offer Ribbon (3D Rotating Moving Belt) -->
   <script src="assets/offer-ribbon.js"></script>

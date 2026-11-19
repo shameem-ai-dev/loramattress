@@ -452,6 +452,27 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // Offer Poster Settings API (GET / POST)
+  if (pathname === '/api/offer-poster') {
+    const offerPosterHandler = require('../api/offer-poster.js');
+    if (req.method === 'GET' || req.method === 'OPTIONS') {
+      return callApiHandler(offerPosterHandler, req, res, null);
+    }
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => body += chunk);
+      req.on('end', () => {
+        try {
+          const payload = body ? JSON.parse(body) : {};
+          return callApiHandler(offerPosterHandler, req, res, payload);
+        } catch (e) {
+          return sendJson(400, { success: false, message: e.message });
+        }
+      });
+      return;
+    }
+  }
+
   // Payment Settings Helper
   const paymentSettingsPath = path.join(CONFIG_DIR, 'payment_settings.json');
   const getPaymentSettings = () => {
