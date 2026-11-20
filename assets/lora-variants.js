@@ -119,7 +119,34 @@
     return SIZE_META[inch] || {};
   }
 
+  // Cheapest sellable standard combination for a product (used as the default
+  // selection so shoppers first see the lowest "starting from" price).
+  // priceOf(cot, inch, thick) must return the final selling price.
+  function cheapest(d, specs, priceOf) {
+    let best = null;
+    ['single', 'double', 'queen', 'king'].forEach(cot => {
+      if (!cotEnabled(d, cot)) return;
+      (specs[cot] || []).forEach(s => {
+        visibleThicks(d, cot, s.id).forEach(th => {
+          let p = 0;
+          try { p = Number(priceOf(cot, s.id, th)) || 0; } catch (e) { p = 0; }
+          if (p > 0 && (!best || p < best.price)) best = { cot, inch: s.id, thick: th, price: p };
+        });
+      });
+    });
+    return best;
+  }
+
+  // True once the shopper has clicked any size / thickness option themselves.
+  document.addEventListener('click', function (e) {
+    if (e.isTrusted && e.target && e.target.closest &&
+        e.target.closest('[data-type], [data-inch], [data-thick], .card-type-pill, .card-inch-pill, .card-thick-pill')) {
+      window.__loraUserPickedSize = true;
+    }
+  }, true);
+
   window.LoraVariants = {
+    cheapest,
     ALL_THICK, COT_ORDER, thicknesses, cotEnabled, sizeEnabled, comboVisible,
     visibleThicks, sizeAvailable, cotAvailable, resolve, meta, nextStandardSize, comboMrp
   };

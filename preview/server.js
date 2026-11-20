@@ -810,6 +810,29 @@ const server = http.createServer((req, res) => {
   }
 
   // Handle Customer Leads API (+ recycle bin) — delegated to api/store-leads.js
+  // Coupon codes (public validate/redeem, admin manage) → api/coupons.js
+  if (pathname === '/api/coupons' || pathname.startsWith('/api/coupons/')) {
+    const apiPath = path.join(ROOT_DIR, 'api', 'coupons.js');
+    const couponsHandler = require(apiPath);
+    let body = '';
+    req.on('data', chunk => { body += chunk; if (body.length > 1e5) req.destroy(); });
+    req.on('end', async () => {
+      let parsed = {};
+      try { parsed = body ? JSON.parse(body) : {}; } catch (e) { parsed = {}; }
+      const mockReq = { method: req.method, headers: req.headers, url: req.url, body: parsed };
+      const mockRes = {
+        statusCode: 200,
+        setHeader: (k, v) => res.setHeader(k, v),
+        status(code) { this.statusCode = code; return this; },
+        json(data) { res.writeHead(this.statusCode, { 'Content-Type': 'application/json; charset=UTF-8' }); res.end(JSON.stringify(data)); },
+        end() { res.writeHead(this.statusCode); res.end(); }
+      };
+      try { await couponsHandler(mockReq, mockRes); }
+      catch (err) { res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' }); res.end(JSON.stringify({ success: false, message: err.message })); }
+    });
+    return;
+  }
+
   if (pathname === '/api/store-leads' || pathname.startsWith('/api/store-leads/')) {
     const apiPath = path.join(ROOT_DIR, 'api', 'store-leads.js');
     try { delete require.cache[require.resolve(apiPath)]; } catch (e) {}
@@ -1086,6 +1109,16 @@ const server = http.createServer((req, res) => {
       const html = fs.readFileSync(adminPath, 'utf8');
       res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
       res.end(html);
+      return;
+    }
+  }
+
+  // Returns & Refunds policy page
+  if (pathname === '/refund-policy' || pathname === '/refund-policy.html') {
+    const policyPath = path.join(ROOT_DIR, 'refund-policy.html');
+    if (fs.existsSync(policyPath)) {
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8', 'Cache-Control': 'no-cache, must-revalidate' });
+      res.end(fs.readFileSync(policyPath, 'utf8'));
       return;
     }
   }

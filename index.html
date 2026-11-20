@@ -14,11 +14,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script src="assets/lora-ads.js?v=3"></script>
-  <script src="assets/lora-variants.js?v=20261110_v1"></script>
+  <script src="assets/lora-variants.js?v=20261120_v2"></script>
   <link rel="stylesheet" href="assets/base.css?v=20261110_v3">
   <link rel="stylesheet" href="assets/lumi.css?v=20261030_v8">
   <link rel="stylesheet" href="assets/lora-float.css?v=20261030_v8">
-  <link rel="stylesheet" href="assets/offer-poster.css?v=20261119_v3">
+  <link rel="stylesheet" href="assets/offer-poster.css?v=20261120_v4">
     <!-- Razorpay Checkout Gateway SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -1582,6 +1582,8 @@
   </style>
   <!-- Warm Sanctuary Luxury Design System (Highest Cascade Priority & Fresh Cache Version) -->
   <link rel="stylesheet" href="assets/lora-polish.css?v=20261110_v2">
+  <link rel="stylesheet" href="assets/size-finder.css?v=1">
+  <script src="assets/size-finder.js?v=1" defer></script>
 </head>
 <body>
 
@@ -5675,7 +5677,7 @@
 
       <div class="footer-bottom-bar">
         <div>
-          © 2026 LORA MATTRESSES INDIA. All Rights Reserved. “Mattresses to make you sleep” is a registered trademark.
+          © 2026 LORA MATTRESSES INDIA. All Rights Reserved. “Mattresses to make you sleep” is a registered trademark. <a href="refund-policy.html" style="color:inherit;opacity:.7;text-decoration:none;font-size:.95em;margin-left:.5rem;">Returns &amp; Refunds</a>
         </div>
         <div style="display: flex; gap: 1.5rem;">
           <span>ISO 9001:2015 Certified</span>
@@ -7320,6 +7322,17 @@
         if (inch) activeInchId = inch;
         if (thick) activeThickness = parseInt(thick, 10);
 
+        // No explicit size given and shopper hasn't picked one → lowest-priced combination
+        if (!cot && !inch && !thick && window.LoraVariants && LoraVariants.cheapest && !window.__loraUserPickedSize) {
+          const save = [activeCotType, activeInchId, activeThickness];
+          const best = LoraVariants.cheapest(data, INCH_SPECS, (c, i, t) => {
+            activeCotType = c; activeInchId = i; activeThickness = t;
+            const r = calculateCurrentPrice();
+            return r && typeof r === 'object' ? r.price : r;
+          });
+          if (best) { activeCotType = best.cot; activeInchId = best.inch; activeThickness = best.thick; }
+          else { [activeCotType, activeInchId, activeThickness] = save; }
+        }
         // Coerce selection to a combination the admin has enabled
         if (window.LoraVariants) {
           const r = window.LoraVariants.resolve(data, INCH_SPECS, { cot: activeCotType, inch: activeInchId, thick: activeThickness });
@@ -8260,6 +8273,35 @@
         }
       }
 
+      // Same price formula as updateCardPrice(), used to find each card's cheapest default.
+      function cardFinalPrice(data, cotType, inchId, thick) {
+        const combKey = `${cotType}_${inchId}_${thick}`;
+        if (data.combinationOverrides && data.combinationOverrides[combKey] !== undefined) return parseInt(data.combinationOverrides[combKey], 10);
+        const base = data.basePrice || 21999;
+        const mult = (data.multipliers && data.multipliers[cotType]) || 1.0;
+        const thickDelta = (data.thicknessOffsets && data.thicknessOffsets[String(thick)]) || 0;
+        const inchDelta = (data.inchAddons && data.inchAddons[cotType] && data.inchAddons[cotType][inchId]) || 0;
+        let p = Math.round(base * mult) + thickDelta + inchDelta;
+        if (data.offer && data.offer.active) {
+          if (data.offer.type === 'percent') p = Math.round(p * (1 - (parseFloat(data.offer.value) || 0) / 100));
+          else if (data.offer.type === 'flat') p = Math.max(5000, p - (parseInt(data.offer.value, 10) || 0));
+        }
+        return p;
+      }
+      // Select the lowest-priced sellable size + thickness on a product card (until the shopper picks).
+      function applyCheapestToCard(card, data) {
+        if (!card || !data || window.__loraUserPickedSize || !window.LoraVariants || !LoraVariants.cheapest) return;
+        const best = LoraVariants.cheapest(data, INCH_SPECS, (c, i, t) => cardFinalPrice(data, c, i, t));
+        if (!best) return;
+        const typePill = card.querySelector(`.card-type-pill[data-type="${best.cot}"]`);
+        if (typePill) typePill.click();
+        const inchPill = card.querySelector(`.card-inch-pill[data-inch="${best.inch}"]`);
+        if (inchPill) inchPill.click();
+        const thickPill = card.querySelector(`.card-thick-pill[data-thick="${best.thick}"]`);
+        if (thickPill) thickPill.click();
+      }
+      window.applyCheapestToCard = applyCheapestToCard;
+
       // Card-level click listeners for Bed Type, Inches, and Thickness
       document.addEventListener('click', function (e) {
         // 1. Bed Type Pill Click
@@ -8608,6 +8650,7 @@
             }
 
             if (typeof updateCardPrice === 'function') updateCardPrice(card);
+            if (typeof applyCheapestToCard === 'function') applyCheapestToCard(card, item);
           }
 
           // 4. Ensure Inner PDP Pill Exists in #inner-product-suite
@@ -9462,18 +9505,27 @@
         const chkState = document.querySelector('#chk-customer-state');
         const chkPin = document.querySelector('#chk-customer-pincode');
 
-        if (chkPhone) chkPhone.value = String(phone).replace(/[^0-9]/g, '').slice(-10);
-        if (chkName && profile.name) chkName.value = profile.name;
-        if (chkAltPhone && profile.altPhone) chkAltPhone.value = String(profile.altPhone).replace(/[^0-9]/g, '').slice(-10);
-        if (chkEmail && profile.email) chkEmail.value = profile.email;
-        if (chkHouse && profile.house) chkHouse.value = profile.house;
-        if (chkStreet && profile.street) chkStreet.value = profile.street;
-        if (chkLandmark && profile.landmark) chkLandmark.value = profile.landmark;
-        if (chkCity && profile.city) chkCity.value = profile.city;
-        if (chkDistrict && profile.district) chkDistrict.value = profile.district;
-        if (chkState && profile.state) chkState.value = profile.state;
-        if (chkPin && profile.pincode) {
-          chkPin.value = profile.pincode;
+        // Never overwrite anything the shopper typed: only fill fields that are empty
+        // or that we filled ourselves earlier (marked data-autofilled).
+        const fill = (el, v) => {
+          if (!el || v === undefined || v === null || v === '') return false;
+          if (el.dataset.userEdited === '1' && el.value.trim()) return false;
+          if (el.value.trim() && el.dataset.autofilled !== '1') return false;
+          el.value = v;
+          el.dataset.autofilled = '1';
+          return true;
+        };
+        fill(chkPhone, String(phone).replace(/[^0-9]/g, '').slice(-10));
+        fill(chkName, profile.name);
+        fill(chkAltPhone, profile.altPhone ? String(profile.altPhone).replace(/[^0-9]/g, '').slice(-10) : '');
+        fill(chkEmail, profile.email);
+        fill(chkHouse, profile.house);
+        fill(chkStreet, profile.street);
+        fill(chkLandmark, profile.landmark);
+        fill(chkCity, profile.city);
+        fill(chkDistrict, profile.district);
+        fill(chkState, profile.state);
+        if (fill(chkPin, profile.pincode)) {
           if (typeof resolvePincode === 'function') resolvePincode(profile.pincode);
         }
 
@@ -9583,6 +9635,7 @@
         items: []
       };
 
+      window.__loraGetCheckoutSubtotal = function () { return Number(currentCheckoutOrder && currentCheckoutOrder.price) || 0; };
       function openCheckoutModal() {
         try {
           if (window.loraTrackCheckout) window.loraTrackCheckout(currentCartItems && currentCartItems.length ? currentCartItems : (currentCheckoutOrder ? [{ title: currentCheckoutOrder.productName, specs: currentCheckoutOrder.size, price: currentCheckoutOrder.price }] : []));
@@ -9829,6 +9882,12 @@
 
       // Order Commit & Confirmation View Handler
       function commitOrderAndShowConfirmation(newOrder, paymentId) {
+        if (window.__loraOrderCoupon && newOrder && !newOrder.couponCode) {
+          newOrder.couponCode = window.__loraOrderCoupon.code;
+          newOrder.couponDiscount = window.__loraOrderCoupon.discount;
+          newOrder.subtotalPrice = window.__loraOrderCoupon.subtotal;
+          newOrder.orderNotes = [newOrder.orderNotes, `Coupon ${window.__loraOrderCoupon.code} applied: −₹${window.__loraOrderCoupon.discount.toLocaleString('en-IN')} (subtotal ₹${window.__loraOrderCoupon.subtotal.toLocaleString('en-IN')})`].filter(Boolean).join(' | ');
+        }
         // 1. Save immediately to localStorage (Immediate client-side zero-loss guarantee)
         try {
           const raw = localStorage.getItem('lora_orders_v1');
@@ -10143,7 +10202,16 @@
             state: state
           });
 
-          const finalOrderPrice = Number(currentCheckoutOrder?.price) || 21999;
+          // Coupon: subtotal is re-checked with the server at the moment of ordering
+          const subtotalPrice = Number(currentCheckoutOrder?.price) || 21999;
+          let couponResult = null;
+          if (typeof window.loraCouponRevalidate === 'function') {
+            try { couponResult = await window.loraCouponRevalidate(subtotalPrice); } catch (e) { couponResult = null; }
+          }
+          const finalOrderPrice = (couponResult && couponResult.valid) ? couponResult.finalAmount : subtotalPrice;
+          window.__loraOrderCoupon = (couponResult && couponResult.valid)
+            ? { code: couponResult.code, discount: couponResult.discount, subtotal: subtotalPrice }
+            : null;
           const finalProductName = currentCheckoutOrder?.productName || '01. LORA CLOUD 7™';
           const finalSize = currentCheckoutOrder?.size || 'King Size • 78" × 72" • 8-inch';
 
@@ -10583,6 +10651,12 @@
           if (badge) badge.style.display = 'none';
         }
       }
+
+      // Remember which checkout fields the shopper edited (autofill must never undo their typing)
+      document.addEventListener('input', function (e) {
+        const t = e.target;
+        if (e.isTrusted && t && t.id && t.id.indexOf('chk-') === 0) { t.dataset.userEdited = '1'; t.dataset.autofilled = ''; }
+      }, true);
 
       // Wire real-time live address and field validation
       const chkPinInput = document.querySelector('#chk-customer-pincode');
@@ -12279,34 +12353,11 @@
     </div>
   </aside>
 
-  <!-- Sticky Floating Offer Dock (Appears when scrolled past hero section) -->
-  <aside class="lora-sticky-offer-dock" id="lora-sticky-offer-dock" aria-label="Limited Time Offer Dock">
-    <div class="lora-dock-thumb">
-      <img src="assets/hero-bedroom-luxury.jpg" alt="Offer" id="dock-thumb-img">
-    </div>
-    <div class="lora-dock-body">
-      <span class="lora-dock-title" id="dock-title-text">Flat 20% Off + Sleep Kit</span>
-      <div class="lora-dock-meta">
-        <span class="lora-dock-code" id="dock-coupon-code">LORA20</span>
-        <div class="lora-dock-timer">
-          <span>⚡</span>
-          <span id="dock-timer-digits">00d 00:00:00</span>
-        </div>
-      </div>
-    </div>
-    <a href="#the-collection" class="lora-dock-cta" id="dock-cta-btn">Claim →</a>
-    <button type="button" class="lora-dock-close" id="dock-close-btn" aria-label="Dismiss offer dock">×</button>
-  </aside>
-
-  <!-- Minimized Floating Offer Launcher -->
-  <button type="button" class="lora-offer-launcher-btn" id="lora-offer-launcher-btn" aria-label="Open Special Offer">
-    <span>🏷️</span>
-    <span>Special Festive Offer</span>
-  </button>
 
   <!-- Offer Poster Storefront Engine -->
-  <script src="assets/offer-poster.js?v=20261119_v3" defer></script>
+  <script src="assets/offer-poster.js?v=20261120_v4" defer></script>
   <script src="assets/checkout-funnel.js?v=1" defer></script>
+  <script src="assets/checkout-coupon.js?v=1" defer></script>
 
   <!-- Offer Ribbon (3D Rotating Moving Belt) -->
   <script src="assets/offer-ribbon.js"></script>

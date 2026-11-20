@@ -505,3 +505,6 @@
   .lora-offer-pulse-dot, .lora-timer-sep { animation: none; }
   .lora-offer-poster-img, .lora-sticky-offer-dock, .lora-offer-launcher-btn { transition: none; }
 }
+
+/* Sticky offer dock + launcher removed (was covering the Lumi assistant) */
+.lora-sticky-offer-dock, .lora-offer-launcher-btn { display: none !important; }

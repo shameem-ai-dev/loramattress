@@ -25,7 +25,7 @@ const SETTINGS_FILE = path.join(CONFIG_DIR, 'marketing_settings.json');
 const CATALOG_FILE = path.join(CONFIG_DIR, 'catalog_data.json');
 const GRAPH_VERSION = 'v21.0';
 const BRAND = 'LORA Mattress';
-const CUSTOM_EVENTS = new Set(['OrderPlacedCOD', 'SizeFinderMatch', 'CheckoutFormStarted', 'CheckoutPhoneEntered', 'OTPRequested', 'OTPSendFailed', 'OTPVerified', 'OTPVerifyFailed', 'CheckoutAddressDone', 'PaymentWindowOpened', 'PaymentFailed', 'PaymentDismissed']);
+const CUSTOM_EVENTS = new Set(['OrderPlacedCOD', 'SizeFinderMatch', 'CouponApplied', 'CheckoutFormStarted', 'CheckoutPhoneEntered', 'OTPRequested', 'OTPSendFailed', 'OTPVerified', 'OTPVerifyFailed', 'CheckoutAddressDone', 'PaymentWindowOpened', 'PaymentFailed', 'PaymentDismissed']);
 function verifiedRazorpay(v) {
   const secret = (process.env.RAZORPAY_KEY_SECRET || '').trim();
   if (!secret || !v || typeof v !== 'object') return false;
